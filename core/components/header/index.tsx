@@ -43,27 +43,68 @@ const getLayoutData = cache(async () => {
   return readFragment(HeaderFragment, response).site;
 });
 
-const getLinks = async () => {
-  const data = await getLayoutData();
+const getLinks = () => {
+  // const data = await getLayoutData();
 
   /**  To prevent the navigation menu from overflowing, we limit the number of categories to 6.
    To show a full list of categories, modify the `slice` method to remove the limit.
    Will require modification of navigation menu styles to accommodate the additional categories.
    */
-  const categoryTree = data.categoryTree.slice(0, 6);
+  // const categoryTree = data.categoryTree.slice(0, 6);
 
-  return categoryTree.map(({ name, path, children }) => ({
-    label: name,
-    href: path,
-    groups: children.map((firstChild) => ({
-      label: firstChild.name,
-      href: firstChild.path,
-      links: firstChild.children.map((secondChild) => ({
-        label: secondChild.name,
-        href: secondChild.path,
-      })),
-    })),
-  }));
+  // return categoryTree.map(({ name, path, children }) => ({
+  //   label: name,
+  //   href: path,
+  //   groups: children.map((firstChild) => ({
+  //     label: firstChild.name,
+  //     href: firstChild.path,
+  //     links: firstChild.children.map((secondChild) => ({
+  //       label: secondChild.name,
+  //       href: secondChild.path,
+  //     })),
+  //   })),
+  // }));
+
+  return [
+    {
+      label: 'Page 1',
+      href: '/page-1',
+    },
+    {
+      label: 'Page 2',
+      href: '/page-2',
+      groups: [
+        {
+          label: 'Group 1',
+          href: '/group-1',
+          links: [
+            {
+              label: 'Link 1',
+              href: '/link-1',
+            },
+            {
+              label: 'Link 2',
+              href: '/link-2',
+            },
+          ],
+        },
+        {
+          label: 'Group 2',
+          href: '/group-2',
+          links: [
+            {
+              label: 'Link 3',
+              href: '/link-3',
+            },
+            {
+              label: 'Link 4',
+              href: '/link-4',
+            },
+          ],
+        },
+      ],
+    },
+  ];
 };
 
 const getLogo = async () => {
