@@ -16,7 +16,7 @@ import { addToCart } from './_actions/add-to-cart';
 import { ProductSchema } from './_components/product-schema';
 import { ProductViewed } from './_components/product-viewed';
 import { PaginationSearchParamNames, Reviews } from './_components/reviews';
-import { getProductData } from './page-data';
+import { getContentfulData, getProductData } from './page-data';
 
 const cachedProductDataVariables = cache(
   async (productId: string, searchParams: Props['searchParams']) => {
@@ -49,6 +49,7 @@ const getProduct = async (props: Props) => {
   const { slug } = await props.params;
   const variables = await cachedProductDataVariables(slug, props.searchParams);
   const product = await getProductData(variables);
+  const contentfulData = await getContentfulData(product.sku);
 
   const images = removeEdgesAndNodes(product.images).map((image) => ({
     src: image.url,
@@ -125,6 +126,12 @@ const getProduct = async (props: Props) => {
     subtitle: product.brand?.name,
     rating: product.reviewSummary.averageRating,
     accordions,
+    /* eslint-disable-next-line */
+    contentfulBcProductReference: contentfulData?.bcProductReference as any,
+    /* eslint-disable-next-line */
+    contentfulShortDescription: contentfulData?.shortDescription as any,
+    /* eslint-disable-next-line */
+    contentfulDefaultPrice: contentfulData?.defaultPrice as any,
   };
 };
 

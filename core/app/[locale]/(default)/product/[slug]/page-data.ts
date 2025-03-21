@@ -1,3 +1,4 @@
+import { createClient } from 'contentful';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 
@@ -273,3 +274,18 @@ export const getProductData = cache(async (variables: Variables) => {
 
   return product;
 });
+
+export const getContentfulData = async (sku: string) => {
+  const contentfulClient = createClient({
+    space: process.env.CONTENTFUL_SPACE_ID || '',
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || '',
+    environment: process.env.CONTENTFUL_ENVIRONMENT || 'master',
+  });
+
+  const contentfulData = await contentfulClient.getEntries({
+    content_type: 'productFinishedGoods',
+    'fields.bcProductReference[match]': sku,
+  });
+
+  return contentfulData.items[0]?.fields || null;
+};

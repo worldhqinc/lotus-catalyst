@@ -28,6 +28,9 @@ interface ProductDetailProduct {
       content: ReactNode;
     }>
   >;
+  contentfulBcProductReference?: string;
+  contentfulShortDescription?: string;
+  contentfulDefaultPrice?: string;
 }
 
 export interface ProductDetailProps<F extends Field> {
@@ -158,6 +161,38 @@ export function ProductDetail<F extends Field>({
                       )}
                     </Stream>
                   </div>
+                  <Stream
+                    fallback={<ProductDescriptionSkeleton />}
+                    value={product.contentfulBcProductReference}
+                  >
+                    {(contentfulBcProductReference) => (
+                      <div className="border-t border-contrast-100 py-8 text-contrast-500">
+                        Contentful BC Reference: {contentfulBcProductReference}
+                      </div>
+                    )}
+                  </Stream>
+
+                  <Stream
+                    fallback={<ProductDescriptionSkeleton />}
+                    value={product.contentfulShortDescription}
+                  >
+                    {(contentfulShortDescription) => (
+                      <div className="border-t border-contrast-100 py-8 text-contrast-500">
+                        Contentful Short Description: {contentfulShortDescription}
+                      </div>
+                    )}
+                  </Stream>
+
+                  <Stream
+                    fallback={<ProductDescriptionSkeleton />}
+                    value={product.contentfulDefaultPrice}
+                  >
+                    {(contentfulDefaultPrice) => (
+                      <div className="border-t border-contrast-100 py-8 text-contrast-500">
+                        Contentful Default Price: {contentfulDefaultPrice}
+                      </div>
+                    )}
+                  </Stream>
                   <div className="group/product-description">
                     <Stream fallback={<ProductDescriptionSkeleton />} value={product.description}>
                       {(description) =>
