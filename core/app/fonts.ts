@@ -1,12 +1,12 @@
-import { DM_Serif_Text, Inter, Roboto_Mono } from 'next/font/google';
+import { Jost, Playfair_Display, Roboto_Mono } from 'next/font/google';
 
-const inter = Inter({
+const jost = Jost({
   display: 'swap',
   subsets: ['latin'],
   variable: '--font-family-body',
 });
 
-const dmSerifText = DM_Serif_Text({
+const playfairDisplay = Playfair_Display({
   display: 'swap',
   subsets: ['latin'],
   weight: '400',
@@ -19,4 +19,4 @@ const robotoMono = Roboto_Mono({
   variable: '--font-family-mono',
 });
 
-export const fonts = [inter, dmSerifText, robotoMono];
+export const fonts = [jost, playfairDisplay, robotoMono];
