@@ -23,21 +23,6 @@
         "!.next/cache/**"
       ]
     },
-    "lint": {
-      "env": ["*"],
-      "dependsOn": [
-        "^build"
-      ]
-    },
-    "typecheck": {
-      "env": ["*"],
-      "dependsOn": [
-        "topo"
-      ],
-      "outputs": [
-        "node_modules/.cache/tsbuildinfo.json"
-      ]
-    },
     "dev": {
       "env": ["*"],
       "cache": false,
