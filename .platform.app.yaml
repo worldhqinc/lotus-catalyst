@@ -3,6 +3,10 @@
 name: app
 type: 'nodejs:20'
 disk: 2048
+size: L
+resources:
+    base_memory: 1024
+    memory_ratio: 1024
 mounts:
     '/core/.next':
         source: local
