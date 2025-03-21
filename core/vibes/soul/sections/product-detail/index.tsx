@@ -25,6 +25,9 @@ interface ProductDetailProduct {
       content: React.ReactNode;
     }>
   >;
+  contentfulBcProductReference?: string;
+  contentfulShortDescription?: string;
+  contentfulDefaultPrice?: string;
 }
 
 interface Props<F extends Field> {
@@ -126,6 +129,39 @@ export function ProductDetail<F extends Field>({
                         productId={product.id}
                         quantityLabel={quantityLabel}
                       />
+                    )}
+                  </Stream>
+
+                  <Stream
+                    fallback={<ProductDescriptionSkeleton />}
+                    value={product.contentfulBcProductReference}
+                  >
+                    {(contentfulBcProductReference) => (
+                      <div className="border-t border-contrast-100 py-8 text-contrast-500">
+                        Contentful BC Reference: {contentfulBcProductReference}
+                      </div>
+                    )}
+                  </Stream>
+
+                  <Stream
+                    fallback={<ProductDescriptionSkeleton />}
+                    value={product.contentfulShortDescription}
+                  >
+                    {(contentfulShortDescription) => (
+                      <div className="border-t border-contrast-100 py-8 text-contrast-500">
+                        Contentful Short Description: {contentfulShortDescription}
+                      </div>
+                    )}
+                  </Stream>
+
+                  <Stream
+                    fallback={<ProductDescriptionSkeleton />}
+                    value={product.contentfulDefaultPrice}
+                  >
+                    {(contentfulDefaultPrice) => (
+                      <div className="border-t border-contrast-100 py-8 text-contrast-500">
+                        Contentful Default Price: {contentfulDefaultPrice}
+                      </div>
                     )}
                   </Stream>
 
