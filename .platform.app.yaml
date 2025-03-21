@@ -1,0 +1,35 @@
+# Complete list of all available properties: https://docs.platform.sh/create-apps/app-reference.html
+
+name: app
+type: 'nodejs:20'
+disk: 2048
+mounts:
+    '/core/.next':
+        source: local
+        source_path: 'next'
+    '/core/build-config':
+        source: local
+        source_path: 'build-config'
+web:
+    locations:
+        '/':
+            root: 'core'
+            headers:
+                X-Frame-Options: SAMEORIGIN
+    commands:
+        start: cd /app/core && npx next start -p $PORT
+build:
+    flavor: none
+hooks:
+    build: |
+        set -eu
+        chmod +x handle_env_setup.sh
+        ./handle_env_setup.sh
+        npm install -g pnpm@9.15.0
+        pnpm install
+        pnpm build
+        chmod +x handle_mounts.sh
+        ./handle_mounts.sh
+    deploy: |
+        set -eu
+        ./handle_mounts.sh
