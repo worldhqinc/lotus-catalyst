@@ -378,7 +378,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                   </NavigationMenu.Trigger>
                   {item.groups != null && item.groups.length > 0 && (
                     <NavigationMenu.Content className="bg-[var(--nav-menu-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-menu-border,hsl(var(--foreground)/5%))]">
-                      <div className="m-auto grid w-full max-w-screen-lg grid-cols-5 justify-center gap-5 px-5 pb-8 pt-5">
+                      <div className="container m-auto grid grid-cols-5 justify-center gap-5 py-16">
                         {item.groups.map((group, columnIndex) => (
                           <ul className="flex flex-col" key={columnIndex}>
                             {/* Second Level Links */}
@@ -407,6 +407,11 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                             ))}
                           </ul>
                         ))}
+                        {/* TODO: Add dynamic content */}
+                        <div className="col-span-2 col-start-4 grid grid-cols-2 gap-5">
+                          <div className="aspect-square h-full w-full bg-surface-image" />
+                          <div className="aspect-square h-full w-full bg-surface-image" />
+                        </div>
                       </div>
                     </NavigationMenu.Content>
                   )}
