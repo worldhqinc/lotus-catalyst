@@ -60,4 +60,22 @@
   /* Disabled */
   --disabled-base: 111 14% 90%;
   --disabled-secondary: 0 0% 84%;
+
+  /* Container */
+  --container-max-width: 1312px;
+  --container-padding: 1rem;
+
+  @media (min-width: 768px) {
+    --container-padding: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    --container-padding: 2rem;
+  }
+}
+
+@layer components {
+  .container {
+    @apply w-[min(100%-(var(--container-padding)*2),var(--container-max-width))] mx-auto;
+  }
 }
