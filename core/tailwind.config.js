@@ -6,6 +6,7 @@ const config = {
     './vibes/**/*.{ts,tsx}',
     '!./node_modules/**', // Exclude everything in node_modules to speed up builds
   ],
+  corePlugins: { container: false },
   theme: {
     extend: {
       typography: {
