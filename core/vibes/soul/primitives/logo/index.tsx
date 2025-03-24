@@ -3,7 +3,6 @@ import { clsx } from 'clsx';
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
-import DefaultLogo from '/images/Logo.svg';
 
 interface Props {
   className?: string;
@@ -31,7 +30,7 @@ export function Logo({ className, logo: streamableLogo, href, width, height, lab
   return (
     <Stream
       fallback={<div className="h-6 w-16 animate-pulse rounded-md bg-contrast-100" />}
-      value={DefaultLogo}
+      value={streamableLogo}
     >
       {(logo) => (
         <Link
@@ -41,15 +40,15 @@ export function Logo({ className, logo: streamableLogo, href, width, height, lab
             className,
           )}
           href={href}
-          style={typeof logo === 'string' ? {} : { width: 100, height: 16 }}
+          style={typeof logo === 'string' ? {} : { width, height }}
         >
           {typeof logo === 'object' && logo !== null && logo.src !== '' ? (
             <Image
-              alt="Lotus"
+              alt={logo.alt}
               className="object-contain object-left"
               fill
               sizes={`${width}px`}
-              src={DefaultLogo}
+              src={logo.src}
             />
           ) : (
             typeof logo === 'string' && (
