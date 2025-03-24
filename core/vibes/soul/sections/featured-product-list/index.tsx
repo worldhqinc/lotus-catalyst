@@ -1,5 +1,6 @@
 import { Streamable } from '@/vibes/soul/lib/streamable';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
+import { Button } from '@/vibes/soul/primitives/button';
 import { Product } from '@/vibes/soul/primitives/product-card';
 import { ProductList } from '@/vibes/soul/sections/product-list';
 import { StickySidebarLayout } from '@/vibes/soul/sections/sticky-sidebar-layout';
@@ -56,9 +57,16 @@ export function FeaturedProductList({
           )}
 
           {cta?.href != null && cta.href !== '' && cta.label !== '' && (
-            <ButtonLink href={cta.href} variant="secondary">
-              {cta.label}
-            </ButtonLink>
+            <div className='flex gap-2'>
+              <ButtonLink href={cta.href} variant="primary">
+                {cta.label}
+              </ButtonLink>
+              <Button
+                variant="secondary"
+              >
+                {cta.label}
+              </Button>
+            </div>
           )}
         </header>
       }
