@@ -84,7 +84,7 @@ export function ButtonLink({
       )}
       href={href}
     >
-      <span className={clsx(variant === 'secondary' && 'mix-blend-difference')}>{children}</span>
+      <span>{children}</span>
     </Link>
   );
 }
