@@ -1,6 +1,5 @@
 import { Streamable } from '@/vibes/soul/lib/streamable';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
-import { Button } from '@/vibes/soul/primitives/button';
 import { Product } from '@/vibes/soul/primitives/product-card';
 import { ProductList } from '@/vibes/soul/sections/product-list';
 import { StickySidebarLayout } from '@/vibes/soul/sections/sticky-sidebar-layout';
