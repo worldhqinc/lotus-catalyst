@@ -21,7 +21,7 @@ web:
             headers:
                 X-Frame-Options: SAMEORIGIN
     commands:
-        start: cd /app/core && npx next start -p $PORT
+        start: cd /app/core && pnpm exec next start -p $PORT
 build:
     flavor: none
 hooks:
