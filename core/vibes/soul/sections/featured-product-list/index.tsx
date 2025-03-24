@@ -57,16 +57,9 @@ export function FeaturedProductList({
           )}
 
           {cta?.href != null && cta.href !== '' && cta.label !== '' && (
-            <div className='flex gap-2'>
-              <ButtonLink href={cta.href} variant="primary">
-                {cta.label}
-              </ButtonLink>
-              <Button
-                variant="secondary"
-              >
-                {cta.label}
-              </Button>
-            </div>
+            <ButtonLink href={cta.href} variant="secondary">
+              {cta.label}
+            </ButtonLink>
           )}
         </header>
       }
