@@ -102,7 +102,6 @@ export function Button({
               medium: 'gap-x-2.5 px-5 py-3',
               large: 'gap-x-3 px-6 py-4',
             }[size],
-          variant === 'secondary',
         )}
       >
         {children}
