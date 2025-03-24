@@ -80,8 +80,13 @@ const config = {
       colors: {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
-          highlight: 'color-mix(in oklab, hsl(var(--primary)), white 75%)',
-          shadow: 'color-mix(in oklab, hsl(var(--primary)), black 75%)',
+          highlight: 'hsl(111 17% 92% / 0.5)',
+          shadow: 'hsl(111, 17%, 8%)',
+        },
+        surface: {
+          DEFAULT: 'hsl(var(--surface-primary))',
+          secondary: 'hsl(var(--surface-secondary))',
+          image: 'hsl(var(--surface-image))',
         },
         accent: {
           DEFAULT: 'hsl(var(--accent))',
@@ -89,19 +94,19 @@ const config = {
           shadow: 'color-mix(in oklab, hsl(var(--accent)), black 75%)',
         },
         success: {
-          DEFAULT: 'hsl(var(--success))',
-          highlight: 'color-mix(in oklab, hsl(var(--success)), white 75%)',
-          shadow: 'color-mix(in oklab, hsl(var(--success)), black 75%)',
+          DEFAULT: 'hsl(var(--success-base))',
+          highlight: 'hsl(var(--success-highlight))',
+          shadow: 'hsl(var(--success-shadow))',
         },
         error: {
-          DEFAULT: 'hsl(var(--error))',
-          highlight: 'color-mix(in oklab, hsl(var(--error)), white 75%)',
-          shadow: 'color-mix(in oklab, hsl(var(--error)), black 75%)',
+          DEFAULT: 'hsl(var(--error-base))',
+          highlight: 'hsl(var(--error-highlight))',
+          shadow: 'hsl(var(--error-shadow))',
         },
         warning: {
-          DEFAULT: 'hsl(var(--warning))',
-          highlight: 'color-mix(in oklab, hsl(var(--warning)), white 75%)',
-          shadow: 'color-mix(in oklab, hsl(var(--warning)), black 75%)',
+          DEFAULT: 'hsl(var(--warning-base))',
+          highlight: 'hsl(var(--warning-highlight))',
+          shadow: 'hsl(var(--warning-shadow))',
         },
         info: {
           DEFAULT: 'hsl(var(--info))',
@@ -110,6 +115,11 @@ const config = {
         },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        border: {
+          DEFAULT: 'hsl(var(--border-primary))',
+          secondary: 'hsl(var(--border-secondary))',
+          input: 'hsl(var(--border-input))',
+        },
         contrast: {
           100: 'hsl(var(--contrast-100))',
           200: 'hsl(var(--contrast-200))',
