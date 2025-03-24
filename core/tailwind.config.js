@@ -127,6 +127,10 @@ const config = {
           400: 'hsl(var(--contrast-400))',
           500: 'hsl(var(--contrast-500))',
         },
+        disabled: {
+          DEFAULT: 'hsl(var(--disabled-base))',
+          secondary: 'hsl(var(--disabled-secondary))',
+        },
       },
       fontFamily: {
         heading: [
