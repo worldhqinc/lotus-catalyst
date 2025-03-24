@@ -3,30 +3,57 @@
 @tailwind utilities;
 
 :root {
-  --primary: 96 100% 68%;
+  --primary: 108 19% 49%;
   --accent: 96 100% 88%;
   --background: 0 0% 100%;
-  --foreground: 0 0% 7%;
-  --success: 116 78% 65%;
-  --error: 0 100% 60%;
-  --warning: 40 100% 60%;
+  --image: 0 0% 90%;
+  --foreground: 0 0% 9%;
   --info: 220 70% 45%;
   --contrast-100: 0 0% 93%;
   --contrast-200: 0 0% 82%;
   --contrast-300: 0 0% 70%;
   --contrast-400: 0 0% 54%;
   --contrast-500: 0 0% 34%;
+
+  /* Surface */
+  --surface-primary: 0 0% 100%;
+  --surface-secondary: 0 0% 96%;
+  --surface-image: 0 0% 90%;
+
+  /* Font Variations */
   --font-variation-settings-body: 'slnt' 0;
   --font-variation-settings-heading: 'slnt' 0;
+
+  /* Font Sizes */
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.25rem;
   --font-size-2xl: 1.5rem;
+
+  /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Border */
+  --border-primary: 0 0% 83%;
+  --border-secondary: 0 0% 90%;
+  --border-input: 0 0% 83%;
+
+  /* Confirmation */
+  --success-base: 116 78% 65%;
+  --success-highlight: 116 77% 92%;
+  --success-shadow: 116 77% 15%;
+
+  --warning-base: 40 100% 60%;
+  --warning-highlight: 40 100% 92%;
+  --warning-shadow: 40 100% 15%;
+
+  --error-base: 0 100% 60%;
+  --error-highlight: 0 100% 02%;
+  --error-shadow: 0 100% 15%;
 }
