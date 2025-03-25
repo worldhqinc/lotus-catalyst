@@ -50,7 +50,7 @@ export function ButtonLink({
     <Link
       {...props}
       className={clsx(
-        'relative z-0 inline-flex h-fit select-none items-center justify-center overflow-hidden border text-center font-[family-name:var(--button-font-family,var(--font-family-body))] font-semibold leading-normal after:absolute after:inset-0 after:-z-10 after:-translate-x-[110%] after:scale-110 after:transition-[opacity,transform] after:duration-300 after:[animation-timing-function:cubic-bezier(0,0.25,0,1)] hover:after:translate-x-0 focus-visible:outline-none',
+        'relative z-0 inline-flex h-fit select-none items-center justify-center overflow-hidden border text-center font-[family-name:var(--button-font-family,var(--font-family-body))] font-semibold leading-normal after:absolute after:inset-0 after:-z-10 after:-translate-x-[110%] after:scale-110 after:transition-[opacity,transform] after:duration-300 after:[animation-timing-function:cubic-bezier(0.25,0.46,0.45,0.94)] hover:after:translate-x-0 focus-visible:outline-none',
         {
           primary:
             'border-[var(--button-primary-border,hsl(var(--primary)))] bg-[var(--button-primary-background,hsl(var(--primary)))] text-[var(--button-primary-text,hsl(var(--background)))] after:bg-primary-highlight focus-visible:border-primary disabled:border-disabled disabled:bg-disabled',

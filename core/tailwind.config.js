@@ -241,6 +241,16 @@ const config = {
         shake: 'shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both',
         slideIn: 'slideIn 800ms cubic-bezier(0.25, 1, 0, 1)',
       },
+      transitionTimingFunction: {
+        cubic: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        expo: 'cubic-bezier(0.19, 1, 0.22, 1)',
+        'out-expo': 'cubic-bezier(0.16, 1, 0.3 ,1)',
+        in: 'cubic-bezier(0.075, 0.82, 0.165, 1)',
+        'in-out': 'cubic-bezier(0.68, -0.55, 0.27, 1.55)',
+        quad: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        quint: 'cubic-bezier(0.23, 1, 0.32, 1)',
+        'quint-out': 'cubic-bezier(0.34, 1, 0.36, 1)',
+      },
     },
   },
   plugins: [
