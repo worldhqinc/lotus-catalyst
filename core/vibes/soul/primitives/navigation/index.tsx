@@ -173,7 +173,9 @@ const MobileMenuButton = forwardRef<
 MobileMenuButton.displayName = 'MobileMenuButton';
 
 const navGroupClassName =
-  'block rounded-lg bg-[var(--nav-group-background,transparent)] px-3 py-2 font-medium text-[var(--nav-group-text,hsl(var(--foreground)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-group-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-group-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2';
+  'block text-3xl transition-colors duration-200 ease-quad hover:text-primary';
+const navLinkClassName =
+  'block text-3xl transition-colors duration-200 ease-quad hover:text-primary';
 const navButtonClassName =
   'relative p-3 transition-colors duration-200 ease-quad hover:text-primary focus-visible:outline-0 focus-visible:text-primary';
 
@@ -370,11 +372,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                 <NavigationMenu.Item key={i} value={i.toString()}>
                   <NavigationMenu.Trigger asChild>
                     <Link
-<<<<<<< HEAD
-                      className="@4xl:after:bg-border hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:transition-transform @4xl:after:duration-300 @4xl:after:ease-in-out"
-=======
                       className="hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad"
->>>>>>> 91d31cd7 (adds new transition timing functions, updates buttons timing functions, wip nav)
                       href={item.href}
                     >
                       {item.label}
@@ -382,39 +380,54 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                   </NavigationMenu.Trigger>
                   {item.groups != null && item.groups.length > 0 && (
                     <NavigationMenu.Content className="bg-[var(--nav-menu-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-menu-border,hsl(var(--foreground)/5%))]">
-                      <div className="container m-auto grid grid-cols-5 justify-center gap-5 py-16">
-                        {item.groups.map((group, columnIndex) => (
-                          <ul className="flex flex-col" key={columnIndex}>
-                            {/* Second Level Links */}
-                            {group.label != null && group.label !== '' && (
-                              <li>
-                                {group.href != null && group.href !== '' ? (
-                                  <Link className={navGroupClassName} href={group.href}>
-                                    {group.label}
+                      <div className="container m-auto grid grid-cols-3 justify-center gap-5 py-16">
+                        <div className="flex flex-col items-start gap-6">
+                          {item.groups.map((group, columnIndex) => (
+                            <ul className="flex flex-col gap-6" key={columnIndex}>
+                              {/* Second Level Links */}
+                              {group.label != null && group.label !== '' && (
+                                <li>
+                                  {group.href != null && group.href !== '' ? (
+                                    <Link className={navGroupClassName} href={group.href}>
+                                      {group.label}
+                                    </Link>
+                                  ) : (
+                                    <span className={navGroupClassName}>{group.label}</span>
+                                  )}
+                                </li>
+                              )}
+                              {group.links.map((link, idx) => (
+                                // Third Level Links
+                                <li key={idx}>
+                                  <Link className={navLinkClassName} href={link.href}>
+                                    {link.label}
                                   </Link>
-                                ) : (
-                                  <span className={navGroupClassName}>{group.label}</span>
-                                )}
-                              </li>
-                            )}
-
-                            {group.links.map((link, idx) => (
-                              // Third Level Links
-                              <li key={idx}>
-                                <Link
-                                  className="block rounded-lg bg-[var(--nav-sub-link-background,transparent)] px-3 py-1.5 text-sm font-medium text-[var(--nav-sub-link-text,hsl(var(--contrast-500)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-sub-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-sub-link-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2"
-                                  href={link.href}
-                                >
-                                  {link.label}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        ))}
+                                </li>
+                              ))}
+                            </ul>
+                          ))}
+                          <div className="mt-8 flex flex-col items-start">
+                            <Link
+                              className={clsx(
+                                navLinkClassName,
+                                'text-base text-medium'
+                              )}
+                              href="/shop-all"
+                            >
+                              Shop all products
+                            </Link>
+                          </div>
+                        </div>
                         {/* TODO: Add dynamic content */}
-                        <div className="col-span-2 col-start-4 grid grid-cols-2 gap-5">
-                          <div className="aspect-square h-full w-full bg-surface-image" />
-                          <div className="aspect-square h-full w-full bg-surface-image" />
+                        <div className="col-start-3 grid grid-cols-2 gap-5">
+                          <div className="flex flex-col">
+                            <figure className="aspect-square h-auto w-full rounded-lg bg-surface-image" />
+                            <span className="text-medium py-2">Shop The Perfectionist™</span>
+                          </div>
+                          <div className="flex flex-col">
+                            <figure className="aspect-square h-auto w-full rounded-lg bg-surface-image" />
+                            <span className="text-medium py-2">Shop The Sous</span>
+                          </div>
                         </div>
                       </div>
                     </NavigationMenu.Content>
