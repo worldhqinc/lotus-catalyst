@@ -230,6 +230,14 @@ const config = {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(0%)' },
         },
+        clipIn: {
+          '0%': { clipPath: 'inset(0 0 100% 0)' },
+          '100%': { clipPath: 'inset(0 0 0 0)' },
+        },
+        clipOut: {
+          '0%': { clipPath: 'inset(0 0 0 0)' },
+          '100%': { clipPath: 'inset(0 0 100% 0)' },
+        },
       },
       animation: {
         collapse: 'collapse 400ms cubic-bezier(1, 0, 0.25, 1)',
@@ -240,6 +248,8 @@ const config = {
         scrollLeft: 'scrollLeft var(--marquee-duration) linear infinite',
         shake: 'shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both',
         slideIn: 'slideIn 800ms cubic-bezier(0.25, 1, 0, 1)',
+        clipIn: 'clipIn 800ms cubic-bezier(0.25, 1, 0, 1)',
+        clipOut: 'clipOut 800ms cubic-bezier(0.25, 1, 0, 1)',
       },
       transitionTimingFunction: {
         cubic: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
