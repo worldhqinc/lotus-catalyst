@@ -29,8 +29,12 @@ export default async function CatchAllPage({ params }: Props) {
   // eslint-disable-next-line
   const pageName = fields?.pageName as string;
   // eslint-disable-next-line
-  const pageDescription = fields?.optionalPageDescription?.content?.[0]?.content?.[0]
-    ?.value as string;
+  function extractContentValue(richTextField: any): string {
+    // eslint-disable-next-line
+    return richTextField?.content?.[0]?.content?.[0]?.value ?? '';
+  }
+  // eslint-disable-next-line
+  const pageDescription = extractContentValue(fields?.optionalPageDescription);
 
   return (
     <div>
