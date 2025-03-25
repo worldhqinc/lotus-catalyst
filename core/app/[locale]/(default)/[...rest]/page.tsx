@@ -4,7 +4,7 @@ import { SearchParams } from 'nuqs';
 import { getPageBySlug, getPages } from '~/lib/contentful';
 
 interface Props {
-  params: Promise<{ locale: string; rest: Array<string> }>;
+  params: Promise<{ locale: string; rest: string[] }>;
   searchParams: Promise<SearchParams>;
 }
 
