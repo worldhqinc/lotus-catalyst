@@ -281,6 +281,10 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 
   const pathname = usePathname();
 
+  const preventHover = (event: React.PointerEvent) => {
+    if (window.innerWidth >= 1024) event.preventDefault();
+  };
+
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
@@ -370,16 +374,37 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             {(links) =>
               links.map((item, i) => (
                 <NavigationMenu.Item key={i} value={i.toString()}>
-                  <NavigationMenu.Trigger asChild>
-                    <Link
-                      className="hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad"
-                      href={item.href}
-                    >
-                      {item.label}
-                    </Link>
+                  <NavigationMenu.Trigger
+                    asChild
+                    onPointerEnter={preventHover}
+                    onPointerLeave={preventHover}
+                    onPointerMove={preventHover}
+                  >
+                    {item.groups != null && item.groups.length > 0 ? (
+                      <button
+                        className={clsx(
+                          'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
+                        )}
+                      >
+                        {item.label}
+                      </button>
+                    ) : (
+                      <Link
+                        className={clsx(
+                          'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
+                        )}
+                        href={item.href}
+                      >
+                        {item.label}
+                      </Link>
+                    )}
                   </NavigationMenu.Trigger>
                   {item.groups != null && item.groups.length > 0 && (
-                    <NavigationMenu.Content className="bg-[var(--nav-menu-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-menu-border,hsl(var(--foreground)/5%))]">
+                    <NavigationMenu.Content
+                      className="bg-[var(--nav-menu-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-menu-border,hsl(var(--foreground)/5%))]"
+                      onPointerEnter={preventHover}
+                      onPointerLeave={preventHover}
+                    >
                       <div className="container m-auto grid grid-cols-3 justify-center gap-5 py-16">
                         <div className="flex flex-col items-start gap-6">
                           {item.groups.map((group, columnIndex) => (
@@ -408,10 +433,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                           ))}
                           <div className="mt-8 flex flex-col items-start">
                             <Link
-                              className={clsx(
-                                navLinkClassName,
-                                'text-base text-medium'
-                              )}
+                              className={clsx(navLinkClassName, 'text-medium text-base')}
                               href="/shop-all"
                             >
                               Shop all products
