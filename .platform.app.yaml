@@ -29,7 +29,7 @@ hooks:
         set -eu
         chmod +x handle_env_setup.sh
         ./handle_env_setup.sh
-        npm install -g pnpm@10.6.5
+        npm install -g pnpm@9.15.0
         pnpm install
         NODE_OPTIONS="--max-old-space-size=9000" pnpm build
         chmod +x handle_mounts.sh
