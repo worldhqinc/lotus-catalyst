@@ -17,7 +17,7 @@ export async function getPages() {
 export async function getPageBySlug(slug: string) {
   const response = await client.getEntries({
     content_type: 'pageStandard',
-    'fields.pageSlug': slug,
+    'fields.pageSlug[match]': slug,
     limit: 1,
   });
 
