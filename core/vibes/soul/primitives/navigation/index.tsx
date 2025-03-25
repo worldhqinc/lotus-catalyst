@@ -1,12 +1,11 @@
 'use client';
 
-import { SubmissionResult, useForm } from '@conform-to/react';
+import { SubmissionResult } from '@conform-to/react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
-import debounce from 'lodash.debounce';
-import { ArrowRight, ChevronDown, Search, SearchIcon, ShoppingBag, User } from 'lucide-react';
+import { ChevronDown, Search, ShoppingBag, User } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, {
   forwardRef,
@@ -14,20 +13,17 @@ import React, {
   useActionState,
   useCallback,
   useEffect,
-  useMemo,
   useState,
   useTransition,
 } from 'react';
-import { useFormStatus } from 'react-dom';
 
-import { FormStatus } from '@/vibes/soul/form/form-status';
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
-import { Button } from '@/vibes/soul/primitives/button';
 import { Logo } from '@/vibes/soul/primitives/logo';
 import { Price } from '@/vibes/soul/primitives/price-label';
-import { ProductCard } from '@/vibes/soul/primitives/product-card';
 import { Link } from '~/components/link';
 import { usePathname, useRouter } from '~/i18n/routing';
+
+import AlgoliaSearch from '../../../../components/header/algolia-search';
 
 interface Link {
   label: string;
@@ -107,8 +103,6 @@ interface Props<S extends SearchResult> {
   mobileLogo?: Streamable<string | { src: string; alt: string } | null>;
   mobileLogoWidth?: number;
   mobileLogoHeight?: number;
-  searchHref: string;
-  searchParamName?: string;
   searchAction?: SearchAction<S>;
   searchCtaLabel?: string;
   searchInputPlaceholder?: string;
@@ -273,15 +267,9 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     currencies,
     activeCurrencyId,
     currencyAction,
-    searchHref,
-    searchParamName = 'query',
-    searchAction,
-    searchCtaLabel,
-    searchInputPlaceholder,
     cartLabel = 'Cart',
     accountLabel = 'Profile',
     openSearchPopupLabel = 'Open search popup',
-    searchLabel = 'Search',
     mobileMenuTriggerLabel = 'Toggle navigation',
   }: Props<S>,
   ref: Ref<HTMLDivElement>,
@@ -504,40 +492,27 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             linksPosition === 'center' ? 'flex-1' : 'flex-1 @4xl:flex-none',
           )}
         >
-          {searchAction ? (
-            <Popover.Root onOpenChange={setIsSearchOpen} open={isSearchOpen}>
-              <Popover.Anchor className="absolute left-0 right-0 top-full" />
-              <Popover.Trigger asChild>
-                <button
-                  aria-label={openSearchPopupLabel}
-                  className={navButtonClassName}
-                  onPointerEnter={(e) => e.preventDefault()}
-                  onPointerLeave={(e) => e.preventDefault()}
-                  onPointerMove={(e) => e.preventDefault()}
-                >
-                  <Search size={20} strokeWidth={1} />
-                </button>
-              </Popover.Trigger>
-              <Popover.Portal>
-                <Popover.Content className="max-h-[calc(var(--radix-popover-content-available-height)-16px)] w-[var(--radix-popper-anchor-width)] py-2 @container data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
-                  <div className="flex max-h-[inherit] flex-col rounded-2xl bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out @4xl:inset-x-0">
-                    <SearchForm
-                      searchAction={searchAction}
-                      searchCtaLabel={searchCtaLabel}
-                      searchHref={searchHref}
-                      searchInputPlaceholder={searchInputPlaceholder}
-                      searchParamName={searchParamName}
-                    />
-                  </div>
-                </Popover.Content>
-              </Popover.Portal>
-            </Popover.Root>
-          ) : (
-            <Link aria-label={searchLabel} className={navButtonClassName} href={searchHref}>
-              <Search size={20} strokeWidth={1} />
-            </Link>
-          )}
-
+          <Popover.Root onOpenChange={setIsSearchOpen} open={isSearchOpen}>
+            <Popover.Anchor className="absolute left-0 right-0 top-full" />
+            <Popover.Trigger asChild>
+              <button
+                aria-label={openSearchPopupLabel}
+                className={navButtonClassName}
+                onPointerEnter={(e) => e.preventDefault()}
+                onPointerLeave={(e) => e.preventDefault()}
+                onPointerMove={(e) => e.preventDefault()}
+              >
+                <Search size={20} strokeWidth={1} />
+              </button>
+            </Popover.Trigger>
+            <Popover.Portal>
+              <Popover.Content className="max-h-[calc(var(--radix-popover-content-available-height)-16px)] w-[var(--radix-popper-anchor-width)] py-2 @container data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
+                <div className="flex max-h-[inherit] flex-col rounded-2xl bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out @4xl:inset-x-0">
+                  <AlgoliaSearch />
+                </div>
+              </Popover.Content>
+            </Popover.Portal>
+          </Popover.Root>
           <Link aria-label={accountLabel} className={navButtonClassName} href={accountHref}>
             <User size={20} strokeWidth={1} />
           </Link>
@@ -589,237 +564,6 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 });
 
 Navigation.displayName = 'Navigation';
-
-function SearchForm<S extends SearchResult>({
-  searchAction,
-  searchParamName = 'query',
-  searchHref = '/search',
-  searchInputPlaceholder = 'Search Products',
-  searchCtaLabel = 'View more',
-  submitLabel = 'Submit',
-}: {
-  searchAction: SearchAction<S>;
-  searchParamName?: string;
-  searchHref?: string;
-  searchCtaLabel?: string;
-  searchInputPlaceholder?: string;
-  submitLabel?: string;
-}) {
-  const [query, setQuery] = useState('');
-  const [isSearching, startSearching] = useTransition();
-  const [{ searchResults, lastResult, emptyStateTitle, emptyStateSubtitle }, formAction] =
-    useActionState(searchAction, {
-      searchResults: null,
-      lastResult: null,
-    });
-  const [isDebouncing, setIsDebouncing] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const isPending = isSearching || isDebouncing || isSubmitting;
-  const debouncedOnChange = useMemo(() => {
-    const debounced = debounce((q: string) => {
-      setIsDebouncing(false);
-
-      const formData = new FormData();
-
-      formData.append(searchParamName, q);
-
-      startSearching(() => {
-        formAction(formData);
-      });
-    }, 300);
-
-    return (q: string) => {
-      setIsDebouncing(true);
-
-      debounced(q);
-    };
-  }, [formAction, searchParamName]);
-
-  const [form] = useForm({ lastResult });
-
-  const handleSubmit = useCallback(() => {
-    setIsSubmitting(true);
-  }, []);
-
-  return (
-    <>
-      <form
-        action={searchHref}
-        className="flex items-center gap-3 px-3 py-3 @4xl:px-5 @4xl:py-4"
-        onSubmit={handleSubmit}
-      >
-        <SearchIcon
-          className="hidden shrink-0 text-[var(--nav-search-icon,hsl(var(--contrast-500)))] @xl:block"
-          size={20}
-          strokeWidth={1}
-        />
-        <input
-          className="flex-grow bg-transparent pl-2 text-lg font-medium outline-0 focus-visible:outline-none @xl:pl-0"
-          name={searchParamName}
-          onChange={(e) => {
-            setQuery(e.currentTarget.value);
-            debouncedOnChange(e.currentTarget.value);
-          }}
-          placeholder={searchInputPlaceholder}
-          type="text"
-          value={query}
-        />
-        <SubmitButton loading={isPending} submitLabel={submitLabel} />
-      </form>
-
-      <SearchResults
-        emptySearchSubtitle={emptyStateSubtitle}
-        emptySearchTitle={emptyStateTitle}
-        errors={form.errors}
-        query={query}
-        searchCtaLabel={searchCtaLabel}
-        searchParamName={searchParamName}
-        searchResults={searchResults}
-        stale={isPending}
-      />
-    </>
-  );
-}
-
-function SubmitButton({ loading, submitLabel }: { loading: boolean; submitLabel: string }) {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button
-      loading={pending || loading}
-      shape="circle"
-      size="small"
-      type="submit"
-      variant="secondary"
-    >
-      <ArrowRight aria-label={submitLabel} size={20} strokeWidth={1.5} />
-    </Button>
-  );
-}
-
-function SearchResults({
-  query,
-  searchResults,
-  stale,
-  emptySearchTitle = `No results were found for '${query}'`,
-  emptySearchSubtitle = 'Please try another search.',
-  errors,
-}: {
-  query: string;
-  searchParamName: string;
-  searchCtaLabel?: string;
-  emptySearchTitle?: string;
-  emptySearchSubtitle?: string;
-  searchResults: SearchResult[] | null;
-  stale: boolean;
-  errors?: string[];
-}) {
-  if (query === '') return null;
-
-  if (errors != null && errors.length > 0) {
-    if (stale) return null;
-
-    return (
-      <div className="flex flex-col border-t border-[var(--nav-search-divider,hsl(var(--contrast-100)))] p-6">
-        {errors.map((error) => (
-          <FormStatus key={error} type="error">
-            {error}
-          </FormStatus>
-        ))}
-      </div>
-    );
-  }
-
-  if (searchResults == null || searchResults.length === 0) {
-    if (stale) return null;
-
-    return (
-      <div className="flex flex-col border-t border-[var(--nav-search-divider,hsl(var(--contrast-100)))] p-6">
-        <p className="text-2xl font-medium text-[var(--nav-search-empty-title,hsl(var(--foreground)))]">
-          {emptySearchTitle}
-        </p>
-        <p className="text-[var(--nav-search-empty-subtitle,hsl(var(--contrast-500)))]">
-          {emptySearchSubtitle}
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <div
-      className={clsx(
-        'flex flex-1 flex-col overflow-y-auto border-t border-[var(--nav-search-divider,hsl(var(--contrast-100)))] @2xl:flex-row',
-        stale && 'opacity-50',
-      )}
-    >
-      {searchResults.map((result, index) => {
-        switch (result.type) {
-          case 'links': {
-            return (
-              <section
-                aria-label={result.title}
-                className="flex w-full flex-col gap-1 border-b border-[var(--nav-search-divider,hsl(var(--contrast-100)))] p-5 @2xl:max-w-80 @2xl:border-b-0 @2xl:border-r"
-                key={`result-${index}`}
-              >
-                <h3 className="mb-4 font-[family-name:var(--nav-search-result-title-font-family,var(--font-family-mono))] text-sm uppercase text-[var(--nav-search-result-title,hsl(var(--foreground)))]">
-                  {result.title}
-                </h3>
-                <ul role="listbox">
-                  {result.links.map((link, i) => (
-                    <li key={i}>
-                      <Link
-                        className="block rounded-lg bg-[var(--nav-search-result-link-background,transparent)] px-3 py-4 font-[family-name:var(--nav-search-result-link-font-family,var(--font-family-body))] font-semibold text-[var(--nav-search-result-link-text,hsl(var(--contrast-500)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-search-result-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-search-result-link-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2"
-                        href={link.href}
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            );
-          }
-
-          case 'products': {
-            return (
-              <section
-                aria-label={result.title}
-                className="flex w-full flex-col gap-5 p-5"
-                key={`result-${index}`}
-              >
-                <h3 className="font-[family-name:var(--nav-search-result-title-font-family,var(--font-family-mono))] text-sm uppercase text-[var(--nav-search-result-title,hsl(var(--foreground)))]">
-                  {result.title}
-                </h3>
-                <ul
-                  className="grid w-full grid-cols-2 gap-5 @xl:grid-cols-4 @2xl:grid-cols-2 @4xl:grid-cols-4"
-                  role="listbox"
-                >
-                  {result.products.map((product) => (
-                    <li key={product.id}>
-                      <ProductCard
-                        imageSizes="(min-width: 42rem) 25vw, 50vw"
-                        product={{
-                          id: product.id,
-                          title: product.title,
-                          href: product.href,
-                          price: product.price,
-                          image: product.image,
-                        }}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            );
-          }
-
-          default:
-            return null;
-        }
-      })}
-    </div>
-  );
-}
 
 const useSwitchLocale = () => {
   const pathname = usePathname();
