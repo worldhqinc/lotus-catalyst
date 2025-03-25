@@ -281,10 +281,6 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 
   const pathname = usePathname();
 
-  const preventHover = (event: React.PointerEvent) => {
-    if (window.innerWidth >= 1024) event.preventDefault();
-  };
-
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
@@ -376,9 +372,9 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                 <NavigationMenu.Item key={i} value={i.toString()}>
                   <NavigationMenu.Trigger
                     asChild
-                    onPointerEnter={preventHover}
-                    onPointerLeave={preventHover}
-                    onPointerMove={preventHover}
+                    onPointerEnter={(e) => e.preventDefault()}
+                    onPointerMove={(e) => e.preventDefault()}
+                    onPointerLeave={(e) => e.preventDefault()}
                   >
                     {item.groups != null && item.groups.length > 0 ? (
                       <button
@@ -401,9 +397,9 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                   </NavigationMenu.Trigger>
                   {item.groups != null && item.groups.length > 0 && (
                     <NavigationMenu.Content
-                      className="bg-[var(--nav-menu-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-menu-border,hsl(var(--foreground)/5%))]"
-                      onPointerEnter={preventHover}
-                      onPointerLeave={preventHover}
+                      className="bg-[var(--nav-menu-background,hsl(var(--background)))]"
+                      onPointerEnter={(e) => e.preventDefault()}
+                      onPointerLeave={(e) => e.preventDefault()}
                     >
                       <div className="container m-auto grid grid-cols-3 justify-center gap-5 py-16">
                         <div className="flex flex-col items-start gap-6">
@@ -603,7 +599,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
       </div>
 
       <div className="perspective-[2000px] absolute left-0 right-0 top-full z-50 flex w-full justify-center">
-        <NavigationMenu.Viewport className="relative w-full data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95" />
+        <NavigationMenu.Viewport className="relative w-full border-b border-border data-[state=open]:animate-clipIn data-[state=closed]:animate-clipOut" />
       </div>
     </NavigationMenu.Root>
   );

@@ -78,4 +78,16 @@
   .container {
     @apply w-[min(100%-(var(--container-padding)*2),var(--container-max-width))] mx-auto;
   }
+
+  .clip-path-hidden {
+    clip-path: inset(0 0 100%);
+    -webkit-clip-path: inset(0 0 100%);
+    will-change: clip-path;
+  }
+
+  .clip-path-visible {
+    clip-path: inset(0);
+    -webkit-clip-path: inset(0);
+    will-change: clip-path;
+  }
 }
