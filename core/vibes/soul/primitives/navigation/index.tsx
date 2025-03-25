@@ -173,9 +173,9 @@ const MobileMenuButton = forwardRef<
 MobileMenuButton.displayName = 'MobileMenuButton';
 
 const navGroupClassName =
-  'block rounded-lg bg-[var(--nav-group-background,transparent)] px-3 py-2 font-[family-name:var(--nav-group-font-family,var(--font-family-body))] font-medium text-[var(--nav-group-text,hsl(var(--foreground)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-group-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-group-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2';
+  'block rounded-lg bg-[var(--nav-group-background,transparent)] px-3 py-2 font-medium text-[var(--nav-group-text,hsl(var(--foreground)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-group-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-group-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2';
 const navButtonClassName =
-  'relative rounded-lg bg-[var(--nav-button-background,transparent)] p-1.5 text-[var(--nav-button-icon,hsl(var(--foreground)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors focus-visible:outline-0 focus-visible:ring-2 @4xl:hover:bg-[var(--nav-button-background-hover,hsl(var(--contrast-100)))] @4xl:hover:text-[var(--nav-button-icon-hover,hsl(var(--foreground)))]';
+  'relative p-3 transition-colors duration-200 ease-quad hover:text-primary focus-visible:outline-0 focus-visible:text-primary';
 
 /**
  * This component supports various CSS variables for theming. Here's a comprehensive list, along
@@ -297,7 +297,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 
   return (
     <NavigationMenu.Root
-      className={clsx('relative w-full bg-white @container', className)}
+      className={clsx('relative w-full bg-white font-body @container', className)}
       delayDuration={0}
       onValueChange={() => setIsSearchOpen(false)}
       ref={ref}
@@ -370,7 +370,11 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                 <NavigationMenu.Item key={i} value={i.toString()}>
                   <NavigationMenu.Trigger asChild>
                     <Link
+<<<<<<< HEAD
                       className="@4xl:after:bg-border hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:transition-transform @4xl:after:duration-300 @4xl:after:ease-in-out"
+=======
+                      className="hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad"
+>>>>>>> 91d31cd7 (adds new transition timing functions, updates buttons timing functions, wip nav)
                       href={item.href}
                     >
                       {item.label}
@@ -398,7 +402,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                               // Third Level Links
                               <li key={idx}>
                                 <Link
-                                  className="block rounded-lg bg-[var(--nav-sub-link-background,transparent)] px-3 py-1.5 font-[family-name:var(--nav-sub-link-font-family,var(--font-family-body))] text-sm font-medium text-[var(--nav-sub-link-text,hsl(var(--contrast-500)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-sub-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-sub-link-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2"
+                                  className="block rounded-lg bg-[var(--nav-sub-link-background,transparent)] px-3 py-1.5 text-sm font-medium text-[var(--nav-sub-link-text,hsl(var(--contrast-500)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-sub-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-sub-link-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2"
                                   href={link.href}
                                 >
                                   {link.label}
@@ -424,7 +428,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
         {/* Icon Buttons */}
         <div
           className={clsx(
-            'flex items-center justify-end gap-0.5 transition-colors duration-300',
+            'flex items-center justify-end transition-colors duration-300',
             linksPosition === 'center' ? 'flex-1' : 'flex-1 @4xl:flex-none',
           )}
         >
@@ -454,10 +458,10 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             className={clsx(navButtonClassName, 'hidden @4xl:inline-block')}
             href={accountHref}
           >
-            <User size={20} strokeWidth={1} />
+            <User size={24} strokeWidth={1} />
           </Link>
           <Link aria-label={cartLabel} className={navButtonClassName} href={cartHref}>
-            <ShoppingBag size={20} strokeWidth={1} />
+            <ShoppingBag size={24} strokeWidth={1} />
             <Stream
               fallback={
                 <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 animate-pulse items-center justify-center rounded-full bg-contrast-100 text-xs text-background" />
@@ -467,7 +471,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
               {(cartCount) =>
                 cartCount != null &&
                 cartCount > 0 && (
-                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--nav-cart-count-background,hsl(var(--foreground)))] font-[family-name:var(--nav-cart-count-font-family,var(--font-family-body))] text-xs text-[var(--nav-cart-count-text,hsl(var(--background)))]">
+                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--nav-cart-count-background,hsl(var(--foreground)))] text-xs text-[var(--nav-cart-count-text,hsl(var(--background)))]">
                     {cartCount}
                   </span>
                 )
@@ -514,7 +518,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                           {item.label !== '' && (
                             <li>
                               <Link
-                                className="block rounded-lg bg-[var(--nav-mobile-link-background,transparent)] px-3 py-2 font-[family-name:var(--nav-mobile-link-font-family,var(--font-family-body))] font-semibold text-[var(--nav-mobile-link-text,hsl(var(--foreground)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-mobile-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-mobile-link-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2 @4xl:py-4"
+                                className="block rounded-lg bg-[var(--nav-mobile-link-background,transparent)] px-3 py-2 font-semibold text-[var(--nav-mobile-link-text,hsl(var(--foreground)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-mobile-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-mobile-link-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2 @4xl:py-4"
                                 href={item.href}
                               >
                                 {item.label}
@@ -526,7 +530,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                             .map((link, j) => (
                               <li key={j}>
                                 <Link
-                                  className="block rounded-lg bg-[var(--nav-mobile-sub-link-background,transparent)] px-3 py-2 font-[family-name:var(--nav-mobile-sub-link-font-family,var(--font-family-body))] text-sm font-medium text-[var(--nav-mobile-sub-link-text,hsl(var(--contrast-500)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-mobile-sub-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-mobile-sub-link-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2 @4xl:py-4"
+                                  className="block rounded-lg bg-[var(--nav-mobile-sub-link-background,transparent)] px-3 py-2 text-sm font-medium text-[var(--nav-mobile-sub-link-text,hsl(var(--contrast-500)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-mobile-sub-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-mobile-sub-link-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2 @4xl:py-4"
                                   href={link.href}
                                 >
                                   {link.label}
@@ -622,7 +626,7 @@ function LocaleSwitcher({
           {locales.map(({ id, label }) => (
             <DropdownMenu.Item
               className={clsx(
-                'cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 font-[family-name:var(--nav-locale-link-font-family,var(--font-family-body))] text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] outline-none ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
+                'cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] outline-none ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
                 {
                   'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
                     id === activeLocaleId,
@@ -680,7 +684,7 @@ function CurrencyForm({
           {currencies.map((currency) => (
             <DropdownMenu.Item
               className={clsx(
-                'cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 font-[family-name:var(--nav-locale-link-font-family,var(--font-family-body))] text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] outline-none ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
+                'cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] outline-none ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
                 {
                   'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
                     currency.id === activeCurrencyId,

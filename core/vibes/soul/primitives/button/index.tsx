@@ -58,7 +58,7 @@ export function Button({
       {...props}
       aria-busy={loading}
       className={clsx(
-        'relative z-0 inline-flex h-fit select-none items-center justify-center overflow-hidden border text-center font-[family-name:var(--button-font-family,var(--font-family-body))] font-semibold leading-normal after:absolute after:inset-0 after:-z-10 after:-translate-x-[110%] after:scale-110 after:transition-[opacity,transform] after:duration-300 after:[animation-timing-function:cubic-bezier(0,0.25,0,1)] focus-visible:outline-none',
+        'relative z-0 inline-flex h-fit select-none items-center justify-center overflow-hidden border text-center font-[family-name:var(--button-font-family,var(--font-family-body))] font-semibold leading-normal after:absolute after:inset-0 after:-z-10 after:-translate-x-[110%] after:scale-110 after:transition-[opacity,transform] after:duration-300 after:[animation-timing-function:cubic-bezier(0.25,0.46,0.45,0.94)] focus-visible:outline-none',
         {
           primary:
             'border-[var(--button-primary-border,hsl(var(--primary)))] bg-[var(--button-primary-background,hsl(var(--primary)))] text-[var(--button-primary-text,hsl(var(--background)))] after:bg-primary-highlight focus-visible:border-primary disabled:border-disabled disabled:bg-disabled',
@@ -86,7 +86,7 @@ export function Button({
     >
       <span
         className={clsx(
-          'inline-flex items-center justify-center transition-all duration-300 ease-in-out',
+          'inline-flex items-center justify-center transition-all duration-300 ease-quad',
           loading ? '-translate-y-10 opacity-0' : 'translate-y-0 opacity-100',
           shape === 'circle' && 'aspect-square',
           {
@@ -108,7 +108,7 @@ export function Button({
       </span>
       <span
         className={clsx(
-          'absolute inset-0 grid place-content-center transition-all duration-300 ease-in-out',
+          'absolute inset-0 grid place-content-center transition-all duration-300 ease-quad',
           loading ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0',
         )}
       >
