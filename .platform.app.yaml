@@ -27,11 +27,11 @@ build:
 hooks:
     build: |
         set -eu
-        npm install -g pnpm@10.6.5
         chmod +x handle_env_setup.sh
         ./handle_env_setup.sh
+        npm install -g pnpm@10.6.5
         pnpm install
-        NODE_OPTIONS="--max-old-space-size=8192" pnpm build
+        NODE_OPTIONS="--max-old-space-size=900" pnpm build
         chmod +x handle_mounts.sh
         ./handle_mounts.sh
     deploy: |
