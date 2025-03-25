@@ -4,7 +4,7 @@ import { SearchParams } from 'nuqs';
 import { getPageBySlug, getPages } from '~/lib/contentful';
 
 interface Props {
-  params: Promise<{ locale: string; rest: string }>;
+  params: Promise<{ locale: string; rest: Array<string> }>;
   searchParams: Promise<SearchParams>;
 }
 
@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 
 export default async function CatchAllPage({ params }: Props) {
   const { rest } = await params;
-  const page = await getPageBySlug(rest[0] ?? '');
+  const page = await getPageBySlug(rest.join('/'));
 
   if (!page) {
     notFound();
