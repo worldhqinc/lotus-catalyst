@@ -14,7 +14,6 @@ import { routing } from '~/i18n/routing';
 import { getCartId } from '~/lib/cart';
 import { getPreferredCurrencyCode } from '~/lib/currency';
 
-import { search } from './_actions/search';
 import { switchCurrency } from './_actions/switch-currency';
 import { HeaderFragment } from './fragment';
 
