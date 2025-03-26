@@ -354,7 +354,11 @@ export const withRoutes: MiddlewareFactory = () => {
 
         const cleanPathName = clearLocaleFromPath(pathname, locale);
 
-        url = `/${locale}${cleanPathName}`;
+        if (cleanPathName === '/') {
+          url = `/${locale}${cleanPathName}`;
+        } else {
+          url = `/${locale}/contentful${cleanPathName}`;
+        }
       }
     }
 
