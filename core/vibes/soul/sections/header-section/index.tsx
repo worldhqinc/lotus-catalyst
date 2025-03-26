@@ -17,6 +17,16 @@ export const HeaderSection = forwardRef<React.ComponentRef<'div'>, Props>(
     const [bannerHeight, setBannerHeight] = useState(0);
     const [isFloating, setIsFloating] = useState(false);
 
+    const updateHeadroomHeightVariable = () => {
+      const headroomWrapper = document.querySelector('.headroom-wrapper');
+
+      if (headroomWrapper) {
+        const height = headroomWrapper.getBoundingClientRect().height;
+
+        document.documentElement.style.setProperty('--headroom-wrapper-height', `${height}px`);
+      }
+    };
+
     useEffect(() => {
       if (!bannerElement) return;
 
@@ -33,6 +43,18 @@ export const HeaderSection = forwardRef<React.ComponentRef<'div'>, Props>(
         resizeObserver.disconnect();
       };
     }, [bannerElement]);
+
+    useEffect(() => {
+      updateHeadroomHeightVariable();
+
+      const handleResize = () => updateHeadroomHeightVariable();
+
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
 
     return (
       <div ref={ref}>
