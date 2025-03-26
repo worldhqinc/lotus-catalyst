@@ -1,4 +1,3 @@
-import { createClient } from 'contentful';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 
@@ -8,6 +7,7 @@ import { PricingFragment } from '~/client/fragments/pricing';
 import { graphql, VariablesOf } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
 import { FeaturedProductsCarouselFragment } from '~/components/featured-products-carousel/fragment';
+import { contentfulClient } from '~/lib/contentful';
 import { getPreferredCurrencyCode } from '~/lib/currency';
 
 import { ProductSchemaFragment } from './_components/product-schema/fragment';
@@ -276,12 +276,6 @@ export const getProductData = cache(async (variables: Variables) => {
 });
 
 export const getContentfulData = async (sku: string) => {
-  const contentfulClient = createClient({
-    space: process.env.CONTENTFUL_SPACE_ID || '',
-    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || '',
-    environment: process.env.CONTENTFUL_ENVIRONMENT || 'master',
-  });
-
   const contentfulData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',
     'fields.bcProductReference[match]': sku,

@@ -1,44 +1,38 @@
-import { notFound } from 'next/navigation';
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import type { Metadata } from 'next';
 import { SearchParams } from 'nuqs';
 
-import { getPageBySlug, getPages } from '~/lib/contentful';
+import { getPageBySlug } from './page-data';
 
 interface Props {
   params: Promise<{ locale: string; rest: string[] }>;
   searchParams: Promise<SearchParams>;
 }
 
-export async function generateStaticParams() {
-  const pages = await getPages();
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { rest } = await params;
+  const page = await getPageBySlug(rest);
+  const fields = page.fields;
 
-  return pages.map((page) => ({
-    slug: page.fields.pageSlug,
-  }));
+  return {
+    title: fields.metaTitleSeo || fields.pageName,
+    description: fields.metaDescription,
+    keywords: fields.metaKeywordsSeo,
+  };
 }
 
 export default async function ContentfulPage({ params }: Props) {
   const { rest } = await params;
-  const page = await getPageBySlug(rest.join('/'));
+  const page = await getPageBySlug(rest);
 
-  if (!page) {
-    notFound();
-  }
-
-  const { fields } = page;
-  // eslint-disable-next-line
-  const pageName = fields?.pageName as string;
-  // eslint-disable-next-line
-  function extractContentValue(richTextField: any): string {
-    // eslint-disable-next-line
-    return richTextField?.content?.[0]?.content?.[0]?.value ?? '';
-  }
-  // eslint-disable-next-line
-  const pageDescription = extractContentValue(fields?.optionalPageDescription);
+  const fields = page.fields;
+  const pageName = fields.pageName;
+  const pageDescription = documentToHtmlString(fields.optionalPageDescription);
 
   return (
     <div>
       <h1>{pageName}</h1>
-      <div>{pageDescription}</div>
+      <div dangerouslySetInnerHTML={{ __html: pageDescription }} />
     </div>
   );
 }
