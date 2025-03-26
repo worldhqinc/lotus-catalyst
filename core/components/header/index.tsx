@@ -42,7 +42,7 @@ const getLayoutData = cache(async () => {
   return readFragment(HeaderFragment, response).site;
 });
 
-const getLinks = () => {
+const getLinks = async () => {
   // const data = await getLayoutData();
 
   /**  To prevent the navigation menu from overflowing, we limit the number of categories to 6.
@@ -64,7 +64,7 @@ const getLinks = () => {
   //   })),
   // }));
 
-  return [
+  return await Promise.resolve([
     {
       label: 'Page 1',
       href: '/page-1',
@@ -103,7 +103,7 @@ const getLinks = () => {
         },
       ],
     },
-  ];
+  ]);
 };
 
 const getLogo = async () => {
