@@ -15,7 +15,7 @@ import { ProductSchemaFragment } from './_components/product-schema/fragment';
 import { ProductViewedFragment } from './_components/product-viewed/fragment';
 
 export interface ProductFinishedGoodsData {
-  contentTypeId: 'productFinishedGoods';
+  contentTypeId: string;
   fields: {
     bcProductReference: EntryFieldTypes.Text;
     defaultPrice: EntryFieldTypes.Text;
