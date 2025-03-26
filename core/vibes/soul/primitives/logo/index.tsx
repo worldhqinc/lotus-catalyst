@@ -3,6 +3,8 @@ import { clsx } from 'clsx';
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
+import FooterLogo from '~/images/Logo-icon.svg';
+import HeaderLogo from '~/images/Logo.svg';
 
 interface Props {
   className?: string;
@@ -11,6 +13,7 @@ interface Props {
   href: string;
   width: number;
   height: number;
+  location?: 'header' | 'footer';
 }
 
 // eslint-disable-next-line valid-jsdoc
@@ -26,11 +29,17 @@ interface Props {
  * }
  * ```
  */
-export function Logo({ className, logo: streamableLogo, href, width, height, label }: Props) {
+
+const logoIcon: Record<'header' | 'footer', string> = {
+  header: HeaderLogo as string,
+  footer: FooterLogo as string,
+};
+
+export function Logo({ className, href, width, height, label, location = 'header' }: Props) {
   return (
     <Stream
       fallback={<div className="h-6 w-16 animate-pulse rounded-md bg-contrast-100" />}
-      value={streamableLogo}
+      value={logoIcon[location] as Streamable<string | { src: string; alt: string } | null>}
     >
       {(logo) => (
         <Link
@@ -44,7 +53,7 @@ export function Logo({ className, logo: streamableLogo, href, width, height, lab
         >
           {typeof logo === 'object' && logo !== null && logo.src !== '' ? (
             <Image
-              alt={logo.alt}
+              alt={logo.alt || 'Lotus'}
               className="object-contain object-left"
               fill
               sizes={`${width}px`}

@@ -1,9 +1,13 @@
+import { SubmissionResult } from '@conform-to/react';
 import { clsx } from 'clsx';
 import { forwardRef, ReactNode, type Ref } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
+import { FooterEmailForm } from '@/vibes/soul/primitives/footer-email-form';
 import { Logo } from '@/vibes/soul/primitives/logo';
 import { Link } from '~/components/link';
+
+type Action<State, Payload> = (state: Awaited<State>, payload: Payload) => State | Promise<State>;
 
 interface Image {
   src: string;
@@ -31,11 +35,11 @@ interface ContactInformation {
 }
 
 interface Props {
+  action: Action<{ lastResult: SubmissionResult | null; successMessage?: string }, FormData>;
   logo?: Streamable<string | Image | null>;
   sections: Streamable<Section[]>;
   copyright?: Streamable<string | null>;
   contactInformation?: Streamable<ContactInformation | null>;
-  paymentIcons?: Streamable<ReactNode[] | null>;
   socialMediaLinks?: Streamable<SocialMediaLink[] | null>;
   contactTitle?: string;
   className?: string;
@@ -68,11 +72,11 @@ interface Props {
  */
 export const Footer = forwardRef(function Footer(
   {
+    action,
     logo,
     sections: streamableSections,
     contactTitle = 'Contact Us',
     contactInformation: streamableContactInformation,
-    paymentIcons: streamablePaymentIcons,
     socialMediaLinks: streamableSocialMediaLinks,
     copyright: streamableCopyright,
     className,
@@ -91,7 +95,7 @@ export const Footer = forwardRef(function Footer(
       )}
       ref={ref}
     >
-      <div className="mx-auto max-w-screen-2xl px-4 py-6 @xl:px-6 @xl:py-10 @4xl:px-8 @4xl:py-12">
+      <div className="container py-6 @xl:py-10 @4xl:py-12">
         <div className="flex flex-col justify-between gap-x-8 gap-y-12 @3xl:flex-row">
           <div className="flex flex-col gap-4 @3xl:w-1/3 @3xl:gap-6">
             {/* Logo Information */}
@@ -99,6 +103,7 @@ export const Footer = forwardRef(function Footer(
               height={logoHeight}
               href={logoHref}
               label={logoLabel}
+              location="footer"
               logo={logo}
               width={logoWidth}
             />
@@ -123,50 +128,11 @@ export const Footer = forwardRef(function Footer(
               {(contactInformation) => {
                 if (contactInformation?.address != null || contactInformation?.phone != null) {
                   return (
-                    <div className="mb-4 text-lg font-medium @lg:text-xl">
-                      <h3 className="text-[var(--footer-contact-title,hsl(var(--contrast-300)))]">
-                        {contactTitle}
-                      </h3>
-                      <div className="text-[var(--footer-contact-text,hsl(var(--foreground)))]">
-                        {contactInformation.address != null &&
-                          contactInformation.address !== '' && <p>{contactInformation.address}</p>}
-                        {contactInformation.phone != null && contactInformation.phone !== '' && (
-                          <p>{contactInformation.phone}</p>
-                        )}
+                    <div>
+                      <p className="text-lg">{contactTitle}</p>
+                      <div className="mt-8">
+                        <FooterEmailForm action={action} />
                       </div>
-                    </div>
-                  );
-                }
-              }}
-            </Stream>
-
-            {/* Social Media Links */}
-            <Stream
-              fallback={
-                <div className="flex animate-pulse items-center gap-3">
-                  <div className="h-8 w-8 rounded-full bg-contrast-100" />
-                  <div className="h-8 w-8 rounded-full bg-contrast-100" />
-                  <div className="h-8 w-8 rounded-full bg-contrast-100" />
-                  <div className="h-8 w-8 rounded-full bg-contrast-100" />
-                </div>
-              }
-              value={streamableSocialMediaLinks}
-            >
-              {(socialMediaLinks) => {
-                if (socialMediaLinks != null) {
-                  return (
-                    <div className="flex items-center gap-3">
-                      {socialMediaLinks.map(({ href, icon }, i) => {
-                        return (
-                          <Link
-                            className="flex items-center justify-center rounded-lg fill-[var(--footer-social-icon,hsl(var(--contrast-400)))] p-1 ring-[var(--footer-focus,hsl(var(--primary)))] transition-colors duration-300 ease-out hover:fill-[var(--footer-social-icon-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2"
-                            href={href}
-                            key={i}
-                          >
-                            {icon}
-                          </Link>
-                        );
-                      })}
                     </div>
                   );
                 }
@@ -177,7 +143,7 @@ export const Footer = forwardRef(function Footer(
           {/* Footer Columns of Links */}
           <Stream
             fallback={
-              <div className="grid w-full flex-1 animate-pulse gap-y-8 [grid-template-columns:_repeat(auto-fill,_minmax(200px,_1fr))] @xl:gap-y-10">
+              <div className="grid w-full flex-1 animate-pulse gap-8 [grid-template-columns:_repeat(auto-fill,_150px)] @xl:gap-y-10">
                 <div className="pr-8">
                   <div className="mb-3 flex h-[1lh] items-center">
                     <span className="h-[1ex] w-[10ch] rounded bg-contrast-100" />
@@ -300,21 +266,21 @@ export const Footer = forwardRef(function Footer(
             {(sections) => {
               if (sections.length > 0) {
                 return (
-                  <div className="grid w-full flex-1 gap-y-8 [grid-template-columns:_repeat(auto-fill,_minmax(200px,_1fr))] @xl:gap-y-10">
+                  <div className="grid w-full flex-1 justify-end gap-8 [grid-template-columns:_repeat(auto-fill,_150px)] @xl:gap-y-10">
                     {sections.map(({ title, links }, i) => (
-                      <div className="pr-8" key={i}>
+                      <div key={i}>
                         {title != null && (
-                          <span className="mb-3 block font-semibold text-[var(--footer-section-title,hsl(var(--foreground)))]">
+                          <span className="mb-3 block text-lg font-semibold text-foreground">
                             {title}
                           </span>
                         )}
 
-                        <ul>
+                        <ul className="flex flex-col items-start gap-4">
                           {links.map((link, idx) => {
                             return (
                               <li key={idx}>
                                 <Link
-                                  className="block rounded-lg py-2 text-sm font-medium text-[var(--footer-link,hsl(var(--contrast-400)))] ring-[var(--footer-focus,hsl(var(--primary)))] transition-colors duration-300 hover:text-[var(--footer-link-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2"
+                                  className="block transition-colors duration-200 ease-quad hover:text-primary focus-visible:text-primary"
                                   href={link.href}
                                 >
                                   {link.label}
@@ -332,11 +298,11 @@ export const Footer = forwardRef(function Footer(
           </Stream>
         </div>
 
-        <div className="flex flex-col-reverse items-start gap-y-8 pt-16 @3xl:flex-row @3xl:items-center @3xl:pt-20">
+        <div className="flex flex-col-reverse items-start gap-y-8 pt-16 @3xl:flex-row-reverse @3xl:items-end @3xl:pt-20">
           {/* Copyright */}
           <Stream
             fallback={
-              <div className="flex h-[1lh] flex-1 animate-pulse items-center text-sm">
+              <div className="flex h-[1lh] animate-pulse items-center text-sm">
                 <span className="h-[1ex] w-[40ch] rounded-sm bg-contrast-100" />
               </div>
             }
@@ -345,7 +311,7 @@ export const Footer = forwardRef(function Footer(
             {(copyright) => {
               if (copyright != null) {
                 return (
-                  <p className="flex-1 text-sm text-[var(--footer-copyright,hsl(var(--contrast-400)))]">
+                  <p className="text-sm text-[var(--footer-copyright,hsl(var(--contrast-400)))]">
                     {copyright}
                   </p>
                 );
@@ -353,23 +319,35 @@ export const Footer = forwardRef(function Footer(
             }}
           </Stream>
 
-          {/* Payment Icons */}
+          {/* Social Media Links */}
           <Stream
             fallback={
-              <div className="flex animate-pulse flex-wrap gap-2">
-                <div className="h-6 w-[2.1875rem] rounded bg-contrast-100" />
-                <div className="h-6 w-[2.1875rem] rounded bg-contrast-100" />
-                <div className="h-6 w-[2.1875rem] rounded bg-contrast-100" />
-                <div className="h-6 w-[2.1875rem] rounded bg-contrast-100" />
-                <div className="h-6 w-[2.1875rem] rounded bg-contrast-100" />
-                <div className="h-6 w-[2.1875rem] rounded bg-contrast-100" />
+              <div className="flex flex-1 animate-pulse items-center gap-3">
+                <div className="h-8 w-8 rounded-full bg-contrast-100" />
+                <div className="h-8 w-8 rounded-full bg-contrast-100" />
+                <div className="h-8 w-8 rounded-full bg-contrast-100" />
+                <div className="h-8 w-8 rounded-full bg-contrast-100" />
               </div>
             }
-            value={streamablePaymentIcons}
+            value={streamableSocialMediaLinks}
           >
-            {(paymentIcons) => {
-              if (paymentIcons != null) {
-                return <div className="flex flex-wrap gap-2">{paymentIcons}</div>;
+            {(socialMediaLinks) => {
+              if (socialMediaLinks != null) {
+                return (
+                  <div className="flex flex-1 items-center gap-3">
+                    {socialMediaLinks.map(({ href, icon }, i) => {
+                      return (
+                        <Link
+                          className="flex items-center justify-center rounded-lg fill-[var(--footer-social-icon,hsl(var(--contrast-400)))] p-1 ring-[var(--footer-focus,hsl(var(--primary)))] transition-colors duration-300 ease-out hover:fill-[var(--footer-social-icon-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2"
+                          href={href}
+                          key={i}
+                        >
+                          {icon}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                );
               }
             }}
           </Stream>
