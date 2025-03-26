@@ -480,8 +480,8 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
               </button>
             </Popover.Trigger>
             <Popover.Portal>
-              <Popover.Content className="max-h-[calc(var(--radix-popover-content-available-height)-16px)] w-[var(--radix-popper-anchor-width)] py-2 @container data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
-                <div className="flex max-h-[inherit] flex-col rounded-2xl bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out @4xl:inset-x-0">
+              <Popover.Content className="h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)] @container data-[state=open]:animate-clipIn data-[state=closed]:animate-clipOut">
+                <div className="flex h-[inherit] flex-col bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out @4xl:inset-x-0">
                   <AlgoliaSearch />
                 </div>
               </Popover.Content>
