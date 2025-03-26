@@ -111,6 +111,7 @@ interface Props<S extends SearchResult> {
   openSearchPopupLabel?: string;
   searchLabel?: string;
   mobileMenuTriggerLabel?: string;
+  triggerMode?: 'hover' | 'click';
 }
 
 const MobileMenuButton = forwardRef<
@@ -273,6 +274,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     accountLabel = 'Profile',
     openSearchPopupLabel = 'Open search popup',
     mobileMenuTriggerLabel = 'Toggle navigation',
+    triggerMode = 'click'
   }: Props<S>,
   ref: Ref<HTMLDivElement>,
 ) {
@@ -371,9 +373,11 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                 <NavigationMenu.Item key={i} value={i.toString()}>
                   <NavigationMenu.Trigger
                     asChild
-                    onPointerEnter={(e) => e.preventDefault()}
-                    onPointerLeave={(e) => e.preventDefault()}
-                    onPointerMove={(e) => e.preventDefault()}
+                    {...(triggerMode === 'click' && {
+                      onPointerEnter: (event) => event.preventDefault(),
+                      onPointerMove: (event) => event.preventDefault(),
+                      onPointerLeave: (event) => event.preventDefault(),
+                    })}
                   >
                     {item.groups != null && item.groups.length > 0 ? (
                       <button
