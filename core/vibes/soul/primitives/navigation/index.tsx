@@ -274,7 +274,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     accountLabel = 'Profile',
     openSearchPopupLabel = 'Open search popup',
     mobileMenuTriggerLabel = 'Toggle navigation',
-    triggerMode = 'click'
+    triggerMode = 'click',
   }: Props<S>,
   ref: Ref<HTMLDivElement>,
 ) {
