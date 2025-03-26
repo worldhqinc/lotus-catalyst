@@ -1,3 +1,4 @@
+import { EntryFieldTypes } from 'contentful';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 
@@ -12,6 +13,15 @@ import { getPreferredCurrencyCode } from '~/lib/currency';
 
 import { ProductSchemaFragment } from './_components/product-schema/fragment';
 import { ProductViewedFragment } from './_components/product-viewed/fragment';
+
+export interface ProductFinishedGoodsData {
+  contentTypeId: 'productFinishedGoods';
+  fields: {
+    bcProductReference: EntryFieldTypes.Text;
+    defaultPrice: EntryFieldTypes.Text;
+    shortDescription: EntryFieldTypes.Text;
+  };
+}
 
 const MultipleChoiceFieldFragment = graphql(`
   fragment MultipleChoiceFieldFragment on MultipleChoiceOption {
@@ -275,11 +285,15 @@ export const getProductData = cache(async (variables: Variables) => {
   return product;
 });
 
-export const getContentfulData = async (sku: string) => {
-  const contentfulData = await contentfulClient.getEntries({
+export const getContentfulProductData = async (sku: string) => {
+  const contentfulData = await contentfulClient.getEntries<ProductFinishedGoodsData>({
     content_type: 'productFinishedGoods',
-    'fields.bcProductReference[match]': sku,
+    'fields.bcProductReference': sku,
   });
 
-  return contentfulData.items[0]?.fields || null;
+  if (contentfulData.items.length === 0) {
+    return null;
+  }
+
+  return contentfulData.items[0];
 };
