@@ -122,6 +122,7 @@ export function WishlistShareButtonSkeleton({ size = 'small' }: { size?: Props['
           small: 'min-h-10 min-w-[7ch]',
           medium: 'min-h-12 min-w-[8ch]',
           large: 'min-h-14 min-w-[9ch]',
+          link: 'min-h-0 min-w-0',
         }[size],
       )}
     />
