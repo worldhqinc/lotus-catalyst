@@ -3,9 +3,9 @@ import { Loader2 } from 'lucide-react';
 import { ComponentPropsWithoutRef } from 'react';
 
 export interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'danger';
-  size?: 'large' | 'medium' | 'small' | 'x-small';
-  shape?: 'pill' | 'rounded' | 'square' | 'circle';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'danger' | 'link';
+  size?: 'large' | 'medium' | 'small' | 'x-small' | 'link';
+  shape?: 'pill' | 'rounded' | 'square' | 'circle' | 'link';
   loading?: boolean;
 }
 
@@ -58,7 +58,7 @@ export function Button({
       {...props}
       aria-busy={loading}
       className={clsx(
-        'relative z-0 inline-flex h-fit select-none items-center justify-center overflow-hidden border text-center font-[family-name:var(--button-font-family,var(--font-family-body))] font-semibold leading-normal after:absolute after:inset-0 after:-z-10 after:-translate-x-[110%] after:scale-110 after:transition-[opacity,transform] after:duration-300 after:[animation-timing-function:cubic-bezier(0.25,0.46,0.45,0.94)] focus-visible:outline-none',
+        'relative z-0 inline-flex h-fit select-none items-center justify-center overflow-hidden border text-center font-[family-name:var(--button-font-family,var(--font-family-body))] leading-normal after:absolute after:inset-0 after:-z-10 after:-translate-x-[110%] after:scale-110 after:transition-[opacity,transform] after:duration-300 after:[animation-timing-function:cubic-bezier(0.25,0.46,0.45,0.94)] focus-visible:outline-none',
         {
           primary:
             'border-[var(--button-primary-border,hsl(var(--primary)))] bg-[var(--button-primary-background,hsl(var(--primary)))] text-[var(--button-primary-text,hsl(var(--background)))] after:bg-primary-highlight focus-visible:border-primary disabled:border-disabled disabled:bg-disabled',
@@ -70,15 +70,18 @@ export function Button({
             'border-[var(--button-ghost-border,transparent)] bg-[var(--button-ghost-background,transparent)] text-[var(--button-ghost-text,hsl(var(--foreground)))] after:bg-contrast-100 hover:border-contrast-100 focus-visible:border-primary disabled:border-transparent disabled:text-contrast-200',
           danger:
             'border-[var(--button-danger-border,color-mix(in_oklab,hsl(var(--error)),white_30%))] bg-[var(--button-danger-background,color-mix(in_oklab,hsl(var(--error)),white_30%))] text-[var(--button-danger-foreground)] after:bg-[var(--button-danger-background-hover,color-mix(in_oklab,hsl(var(--error)),white_75%))]',
+          link: 'border-none bg-transparent hover:text-primary',
         }[variant],
         {
           pill: 'rounded-full after:rounded-full',
           rounded: 'rounded-md after:rounded-md',
           square: 'rounded-none after:rounded-none',
           circle: 'rounded-full after:rounded-full',
+          link: 'rounded-none after:rounded-none',
         }[shape],
         !loading && !disabled && 'hover:after:translate-x-0',
         disabled && 'cursor-not-allowed',
+        variant !== 'link' ? 'font-semibold' : 'font-normal',
         className,
       )}
       disabled={disabled || loading}
@@ -94,6 +97,7 @@ export function Button({
             small: 'min-h-10 text-sm',
             medium: 'min-h-12 text-base',
             large: 'min-h-14 text-base',
+            link: 'min-h-0 text-base',
           }[size],
           shape !== 'circle' &&
             {
@@ -101,6 +105,7 @@ export function Button({
               small: 'gap-x-2 px-4 py-2.5',
               medium: 'gap-x-2.5 px-5 py-3',
               large: 'gap-x-3 px-6 py-4',
+              link: 'gap-x-2 px-0 py-0',
             }[size],
         )}
       >
