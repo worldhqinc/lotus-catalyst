@@ -1,3 +1,5 @@
+import { Entry } from 'contentful';
+
 import { ReactNode } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
@@ -7,6 +9,9 @@ import { Rating } from '@/vibes/soul/primitives/rating';
 import * as Skeleton from '@/vibes/soul/primitives/skeleton';
 import { type Breadcrumb, Breadcrumbs } from '@/vibes/soul/sections/breadcrumbs';
 import { ProductGallery } from '@/vibes/soul/sections/product-detail/product-gallery';
+import { ProductFinishedGoodsData } from '~/app/[locale]/(default)/product/[slug]/page-data';
+
+import { ContentfulProductData } from './contentful-product-data';
 
 import { ProductDetailForm, ProductDetailFormAction } from './product-detail-form';
 import { Field } from './schema';
@@ -28,14 +33,12 @@ interface ProductDetailProduct {
       content: ReactNode;
     }>
   >;
-  contentfulBcProductReference?: string;
-  contentfulShortDescription?: string;
-  contentfulDefaultPrice?: string;
 }
 
 export interface ProductDetailProps<F extends Field> {
   breadcrumbs?: Streamable<Breadcrumb[]>;
   product: Streamable<ProductDetailProduct | null>;
+  contentful: Streamable<Entry<ProductFinishedGoodsData> | null | undefined>;
   action: ProductDetailFormAction<F>;
   fields: Streamable<F[]>;
   quantityLabel?: string;
@@ -66,6 +69,7 @@ export interface ProductDetailProps<F extends Field> {
  */
 export function ProductDetail<F extends Field>({
   product: streamableProduct,
+  contentful: streamableContentful,
   action,
   fields: streamableFields,
   breadcrumbs,
@@ -161,37 +165,8 @@ export function ProductDetail<F extends Field>({
                       )}
                     </Stream>
                   </div>
-                  <Stream
-                    fallback={<ProductDescriptionSkeleton />}
-                    value={product.contentfulBcProductReference}
-                  >
-                    {(contentfulBcProductReference) => (
-                      <div className="border-t border-contrast-100 py-8 text-contrast-500">
-                        Contentful BC Reference: {contentfulBcProductReference}
-                      </div>
-                    )}
-                  </Stream>
-
-                  <Stream
-                    fallback={<ProductDescriptionSkeleton />}
-                    value={product.contentfulShortDescription}
-                  >
-                    {(contentfulShortDescription) => (
-                      <div className="border-t border-contrast-100 py-8 text-contrast-500">
-                        Contentful Short Description: {contentfulShortDescription}
-                      </div>
-                    )}
-                  </Stream>
-
-                  <Stream
-                    fallback={<ProductDescriptionSkeleton />}
-                    value={product.contentfulDefaultPrice}
-                  >
-                    {(contentfulDefaultPrice) => (
-                      <div className="border-t border-contrast-100 py-8 text-contrast-500">
-                        Contentful Default Price: {contentfulDefaultPrice}
-                      </div>
-                    )}
+                  <Stream fallback={<ProductDescriptionSkeleton />} value={streamableContentful}>
+                    {(data) => <ContentfulProductData data={data} />}
                   </Stream>
                   <div className="group/product-description">
                     <Stream fallback={<ProductDescriptionSkeleton />} value={product.description}>

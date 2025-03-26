@@ -3,6 +3,7 @@
 import { Hit } from 'algoliasearch';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { Hits, InstantSearch, SearchBox, useHits, useSearchBox } from 'react-instantsearch';
+
 import { Link } from '~/components/link';
 
 const searchClient = algoliasearch(
