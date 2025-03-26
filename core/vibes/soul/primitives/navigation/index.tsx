@@ -299,17 +299,16 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 
   return (
     <NavigationMenu.Root
-      className={clsx('relative w-full bg-white font-body @container', className)}
+      className={clsx(
+        'relative w-full bg-white font-body @container',
+        className,
+        isFloating ? 'shadow-md' : 'shadow-none',
+      )}
       delayDuration={0}
       onValueChange={() => setIsSearchOpen(false)}
       ref={ref}
     >
-      <div
-        className={clsx(
-          'container flex items-center justify-between gap-1 bg-[var(--nav-background,hsl(var(--background)))] py-2 @4xl:py-4',
-          isFloating ? 'shadow-sm' : 'shadow-none',
-        )}
-      >
+      <div className="container flex items-center justify-between gap-1 bg-[var(--nav-background,hsl(var(--background)))] py-2 @4xl:py-4">
         {/* Logo */}
         <div
           className={clsx(
@@ -522,8 +521,8 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
               />
             </Popover.Trigger>
             <Popover.Portal>
-              <Popover.Content className="max-h-[calc(var(--radix-popover-content-available-height)-8px)] w-[var(--radix-popper-anchor-width)] @container data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
-                <div className="max-h-[inherit] divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-[var(--nav-mobile-background,hsl(var(--background)))]">
+              <Popover.Content className="z-10 h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)] @container data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn">
+                <div className="flex h-[inherit] flex-col gap-4 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-white px-4 py-36">
                   <Stream
                     fallback={
                       <ul className="flex animate-pulse flex-col gap-4 p-5 @4xl:gap-2 @4xl:p-5">
@@ -545,13 +544,10 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                   >
                     {(links) =>
                       links.map((item, i) => (
-                        <ul className="flex flex-col p-2 @4xl:gap-2 @4xl:p-5" key={i}>
+                        <ul className="flex flex-col gap-4 [&:not(:first-of-type)]:pt-4" key={i}>
                           {item.label !== '' && (
                             <li>
-                              <Link
-                                className="block rounded-lg bg-[var(--nav-mobile-link-background,transparent)] px-3 py-2 font-semibold text-[var(--nav-mobile-link-text,hsl(var(--foreground)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-mobile-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-mobile-link-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2 @4xl:py-4"
-                                href={item.href}
-                              >
+                              <Link className="block" href={item.href}>
                                 {item.label}
                               </Link>
                             </li>
@@ -560,10 +556,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                             ?.flatMap((group) => group.links)
                             .map((link, j) => (
                               <li key={j}>
-                                <Link
-                                  className="block rounded-lg bg-[var(--nav-mobile-sub-link-background,transparent)] px-3 py-2 text-sm font-medium text-[var(--nav-mobile-sub-link-text,hsl(var(--contrast-500)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-mobile-sub-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-mobile-sub-link-text-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2 @4xl:py-4"
-                                  href={link.href}
-                                >
+                                <Link className="block" href={link.href}>
                                   {link.label}
                                 </Link>
                               </li>
@@ -599,7 +592,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
       </div>
 
       <div className="perspective-[2000px] absolute left-0 right-0 top-full z-50 flex w-full justify-center">
-        <NavigationMenu.Viewport className="relative w-full border-b border-border data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn" />
+        <NavigationMenu.Viewport className="relative w-full shadow-md data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn" />
       </div>
     </NavigationMenu.Root>
   );

@@ -232,10 +232,10 @@ const config = {
         },
         clipIn: {
           '0%': { clipPath: 'inset(0 0 100% 0)' },
-          '100%': { clipPath: 'inset(0 0 0 0)' },
+          '100%': { clipPath: 'inset(0 0 -1% 0)' },
         },
         clipOut: {
-          '0%': { clipPath: 'inset(0 0 0 0)' },
+          '0%': { clipPath: 'inset(0 0 -1% 0)' },
           '100%': { clipPath: 'inset(0 0 100% 0)' },
         },
       },
