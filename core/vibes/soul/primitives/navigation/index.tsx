@@ -373,8 +373,8 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                   <NavigationMenu.Trigger
                     asChild
                     onPointerEnter={(e) => e.preventDefault()}
-                    onPointerMove={(e) => e.preventDefault()}
                     onPointerLeave={(e) => e.preventDefault()}
+                    onPointerMove={(e) => e.preventDefault()}
                   >
                     {item.groups != null && item.groups.length > 0 ? (
                       <button
@@ -599,7 +599,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
       </div>
 
       <div className="perspective-[2000px] absolute left-0 right-0 top-full z-50 flex w-full justify-center">
-        <NavigationMenu.Viewport className="relative w-full border-b border-border data-[state=open]:animate-clipIn data-[state=closed]:animate-clipOut" />
+        <NavigationMenu.Viewport className="relative w-full border-b border-border data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn" />
       </div>
     </NavigationMenu.Root>
   );

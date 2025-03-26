@@ -24,7 +24,6 @@ export default async function CatchAllPage({ params }: Props) {
     notFound();
   }
 
-  // eslint-disable-next-line
   const { fields } = page;
   // eslint-disable-next-line
   const pageName = fields?.pageName as string;
