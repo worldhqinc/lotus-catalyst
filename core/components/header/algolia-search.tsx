@@ -2,8 +2,7 @@
 
 import { Hit } from 'algoliasearch';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
-import { Hits, InstantSearch, SearchBox } from 'react-instantsearch';
-
+import { Hits, InstantSearch, SearchBox, useHits, useSearchBox } from 'react-instantsearch';
 import { Link } from '~/components/link';
 
 const searchClient = algoliasearch(
@@ -48,6 +47,18 @@ function Result({ hit }: { hit: Hit<HitFields> }) {
   );
 }
 
+function SearchComponent() {
+  const { query } = useSearchBox();
+  const { items } = useHits();
+
+  return (
+    <>
+      <SearchBox />
+      {query && items.length > 0 ? <Hits hitComponent={Result} /> : null}
+    </>
+  );
+}
+
 export default function AlgoliaSearch() {
   return (
     <div className="flex items-center gap-3 px-3 py-3 @4xl:px-5 @4xl:py-4">
@@ -55,8 +66,7 @@ export default function AlgoliaSearch() {
         indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
         searchClient={searchClient}
       >
-        <SearchBox />
-        <Hits hitComponent={Result} />
+        <SearchComponent />
       </InstantSearch>
     </div>
   );
