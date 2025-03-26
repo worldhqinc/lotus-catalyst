@@ -30,8 +30,13 @@ interface Props {
  * ```
  */
 
+// TODO: Remove the `eslint-disable-next-line` comments when the types are fixed in the images
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 const logoIcon: Record<'header' | 'footer', string> = {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   header: HeaderLogo as string,
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   footer: FooterLogo as string,
 };
 
@@ -39,6 +44,7 @@ export function Logo({ className, href, width, height, label, location = 'header
   return (
     <Stream
       fallback={<div className="h-6 w-16 animate-pulse rounded-md bg-contrast-100" />}
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       value={logoIcon[location] as Streamable<string | { src: string; alt: string } | null>}
     >
       {(logo) => (

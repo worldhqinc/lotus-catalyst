@@ -95,9 +95,9 @@ export const Footer = forwardRef(function Footer(
       )}
       ref={ref}
     >
-      <div className="container py-6 @xl:py-10 @4xl:py-12">
+      <div className="container py-6 @xl:py-10 @4xl:py-20">
         <div className="flex flex-col justify-between gap-x-8 gap-y-12 @3xl:flex-row">
-          <div className="flex flex-col gap-4 @3xl:w-1/3 @3xl:gap-6">
+          <div className="flex flex-1 flex-col gap-4 @3xl:w-1/3 @3xl:gap-6 @4xl:flex-none">
             {/* Logo Information */}
             <Logo
               height={logoHeight}
