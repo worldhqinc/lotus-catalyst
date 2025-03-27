@@ -13,6 +13,18 @@ interface PageStandardEntrySkeleton {
     metaDescription: EntryFieldTypes.Text;
     metaKeywordsSeo: EntryFieldTypes.Text;
     optionalPageDescription: EntryFieldTypes.RichText;
+    pageContent: EntryFieldTypes.Object;
+  };
+}
+
+export interface PageContentField {
+  sys: {
+    id: string;
+    contentType: {
+      sys: {
+        id: string;
+      };
+    };
   };
 }
 

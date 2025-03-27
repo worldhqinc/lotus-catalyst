@@ -2,7 +2,7 @@ import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import type { Metadata } from 'next';
 import { SearchParams } from 'nuqs';
 
-import { getPageBySlug } from './page-data';
+import { getPageBySlug, type PageContentField } from './page-data';
 
 interface Props {
   params: Promise<{ locale: string; rest: string[] }>;
@@ -28,11 +28,23 @@ export default async function ContentfulPage({ params }: Props) {
   const fields = page.fields;
   const pageName = fields.pageName;
   const pageDescription = documentToHtmlString(fields.optionalPageDescription);
+  const pageContent = fields.pageContent ? fields.pageContent : [];
 
   return (
     <div>
       <h1>{pageName}</h1>
-      <div dangerouslySetInnerHTML={{ __html: pageDescription }} />
+      {pageDescription ? <div dangerouslySetInnerHTML={{ __html: pageDescription }} /> : null}
+      {Array.isArray(pageContent) &&
+        pageContent.map((field: PageContentField) => (
+          <>
+            {field.sys.contentType.sys.id === 'button' ? (
+              <div key={field.sys.id}>Button Display Component</div>
+            ) : null}
+            {field.sys.contentType.sys.id === 'faq' ? (
+              <div key={field.sys.id}>FAQ Display Component</div>
+            ) : null}
+          </>
+        ))}
     </div>
   );
 }
