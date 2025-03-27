@@ -4,7 +4,10 @@ import { clsx } from 'clsx';
 import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
 import { Image } from '~/components/image';
 
-type Action<State, Payload> = (state: Awaited<State>, payload: Payload) => State | Promise<State>;
+type Action<State, Payload> = (
+  prevState: Awaited<State>,
+  formData: Payload,
+) => State | Promise<State>;
 
 export function Subscribe({
   action,
@@ -13,7 +16,14 @@ export function Subscribe({
   description,
   placeholder,
 }: {
-  action: Action<{ lastResult: SubmissionResult | null; successMessage?: string }, FormData>;
+  action: Action<
+    {
+      lastResult: SubmissionResult | null;
+      successMessage?: string | undefined;
+      errorMessage?: string | undefined;
+    },
+    FormData
+  >;
   image?: { src: string; alt: string };
   title: string;
   description?: string;

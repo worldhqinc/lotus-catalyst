@@ -26,7 +26,11 @@ export function InlineEmailForm({
   placeholder?: string;
   submitLabel?: string;
   action: Action<
-    { lastResult: SubmissionResult | null; successMessage?: string; errorMessage?: string },
+    {
+      lastResult: SubmissionResult | null;
+      successMessage?: string | undefined;
+      errorMessage?: string | undefined;
+    },
     FormData
   >;
 }) {
@@ -34,8 +38,8 @@ export function InlineEmailForm({
     action,
     {
       lastResult: null,
-      successMessage: null,
-      errorMessage: null,
+      successMessage: undefined,
+      errorMessage: undefined,
     },
   );
 
