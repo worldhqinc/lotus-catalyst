@@ -1,10 +1,11 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { Entry } from 'contentful';
 
 import { ProductFinishedGoodsData } from '~/app/[locale]/(default)/product/[slug]/page-data';
 
 interface Props {
-  data: ProductFinishedGoodsData | null | undefined;
+  data: Entry<ProductFinishedGoodsData> | null | undefined;
 }
 
 export async function ContentfulProductData({ data }: Props) {

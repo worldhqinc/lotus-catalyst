@@ -1,7 +1,10 @@
 import { Entry } from 'contentful';
 
+<<<<<<< HEAD
 import { ReactNode } from 'react';
 
+=======
+>>>>>>> d9bbbb6d (refactor product page to separate Contentful data fetching and update type definitions for improved clarity)
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
 import { Price, PriceLabel } from '@/vibes/soul/primitives/price-label';

@@ -49,7 +49,6 @@ const getProduct = async (props: Props) => {
   const { slug } = await props.params;
   const variables = await cachedProductDataVariables(slug, props.searchParams);
   const product = await getProductData(variables);
-  const contentfulData = await getContentfulProductData(product.sku);
 
   const images = removeEdgesAndNodes(product.images).map((image) => ({
     src: image.url,
@@ -126,8 +125,15 @@ const getProduct = async (props: Props) => {
     subtitle: product.brand?.name,
     rating: product.reviewSummary.averageRating,
     accordions,
-    contentfulData,
   };
+};
+
+const getContentful = async (props: Props) => {
+  const { slug } = await props.params;
+  const variables = await cachedProductDataVariables(slug, props.searchParams);
+  const product = await getProductData(variables);
+
+  return getContentfulProductData(product.sku);
 };
 
 const getFields = async (props: Props) => {
@@ -245,6 +251,7 @@ export default async function Product(props: Props) {
       <ProductDetail
         action={addToCart}
         additionalInformationTitle={t('ProductDetails.additionalInformation')}
+        contentful={Streamable.from(() => getContentful(props))}
         ctaDisabled={Streamable.from(() => getCtaDisabled(props))}
         ctaLabel={Streamable.from(() => getCtaLabel(props))}
         decrementLabel={t('ProductDetails.decreaseQuantity')}
