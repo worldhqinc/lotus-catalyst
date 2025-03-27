@@ -61,7 +61,7 @@ const getCopyright = async () => {
     return null;
   }
 
-  return `© ${new Date().getFullYear()} ${data.settings.storeName} – Powered by BigCommerce`;
+  return `© ${new Date().getFullYear()} ${data.settings.storeName}`;
 };
 
 const getLogo = async () => {
