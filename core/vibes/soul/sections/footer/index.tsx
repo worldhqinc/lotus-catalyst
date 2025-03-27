@@ -35,7 +35,14 @@ interface ContactInformation {
 }
 
 interface Props {
-  action: Action<{ lastResult: SubmissionResult | null; successMessage?: string }, FormData>;
+  action: Action<
+    {
+      lastResult: SubmissionResult | null;
+      successMessage?: string | undefined;
+      errorMessage?: string | undefined;
+    },
+    FormData
+  >;
   logo?: Streamable<string | Image | null>;
   sections: Streamable<Section[]>;
   copyright?: Streamable<string | null>;
