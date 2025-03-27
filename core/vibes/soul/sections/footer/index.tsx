@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import { forwardRef, ReactNode, type Ref } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
-import { FooterEmailForm } from '@/vibes/soul/primitives/footer-email-form';
+import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
 import { Logo } from '@/vibes/soul/primitives/logo';
 import { Link } from '~/components/link';
 
@@ -131,7 +131,7 @@ export const Footer = forwardRef(function Footer(
                     <div>
                       <p className="text-lg">{contactTitle}</p>
                       <div className="mt-8">
-                        <FooterEmailForm action={action} />
+                        <InlineEmailForm action={action} />
                       </div>
                     </div>
                   );

@@ -25,11 +25,19 @@ export function InlineEmailForm({
   className?: string;
   placeholder?: string;
   submitLabel?: string;
-  action: Action<{ lastResult: SubmissionResult | null; successMessage?: string }, FormData>;
+  action: Action<
+    { lastResult: SubmissionResult | null; successMessage?: string; errorMessage?: string },
+    FormData
+  >;
 }) {
-  const [{ lastResult, successMessage }, formAction, isPending] = useActionState(action, {
-    lastResult: null,
-  });
+  const [{ lastResult, successMessage, errorMessage }, formAction, isPending] = useActionState(
+    action,
+    {
+      lastResult: null,
+      successMessage: null,
+      errorMessage: null,
+    },
+  );
 
   const [form, fields] = useForm({
     lastResult,
@@ -75,9 +83,12 @@ export function InlineEmailForm({
           {error}
         </FormStatus>
       ))}
-      {form.status === 'success' && successMessage != null && (
-        <FormStatus>{successMessage}</FormStatus>
-      )}
+      {form.status === 'success' && errorMessage ? (
+        <FormStatus type="error">{errorMessage}</FormStatus>
+      ) : null}
+      {form.status === 'success' && successMessage ? (
+        <FormStatus type="success">{successMessage}</FormStatus>
+      ) : null}
     </form>
   );
 }

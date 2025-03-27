@@ -17,22 +17,9 @@ import { readFragment } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
 import { logoTransformer } from '~/data-transformers/logo-transformer';
 
-import { FooterFragment } from './fragment';
-import { AmazonIcon } from './payment-icons/amazon';
-import { AmericanExpressIcon } from './payment-icons/american-express';
-import { ApplePayIcon } from './payment-icons/apple-pay';
-import { MastercardIcon } from './payment-icons/mastercard';
-import { PayPalIcon } from './payment-icons/paypal';
-import { VisaIcon } from './payment-icons/visa';
+import { subscribe } from '../subscribe/_actions/subscribe';
 
-const paymentIcons = [
-  <AmazonIcon key="amazon" />,
-  <AmericanExpressIcon key="americanExpress" />,
-  <ApplePayIcon key="apple" />,
-  <MastercardIcon key="mastercard" />,
-  <PayPalIcon key="paypal" />,
-  <VisaIcon key="visa" />,
-];
+import { FooterFragment } from './fragment';
 
 const socialIcons: Record<string, { icon: JSX.Element }> = {
   Facebook: { icon: <SiFacebook title="Facebook" /> },
@@ -135,13 +122,13 @@ export const Footer = () => {
 
   return (
     <FooterSection
+      action={subscribe}
       contactInformation={getContactInformation()}
       contactTitle={t('contact')}
       copyright={getCopyright()}
       logo={getLogo()}
       logoHref="/"
       logoLabel={t('home')}
-      paymentIcons={paymentIcons}
       sections={getSections()}
       socialMediaLinks={getSocialMediaLinks()}
     />
