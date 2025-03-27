@@ -471,7 +471,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
           )}
         >
           <Popover.Root onOpenChange={setIsSearchOpen} open={isSearchOpen}>
-            <Popover.Anchor className="absolute left-0 right-0 top-full" />
+            <Popover.Anchor className="absolute left-0 right-0 top-0" />
             <Popover.Trigger asChild>
               <button
                 aria-label={openSearchPopupLabel}
@@ -484,7 +484,10 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
               </button>
             </Popover.Trigger>
             <Popover.Portal>
-              <Popover.Content className="h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)] @container data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn">
+              <Popover.Content
+                className="h-screen w-[var(--radix-popper-anchor-width)] @container data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn"
+                side="top"
+              >
                 <div className="flex h-[inherit] flex-col bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out @4xl:inset-x-0">
                   <AlgoliaSearch closeSearch={handleCloseSearch} />
                 </div>

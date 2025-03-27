@@ -36,6 +36,9 @@ function Result({ hit }: { hit: Hit<HitFields> }) {
   const pageDescription = fields.pageDescription ? fields.pageDescription['en-US'] : null;
   const shortDescription = fields.shortDescription ? fields.shortDescription['en-US'] : null;
 
+  const hitHeadingStyles =
+    'font-body text-lg font-medium transition-colors duration-200 ease-quad lg:text-xl group-hover:text-primary after:absolute after:inset-0';
+
   return (
     <article className="group relative">
       {pageImage ? (
@@ -49,22 +52,39 @@ function Result({ hit }: { hit: Hit<HitFields> }) {
       ) : (
         <figure className="aspect-square h-auto w-full rounded-lg bg-surface-image" />
       )}
-      <div className="py-2">
-        {pageName ? <p className="text-xl font-medium">{pageName}</p> : null}
-        {productName ? <p className="text-sm font-bold">{productName}</p> : null}
-        {pageSlug ? (
-          <p className="text-sm">
-            <Link
-              className="transition-colors duration-200 ease-quad after:absolute after:inset-0 group-hover:text-primary"
-              href={`/${pageSlug}`}
-              prefetch="hover"
-            >
-              {pageSlug}
-            </Link>
-          </p>
-        ) : null}
-        {pageDescription ? <p className="text-sm">Page Description: {pageDescription}</p> : null}
-        {shortDescription ? <p className="text-sm">Short Description: {shortDescription}</p> : null}
+      <div className="space-y-1 py-2">
+        {(() => {
+          if (pageName && pageSlug) {
+            return (
+              <Link className={hitHeadingStyles} href={`/${pageSlug}`} prefetch="hover">
+                <h3>{pageName}</h3>
+              </Link>
+            );
+          }
+
+          if (pageName) {
+            return <h3>{pageName}</h3>;
+          }
+
+          return null;
+        })()}
+        {(() => {
+          if (productName && pageSlug) {
+            return (
+              <Link className={hitHeadingStyles} href={`/${pageSlug}`} prefetch="hover">
+                <h3>{productName}</h3>
+              </Link>
+            );
+          }
+
+          if (productName) {
+            return <h3>{productName}</h3>;
+          }
+
+          return null;
+        })()}
+        {pageDescription ? <p className="text-neutral-500">{pageDescription}</p> : null}
+        {shortDescription ? <p className="text-neutral-500">{shortDescription}</p> : null}
       </div>
     </article>
   );
@@ -82,7 +102,7 @@ function SearchComponent({ closeSearch }: SearchComponentProps) {
     '[&_form]:flex [&_form]:gap-4 [&_form_button.ais-SearchBox-submit]:hidden [&_form_button.ais-SearchBox-reset]:hidden';
   const inputStyles =
     '[&_input]:flex-1 [&_input]:min-h-12 [&_input]:focus-within:outline-0 [&_input::-webkit-search-cancel-button]:appearance-none';
-  const searchHitsStyles = 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4';
+  const searchHitsStyles = 'grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8';
 
   return (
     <>
