@@ -299,6 +299,10 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleCloseSearch = () => {
+    setIsSearchOpen(false);
+  };
+
   return (
     <NavigationMenu.Root
       className={clsx(
@@ -480,9 +484,9 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
               </button>
             </Popover.Trigger>
             <Popover.Portal>
-              <Popover.Content className="h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)] @container data-[state=open]:animate-clipIn data-[state=closed]:animate-clipOut">
+              <Popover.Content className="h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)] @container data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn">
                 <div className="flex h-[inherit] flex-col bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out @4xl:inset-x-0">
-                  <AlgoliaSearch />
+                  <AlgoliaSearch closeSearch={handleCloseSearch} />
                 </div>
               </Popover.Content>
             </Popover.Portal>
