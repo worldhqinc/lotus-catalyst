@@ -19,8 +19,8 @@ export function Subscribe({
   action: Action<
     {
       lastResult: SubmissionResult | null;
-      successMessage?: string | undefined;
-      errorMessage?: string | undefined;
+      successMessage?: string | null;
+      errorMessage?: string | null;
     },
     FormData
   >;
