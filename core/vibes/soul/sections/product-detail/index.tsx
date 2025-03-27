@@ -1,3 +1,5 @@
+import { Entry } from 'contentful';
+
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
 import { Price, PriceLabel } from '@/vibes/soul/primitives/price-label';
@@ -27,12 +29,12 @@ interface ProductDetailProduct {
       content: React.ReactNode;
     }>
   >;
-  contentfulData?: Streamable<ProductFinishedGoodsData | null>;
 }
 
 interface Props<F extends Field> {
   breadcrumbs?: Streamable<Breadcrumb[]>;
   product: Streamable<ProductDetailProduct | null>;
+  contentful: Streamable<Entry<ProductFinishedGoodsData> | null | undefined>;
   action: ProductDetailFormAction<F>;
   fields: Streamable<F[]>;
   quantityLabel?: string;
@@ -47,6 +49,7 @@ interface Props<F extends Field> {
 
 export function ProductDetail<F extends Field>({
   product: streamableProduct,
+  contentful: streamableContentful,
   action,
   fields: streamableFields,
   breadcrumbs,
@@ -132,8 +135,8 @@ export function ProductDetail<F extends Field>({
                     )}
                   </Stream>
 
-                  <Stream fallback={<ProductDescriptionSkeleton />} value={product.contentfulData}>
-                    {(contentfulData) => <ContentfulProductData data={contentfulData} />}
+                  <Stream fallback={<ProductDescriptionSkeleton />} value={streamableContentful}>
+                    {(data) => <ContentfulProductData data={data} />}
                   </Stream>
 
                   <Stream fallback={<ProductDescriptionSkeleton />} value={product.description}>
