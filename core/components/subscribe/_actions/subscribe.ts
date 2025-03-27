@@ -9,8 +9,8 @@ import { schema } from '@/vibes/soul/primitives/inline-email-form/schema';
 export const subscribe = async (
   _lastResult: {
     lastResult: SubmissionResult | null;
-    successMessage?: string | undefined;
-    errorMessage?: string | undefined;
+    successMessage?: string | null;
+    errorMessage?: string | null;
   },
   formData: FormData,
 ) => {
@@ -46,8 +46,8 @@ export const subscribe = async (
   );
 
   if (!response.ok) {
-    return { lastResult: submission.reply(), successMessage: undefined, errorMessage: t('error') };
+    return { lastResult: submission.reply(), successMessage: null, errorMessage: t('error') };
   }
 
-  return { lastResult: submission.reply(), successMessage: t('success'), errorMessage: undefined };
+  return { lastResult: submission.reply(), successMessage: t('success'), errorMessage: null };
 };

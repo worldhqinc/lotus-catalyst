@@ -38,8 +38,8 @@ interface Props {
   action: Action<
     {
       lastResult: SubmissionResult | null;
-      successMessage?: string | undefined;
-      errorMessage?: string | undefined;
+      successMessage?: string | null;
+      errorMessage?: string | null;
     },
     FormData
   >;
@@ -110,7 +110,6 @@ export const Footer = forwardRef(function Footer(
               height={logoHeight}
               href={logoHref}
               label={logoLabel}
-              location="footer"
               logo={logo}
               width={logoWidth}
             />
