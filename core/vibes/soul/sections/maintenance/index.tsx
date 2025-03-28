@@ -1,6 +1,6 @@
 import { MailIcon, PhoneIcon } from 'lucide-react';
 
-import { Logo } from '@/vibes/soul/primitives/logo';
+import { LogoLotus } from '@/vibes/soul/primitives/logo-lotus';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Link } from '~/components/link';
 
@@ -33,7 +33,7 @@ export function Maintenance({
       <div className="mx-auto my-auto max-w-3xl px-4 @xl:px-6 @4xl:px-8">
         {Boolean(logo) && (
           <div className="mb-20">
-            <Logo height={40} href="/" logo={logo} width={200} />
+            <LogoLotus height={40} type="full" width={200} />
           </div>
         )}
 

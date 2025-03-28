@@ -11,7 +11,6 @@ import { graphql } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
 import { FeaturedProductsCarouselFragment } from '~/components/featured-products-carousel/fragment';
 import { FeaturedProductsListFragment } from '~/components/featured-products-list/fragment';
-import { Subscribe } from '~/components/subscribe';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
 import { getPreferredCurrencyCode } from '~/lib/currency';
 
@@ -106,8 +105,6 @@ export default async function Home({ params }: Props) {
         products={Streamable.from(getNewestProducts)}
         title={t('NewestProducts.title')}
       />
-
-      <Subscribe />
     </>
   );
 }

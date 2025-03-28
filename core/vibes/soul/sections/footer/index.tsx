@@ -4,8 +4,9 @@ import { forwardRef, ReactNode, type Ref } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
-import { Logo } from '@/vibes/soul/primitives/logo';
 import { Link } from '~/components/link';
+
+import { LogoLotus } from '../../primitives/logo-lotus';
 
 type Action<State, Payload> = (state: Awaited<State>, payload: Payload) => State | Promise<State>;
 
@@ -80,17 +81,12 @@ interface Props {
 export const Footer = forwardRef(function Footer(
   {
     action,
-    logo,
     sections: streamableSections,
     contactTitle = 'Contact Us',
     contactInformation: streamableContactInformation,
     socialMediaLinks: streamableSocialMediaLinks,
     copyright: streamableCopyright,
     className,
-    logoHref = '#',
-    logoLabel = 'Home',
-    logoWidth = 200,
-    logoHeight = 40,
   }: Props,
   ref: Ref<HTMLDivElement>,
 ) {
@@ -106,13 +102,7 @@ export const Footer = forwardRef(function Footer(
         <div className="flex flex-col justify-between gap-x-8 gap-y-12 @3xl:flex-row">
           <div className="flex flex-1 flex-col gap-4 @3xl:w-1/3 @3xl:gap-6 @4xl:flex-none">
             {/* Logo Information */}
-            <Logo
-              height={logoHeight}
-              href={logoHref}
-              label={logoLabel}
-              logo={logo}
-              width={logoWidth}
-            />
+            <LogoLotus height={40} type="icon" width={80} />
 
             {/* Contact Information */}
             <Stream
