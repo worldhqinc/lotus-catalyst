@@ -18,12 +18,12 @@ import React, {
 } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
-import { Logo } from '@/vibes/soul/primitives/logo';
 import { Price } from '@/vibes/soul/primitives/price-label';
 import { Link } from '~/components/link';
 import { usePathname, useRouter } from '~/i18n/routing';
 
 import AlgoliaSearch from '../../../../components/header/algolia-search';
+import { LogoLotus } from '../logo-lotus';
 
 interface Link {
   label: string;
@@ -100,7 +100,6 @@ interface Props<S extends SearchResult> {
   logoHeight?: number;
   logoHref?: string;
   logoLabel?: string;
-  mobileLogo?: Streamable<string | { src: string; alt: string } | null>;
   mobileLogoWidth?: number;
   mobileLogoHeight?: number;
   searchAction?: SearchAction<S>;
@@ -256,13 +255,9 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     cartCount: streamableCartCount,
     accountHref,
     links: streamableLinks,
-    logo: streamableLogo,
-    logoHref = '/',
-    logoLabel = 'Home',
-    logoWidth = 200,
+    logoWidth = 120,
     logoHeight = 40,
-    mobileLogo: streamableMobileLogo,
-    mobileLogoWidth = 100,
+    mobileLogoWidth = 80,
     mobileLogoHeight = 40,
     linksPosition = 'center',
     activeLocaleId,
@@ -322,23 +317,10 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             linksPosition === 'center' ? 'flex-1' : 'flex-1 @4xl:flex-none',
           )}
         >
-          <Logo
-            className={clsx(streamableMobileLogo != null ? 'hidden @4xl:flex' : 'flex')}
-            height={logoHeight}
-            href={logoHref}
-            label={logoLabel}
-            logo={streamableLogo}
-            width={logoWidth}
-          />
-          {streamableMobileLogo != null && (
-            <Logo
-              className="flex @4xl:hidden"
-              height={mobileLogoHeight}
-              href={logoHref}
-              label={logoLabel}
-              logo={streamableMobileLogo}
-              width={mobileLogoWidth}
-            />
+          {isMobileMenuOpen ? (
+            <LogoLotus height={mobileLogoHeight} type="icon" width={mobileLogoWidth} />
+          ) : (
+            <LogoLotus height={logoHeight} type="full" width={logoWidth} />
           )}
         </div>
 
