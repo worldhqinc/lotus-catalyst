@@ -354,7 +354,14 @@ export const withRoutes: MiddlewareFactory = () => {
 
         const cleanPathName = clearLocaleFromPath(pathname, locale);
 
-        const nonContentfulPaths = ['/account', '/login', '/logout', '/register'];
+        const nonContentfulPaths = [
+          '/account',
+          '/cart',
+          '/compare',
+          '/login',
+          '/logout',
+          '/register',
+        ];
         const isContentfulPath = !nonContentfulPaths.some((path) => {
           return cleanPathName.startsWith(path);
         });
