@@ -7,6 +7,7 @@ import { Search, X } from 'lucide-react';
 import { Hits, InstantSearch, SearchBox, useHits, useSearchBox } from 'react-instantsearch';
 
 import { Button } from '@/vibes/soul/primitives/button';
+import Tabs from '@/vibes/soul/primitives/tabs';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 
@@ -25,6 +26,25 @@ interface HitFields {
     shortDescription: { 'en-US': string } | null;
   };
 }
+
+const Groups = [
+  {
+    name: 'Products',
+    slug: 'search_tag:Products',
+  },
+  {
+    name: 'Inspirations',
+    slug: 'search_tag:Inspirations',
+  },
+  {
+    name: 'Support',
+    slug: 'search_tag:Support',
+  },
+  {
+    name: 'Documents',
+    slug: 'search_tag:Documents',
+  },
+];
 
 function Result({ hit }: { hit: Hit<HitFields> }) {
   const fields = hit.fields;
@@ -90,6 +110,25 @@ function Result({ hit }: { hit: Hit<HitFields> }) {
   );
 }
 
+function GroupTabs() {
+  const triggers = Groups.map((group) => ({
+    value: group.slug,
+    label: group.name,
+  }));
+
+  const content = Groups.map((group) => ({
+    value: group.slug,
+    children: (
+      <div className="mt-4">
+        {/* Add your tab content here */}
+        <p>Content for {group.name}</p>
+      </div>
+    ),
+  }));
+
+  return <Tabs className="mt-8" content={content} triggers={triggers} />;
+}
+
 interface SearchComponentProps {
   closeSearch?: () => void;
 }
@@ -116,6 +155,7 @@ function SearchComponent({ closeSearch }: SearchComponentProps) {
           placeholder="Search Lotus for products, guides, or resources…"
         />
       </div>
+      <GroupTabs />
       {query && items.length > 0 ? (
         <Hits classNames={{ root: 'mt-16', list: clsx(searchHitsStyles) }} hitComponent={Result} />
       ) : null}
