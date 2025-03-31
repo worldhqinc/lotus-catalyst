@@ -12,27 +12,46 @@ interface TabsProps {
     children: React.ReactNode;
   }>;
   className?: string;
+  showAll?: boolean;
+  allLabel?: string;
+  allValue?: string;
 }
 
-const Tabs = ({ defaultValue, triggers, content, className }: TabsProps) => (
-  <TabsPrimitive.Root className={className} defaultValue={defaultValue || triggers[0]?.value}>
-    <TabsPrimitive.List className="flex shrink-0 border-b border-border">
-      {triggers.map((trigger) => (
-        <TabsPrimitive.Trigger
-          className="flex h-[45px] flex-1 select-none items-center justify-center border-b border-transparent outline-none data-[state=active]:border-primary data-[state=active]:text-primary"
-          key={trigger.value}
-          value={trigger.value}
-        >
-          {trigger.label}
-        </TabsPrimitive.Trigger>
+const Tabs = ({
+  defaultValue,
+  triggers,
+  content,
+  className,
+  showAll = false,
+  allLabel = 'All',
+  allValue = 'all'
+}: TabsProps) => {
+  const allTrigger = showAll ? [{ value: allValue, label: allLabel }] : [];
+  const allContent = showAll ? [{ value: allValue, children: content.map(item => item.children) }] : [];
+
+  const combinedTriggers = [...allTrigger, ...triggers];
+  const combinedContent = [...allContent, ...content];
+
+  return (
+    <TabsPrimitive.Root className={className} defaultValue={defaultValue || combinedTriggers[0]?.value}>
+      <TabsPrimitive.List className="flex shrink-0 border-b border-border">
+        {combinedTriggers.map((trigger) => (
+          <TabsPrimitive.Trigger
+            className="flex select-none items-center justify-center border-b border-transparent px-4 py-2 outline-none transition-colors duration-200 ease-quad hover:text-primary data-[state=active]:border-primary data-[state=active]:text-primary"
+            key={trigger.value}
+            value={trigger.value}
+          >
+            {trigger.label}
+          </TabsPrimitive.Trigger>
+        ))}
+      </TabsPrimitive.List>
+      {combinedContent.map((item) => (
+        <TabsPrimitive.Content className="grow" key={item.value} value={item.value}>
+          {item.children}
+        </TabsPrimitive.Content>
       ))}
-    </TabsPrimitive.List>
-    {content.map((item) => (
-      <TabsPrimitive.Content className="grow" key={item.value} value={item.value}>
-        {item.children}
-      </TabsPrimitive.Content>
-    ))}
-  </TabsPrimitive.Root>
-);
+    </TabsPrimitive.Root>
+  );
+};
 
 export default Tabs;

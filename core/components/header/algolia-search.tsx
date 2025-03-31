@@ -125,7 +125,15 @@ function GroupTabs() {
     ),
   }));
 
-  return <Tabs className="mt-8" content={content} triggers={triggers} />;
+  return (
+    <Tabs
+      className="mt-8"
+      content={content}
+      triggers={triggers}
+      showAll={true}
+      allLabel="All"
+    />
+  );
 }
 
 interface SearchComponentProps {
