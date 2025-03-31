@@ -120,7 +120,6 @@ function GroupTabs() {
     value: group.slug,
     children: (
       <div className="mt-4">
-        {/* Add your tab content here */}
         <p>Content for {group.name}</p>
       </div>
     ),
