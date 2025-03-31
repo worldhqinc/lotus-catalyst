@@ -126,13 +126,7 @@ function GroupTabs() {
   }));
 
   return (
-    <Tabs
-      className="mt-8"
-      content={content}
-      triggers={triggers}
-      showAll={true}
-      allLabel="All"
-    />
+    <Tabs allLabel="All" className="mt-8" content={content} showAll={true} triggers={triggers} />
   );
 }
 

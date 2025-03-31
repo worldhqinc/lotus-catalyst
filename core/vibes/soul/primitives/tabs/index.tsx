@@ -24,16 +24,21 @@ const Tabs = ({
   className,
   showAll = false,
   allLabel = 'All',
-  allValue = 'all'
+  allValue = 'all',
 }: TabsProps) => {
   const allTrigger = showAll ? [{ value: allValue, label: allLabel }] : [];
-  const allContent = showAll ? [{ value: allValue, children: content.map(item => item.children) }] : [];
+  const allContent = showAll
+    ? [{ value: allValue, children: content.map((item) => item.children) }]
+    : [];
 
   const combinedTriggers = [...allTrigger, ...triggers];
   const combinedContent = [...allContent, ...content];
 
   return (
-    <TabsPrimitive.Root className={className} defaultValue={defaultValue || combinedTriggers[0]?.value}>
+    <TabsPrimitive.Root
+      className={className}
+      defaultValue={defaultValue || combinedTriggers[0]?.value}
+    >
       <TabsPrimitive.List className="flex shrink-0 border-b border-border">
         {combinedTriggers.map((trigger) => (
           <TabsPrimitive.Trigger
