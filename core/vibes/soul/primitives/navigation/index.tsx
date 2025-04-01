@@ -18,6 +18,7 @@ import React, {
 } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
+import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price } from '@/vibes/soul/primitives/price-label';
 import { Link } from '~/components/link';
 import { usePathname, useRouter } from '~/i18n/routing';
@@ -420,10 +421,9 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                                     >
                                       {group.label}
                                       {group.comingSoon && (
-                                        // TODO: Convert this to a component
-                                        <span className="inline-block rounded border border-border px-2.5 py-1 text-xs uppercase text-neutral-500">
+                                        <Badge shape="rounded" variant="primary">
                                           Coming Soon
-                                        </span>
+                                        </Badge>
                                       )}
                                     </Link>
                                   ) : (
