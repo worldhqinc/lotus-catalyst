@@ -284,6 +284,18 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
   }, [pathname]);
 
   useEffect(() => {
+    if (isSearchOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isSearchOpen]);
+
+  useEffect(() => {
     function handleScroll() {
       setIsSearchOpen(false);
       setIsMobileMenuOpen(false);

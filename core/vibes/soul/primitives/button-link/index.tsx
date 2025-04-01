@@ -60,7 +60,7 @@ export function ButtonLink({
             'border-[var(--button-tertiary-border,hsl(var(--contrast-200)))] bg-[var(--button-tertiary-background,hsl(var(--background)))] text-[var(--button-tertiary-text,hsl(var(--foreground)))] after:bg-[var(--button-tertiary-background-hover,hsl(var(--contrast-100)))] focus-visible:border-primary disabled:border-contrast-100 disabled:text-contrast-200',
           ghost:
             'border-[var(--button-ghost-border,transparent)] bg-[var(--button-ghost-background,transparent)] text-[var(--button-ghost-text,hsl(var(--foreground)))] after:bg-contrast-100 hover:border-contrast-100 focus-visible:border-primary disabled:border-transparent disabled:text-contrast-200',
-          link: 'border-none bg-transparent transition-colors duration-200 ease-quad hover:text-primary after:hidden',
+          link: 'border-none bg-transparent transition-colors duration-200 ease-quad after:hidden hover:text-primary',
         }[variant],
         {
           'x-small': 'min-h-8 text-xs',
