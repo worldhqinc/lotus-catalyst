@@ -1,10 +1,6 @@
 import { Entry } from 'contentful';
-
-<<<<<<< HEAD
 import { ReactNode } from 'react';
 
-=======
->>>>>>> d9bbbb6d (refactor product page to separate Contentful data fetching and update type definitions for improved clarity)
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
 import { Price, PriceLabel } from '@/vibes/soul/primitives/price-label';
@@ -15,7 +11,6 @@ import { ProductGallery } from '@/vibes/soul/sections/product-detail/product-gal
 import { ProductFinishedGoodsData } from '~/app/[locale]/(default)/product/[slug]/page-data';
 
 import { ContentfulProductData } from './contentful-product-data';
-
 import { ProductDetailForm, ProductDetailFormAction } from './product-detail-form';
 import { Field } from './schema';
 
@@ -168,9 +163,11 @@ export function ProductDetail<F extends Field>({
                       )}
                     </Stream>
                   </div>
-                  <Stream fallback={<ProductDescriptionSkeleton />} value={streamableContentful}>
-                    {(data) => <ContentfulProductData data={data} />}
-                  </Stream>
+                  <div className="group/product-description">
+                    <Stream fallback={<ProductDescriptionSkeleton />} value={streamableContentful}>
+                      {(data) => <ContentfulProductData data={data} />}
+                    </Stream>
+                  </div>
                   <div className="group/product-description">
                     <Stream fallback={<ProductDescriptionSkeleton />} value={product.description}>
                       {(description) =>
