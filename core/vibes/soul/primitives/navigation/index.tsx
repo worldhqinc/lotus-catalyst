@@ -284,7 +284,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
   }, [pathname]);
 
   useEffect(() => {
-    if (isSearchOpen) {
+    if (isSearchOpen || isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -293,7 +293,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isSearchOpen]);
+  }, [isSearchOpen, isMobileMenuOpen]);
 
   useEffect(() => {
     function handleScroll() {
@@ -527,7 +527,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             </Popover.Trigger>
             <Popover.Portal>
               <Popover.Content className="z-10 h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)] @container data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn">
-                <div className="flex h-[inherit] flex-col gap-4 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-white px-4 py-36">
+                <div className="flex h-[inherit] flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-white px-4 py-8">
                   <Stream
                     fallback={
                       <ul className="flex animate-pulse flex-col gap-4 p-5 @4xl:gap-2 @4xl:p-5">
@@ -547,29 +547,51 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                     }
                     value={streamableLinks}
                   >
-                    {(links) =>
-                      links.map((item, i) => (
-                        <ul className="flex flex-col gap-4 [&:not(:first-of-type)]:pt-4" key={i}>
-                          {item.label !== '' && (
-                            <li>
-                              <Link className="block" href={item.href}>
-                                {item.label}
-                              </Link>
-                            </li>
-                          )}
-                          {item.groups
-                            ?.flatMap((group) => group.links)
-                            .map((link, j) => (
-                              <li key={j}>
-                                <Link className="block" href={link.href}>
-                                  {link.label}
-                                </Link>
-                              </li>
-                            ))}
-                        </ul>
-                      ))
-                    }
+                    {(links) => (
+                      <ul className="flex flex-col gap-4 [&:not(:first-of-type)]:pt-6">
+                        {links.map((item, i) => (
+                          <li key={i}>
+                            <Link className={clsx('text-lg')} href={item.href}>
+                              {item.label}
+                            </Link>
+                          </li>
+                        ))}
+                        <li>
+                          <Link className="text-lg" href="/shop-all">
+                            Shop all products
+                          </Link>
+                        </li>
+                      </ul>
+                    )}
                   </Stream>
+                  {/*  */}
+                  <ul className="flex flex-col gap-4 pt-6">
+                    <li>
+                      <Link className="text-lg" href="#">
+                        Our story
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="text-lg" href="#">
+                        Shop in-store
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="text-lg" href="#">
+                        Inspiration
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="text-lg" href="#">
+                        Support
+                      </Link>
+                    </li>
+                    <li>
+                      <Link aria-label={accountLabel} className="text-lg" href={accountHref}>
+                        Sign in/Account
+                      </Link>
+                    </li>
+                  </ul>
                 </div>
               </Popover.Content>
             </Popover.Portal>
