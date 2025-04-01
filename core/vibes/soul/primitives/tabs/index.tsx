@@ -47,8 +47,6 @@ const Tabs = ({
     const element = triggerRefs.current.get(value);
 
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-
       const width = element.offsetWidth;
 
       element.parentElement?.style.setProperty('--trigger-width', `${width}px`);
