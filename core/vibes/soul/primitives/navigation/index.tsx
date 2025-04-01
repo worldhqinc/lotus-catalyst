@@ -373,7 +373,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                     {item.groups != null && item.groups.length > 0 ? (
                       <button
                         className={clsx(
-                          'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
+                          'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:tracking-widest @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
                         )}
                       >
                         {item.label}
@@ -381,7 +381,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                     ) : (
                       <Link
                         className={clsx(
-                          'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
+                          'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:tracking-widest @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
                         )}
                         href={item.href}
                       >
@@ -562,7 +562,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                                     {group.href ? (
                                       <Link
                                         className={clsx(
-                                          'flex items-center gap-2 text-lg',
+                                          'flex items-center gap-2 text-lg tracking-widest',
                                           group.comingSoon && 'cursor-not-allowed text-neutral-400',
                                         )}
                                         href={group.href}
@@ -579,7 +579,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                                 );
                               })}
                               <li>
-                                <Link className="text-lg" href="/shop-all">
+                                <Link className="text-lg tracking-widest" href="/shop-all">
                                   Shop all products
                                 </Link>
                               </li>
@@ -589,13 +589,17 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                         <ul className="flex flex-col gap-4 [&:not(:first-of-type)]:pt-6">
                           {links.map((item, i) => (
                             <li key={i}>
-                              <Link className={clsx('text-lg')} href={item.href}>
+                              <Link className={clsx('text-lg tracking-widest')} href={item.href}>
                                 {item.label}
                               </Link>
                             </li>
                           ))}
                           <li>
-                            <Link aria-label={accountLabel} className="text-lg" href={accountHref}>
+                            <Link
+                              aria-label={accountLabel}
+                              className="text-lg tracking-widest"
+                              href={accountHref}
+                            >
                               Sign in/Account
                             </Link>
                           </li>
