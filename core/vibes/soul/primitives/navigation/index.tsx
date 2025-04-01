@@ -370,24 +370,14 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
               links.map((item, i) => (
                 <NavigationMenu.Item key={i} value={i.toString()}>
                   <NavigationMenu.Trigger asChild>
-                    {item.groups != null && item.groups.length > 0 ? (
-                      <button
-                        className={clsx(
-                          'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:tracking-widest @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
-                        )}
-                      >
-                        {item.label}
-                      </button>
-                    ) : (
-                      <Link
-                        className={clsx(
-                          'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:tracking-widest @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
-                        )}
-                        href={item.href}
-                      >
-                        {item.label}
-                      </Link>
-                    )}
+                    <Link
+                      className={clsx(
+                        'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:tracking-widest @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
+                      )}
+                      href={item.href}
+                    >
+                      {item.label}
+                    </Link>
                   </NavigationMenu.Trigger>
                   {item.groups != null && item.groups.length > 0 && (
                     <NavigationMenu.Content className="bg-[var(--nav-menu-background,hsl(var(--background)))]">
@@ -398,13 +388,16 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                               {/* Second Level Links */}
                               {group.label != null && group.label !== '' && (
                                 <li>
-                                  {group.href != null && group.href !== '' ? (
-                                    <Link
+                                  {group.href != null && group.href !== '' && !group.comingSoon ? (
+                                    <Link className={navGroupClassName} href={group.href}>
+                                      {group.label}
+                                    </Link>
+                                  ) : (
+                                    <span
                                       className={clsx(
                                         navGroupClassName,
-                                        group.comingSoon && 'cursor-not-allowed text-neutral-400',
+                                        'cursor-not-allowed text-neutral-400 hover:!text-neutral-400',
                                       )}
-                                      href={group.href}
                                     >
                                       {group.label}
                                       {group.comingSoon && (
@@ -412,9 +405,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                                           Coming Soon
                                         </Badge>
                                       )}
-                                    </Link>
-                                  ) : (
-                                    <span className={navGroupClassName}>{group.label}</span>
+                                    </span>
                                   )}
                                 </li>
                               )}
@@ -559,22 +550,27 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 
                                 return (
                                   <li key={groupIndex}>
-                                    {group.href ? (
+                                    {group.href != null &&
+                                    group.href !== '' &&
+                                    !group.comingSoon ? (
                                       <Link
                                         className={clsx(
                                           'flex items-center gap-2 text-lg tracking-widest',
-                                          group.comingSoon && 'cursor-not-allowed text-neutral-400',
                                         )}
                                         href={group.href}
                                       >
+                                        {group.label}
+                                      </Link>
+                                    ) : (
+                                      <span className="flex cursor-not-allowed items-center gap-2 text-lg tracking-widest text-neutral-400 hover:!text-neutral-400">
                                         {group.label}
                                         {group.comingSoon && (
                                           <Badge shape="rounded" variant="primary">
                                             Coming Soon
                                           </Badge>
                                         )}
-                                      </Link>
-                                    ) : null}
+                                      </span>
+                                    )}
                                   </li>
                                 );
                               })}
