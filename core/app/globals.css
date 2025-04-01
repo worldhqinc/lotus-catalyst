@@ -62,7 +62,7 @@
   --disabled-secondary: 0 0% 84%;
 
   /* Container */
-  --container-max-width: 1312px;
+  --container-max-width: 1472px;
   --container-padding: 1rem;
 
   @media (min-width: 768px) {

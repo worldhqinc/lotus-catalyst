@@ -112,7 +112,6 @@ interface Props<S extends SearchResult> {
   openSearchPopupLabel?: string;
   searchLabel?: string;
   mobileMenuTriggerLabel?: string;
-  triggerMode?: 'hover' | 'click';
 }
 
 const MobileMenuButton = forwardRef<
@@ -271,7 +270,6 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     accountLabel = 'Profile',
     openSearchPopupLabel = 'Open search popup',
     mobileMenuTriggerLabel = 'Toggle navigation',
-    triggerMode = 'click',
   }: Props<S>,
   ref: Ref<HTMLDivElement>,
 ) {
@@ -371,14 +369,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             {(links) =>
               links.map((item, i) => (
                 <NavigationMenu.Item key={i} value={i.toString()}>
-                  <NavigationMenu.Trigger
-                    asChild
-                    {...(triggerMode === 'click' && {
-                      onPointerEnter: (event) => event.preventDefault(),
-                      onPointerMove: (event) => event.preventDefault(),
-                      onPointerLeave: (event) => event.preventDefault(),
-                    })}
-                  >
+                  <NavigationMenu.Trigger asChild>
                     {item.groups != null && item.groups.length > 0 ? (
                       <button
                         className={clsx(
@@ -399,11 +390,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                     )}
                   </NavigationMenu.Trigger>
                   {item.groups != null && item.groups.length > 0 && (
-                    <NavigationMenu.Content
-                      className="bg-[var(--nav-menu-background,hsl(var(--background)))]"
-                      onPointerEnter={(e) => e.preventDefault()}
-                      onPointerLeave={(e) => e.preventDefault()}
-                    >
+                    <NavigationMenu.Content className="bg-[var(--nav-menu-background,hsl(var(--background)))]">
                       <div className="container m-auto grid grid-cols-3 justify-center gap-5 py-16">
                         <div className="flex flex-col items-start gap-6">
                           {item.groups.map((group, columnIndex) => (
