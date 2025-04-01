@@ -258,8 +258,6 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     links: streamableLinks,
     logoWidth = 120,
     logoHeight = 40,
-    mobileLogoWidth = 80,
-    mobileLogoHeight = 40,
     linksPosition = 'center',
     activeLocaleId,
     locales,
@@ -329,11 +327,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             linksPosition === 'center' ? 'flex-1' : 'flex-1 @4xl:flex-none',
           )}
         >
-          {isMobileMenuOpen ? (
-            <LogoLotus height={mobileLogoHeight} type="icon" width={mobileLogoWidth} />
-          ) : (
-            <LogoLotus height={logoHeight} type="full" width={logoWidth} />
-          )}
+          <LogoLotus height={logoHeight} type="full" width={logoWidth} />
         </div>
 
         {/* Top Level Nav Links */}
