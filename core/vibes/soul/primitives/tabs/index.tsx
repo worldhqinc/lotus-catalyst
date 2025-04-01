@@ -39,7 +39,7 @@ const Tabs = ({
     () => [...allTrigger, ...triggers],
     [allTrigger, triggers],
   );
-  const combinedContent = React.useMemo(() => [...allContent, ...content],[allContent, content]);
+  const combinedContent = React.useMemo(() => [...allContent, ...content], [allContent, content]);
 
   const triggerRefs = React.useRef<Map<string, HTMLButtonElement>>(new Map());
 
@@ -72,10 +72,10 @@ const Tabs = ({
       className={className}
       defaultValue={defaultValue || combinedTriggers[0]?.value}
     >
-      <TabsPrimitive.List className="tabs-list relative flex shrink-0 border-b border-border after:absolute after:bottom-0 after:left-[var(--trigger-left)] after:h-px after:w-[var(--trigger-width)] after:bg-primary after:transition-[left,_width] after:duration-200 after:ease-quad">
+      <TabsPrimitive.List className="tabs-list relative flex shrink-0 border-b border-border after:absolute after:bottom-0 after:left-[var(--trigger-left)] after:h-px after:w-[var(--trigger-width)] after:bg-foreground after:transition-[left,_width] after:duration-200 after:ease-quad">
         {combinedTriggers.map((trigger) => (
           <TabsPrimitive.Trigger
-            className="flex select-none items-center justify-center px-4 py-2 outline-none transition-colors duration-200 ease-quad hover:text-primary data-[state=active]:text-primary"
+            className="flex select-none items-center justify-center px-4 py-2 text-neutral-500 outline-none transition-colors duration-200 ease-quad hover:text-foreground data-[state=active]:text-foreground"
             key={trigger.value}
             onClick={() => moveIndicator(trigger.value)}
             ref={(element) => {
