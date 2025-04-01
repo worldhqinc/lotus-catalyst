@@ -66,42 +66,40 @@ const getLinks = async () => {
 
   return await Promise.resolve([
     {
-      label: 'Page 1',
+      label: 'Shop',
       href: '/page-1',
-    },
-    {
-      label: 'Page 2',
-      href: '/page-2',
       groups: [
         {
-          label: 'Group 1',
+          label: 'Professional Series',
           href: '/group-1',
-          links: [
-            {
-              label: 'Link 1',
-              href: '/link-1',
-            },
-            {
-              label: 'Link 2',
-              href: '/link-2',
-            },
-          ],
+          links: [],
+          comingSoon: false,
         },
         {
-          label: 'Group 2',
+          label: 'Signature Series',
           href: '/group-2',
-          links: [
-            {
-              label: 'Link 3',
-              href: '/link-3',
-            },
-            {
-              label: 'Link 4',
-              href: '/link-4',
-            },
-          ],
+          links: [],
+          comingSoon: true,
+        },
+        {
+          label: 'Accessories',
+          href: '/group-3',
+          links: [],
+          comingSoon: false,
         },
       ],
+    },
+    {
+      label: 'Inspiration',
+      href: '/page-2',
+    },
+    {
+      label: 'Our Story',
+      href: '/page-3',
+    },
+    {
+      label: 'Support',
+      href: '/page-4',
     },
   ]);
 };

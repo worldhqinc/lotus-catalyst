@@ -31,6 +31,7 @@ interface Link {
   groups?: Array<{
     label?: string;
     href?: string;
+    comingSoon?: boolean;
     links: Array<{
       label: string;
       href: string;
@@ -173,7 +174,7 @@ const MobileMenuButton = forwardRef<
 MobileMenuButton.displayName = 'MobileMenuButton';
 
 const navGroupClassName =
-  'block text-3xl transition-colors duration-200 ease-quad hover:text-primary';
+  'flex items-center gap-2 text-3xl transition-colors duration-200 ease-quad hover:text-primary';
 const navLinkClassName =
   'block text-3xl transition-colors duration-200 ease-quad hover:text-primary';
 const navButtonClassName =
@@ -410,8 +411,20 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                               {group.label != null && group.label !== '' && (
                                 <li>
                                   {group.href != null && group.href !== '' ? (
-                                    <Link className={navGroupClassName} href={group.href}>
+                                    <Link
+                                      className={clsx(
+                                        navGroupClassName,
+                                        group.comingSoon && 'cursor-not-allowed text-neutral-400',
+                                      )}
+                                      href={group.href}
+                                    >
                                       {group.label}
+                                      {group.comingSoon && (
+                                        // TODO: Convert this to a component
+                                        <span className="inline-block rounded border border-border px-2.5 py-1 text-xs uppercase text-neutral-500">
+                                          Coming Soon
+                                        </span>
+                                      )}
                                     </Link>
                                   ) : (
                                     <span className={navGroupClassName}>{group.label}</span>
