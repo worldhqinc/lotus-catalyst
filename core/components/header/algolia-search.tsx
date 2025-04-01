@@ -7,6 +7,7 @@ import { Search, X } from 'lucide-react';
 import { Hits, InstantSearch, SearchBox, useHits, useSearchBox } from 'react-instantsearch';
 
 import { Button } from '@/vibes/soul/primitives/button';
+import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import Tabs from '@/vibes/soul/primitives/tabs';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
@@ -119,8 +120,14 @@ function GroupTabs() {
   const content = Groups.map((group) => ({
     value: group.slug,
     children: (
-      <div className="mt-4">
-        <p>Content for {group.name}</p>
+      <div className="py-8 first:mt-8">
+        <div className="flex items-center justify-between gap-4">
+          <h2>{group.name}</h2>
+          <ButtonLink href="#" shape="link" size="link" variant="link">View more</ButtonLink>
+        </div>
+        <div className="mt-8">
+          <Hits classNames={{ list: 'grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8' }} hitComponent={Result} />
+        </div>
       </div>
     ),
   }));

@@ -70,7 +70,7 @@ export function Button({
             'border-[var(--button-ghost-border,transparent)] bg-[var(--button-ghost-background,transparent)] text-[var(--button-ghost-text,hsl(var(--foreground)))] after:bg-contrast-100 hover:border-contrast-100 focus-visible:border-primary disabled:border-transparent disabled:text-contrast-200',
           danger:
             'border-[var(--button-danger-border,color-mix(in_oklab,hsl(var(--error)),white_30%))] bg-[var(--button-danger-background,color-mix(in_oklab,hsl(var(--error)),white_30%))] text-[var(--button-danger-foreground)] after:bg-[var(--button-danger-background-hover,color-mix(in_oklab,hsl(var(--error)),white_75%))]',
-          link: 'border-none bg-transparent hover:text-primary',
+          link: 'border-none bg-transparent transition-colors duration-200 ease-quad hover:text-primary after:hidden',
         }[variant],
         {
           pill: 'rounded-full after:rounded-full',

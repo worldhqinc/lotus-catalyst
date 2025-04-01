@@ -3,9 +3,9 @@ import { clsx } from 'clsx';
 import { Link } from '~/components/link';
 
 export type Props = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost';
-  size?: 'large' | 'medium' | 'small' | 'x-small';
-  shape?: 'pill' | 'rounded' | 'square' | 'circle';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'link';
+  size?: 'large' | 'medium' | 'small' | 'x-small' | 'link';
+  shape?: 'pill' | 'rounded' | 'square' | 'circle' | 'link';
   href: string;
 };
 
@@ -60,12 +60,14 @@ export function ButtonLink({
             'border-[var(--button-tertiary-border,hsl(var(--contrast-200)))] bg-[var(--button-tertiary-background,hsl(var(--background)))] text-[var(--button-tertiary-text,hsl(var(--foreground)))] after:bg-[var(--button-tertiary-background-hover,hsl(var(--contrast-100)))] focus-visible:border-primary disabled:border-contrast-100 disabled:text-contrast-200',
           ghost:
             'border-[var(--button-ghost-border,transparent)] bg-[var(--button-ghost-background,transparent)] text-[var(--button-ghost-text,hsl(var(--foreground)))] after:bg-contrast-100 hover:border-contrast-100 focus-visible:border-primary disabled:border-transparent disabled:text-contrast-200',
+          link: 'border-none bg-transparent transition-colors duration-200 ease-quad hover:text-primary after:hidden',
         }[variant],
         {
           'x-small': 'min-h-8 text-xs',
           small: 'min-h-10 text-sm',
           medium: 'min-h-12 text-base',
           large: 'min-h-14 text-base',
+          link: 'rounded-none after:rounded-none',
         }[size],
         shape !== 'circle' &&
           {
@@ -73,13 +75,16 @@ export function ButtonLink({
             small: 'gap-x-2 px-4 py-2.5',
             medium: 'gap-x-2.5 px-5 py-3',
             large: 'gap-x-3 px-6 py-4',
+            link: 'min-h-0 text-base',
           }[size],
         {
           pill: 'rounded-full after:rounded-full',
           rounded: 'rounded-md after:rounded-md',
           square: 'rounded-none after:rounded-none',
           circle: 'aspect-square rounded-full after:rounded-full',
+          link: 'min-h-0 text-base',
         }[shape],
+        variant !== 'link' ? 'font-semibold' : 'font-normal',
         className,
       )}
       href={href}
