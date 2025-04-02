@@ -29,14 +29,13 @@ export function Badge({ children, shape = 'rounded', className, variant = 'prima
   return (
     <span
       className={clsx(
-        'px-2 py-0.5 font-[family-name:var(--badge-font-family,var(--font-family-mono))] text-xs uppercase tracking-tighter text-[var(--badge-text,hsl(var(--foreground)))]',
+        'border px-2.5 py-1 text-xs uppercase tracking-wider text-[var(--badge-text,hsl(var(--foreground)))]',
         {
           pill: 'rounded-full',
           rounded: 'rounded',
         }[shape],
         {
-          primary:
-            'bg-[var(--badge-primary-background,color-mix(in_oklab,_hsl(var(--primary)),_white_75%))]',
+          primary: 'border-border bg-transparent text-neutral-500',
           warning:
             'bg-[var(--badge-warning-background,color-mix(in_oklab,_hsl(var(--warning)),_white_75%))]',
           error:

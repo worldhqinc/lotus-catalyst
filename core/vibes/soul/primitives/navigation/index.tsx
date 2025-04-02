@@ -18,6 +18,7 @@ import React, {
 } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
+import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price } from '@/vibes/soul/primitives/price-label';
 import { Link } from '~/components/link';
 import { usePathname, useRouter } from '~/i18n/routing';
@@ -31,6 +32,7 @@ interface Link {
   groups?: Array<{
     label?: string;
     href?: string;
+    comingSoon?: boolean;
     links: Array<{
       label: string;
       href: string;
@@ -100,8 +102,6 @@ interface Props<S extends SearchResult> {
   logoHeight?: number;
   logoHref?: string;
   logoLabel?: string;
-  mobileLogoWidth?: number;
-  mobileLogoHeight?: number;
   searchAction?: SearchAction<S>;
   searchCtaLabel?: string;
   searchInputPlaceholder?: string;
@@ -173,7 +173,7 @@ const MobileMenuButton = forwardRef<
 MobileMenuButton.displayName = 'MobileMenuButton';
 
 const navGroupClassName =
-  'block text-3xl transition-colors duration-200 ease-quad hover:text-primary';
+  'flex items-center gap-2 text-3xl transition-colors duration-200 ease-quad hover:text-primary';
 const navLinkClassName =
   'block text-3xl transition-colors duration-200 ease-quad hover:text-primary';
 const navButtonClassName =
@@ -257,8 +257,6 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     links: streamableLinks,
     logoWidth = 120,
     logoHeight = 40,
-    mobileLogoWidth = 80,
-    mobileLogoHeight = 40,
     linksPosition = 'center',
     activeLocaleId,
     locales,
@@ -282,6 +280,18 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (isSearchOpen || isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isSearchOpen, isMobileMenuOpen]);
 
   useEffect(() => {
     function handleScroll() {
@@ -317,11 +327,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             linksPosition === 'center' ? 'flex-1' : 'flex-1 @4xl:flex-none',
           )}
         >
-          {isMobileMenuOpen ? (
-            <LogoLotus height={mobileLogoHeight} type="icon" width={mobileLogoWidth} />
-          ) : (
-            <LogoLotus height={logoHeight} type="full" width={logoWidth} />
-          )}
+          <LogoLotus height={logoHeight} type="full" width={logoWidth} />
         </div>
 
         {/* Top Level Nav Links */}
@@ -357,39 +363,18 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             {(links) =>
               links.map((item, i) => (
                 <NavigationMenu.Item key={i} value={i.toString()}>
-                  <NavigationMenu.Trigger
-                    asChild
-                    {...(triggerMode === 'click' && {
-                      onPointerEnter: (event) => event.preventDefault(),
-                      onPointerMove: (event) => event.preventDefault(),
-                      onPointerLeave: (event) => event.preventDefault(),
-                    })}
-                  >
-                    {item.groups != null && item.groups.length > 0 ? (
-                      <button
-                        className={clsx(
-                          'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
-                        )}
-                      >
-                        {item.label}
-                      </button>
-                    ) : (
-                      <Link
-                        className={clsx(
-                          'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
-                        )}
-                        href={item.href}
-                      >
-                        {item.label}
-                      </Link>
-                    )}
+                  <NavigationMenu.Trigger asChild>
+                    <Link
+                      className={clsx(
+                        'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:tracking-widest @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
+                      )}
+                      href={item.href}
+                    >
+                      {item.label}
+                    </Link>
                   </NavigationMenu.Trigger>
                   {item.groups != null && item.groups.length > 0 && (
-                    <NavigationMenu.Content
-                      className="bg-[var(--nav-menu-background,hsl(var(--background)))]"
-                      onPointerEnter={(e) => e.preventDefault()}
-                      onPointerLeave={(e) => e.preventDefault()}
-                    >
+                    <NavigationMenu.Content className="bg-[var(--nav-menu-background,hsl(var(--background)))]">
                       <div className="container m-auto grid grid-cols-3 justify-center gap-5 py-16">
                         <div className="flex flex-col items-start gap-6">
                           {item.groups.map((group, columnIndex) => (
@@ -397,12 +382,24 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                               {/* Second Level Links */}
                               {group.label != null && group.label !== '' && (
                                 <li>
-                                  {group.href != null && group.href !== '' ? (
+                                  {group.href != null && group.href !== '' && !group.comingSoon ? (
                                     <Link className={navGroupClassName} href={group.href}>
                                       {group.label}
                                     </Link>
                                   ) : (
-                                    <span className={navGroupClassName}>{group.label}</span>
+                                    <span
+                                      className={clsx(
+                                        navGroupClassName,
+                                        'cursor-not-allowed text-neutral-400 hover:!text-neutral-400',
+                                      )}
+                                    >
+                                      {group.label}
+                                      {group.comingSoon && (
+                                        <Badge shape="rounded" variant="primary">
+                                          Coming Soon
+                                        </Badge>
+                                      )}
+                                    </span>
                                   )}
                                 </li>
                               )}
@@ -515,7 +512,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             </Popover.Trigger>
             <Popover.Portal>
               <Popover.Content className="z-10 h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)] @container data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn">
-                <div className="flex h-[inherit] flex-col gap-4 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-white px-4 py-36">
+                <div className="flex h-[inherit] flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-white px-4 py-8">
                   <Stream
                     fallback={
                       <ul className="flex animate-pulse flex-col gap-4 p-5 @4xl:gap-2 @4xl:p-5">
@@ -535,6 +532,70 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                     }
                     value={streamableLinks}
                   >
+                    {(links) => (
+                      <>
+                        {links.map((item, i) => {
+                          if (!item.groups?.length) return null;
+
+                          return (
+                            <ul className="flex flex-col gap-4" key={i}>
+                              {item.groups.map((group, groupIndex) => {
+                                if (!group.label) return null;
+
+                                return (
+                                  <li key={groupIndex}>
+                                    {group.href != null &&
+                                    group.href !== '' &&
+                                    !group.comingSoon ? (
+                                      <Link
+                                        className={clsx(
+                                          'flex items-center gap-2 text-lg tracking-widest',
+                                        )}
+                                        href={group.href}
+                                      >
+                                        {group.label}
+                                      </Link>
+                                    ) : (
+                                      <span className="flex cursor-not-allowed items-center gap-2 text-lg tracking-widest text-neutral-400 hover:!text-neutral-400">
+                                        {group.label}
+                                        {group.comingSoon && (
+                                          <Badge shape="rounded" variant="primary">
+                                            Coming Soon
+                                          </Badge>
+                                        )}
+                                      </span>
+                                    )}
+                                  </li>
+                                );
+                              })}
+                              <li>
+                                <Link className="text-lg tracking-widest" href="/shop-all">
+                                  Shop all products
+                                </Link>
+                              </li>
+                            </ul>
+                          );
+                        })}
+                        <ul className="flex flex-col gap-4 [&:not(:first-of-type)]:pt-6">
+                          {links.map((item, i) => (
+                            <li key={i}>
+                              <Link className={clsx('text-lg tracking-widest')} href={item.href}>
+                                {item.label}
+                              </Link>
+                            </li>
+                          ))}
+                          <li>
+                            <Link
+                              aria-label={accountLabel}
+                              className="text-lg tracking-widest"
+                              href={accountHref}
+                            >
+                              Sign in/Account
+                            </Link>
+                          </li>
+                        </ul>
+                      </>
+                    )}
                     {(links) =>
                       links.map((item, i) => (
                         <ul className="flex flex-col gap-4 [&:not(:first-of-type)]:pt-4" key={i}>
