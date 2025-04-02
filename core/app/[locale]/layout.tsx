@@ -4,7 +4,7 @@ import { clsx } from 'clsx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { PropsWithChildren } from 'react';
 
@@ -92,12 +92,9 @@ export default async function RootLayout({ params, children }: Props) {
   // https://next-intl-docs.vercel.app/docs/getting-started/app-router#add-setRequestLocale-to-all-layouts-and-pages
   setRequestLocale(locale);
 
-  const messages = await getMessages();
-
   return (
     <html className={clsx(fonts.map((f) => f.variable))} lang={locale}>
       <body className="font-body antialiased [&_[data-radix-popper-content-wrapper]]:!z-20">
-        <NextIntlClientProvider locale={locale} messages={messages}>
           <NuqsAdapter>
             <Providers>
               {toastNotificationCookieData && (

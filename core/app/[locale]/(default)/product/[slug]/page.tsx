@@ -250,11 +250,12 @@ export default async function Product(props: Props) {
     <>
       <ProductDetail
         action={addToCart}
-        additionaInformationTitle={t('ProductDetails.additionalInformation')}
+        additionalInformationTitle={t('ProductDetails.additionalInformation')}
         contentful={Streamable.from(() => getContentful(props))}
         ctaDisabled={Streamable.from(() => getCtaDisabled(props))}
         ctaLabel={Streamable.from(() => getCtaLabel(props))}
         decrementLabel={t('ProductDetails.decreaseQuantity')}
+        emptySelectPlaceholder={t('ProductDetails.emptySelectPlaceholder')}
         fields={Streamable.from(() => getFields(props))}
         incrementLabel={t('ProductDetails.increaseQuantity')}
         prefetch={true}

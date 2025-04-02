@@ -102,8 +102,6 @@ interface Props<S extends SearchResult> {
   logoHeight?: number;
   logoHref?: string;
   logoLabel?: string;
-  mobileLogoWidth?: number;
-  mobileLogoHeight?: number;
   searchAction?: SearchAction<S>;
   searchCtaLabel?: string;
   searchInputPlaceholder?: string;
@@ -112,6 +110,7 @@ interface Props<S extends SearchResult> {
   openSearchPopupLabel?: string;
   searchLabel?: string;
   mobileMenuTriggerLabel?: string;
+  triggerMode?: 'hover' | 'click';
 }
 
 const MobileMenuButton = forwardRef<
@@ -268,6 +267,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     accountLabel = 'Profile',
     openSearchPopupLabel = 'Open search popup',
     mobileMenuTriggerLabel = 'Toggle navigation',
+    triggerMode = 'click',
   }: Props<S>,
   ref: Ref<HTMLDivElement>,
 ) {
@@ -596,6 +596,28 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                         </ul>
                       </>
                     )}
+                    {(links) =>
+                      links.map((item, i) => (
+                        <ul className="flex flex-col gap-4 [&:not(:first-of-type)]:pt-4" key={i}>
+                          {item.label !== '' && (
+                            <li>
+                              <Link className="block" href={item.href}>
+                                {item.label}
+                              </Link>
+                            </li>
+                          )}
+                          {item.groups
+                            ?.flatMap((group) => group.links)
+                            .map((link, j) => (
+                              <li key={j}>
+                                <Link className="block" href={link.href}>
+                                  {link.label}
+                                </Link>
+                              </li>
+                            ))}
+                        </ul>
+                      ))
+                    }
                   </Stream>
                 </div>
               </Popover.Content>

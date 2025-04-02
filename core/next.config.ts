@@ -7,12 +7,21 @@ import { client } from './client';
 import { graphql } from './client/graphql';
 import { cspHeader } from './lib/content-security-policy';
 
-const withNextIntl = createNextIntlPlugin();
+const withNextIntl = createNextIntlPlugin({
+  experimental: {
+    createMessagesDeclaration: './messages/en.json',
+  },
+});
 
-const LocaleQuery = graphql(`
-  query LocaleQuery {
+const SettingsQuery = graphql(`
+  query SettingsQuery {
     site {
       settings {
+        url {
+          vanityUrl
+          cdnUrl
+          checkoutUrl
+        }
         locales {
           code
           isDefault
@@ -22,7 +31,21 @@ const LocaleQuery = graphql(`
   }
 `);
 
+async function writeSettingsToBuildConfig() {
+  const { data } = await client.fetch({ document: SettingsQuery });
+
+  return await writeBuildConfig({
+    locales: data.site.settings?.locales,
+    urls: {
+      ...data.site.settings?.url,
+      cdnUrl: process.env.NEXT_PUBLIC_BIGCOMMERCE_CDN_HOSTNAME ?? data.site.settings?.url.cdnUrl,
+    },
+  });
+}
+
 export default async (): Promise<NextConfig> => {
+  const settings = await writeSettingsToBuildConfig();
+
   let nextConfig: NextConfig = {
     reactStrictMode: true,
     experimental: {
@@ -66,7 +89,7 @@ export default async (): Promise<NextConfig> => {
             },
             {
               key: 'Link',
-              value: `<https://${process.env.NEXT_PUBLIC_BIGCOMMERCE_CDN_HOSTNAME ?? 'cdn11.bigcommerce.com'}>; rel=preconnect`,
+              value: `<https://${settings.urls.cdnUrl}>; rel=preconnect`,
             },
           ],
         },
@@ -83,13 +106,5 @@ export default async (): Promise<NextConfig> => {
     nextConfig = withBundleAnalyzer(nextConfig);
   }
 
-  await writeLocaleToBuildConfig();
-
   return nextConfig;
 };
-
-async function writeLocaleToBuildConfig() {
-  const { data } = await client.fetch({ document: LocaleQuery });
-
-  await writeBuildConfig({ locales: data.site.settings?.locales });
-}
