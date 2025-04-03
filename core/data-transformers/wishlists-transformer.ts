@@ -8,7 +8,7 @@ import { ExistingResultType } from '~/client/util';
 import {
   PublicWishlistFragment,
   WishlistFragment,
-  WishlistItemFragment,
+  WishlistItemProductFragment,
   WishlistPaginatedItemsFragment,
   WishlistsFragment,
 } from '~/components/wishlist/fragment';
@@ -16,7 +16,7 @@ import {
 import { singleProductCardTransformer } from './product-card-transformer';
 
 const getCtaLabel = (
-  product: ResultOf<typeof WishlistItemFragment>['product'],
+  product: ResultOf<typeof WishlistItemProductFragment>,
   pt: ExistingResultType<typeof getTranslations<'Product.ProductDetails'>>,
 ): string => {
   if (product?.availabilityV2.status === 'Unavailable') {
@@ -34,8 +34,13 @@ const getCtaLabel = (
   return pt('Submit.addToCart');
 };
 
+<<<<<<< HEAD
 const getCtaDisabled = (product: ResultOf<typeof WishlistItemFragment>['product']): boolean => {
   if (product?.availabilityV2.status === 'Unavailable') {
+=======
+const getCtaDisabled = (product: ResultOf<typeof WishlistItemProductFragment>): boolean => {
+  if (product.availabilityV2.status === 'Unavailable') {
+>>>>>>> dba3dada (Update wishlist transformer to account for updated schema (#2192))
     return true;
   }
 
@@ -55,19 +60,23 @@ function wishlistItemsTransformer(
   formatter: ExistingResultType<typeof getFormatter>,
   pt?: ExistingResultType<typeof getTranslations<'Product.ProductDetails'>>,
 ): WishlistItem[] {
-  // @ts-expect-error - removeEdgesAndNodes is not typed
-  return removeEdgesAndNodes(wishlistItems).map((item) => ({
-    itemId: item.entityId.toString(),
-    productId: item.productEntityId.toString(),
-    variantId: item.variantEntityId?.toString() ?? undefined,
-    callToAction: pt
-      ? {
-          label: getCtaLabel(item.product, pt),
-          disabled: getCtaDisabled(item.product),
-        }
-      : undefined,
-    product: item.product ? singleProductCardTransformer(item.product, formatter) : null,
-  }));
+  return removeEdgesAndNodes(wishlistItems)
+    .filter(
+      (item): item is typeof item & { product: NonNullable<typeof item.product> } =>
+        item.product !== null,
+    )
+    .map((item) => ({
+      itemId: item.entityId.toString(),
+      productId: item.productEntityId.toString(),
+      variantId: item.variantEntityId?.toString() ?? undefined,
+      callToAction: pt
+        ? {
+            label: getCtaLabel(item.product, pt),
+            disabled: getCtaDisabled(item.product),
+          }
+        : undefined,
+      product: singleProductCardTransformer(item.product, formatter),
+    }));
 }
 
 function wishlistTransformer(
