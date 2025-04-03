@@ -120,7 +120,7 @@ const MobileMenuButton = forwardRef<
     <button
       {...rest}
       className={clsx(
-        'group relative rounded-lg p-2 outline-0 ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors focus-visible:ring-2',
+        'group relative rounded-lg p-2 ring-[var(--nav-focus,hsl(var(--primary)))] outline-0 transition-colors focus-visible:ring-2',
         className,
       )}
       ref={ref}
@@ -134,7 +134,7 @@ const MobileMenuButton = forwardRef<
         />
         <div
           className={clsx(
-            'h-px transform rounded bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all delay-75 duration-300',
+            'h-px transform rounded-sm bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all delay-75 duration-300',
             open ? 'translate-x-10' : 'w-7',
           )}
         />
@@ -309,7 +309,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
   return (
     <NavigationMenu.Root
       className={clsx(
-        'relative w-full bg-white font-body @container',
+        'font-body @container relative w-full bg-white',
         className,
         isFloating ? 'shadow-md' : 'shadow-none',
       )}
@@ -343,16 +343,16 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             fallback={
               <ul className="flex animate-pulse flex-row p-2 @4xl:gap-2 @4xl:p-5">
                 <li>
-                  <span className="block h-4 w-10 rounded-md bg-contrast-100" />
+                  <span className="bg-contrast-100 block h-4 w-10 rounded-md" />
                 </li>
                 <li>
-                  <span className="block h-4 w-14 rounded-md bg-contrast-100" />
+                  <span className="bg-contrast-100 block h-4 w-14 rounded-md" />
                 </li>
                 <li>
-                  <span className="block h-4 w-24 rounded-md bg-contrast-100" />
+                  <span className="bg-contrast-100 block h-4 w-24 rounded-md" />
                 </li>
                 <li>
-                  <span className="block h-4 w-16 rounded-md bg-contrast-100" />
+                  <span className="bg-contrast-100 block h-4 w-16 rounded-md" />
                 </li>
               </ul>
             }
@@ -364,7 +364,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                   <NavigationMenu.Trigger asChild>
                     <Link
                       className={clsx(
-                        'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:tracking-widest @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
+                        '@4xl:after:bg-border @4xl:after:ease-quad hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:transition-transform @4xl:after:duration-200',
                       )}
                       href={item.href}
                     >
@@ -423,11 +423,11 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                         {/* TODO: Add dynamic content */}
                         <div className="col-start-3 grid grid-cols-2 gap-5">
                           <div className="flex flex-col">
-                            <figure className="aspect-square h-auto w-full rounded-lg bg-surface-image" />
+                            <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
                             <span className="text-medium py-2">Shop The Perfectionist™</span>
                           </div>
                           <div className="flex flex-col">
-                            <figure className="aspect-square h-auto w-full rounded-lg bg-surface-image" />
+                            <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
                             <span className="text-medium py-2">Shop The Sous</span>
                           </div>
                         </div>
@@ -448,7 +448,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
           )}
         >
           <Popover.Root onOpenChange={setIsSearchOpen} open={isSearchOpen}>
-            <Popover.Anchor className="absolute left-0 right-0 top-0" />
+            <Popover.Anchor className="absolute top-0 right-0 left-0" />
             <Popover.Trigger asChild>
               <button
                 aria-label={openSearchPopupLabel}
@@ -462,7 +462,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             </Popover.Trigger>
             <Popover.Portal>
               <Popover.Content
-                className="h-screen w-[var(--radix-popper-anchor-width)] @container data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn"
+                className="data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn @container h-screen w-[var(--radix-popper-anchor-width)]"
                 side="top"
               >
                 <div className="flex h-[inherit] flex-col bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out @4xl:inset-x-0">
@@ -482,14 +482,14 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             <ShoppingBag size={24} strokeWidth={1} />
             <Stream
               fallback={
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 animate-pulse items-center justify-center rounded-full bg-contrast-100 text-xs text-background" />
+                <span className="bg-contrast-100 text-background absolute -top-0.5 -right-0.5 flex h-4 w-4 animate-pulse items-center justify-center rounded-full text-xs" />
               }
               value={streamableCartCount}
             >
               {(cartCount) =>
                 cartCount != null &&
                 cartCount > 0 && (
-                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--nav-cart-count-background,hsl(var(--foreground)))] text-xs text-[var(--nav-cart-count-text,hsl(var(--background)))]">
+                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--nav-cart-count-background,hsl(var(--foreground)))] text-xs text-[var(--nav-cart-count-text,hsl(var(--background)))]">
                     {cartCount}
                   </span>
                 )
@@ -499,7 +499,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 
           {/* Mobile Menu */}
           <Popover.Root onOpenChange={setIsMobileMenuOpen} open={isMobileMenuOpen}>
-            <Popover.Anchor className="absolute left-0 right-0 top-full" />
+            <Popover.Anchor className="absolute top-full right-0 left-0" />
             <Popover.Trigger asChild>
               <MobileMenuButton
                 aria-label={mobileMenuTriggerLabel}
@@ -509,22 +509,22 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
               />
             </Popover.Trigger>
             <Popover.Portal>
-              <Popover.Content className="z-10 h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)] @container data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn">
+              <Popover.Content className="data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn @container z-10 h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)]">
                 <div className="flex h-[inherit] flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-white px-4 py-8">
                   <Stream
                     fallback={
                       <ul className="flex animate-pulse flex-col gap-4 p-5 @4xl:gap-2 @4xl:p-5">
                         <li>
-                          <span className="block h-4 w-10 rounded-md bg-contrast-100" />
+                          <span className="bg-contrast-100 block h-4 w-10 rounded-md" />
                         </li>
                         <li>
-                          <span className="block h-4 w-14 rounded-md bg-contrast-100" />
+                          <span className="bg-contrast-100 block h-4 w-14 rounded-md" />
                         </li>
                         <li>
-                          <span className="block h-4 w-24 rounded-md bg-contrast-100" />
+                          <span className="bg-contrast-100 block h-4 w-24 rounded-md" />
                         </li>
                         <li>
-                          <span className="block h-4 w-16 rounded-md bg-contrast-100" />
+                          <span className="bg-contrast-100 block h-4 w-16 rounded-md" />
                         </li>
                       </ul>
                     }
@@ -621,8 +621,8 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
         </div>
       </div>
 
-      <div className="perspective-[2000px] absolute left-0 right-0 top-full z-50 flex w-full justify-center">
-        <NavigationMenu.Viewport className="relative w-full shadow-md data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn" />
+      <div className="absolute top-full right-0 left-0 z-50 flex w-full justify-center perspective-[2000px]">
+        <NavigationMenu.Viewport className="data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn relative w-full shadow-md" />
       </div>
     </NavigationMenu.Root>
   );
@@ -663,7 +663,7 @@ function LocaleSwitcher({
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         className={clsx(
-          'flex items-center gap-1 text-xs uppercase transition-opacity [&:disabled]:opacity-30',
+          'flex items-center gap-1 text-xs uppercase transition-opacity disabled:opacity-30',
           navButtonClassName,
         )}
         disabled={isPending}
@@ -674,13 +674,13 @@ function LocaleSwitcher({
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           align="end"
-          className="z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
+          className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
           sideOffset={16}
         >
           {locales.map(({ id, label }) => (
             <DropdownMenu.Item
               className={clsx(
-                'cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] outline-none ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
+                'cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
                 {
                   'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
                     id === activeLocaleId,
@@ -721,7 +721,7 @@ function CurrencyForm({
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         className={clsx(
-          'flex items-center gap-1 text-xs uppercase transition-opacity [&:disabled]:opacity-30',
+          'flex items-center gap-1 text-xs uppercase transition-opacity disabled:opacity-30',
           navButtonClassName,
         )}
         disabled={isPending}
@@ -732,13 +732,13 @@ function CurrencyForm({
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           align="end"
-          className="z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
+          className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
           sideOffset={16}
         >
           {currencies.map((currency) => (
             <DropdownMenu.Item
               className={clsx(
-                'cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] outline-none ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
+                'cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
                 {
                   'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
                     currency.id === activeCurrencyId,

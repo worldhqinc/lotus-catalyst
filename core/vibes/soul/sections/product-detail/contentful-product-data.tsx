@@ -28,13 +28,13 @@ export async function ContentfulProductData({ data }: Props) {
   const shortDescription = documentToHtmlString(shortDescriptionRichText);
 
   return (
-    <div className="mb-8 flex flex-col gap-2 rounded-lg bg-contrast-100 p-4">
+    <div className="bg-contrast-100 mb-8 flex flex-col gap-2 rounded-lg p-4">
       <h3 className="text-lg font-bold">Contentful Product Data</h3>
-      <div className="text-sm text-contrast-500">
+      <div className="text-contrast-500 text-sm">
         <p>Contentful BC Reference: {getContentfulField(data, 'bcProductReference')}</p>
         <p>Contentful Default Price: {getContentfulField(data, 'defaultPrice')}</p>
       </div>
-      <div className="text-sm text-contrast-500">
+      <div className="text-contrast-500 text-sm">
         <p className="mb-4">Contentful Short Description:</p>
         <div
           className="prose rounded-lg bg-white p-4"

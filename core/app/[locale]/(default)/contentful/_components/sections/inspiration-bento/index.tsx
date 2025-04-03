@@ -21,7 +21,7 @@ export default function InspirationBento({
   inspirationCards,
 }: InspirationBentoProps) {
   return (
-    <section className="py-24 @container">
+    <section className="@container py-24">
       <div className="container">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-4xl">{heading}</h2>
@@ -50,7 +50,7 @@ export default function InspirationBento({
         </div>
         <div className="mt-8 grid gap-8 lg:grid-cols-2">
           {video && video !== '' ? (
-            <figure className="relative aspect-[3/4] h-full w-full rounded-lg bg-surface-image lg:aspect-auto">
+            <figure className="bg-surface-image relative aspect-[3/4] h-full w-full rounded-lg lg:aspect-auto">
               <video
                 autoPlay
                 className="h-full w-full"
@@ -63,7 +63,7 @@ export default function InspirationBento({
               {/* <button className="absolute bottom-0 right-0">
               <Play className="h-10 w-10" />
             </button> */}
-              <button className="absolute bottom-4 right-4">
+              <button className="absolute right-4 bottom-4">
                 <Pause size={24} strokeWidth={1} />
               </button>
             </figure>

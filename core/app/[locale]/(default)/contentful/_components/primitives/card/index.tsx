@@ -41,7 +41,7 @@ export default function Card({
 
   return (
     <article className="group relative max-h-max">
-      <figure className="relative aspect-[4/3] overflow-hidden rounded-lg bg-surface-image">
+      <figure className="bg-surface-image relative aspect-[4/3] overflow-hidden rounded-lg">
         <Image
           alt={recipeName}
           className="h-full w-full object-cover"
@@ -51,7 +51,7 @@ export default function Card({
         />
       </figure>
       <div className="mt-2 flex flex-col gap-1">
-        <h3 className="text-3xl transition-colors duration-200 ease-quad group-hover:text-primary">
+        <h3 className="ease-quad group-hover:text-primary text-3xl transition-colors duration-200">
           {recipeName}
         </h3>
         <p className="text-neutral-500">{shortDescription}</p>

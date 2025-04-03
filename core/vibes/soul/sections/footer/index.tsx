@@ -93,7 +93,7 @@ export const Footer = forwardRef(function Footer(
   return (
     <footer
       className={clsx(
-        'border-b-4 border-t border-b-[var(--footer-border-bottom,hsl(var(--primary)))] border-t-[var(--footer-border-top,hsl(var(--contrast-100)))] bg-[var(--footer-background,hsl(var(--background)))] @container',
+        '@container border-t border-b-4 border-t-[var(--footer-border-top,hsl(var(--contrast-100)))] border-b-[var(--footer-border-bottom,hsl(var(--primary)))] bg-[var(--footer-background,hsl(var(--background)))]',
         className,
       )}
       ref={ref}
@@ -109,13 +109,13 @@ export const Footer = forwardRef(function Footer(
               fallback={
                 <div className="mb-4 animate-pulse text-lg @lg:text-xl">
                   <div className="flex h-[1lh] items-center">
-                    <span className="h-[1ex] w-[10ch] rounded bg-contrast-100" />
+                    <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-sm" />
                   </div>
                   <div className="flex h-[1lh] items-center">
-                    <span className="h-[1ex] w-[15ch] rounded bg-contrast-100" />
+                    <span className="bg-contrast-100 h-[1ex] w-[15ch] rounded-sm" />
                   </div>
                   <div className="flex h-[1lh] items-center">
-                    <span className="h-[1ex] w-[12ch] rounded bg-contrast-100" />
+                    <span className="bg-contrast-100 h-[1ex] w-[12ch] rounded-sm" />
                   </div>
                 </div>
               }
@@ -134,36 +134,69 @@ export const Footer = forwardRef(function Footer(
                 }
               }}
             </Stream>
+
+            {/* Social Media Links */}
+            <Stream
+              fallback={
+                <div className="flex animate-pulse items-center gap-3">
+                  <div className="bg-contrast-100 h-8 w-8 rounded-full" />
+                  <div className="bg-contrast-100 h-8 w-8 rounded-full" />
+                  <div className="bg-contrast-100 h-8 w-8 rounded-full" />
+                  <div className="bg-contrast-100 h-8 w-8 rounded-full" />
+                </div>
+              }
+              value={streamableSocialMediaLinks}
+            >
+              {(socialMediaLinks) => {
+                if (socialMediaLinks != null) {
+                  return (
+                    <div className="flex items-center gap-3">
+                      {socialMediaLinks.map(({ href, icon }, i) => {
+                        return (
+                          <Link
+                            className="flex items-center justify-center rounded-lg fill-[var(--footer-social-icon,hsl(var(--contrast-400)))] p-1 ring-[var(--footer-focus,hsl(var(--primary)))] transition-colors duration-300 ease-out hover:fill-[var(--footer-social-icon-hover,hsl(var(--foreground)))] focus-visible:ring-2 focus-visible:outline-0"
+                            href={href}
+                            key={i}
+                          >
+                            {icon}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  );
+                }
+              }}
+            </Stream>
           </div>
 
           {/* Footer Columns of Links */}
           <Stream
             fallback={
-              <div className="grid w-full flex-1 animate-pulse gap-8 [grid-template-columns:_repeat(auto-fill,_150px)] @xl:gap-y-10">
+              <div className="grid w-full flex-1 animate-pulse [grid-template-columns:_repeat(auto-fill,_150px)] gap-8 @xl:gap-y-10">
                 <div className="pr-8">
                   <div className="mb-3 flex h-[1lh] items-center">
-                    <span className="h-[1ex] w-[10ch] rounded bg-contrast-100" />
+                    <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-sm" />
                   </div>
 
                   <ul>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                   </ul>
@@ -171,28 +204,28 @@ export const Footer = forwardRef(function Footer(
 
                 <div className="pr-8">
                   <div className="mb-3 flex h-[1lh] items-center">
-                    <span className="h-[1ex] w-[10ch] rounded bg-contrast-100" />
+                    <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-sm" />
                   </div>
 
                   <ul>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                   </ul>
@@ -200,28 +233,28 @@ export const Footer = forwardRef(function Footer(
 
                 <div className="pr-8">
                   <div className="mb-3 flex h-[1lh] items-center">
-                    <span className="h-[1ex] w-[10ch] rounded bg-contrast-100" />
+                    <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-sm" />
                   </div>
 
                   <ul>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                   </ul>
@@ -229,28 +262,28 @@ export const Footer = forwardRef(function Footer(
 
                 <div className="pr-8">
                   <div className="mb-3 flex h-[1lh] items-center">
-                    <span className="h-[1ex] w-[10ch] rounded bg-contrast-100" />
+                    <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-sm" />
                   </div>
 
                   <ul>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                     <li className="py-2 text-sm">
                       <div className="flex h-[1lh] items-center text-sm">
-                        <span className="h-[1ex] w-[10ch] rounded-sm bg-contrast-100" />
+                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
                       </div>
                     </li>
                   </ul>
@@ -262,11 +295,11 @@ export const Footer = forwardRef(function Footer(
             {(sections) => {
               if (sections.length > 0) {
                 return (
-                  <div className="grid w-full flex-1 justify-end gap-8 [grid-template-columns:_repeat(auto-fill,_150px)] @xl:gap-y-10">
+                  <div className="grid w-full flex-1 [grid-template-columns:_repeat(auto-fill,_150px)] justify-end gap-8 @xl:gap-y-10">
                     {sections.map(({ title, links }, i) => (
                       <div key={i}>
                         {title != null && (
-                          <span className="mb-3 block text-lg font-semibold text-foreground">
+                          <span className="text-foreground mb-3 block text-lg font-semibold">
                             {title}
                           </span>
                         )}
@@ -276,7 +309,7 @@ export const Footer = forwardRef(function Footer(
                             return (
                               <li key={idx}>
                                 <Link
-                                  className="block transition-colors duration-200 ease-quad hover:text-primary focus-visible:text-primary"
+                                  className="ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
                                   href={link.href}
                                 >
                                   {link.label}
@@ -299,7 +332,7 @@ export const Footer = forwardRef(function Footer(
           <Stream
             fallback={
               <div className="flex h-[1lh] animate-pulse items-center text-sm">
-                <span className="h-[1ex] w-[40ch] rounded-sm bg-contrast-100" />
+                <span className="bg-contrast-100 h-[1ex] w-[40ch] rounded-sm" />
               </div>
             }
             value={streamableCopyright}
@@ -318,11 +351,13 @@ export const Footer = forwardRef(function Footer(
           {/* Social Media Links */}
           <Stream
             fallback={
-              <div className="flex flex-1 animate-pulse items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-contrast-100" />
-                <div className="h-8 w-8 rounded-full bg-contrast-100" />
-                <div className="h-8 w-8 rounded-full bg-contrast-100" />
-                <div className="h-8 w-8 rounded-full bg-contrast-100" />
+              <div className="flex animate-pulse flex-wrap gap-2">
+                <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
+                <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
+                <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
+                <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
+                <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
+                <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
               </div>
             }
             value={streamableSocialMediaLinks}
@@ -334,7 +369,7 @@ export const Footer = forwardRef(function Footer(
                     {socialMediaLinks.map(({ href, icon }, i) => {
                       return (
                         <Link
-                          className="flex items-center justify-center rounded-lg fill-[var(--footer-social-icon,hsl(var(--contrast-400)))] p-1 ring-[var(--footer-focus,hsl(var(--primary)))] transition-colors duration-300 ease-out hover:fill-[var(--footer-social-icon-hover,hsl(var(--foreground)))] focus-visible:outline-0 focus-visible:ring-2"
+                          className="flex items-center justify-center rounded-lg fill-[var(--footer-social-icon,hsl(var(--contrast-400)))] p-1 ring-[var(--footer-focus,hsl(var(--primary)))] transition-colors duration-300 ease-out hover:fill-[var(--footer-social-icon-hover,hsl(var(--foreground)))] focus-visible:ring-2 focus-visible:outline-0"
                           href={href}
                           key={i}
                         >

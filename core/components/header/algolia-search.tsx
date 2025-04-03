@@ -65,7 +65,7 @@ function Result({ hit }: { hit: Hit<HitFields> }) {
   return (
     <article className="group relative">
       {pageImage ? (
-        <figure className="aspect-square h-auto w-full rounded-lg bg-surface-image">
+        <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg">
           <Image
             alt={pageName ? `Image for ${pageName}` : 'Search result image'}
             className="object-cover"
@@ -73,7 +73,7 @@ function Result({ hit }: { hit: Hit<HitFields> }) {
           />
         </figure>
       ) : (
-        <figure className="aspect-square h-auto w-full rounded-lg bg-surface-image" />
+        <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
       )}
       <div className="space-y-1 py-2">
         {(() => {
@@ -175,7 +175,7 @@ function SearchComponent({ closeSearch }: SearchComponentProps) {
 
   return (
     <>
-      <div className="flex items-center gap-2 border-b border-border transition-colors duration-200 ease-quad focus-within:border-primary">
+      <div className="border-border ease-quad focus-within:border-primary flex items-center gap-2 border-b transition-colors duration-200">
         <Button onClick={closeSearch} shape="link" size="link" variant="link">
           <X size={24} strokeWidth={1} />
         </Button>

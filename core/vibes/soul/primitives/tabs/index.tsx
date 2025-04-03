@@ -70,10 +70,10 @@ const Tabs = ({
       className={className}
       defaultValue={defaultValue || combinedTriggers[0]?.value}
     >
-      <TabsPrimitive.List className="tabs-list scrollbar-hidden relative flex shrink-0 overflow-x-auto border-b border-border after:absolute after:bottom-0 after:left-[var(--trigger-left)] after:h-px after:w-[var(--trigger-width)] after:bg-foreground after:transition-[left,_width] after:duration-200 after:ease-quad">
+      <TabsPrimitive.List className="tabs-list scrollbar-hidden border-border after:bg-foreground after:ease-quad relative flex shrink-0 overflow-x-auto border-b after:absolute after:bottom-0 after:left-[var(--trigger-left)] after:h-px after:w-[var(--trigger-width)] after:transition-[left,_width] after:duration-200">
         {combinedTriggers.map((trigger) => (
           <TabsPrimitive.Trigger
-            className="flex select-none items-center justify-center px-4 py-2 text-neutral-500 outline-none transition-colors duration-200 ease-quad hover:text-foreground data-[state=active]:text-foreground"
+            className="ease-quad hover:text-foreground data-[state=active]:text-foreground flex items-center justify-center px-4 py-2 text-neutral-500 transition-colors duration-200 outline-none select-none"
             key={trigger.value}
             onClick={() => moveIndicator(trigger.value)}
             ref={(element) => {

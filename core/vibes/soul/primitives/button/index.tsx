@@ -58,19 +58,19 @@ export function Button({
       {...props}
       aria-busy={loading}
       className={clsx(
-        'relative z-0 inline-flex h-fit select-none items-center justify-center overflow-hidden border text-center font-[family-name:var(--button-font-family,var(--font-family-body))] leading-normal after:absolute after:inset-0 after:-z-10 after:-translate-x-[110%] after:scale-110 after:transition-[opacity,transform] after:duration-300 after:[animation-timing-function:cubic-bezier(0.25,0.46,0.45,0.94)] focus-visible:outline-none',
+        'relative z-0 inline-flex h-fit items-center justify-center overflow-hidden border text-center font-[family-name:var(--button-font-family,var(--font-family-body))] leading-normal select-none after:absolute after:inset-0 after:-z-10 after:-translate-x-[110%] after:scale-110 after:transition-[opacity,transform] after:duration-300 after:[animation-timing-function:cubic-bezier(0.25,0.46,0.45,0.94)] focus-visible:outline-none',
         {
           primary:
-            'border-[var(--button-primary-border,hsl(var(--primary)))] bg-[var(--button-primary-background,hsl(var(--primary)))] text-[var(--button-primary-text,hsl(var(--background)))] after:bg-primary-highlight focus-visible:border-primary disabled:border-disabled disabled:bg-disabled',
+            'after:bg-primary-highlight focus-visible:border-primary disabled:border-disabled disabled:bg-disabled border-[var(--button-primary-border,hsl(var(--primary)))] bg-[var(--button-primary-background,hsl(var(--primary)))] text-[var(--button-primary-text,hsl(var(--background)))]',
           secondary:
-            'border-[var(--button-secondary-border,hsl(var(--foreground)))] bg-[var(--button-secondary-background,hsl(var(--foreground)))] text-[var(--button-secondary-text,hsl(var(--background)))] after:bg-[var(--button-secondary-background-hover,hsl(var(--background)))] hover:text-foreground focus-visible:border-primary disabled:border-disabled-secondary disabled:bg-disabled-secondary disabled:text-white',
+            'hover:text-foreground focus-visible:border-primary disabled:border-disabled-secondary disabled:bg-disabled-secondary border-[var(--button-secondary-border,hsl(var(--foreground)))] bg-[var(--button-secondary-background,hsl(var(--foreground)))] text-[var(--button-secondary-text,hsl(var(--background)))] after:bg-[var(--button-secondary-background-hover,hsl(var(--background)))] disabled:text-white',
           tertiary:
-            'border-[var(--button-tertiary-border,hsl(var(--contrast-200)))] bg-[var(--button-tertiary-background,hsl(var(--background)))] text-[var(--button-tertiary-text,hsl(var(--foreground)))] after:bg-[var(--button-tertiary-background-hover,hsl(var(--contrast-100)))] focus-visible:border-primary disabled:border-contrast-100 disabled:text-contrast-200',
+            'focus-visible:border-primary disabled:border-contrast-100 disabled:text-contrast-200 border-[var(--button-tertiary-border,hsl(var(--contrast-200)))] bg-[var(--button-tertiary-background,hsl(var(--background)))] text-[var(--button-tertiary-text,hsl(var(--foreground)))] after:bg-[var(--button-tertiary-background-hover,hsl(var(--contrast-100)))]',
           ghost:
-            'border-[var(--button-ghost-border,transparent)] bg-[var(--button-ghost-background,transparent)] text-[var(--button-ghost-text,hsl(var(--foreground)))] after:bg-contrast-100 hover:border-contrast-100 focus-visible:border-primary disabled:border-transparent disabled:text-contrast-200',
+            'after:bg-contrast-100 hover:border-contrast-100 focus-visible:border-primary disabled:text-contrast-200 border-[var(--button-ghost-border,transparent)] bg-[var(--button-ghost-background,transparent)] text-[var(--button-ghost-text,hsl(var(--foreground)))] disabled:border-transparent',
           danger:
             'border-[var(--button-danger-border,color-mix(in_oklab,hsl(var(--error)),white_30%))] bg-[var(--button-danger-background,color-mix(in_oklab,hsl(var(--error)),white_30%))] text-[var(--button-danger-foreground)] after:bg-[var(--button-danger-background-hover,color-mix(in_oklab,hsl(var(--error)),white_75%))]',
-          link: 'border-none bg-transparent transition-colors duration-200 ease-quad after:hidden hover:text-primary',
+          link: 'ease-quad hover:text-primary border-none bg-transparent transition-colors duration-200 after:hidden',
         }[variant],
         {
           pill: 'rounded-full after:rounded-full',
@@ -89,7 +89,7 @@ export function Button({
     >
       <span
         className={clsx(
-          'inline-flex items-center justify-center transition-all duration-300 ease-quad',
+          'ease-quad inline-flex items-center justify-center transition-all duration-300',
           loading ? '-translate-y-10 opacity-0' : 'translate-y-0 opacity-100',
           shape === 'circle' && 'aspect-square',
           {
@@ -113,7 +113,7 @@ export function Button({
       </span>
       <span
         className={clsx(
-          'absolute inset-0 grid place-content-center transition-all duration-300 ease-quad',
+          'ease-quad absolute inset-0 grid place-content-center transition-all duration-300',
           loading ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0',
         )}
       >
