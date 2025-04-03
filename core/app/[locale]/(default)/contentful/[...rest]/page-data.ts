@@ -1,23 +1,28 @@
-import { EntryFieldTypes } from 'contentful';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 
 import { contentfulClient } from '~/lib/contentful';
 
-interface PageStandardEntrySkeleton {
-  contentTypeId: 'pageStandard';
+interface ContentfulEntrySkeleton {
+  contentTypeId: 'pageStandard' | 'recipe';
   fields: {
-    pageName: EntryFieldTypes.Text;
-    pageSlug: EntryFieldTypes.Text;
-    metaTitleSeo: EntryFieldTypes.Text;
-    metaDescription: EntryFieldTypes.Text;
-    metaKeywordsSeo: EntryFieldTypes.Text;
-    optionalPageDescription: EntryFieldTypes.RichText;
-    pageContent: EntryFieldTypes.Object;
+    metaTitleSeo: string | null;
+    metaDescription: string | null;
+    metaKeywordsSeo: string | null;
+    pageSlug: string;
+    pageName: string;
+    optionalPageDescription: string | null;
+    pageContent: PageStandardPageContentField[] | null;
   };
 }
 
-export interface PageContentField {
+export interface PageStandardFields {
+  pageName: string;
+  optionalPageDescription: string;
+  pageContent: PageStandardPageContentField[] | null;
+}
+
+export interface PageStandardPageContentField {
   sys: {
     id: string;
     contentType: {
@@ -28,26 +33,24 @@ export interface PageContentField {
   };
 }
 
-export const getPageBySlug = cache(async (rest: string[]) => {
-  const response = await contentfulClient.getEntries<PageStandardEntrySkeleton>({
-    content_type: 'pageStandard',
-    'fields.pageSlug': rest.join('/'),
-    limit: 1,
-  });
-
-  const page = response.items[0];
-
-  if (!page) {
-    return notFound();
-  }
-
-  return page;
-});
-
-export async function getPages() {
-  const response = await contentfulClient.getEntries({
-    content_type: 'pageStandard',
-  });
-
-  return response.items;
+export interface RecipeFields {
+  recipeName: string;
 }
+
+export const getPageBySlug = cache(
+  async (contentType: 'pageStandard' | 'recipe', rest: string[]) => {
+    const response = await contentfulClient.getEntries<ContentfulEntrySkeleton>({
+      content_type: contentType,
+      'fields.pageSlug': rest.join('/'),
+      limit: 1,
+    });
+
+    const page = response.items[0];
+
+    if (!page) {
+      return notFound();
+    }
+
+    return page;
+  },
+);
