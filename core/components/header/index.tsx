@@ -91,15 +91,15 @@ const getLinks = async () => {
     },
     {
       label: 'Inspiration',
-      href: '/page-2',
+      href: '/inspiration',
     },
     {
       label: 'Our Story',
-      href: '/page-3',
+      href: '/our-story',
     },
     {
       label: 'Support',
-      href: '/page-4',
+      href: '/support',
     },
   ]);
 };
