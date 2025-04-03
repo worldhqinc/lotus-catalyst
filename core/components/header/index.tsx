@@ -181,7 +181,7 @@ export const Header = async () => {
         links: Streamable.from(getLinks),
         logo: Streamable.from(getLogo),
         mobileMenuTriggerLabel: t('toggleNavigation'),
-        openSearchPopupLabel: t('Search.openSearchPopup'),
+        openSearchPopupLabel: t('Icons.search'),
         logoLabel: t('home'),
         cartCount: Streamable.from(getCartCount),
         activeLocaleId: locale,
