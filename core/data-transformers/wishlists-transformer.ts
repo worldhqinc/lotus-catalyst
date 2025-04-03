@@ -19,15 +19,15 @@ const getCtaLabel = (
   product: ResultOf<typeof WishlistItemFragment>['product'],
   pt: ExistingResultType<typeof getTranslations<'Product.ProductDetails'>>,
 ): string => {
-  if (product.availabilityV2.status === 'Unavailable') {
+  if (product?.availabilityV2.status === 'Unavailable') {
     return pt('Submit.unavailable');
   }
 
-  if (product.availabilityV2.status === 'Preorder') {
+  if (product?.availabilityV2.status === 'Preorder') {
     return pt('Submit.preorder');
   }
 
-  if (!product.inventory.isInStock) {
+  if (!product?.inventory.isInStock) {
     return pt('Submit.outOfStock');
   }
 
@@ -35,15 +35,15 @@ const getCtaLabel = (
 };
 
 const getCtaDisabled = (product: ResultOf<typeof WishlistItemFragment>['product']): boolean => {
-  if (product.availabilityV2.status === 'Unavailable') {
+  if (product?.availabilityV2.status === 'Unavailable') {
     return true;
   }
 
-  if (product.availabilityV2.status === 'Preorder') {
+  if (product?.availabilityV2.status === 'Preorder') {
     return false;
   }
 
-  if (!product.inventory.isInStock) {
+  if (!product?.inventory.isInStock) {
     return true;
   }
 
@@ -55,6 +55,7 @@ function wishlistItemsTransformer(
   formatter: ExistingResultType<typeof getFormatter>,
   pt?: ExistingResultType<typeof getTranslations<'Product.ProductDetails'>>,
 ): WishlistItem[] {
+  // @ts-expect-error - removeEdgesAndNodes is not typed
   return removeEdgesAndNodes(wishlistItems).map((item) => ({
     itemId: item.entityId.toString(),
     productId: item.productEntityId.toString(),
@@ -65,7 +66,7 @@ function wishlistItemsTransformer(
           disabled: getCtaDisabled(item.product),
         }
       : undefined,
-    product: singleProductCardTransformer(item.product, formatter),
+    product: item.product ? singleProductCardTransformer(item.product, formatter) : null,
   }));
 }
 
