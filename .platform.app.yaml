@@ -10,6 +10,9 @@ resources:
 dependencies:
     nodejs:
         pnpm: "10.6.5"
+variables:
+    env:
+        NODE_ENV: "production"
 mounts:
     '/core/.next':
         source: local
