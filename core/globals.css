@@ -117,6 +117,10 @@
   --color-border-secondary: hsl(var(--border-secondary));
   --color-border-input: hsl(var(--border-input));
 
+  --color-surface: hsl(var(--surface-primary));
+  --color-surface-secondary: hsl(var(--surface-secondary));
+  --color-surface-image: hsl(var(--surface-image));
+
   --text-xs: var(--font-size-xs, 0.75rem);
   --text-sm: var(--font-size-sm, 0.875rem);
   --text-base: var(--font-size-base, 1rem);
@@ -162,7 +166,7 @@
 
   --ease-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
   --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3 ,1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3 , 1);
   --ease-in: cubic-bezier(0.075, 0.82, 0.165, 1);
   --ease-in-out: cubic-bezier(0.68, -0.55, 0.27, 1.55);
   --ease-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -275,18 +279,18 @@
   }
   @keyframes clipIn: {
     0% {
-      clippath: 'inset(0 0 100% 0)';
+      clip-path: inset(0 0 100% 0);
     }
     100% {
-      clippath: 'inset(0 0 -1% 0)';
+      clip-path: inset(0 0 -1% 0);
     }
   }
   @keyframes clipOut: {
     0% {
-      clippath: 'inset(0 0 -1% 0)';
+      clip-path: inset(0 0 -1% 0);
     }
     100% {
-      clippath: 'inset(0 0 100% 0)';
+      clip-path: inset(0 0 100% 0);
     }
   }
 }
@@ -318,6 +322,9 @@
   --border-primary: 0 0% 83%;
   --border-secondary: 0 0% 90%;
   --border-input: 0 0% 83%;
+  --surface-primary: 0 0% 100%;
+  --surface-secondary: 0 0% 96%;
+  --surface-image: 0 0% 90%;
   --contrast-100: 0 0% 93%;
   --contrast-200: 0 0% 82%;
   --contrast-300: 0 0% 70%;
