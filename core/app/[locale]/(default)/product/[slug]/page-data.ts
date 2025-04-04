@@ -20,6 +20,17 @@ export interface ProductFinishedGoodsData {
     bcProductReference: EntryFieldTypes.Text;
     defaultPrice: EntryFieldTypes.Text;
     shortDescription: EntryFieldTypes.Text;
+    pageContentEntries?: Array<{
+      sys: {
+        id: string;
+        contentType: {
+          sys: {
+            id: string;
+          };
+        };
+      };
+      fields: Record<string, unknown>;
+    }>;
   };
 }
 

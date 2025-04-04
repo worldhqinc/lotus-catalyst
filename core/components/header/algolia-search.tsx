@@ -22,6 +22,7 @@ interface HitFields {
     pageImage: { 'en-US': string } | null;
     pageName: { 'en-US': string } | null;
     productName: { 'en-US': string } | null;
+    recipeName: { 'en-US': string } | null;
     pageSlug: { 'en-US': string } | null;
     pageDescription: { 'en-US': string } | null;
     shortDescription: { 'en-US': string } | null;
@@ -53,6 +54,7 @@ function Result({ hit }: { hit: Hit<HitFields> }) {
   const pageImage = fields.pageImage ? fields.pageImage['en-US'] : null;
   const pageName = fields.pageName ? fields.pageName['en-US'] : null;
   const productName = fields.productName ? fields.productName['en-US'] : null;
+  const recipeName = fields.recipeName ? fields.recipeName['en-US'] : null;
   const pageSlug = fields.pageSlug ? fields.pageSlug['en-US'] : null;
   const pageDescription = fields.pageDescription ? fields.pageDescription['en-US'] : null;
   const shortDescription = fields.shortDescription ? fields.shortDescription['en-US'] : null;
@@ -100,6 +102,21 @@ function Result({ hit }: { hit: Hit<HitFields> }) {
 
           if (productName) {
             return <h3>{productName}</h3>;
+          }
+
+          return null;
+        })()}
+        {(() => {
+          if (recipeName && pageSlug) {
+            return (
+              <Link className={hitHeadingStyles} href={`/${pageSlug}`} prefetch="hover">
+                <h3>{recipeName}</h3>
+              </Link>
+            );
+          }
+
+          if (recipeName) {
+            return <h3>{recipeName}</h3>;
           }
 
           return null;
