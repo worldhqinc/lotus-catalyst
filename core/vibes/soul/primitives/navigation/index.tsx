@@ -364,7 +364,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                   <NavigationMenu.Trigger asChild>
                     <Link
                       className={clsx(
-                        '@4xl:after:bg-border @4xl:after:ease-quad hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:transition-transform @4xl:after:duration-200',
+                        '@4xl:after:bg-border @4xl:after:ease-quad after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:transition-transform @4xl:after:duration-200',
                       )}
                       href={item.href}
                     >
