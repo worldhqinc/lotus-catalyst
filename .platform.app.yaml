@@ -24,6 +24,8 @@ web:
     locations:
         '/':
             root: 'core'
+            request_buffering:
+                enabled: false
             headers:
                 X-Frame-Options: SAMEORIGIN
     commands:
