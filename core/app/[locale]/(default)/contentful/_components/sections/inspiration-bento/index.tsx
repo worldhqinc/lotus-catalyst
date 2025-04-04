@@ -41,7 +41,7 @@ export default function InspirationBento({
             </ButtonLink>
           )}
         </div>
-        <div className="mt-8 grid gap-4 lg:grid-cols-2">
+        <div className="mt-8 grid gap-8 lg:grid-cols-2">
           {video && video !== '' ? (
             <figure className="relative aspect-[4/5] h-full w-full rounded-lg bg-surface-image">
               <video
@@ -64,7 +64,7 @@ export default function InspirationBento({
           {inspirationCards && (
             <div
               className={clsx(
-                'grid grid-cols-1 gap-4 lg:grid-cols-2',
+                'grid grid-cols-1 gap-8 lg:grid-cols-2',
                 video ? 'lg:col-start-2' : '',
               )}
             >
