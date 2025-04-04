@@ -71,6 +71,21 @@ const TicketFieldSchema = z.object({
       )
       .nullable()
       .optional(),
+    conditions: z
+      .array(
+        z.object({
+          parent_field_id: z.number(),
+          parent_field_type: z.string(),
+          value: z.string(),
+          child_fields: z.array(
+            z.object({
+              id: z.number(),
+              is_required: z.boolean(),
+            }),
+          ),
+        }),
+      )
+      .optional(),
   }),
 });
 
@@ -131,8 +146,6 @@ export default async function ContactPage() {
     });
 
     fields = fieldsWithConditions;
-
-    // console.log(fields);
   }
 
   return (
