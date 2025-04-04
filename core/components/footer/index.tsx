@@ -95,12 +95,21 @@ const getSections = async () => {
       })),
     },
     {
-      title: t('navigate'),
-      links: removeEdgesAndNodes(data.content.pages).map((page) => ({
-        label: page.name,
-        href: page.__typename === 'ExternalLinkPage' ? page.link : page.path,
-      })),
+      title: 'Navigate',
+      links: [
+        {
+          label: 'Contact',
+          href: '/contact',
+        },
+      ],
     },
+    // {
+    // title: t('navigate'),
+    // links: removeEdgesAndNodes(data.content.pages).map((page) => ({
+    //   label: page.name,
+    //   href: page.__typename === 'ExternalLinkPage' ? page.link : page.path,
+    // })),
+    // },
   ];
 };
 
