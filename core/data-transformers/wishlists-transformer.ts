@@ -19,36 +19,31 @@ const getCtaLabel = (
   product: ResultOf<typeof WishlistItemProductFragment>,
   pt: ExistingResultType<typeof getTranslations<'Product.ProductDetails'>>,
 ): string => {
-  if (product?.availabilityV2.status === 'Unavailable') {
+  if (product.availabilityV2.status === 'Unavailable') {
     return pt('Submit.unavailable');
   }
 
-  if (product?.availabilityV2.status === 'Preorder') {
+  if (product.availabilityV2.status === 'Preorder') {
     return pt('Submit.preorder');
   }
 
-  if (!product?.inventory.isInStock) {
+  if (!product.inventory.isInStock) {
     return pt('Submit.outOfStock');
   }
 
   return pt('Submit.addToCart');
 };
 
-<<<<<<< HEAD
-const getCtaDisabled = (product: ResultOf<typeof WishlistItemFragment>['product']): boolean => {
-  if (product?.availabilityV2.status === 'Unavailable') {
-=======
 const getCtaDisabled = (product: ResultOf<typeof WishlistItemProductFragment>): boolean => {
   if (product.availabilityV2.status === 'Unavailable') {
->>>>>>> dba3dada (Update wishlist transformer to account for updated schema (#2192))
     return true;
   }
 
-  if (product?.availabilityV2.status === 'Preorder') {
+  if (product.availabilityV2.status === 'Preorder') {
     return false;
   }
 
-  if (!product?.inventory.isInStock) {
+  if (!product.inventory.isInStock) {
     return true;
   }
 
