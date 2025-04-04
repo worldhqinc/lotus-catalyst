@@ -1,29 +1,29 @@
 'use server';
 
+import { FormState } from '../_components/contact-form';
+
 function isString(value: unknown): value is string {
   return typeof value === 'string';
 }
 
-export async function submitForm(_prevState: unknown, formData: FormData) {
-  const firstNameValue = formData.get('first_name');
-  const lastNameValue = formData.get('last_name');
-  const subjectValue = formData.get('subject');
+export async function submitForm(_prevState: FormState, formData: FormData) {
   const emailValue = formData.get('email');
-  const stateValue = formData.get('state');
-  const inquiryValue = formData.get('inquiry');
-  const modelValue = formData.get('model');
+  const subjectValue = formData.get('19286594698395');
+  const descriptionValue = formData.get('19286587899803');
+  const firstNameValue = formData.get('19286622537499');
+  const lastNameValue = formData.get('19286636932123');
+  const stateValue = formData.get('19286636991003');
+  const inquiryValue = formData.get('19286719042331');
+  const modelValue = formData.get('19286761835035');
 
+  const email = isString(emailValue) ? emailValue : null;
+  const subject = isString(subjectValue) ? subjectValue : null;
+  const description = isString(descriptionValue) ? descriptionValue : null;
   const firstName = isString(firstNameValue) ? firstNameValue : null;
   const lastName = isString(lastNameValue) ? lastNameValue : null;
-  const subject = isString(subjectValue) ? subjectValue : null;
-  const email = isString(emailValue) ? emailValue : null;
   const state = isString(stateValue) ? stateValue : null;
   const inquiry = isString(inquiryValue) ? inquiryValue : null;
   const model = isString(modelValue) ? modelValue : null;
-
-  if (!firstName || !lastName || !email || !subject) {
-    throw new Error('First name, last name, email and subject are required');
-  }
 
   try {
     const response = await fetch(
@@ -42,6 +42,7 @@ export async function submitForm(_prevState: unknown, formData: FormData) {
               email,
             },
             subject,
+            comment: { body: description },
             custom_fields: [
               {
                 id: 19286622537499,
@@ -64,21 +65,29 @@ export async function submitForm(_prevState: unknown, formData: FormData) {
                 value: model,
               },
             ],
-            comment: { body: 'test' },
           },
         }),
       },
     );
 
     if (!response.ok) {
-      throw new Error('Failed to submit form');
+      return {
+        errors: ['Something went wrong, please try again later.'],
+        success: false,
+      };
     }
 
-    return { success: true };
+    return {
+      errors: null,
+      success: true,
+    };
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error submitting form:', error);
 
-    throw new Error('Failed to submit form');
+    return {
+      errors: ['Something went wrong, please try again later.'],
+      success: false,
+    };
   }
 }
