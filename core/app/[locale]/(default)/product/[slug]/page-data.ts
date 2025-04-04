@@ -29,7 +29,7 @@ export interface ProductFinishedGoodsData {
           };
         };
       };
-      fields: Record<string, any>;
+      fields: Record<string, unknown>;
     }>;
   };
 }

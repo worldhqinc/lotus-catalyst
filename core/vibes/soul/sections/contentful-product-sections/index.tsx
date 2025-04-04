@@ -13,7 +13,7 @@ type ContentEntry = NonNullable<ProductFinishedGoodsData['fields']['pageContentE
 export default async function ContentfulProductSections({ data }: ContentfulProductSectionsProps) {
   const productData = await data;
 
-  if (!productData?.fields?.pageContentEntries) {
+  if (!productData.fields.pageContentEntries) {
     return null;
   }
 
@@ -23,9 +23,11 @@ export default async function ContentfulProductSections({ data }: ContentfulProd
         if (entry.sys.contentType.sys.id === 'blockProductFeatures') {
           return <ContentfulBlockProductFeatures entry={entry} key={entry.sys.id} />;
         }
+
         if (entry.sys.contentType.sys.id === 'blockProductFeaturesAccordion') {
           return <ContentfulBlockProductFeaturesAccordion entry={entry} key={entry.sys.id} />;
         }
+
         return null;
       })}
     </>

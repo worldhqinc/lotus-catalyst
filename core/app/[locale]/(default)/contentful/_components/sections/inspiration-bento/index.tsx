@@ -3,14 +3,24 @@ import { ArrowRight, Pause } from 'lucide-react';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 
-import { PageStandardPageContentField } from '../../../[...rest]/page-data';
 import Card from '../../primitives/card';
 
 interface InspirationBentoProps {
   heading: string;
-  video: string;
-  cta?: PageStandardPageContentField['fields']['cta'];
-  inspirationCards?: PageStandardPageContentField['fields']['inspirationCards'];
+  video?: string | null;
+  cta?: {
+    fields: {
+      text: string;
+      internalReference: {
+        fields: {
+          pageSlug: string;
+        };
+      };
+      externalLink: string;
+    };
+  } | null;
+  // eslint-disable-next-line
+  inspirationCards?: any[] | null;
 }
 
 export default function InspirationBento({
@@ -28,7 +38,7 @@ export default function InspirationBento({
             <ButtonLink
               className="[&_span]:flex [&_span]:items-center [&_span]:gap-2 [&_span]:font-medium"
               href={
-                cta.fields.internalReference?.fields?.pageSlug
+                cta.fields.internalReference.fields.pageSlug
                   ? `/${cta.fields.internalReference.fields.pageSlug}`
                   : cta.fields.externalLink || ''
               }
@@ -68,22 +78,22 @@ export default function InspirationBento({
                 video ? 'lg:col-start-2' : 'lg:col-span-2',
               )}
             >
-              {inspirationCards.map(
-                (
-                  card: NonNullable<
-                    PageStandardPageContentField['fields']['inspirationCards']
-                  >[number],
-                ) => (
-                  <Card
-                    categories={card.fields.contentReference.fields.mealTypeCategory}
-                    image={card.fields.contentReference.fields.featuredImage}
-                    key={card.sys.id}
-                    pageSlug={card.fields.contentReference.fields.pageSlug}
-                    recipeName={card.fields.contentReference.fields.recipeName}
-                    shortDescription={card.fields.contentReference.fields.shortDescription}
-                  />
-                ),
-              )}
+              {inspirationCards.map((card) => (
+                <Card
+                  // eslint-disable-next-line
+                  categories={card.fields.contentReference.fields.mealTypeCategory}
+                  // eslint-disable-next-line
+                  image={card.fields.contentReference.fields.featuredImage}
+                  // eslint-disable-next-line
+                  key={card.sys.id}
+                  // eslint-disable-next-line
+                  pageSlug={card.fields.contentReference.fields.pageSlug}
+                  // eslint-disable-next-line
+                  recipeName={card.fields.contentReference.fields.recipeName}
+                  // eslint-disable-next-line
+                  shortDescription={card.fields.contentReference.fields.shortDescription}
+                />
+              ))}
             </div>
           )}
         </div>

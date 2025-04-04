@@ -28,6 +28,7 @@ export default async function ContentfulPage({ params }: Props) {
   const page = await getPageBySlug('pageStandard', rest);
   const fields = page.fields;
   const pageName = fields.pageName;
+  // eslint-disable-next-line
   const pageDescription = documentToHtmlString(fields.optionalPageDescription);
   const pageContent = fields.pageContent;
 

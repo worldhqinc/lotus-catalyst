@@ -1,16 +1,18 @@
-import { PageStandardPageContentField } from '../[...rest]/page-data';
+import { z } from 'zod';
+
+import { PageContentFieldSchema } from '../[...rest]/page-data';
 
 import InspirationBento from './sections/inspiration-bento';
 
 export default function PageContentEntries({
   pageContent,
 }: {
-  pageContent: PageStandardPageContentField[];
+  pageContent: z.infer<typeof PageContentFieldSchema>['fields']['pageContent'];
 }) {
   return (
     <div>
       {Array.isArray(pageContent) &&
-        pageContent.map((field: PageStandardPageContentField) => (
+        pageContent.map((field) => (
           <div key={field.sys.id}>
             {field.sys.contentType.sys.id === 'button' ? (
               <div key={field.sys.id}>Button Display Component</div>
