@@ -41,7 +41,7 @@ export default function Card({
 
   return (
     <article className="group relative max-h-max">
-      <figure className="relative aspect-[6/4] overflow-hidden rounded-lg bg-surface-image">
+      <figure className="relative aspect-[4/3] overflow-hidden rounded-lg bg-surface-image">
         <Image
           alt={recipeName}
           className="h-full w-full object-cover"
