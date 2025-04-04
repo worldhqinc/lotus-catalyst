@@ -23,7 +23,7 @@ export default function InspirationBento({
     <section className="py-6 @container @2xl:py-8 @4xl:py-14">
       <div className="container">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2>{heading}</h2>
+          <h2 className="text-4xl">{heading}</h2>
           {cta && (
             <ButtonLink
               className="[&_span]:flex [&_span]:items-center [&_span]:gap-2 [&_span]:font-medium"
@@ -65,7 +65,7 @@ export default function InspirationBento({
             <div
               className={clsx(
                 'grid grid-cols-1 gap-8 md:grid-cols-2',
-                video ? 'lg:col-start-2' : '',
+                video ? 'lg:col-start-2' : 'lg:col-span-2',
               )}
             >
               {inspirationCards.map(
