@@ -53,6 +53,9 @@ export default async (): Promise<NextConfig> => {
       optimizePackageImports: ['@icons-pack/react-simple-icons'],
       ppr: 'incremental',
     },
+    images: {
+      domains: ['images.ctfassets.net'],
+    },
     typescript: {
       ignoreBuildErrors: !!process.env.CI,
     },

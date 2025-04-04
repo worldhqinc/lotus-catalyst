@@ -31,6 +31,62 @@ export interface PageStandardPageContentField {
       };
     };
   };
+  fields: {
+    heading: string;
+    video: string;
+    cta?: {
+      sys: {
+        id: string;
+        type: string;
+      };
+      fields: {
+        text: string;
+        internalReference?: {
+          sys: {
+            id: string;
+            type: string;
+          };
+          fields?: {
+            pageSlug?: string;
+          };
+        };
+        externalLink?: string;
+      };
+    };
+    inspirationCards?: {
+      sys: {
+        id: string;
+        type: string;
+      };
+      fields: {
+        contentReference: {
+          sys: {
+            id: string;
+            type: string;
+          };
+          fields: {
+            featuredImage: {
+              fields: {
+                file: {
+                  url: string;
+                  details: {
+                    image: {
+                      height: number;
+                      width: number;
+                    };
+                  };
+                }
+              }
+            }
+            pageSlug: string;
+            recipeName: string;
+            shortDescription: string;
+            mealTypeCategory: Array<string>;
+          }
+        }
+      }
+    }[]
+  };
 }
 
 export interface RecipeFields {
@@ -43,7 +99,8 @@ export const getPageBySlug = cache(
       content_type: contentType,
       'fields.pageSlug': rest.join('/'),
       limit: 1,
-    });
+      include: 4,
+    } as any);
 
     const page = response.items[0];
 

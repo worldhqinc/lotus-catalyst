@@ -1,5 +1,7 @@
 import { PageStandardPageContentField } from '../[...rest]/page-data';
 
+import InspirationBento from './sections/inspiration-bento';
+
 export default function PageContentEntries({
   pageContent,
 }: {
@@ -15,6 +17,15 @@ export default function PageContentEntries({
             ) : null}
             {field.sys.contentType.sys.id === 'faq' ? (
               <div key={field.sys.id}>FAQ Display Component</div>
+            ) : null}
+            {field.sys.contentType.sys.id === 'inspirationBento' ? (
+              <InspirationBento
+                cta={field.fields.cta}
+                heading={field.fields.heading.toString()}
+                key={field.sys.id}
+                video={field.fields.video}
+                inspirationCards={field.fields.inspirationCards || []}
+              />
             ) : null}
           </div>
         ))}
