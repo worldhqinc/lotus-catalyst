@@ -2,7 +2,7 @@ import { Badge } from '@/vibes/soul/primitives/badge';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 
-interface InspirationCardProps {
+interface CardProps {
   categories: string[];
   image: {
     fields: {
@@ -22,13 +22,13 @@ interface InspirationCardProps {
   shortDescription: string;
 }
 
-export default function InspirationCards({
+export default function Card({
   categories,
   image,
   pageSlug,
   recipeName,
   shortDescription,
-}: InspirationCardProps) {
+}: CardProps) {
   const ensureImageUrl = (url: string) => {
     if (!url) return '';
 
@@ -50,16 +50,16 @@ export default function InspirationCards({
           width={image.fields.file.details.image.width}
         />
       </figure>
-      <div className="mt-2 flex flex-col gap-2">
+      <div className="mt-2 flex flex-col gap-1">
         <h3 className="transition-colors duration-200 ease-quad group-hover:text-primary">
           {recipeName}
         </h3>
         <p className="text-neutral-500">{shortDescription}</p>
-        <div className="flex flex-wrap items-center gap-2">
-          {categories.map((category) => (
-            <Badge key={category}>{category}</Badge>
-          ))}
-        </div>
+      </div>
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        {categories.map((category) => (
+          <Badge key={category}>{category}</Badge>
+        ))}
       </div>
       <Link className="absolute inset-0" href={`/${pageSlug}`}>
         <span className="sr-only">View {recipeName}</span>

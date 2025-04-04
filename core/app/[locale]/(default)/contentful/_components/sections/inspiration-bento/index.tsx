@@ -4,7 +4,7 @@ import { Pause } from 'lucide-react';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 
 import { PageStandardPageContentField } from '../../../[...rest]/page-data';
-import InspirationCards from '../../primitives/inspiration-cards';
+import Card from '../../primitives/card';
 
 interface InspirationBentoProps {
   heading: string;
@@ -72,7 +72,7 @@ export default function InspirationBento({
                     PageStandardPageContentField['fields']['inspirationCards']
                   >[number],
                 ) => (
-                  <InspirationCards
+                  <Card
                     categories={card.fields.contentReference.fields.mealTypeCategory}
                     image={card.fields.contentReference.fields.featuredImage}
                     key={card.sys.id}
