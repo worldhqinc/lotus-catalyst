@@ -20,7 +20,7 @@ export default function InspirationBento({
   inspirationCards,
 }: InspirationBentoProps) {
   return (
-    <section className="py-6 @container @2xl:py-8 @4xl:py-14">
+    <section className="py-24 @container">
       <div className="container">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-4xl">{heading}</h2>
