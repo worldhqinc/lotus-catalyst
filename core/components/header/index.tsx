@@ -67,23 +67,23 @@ const getLinks = async () => {
   return await Promise.resolve([
     {
       label: 'Shop',
-      href: '/page-1',
+      href: '/shop',
       groups: [
         {
           label: 'Professional Series',
-          href: '/group-1',
+          href: '#',
           links: [],
           comingSoon: false,
         },
         {
           label: 'Signature Series',
-          href: '/group-2',
+          href: '#',
           links: [],
           comingSoon: true,
         },
         {
           label: 'Accessories',
-          href: '/group-3',
+          href: '#',
           links: [],
           comingSoon: false,
         },
