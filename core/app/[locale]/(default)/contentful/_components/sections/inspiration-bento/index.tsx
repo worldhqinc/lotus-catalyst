@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { Pause } from 'lucide-react';
+import { ArrowRight, Pause } from 'lucide-react';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 
@@ -26,6 +26,7 @@ export default function InspirationBento({
           <h2>{heading}</h2>
           {cta && (
             <ButtonLink
+              className="[&_span]:flex [&_span]:items-center [&_span]:gap-2 [&_span]:font-medium"
               href={
                 cta.fields.internalReference?.fields?.pageSlug
                   ? `/${cta.fields.internalReference.fields.pageSlug}`
@@ -36,6 +37,7 @@ export default function InspirationBento({
               variant="link"
             >
               {cta.fields.text}
+              <ArrowRight size={24} strokeWidth={1} />
             </ButtonLink>
           )}
         </div>
