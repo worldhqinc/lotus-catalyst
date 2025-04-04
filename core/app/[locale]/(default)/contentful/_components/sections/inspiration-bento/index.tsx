@@ -6,19 +6,10 @@ import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import Card from '../../primitives/card';
 
 interface InspirationBentoProps {
-  heading: string;
+  heading?: string | null;
   video?: string | null;
-  cta?: {
-    fields: {
-      text: string;
-      internalReference: {
-        fields: {
-          pageSlug: string;
-        };
-      };
-      externalLink: string;
-    };
-  } | null;
+  // eslint-disable-next-line
+  cta?: any | null;
   // eslint-disable-next-line
   inspirationCards?: any[] | null;
 }
@@ -38,15 +29,21 @@ export default function InspirationBento({
             <ButtonLink
               className="[&_span]:flex [&_span]:items-center [&_span]:gap-2 [&_span]:font-medium"
               href={
+                // eslint-disable-next-line
                 cta.fields.internalReference.fields.pageSlug
-                  ? `/${cta.fields.internalReference.fields.pageSlug}`
-                  : cta.fields.externalLink || ''
+                  ? // eslint-disable-next-line
+                    `/${cta.fields.internalReference.fields.pageSlug}`
+                  : // eslint-disable-next-line
+                    cta.fields.externalLink || ''
               }
               shape="link"
               size="link"
               variant="link"
             >
-              {cta.fields.text}
+              {
+                // eslint-disable-next-line
+                cta.fields.text
+              }
               <ArrowRight size={24} strokeWidth={1} />
             </ButtonLink>
           )}

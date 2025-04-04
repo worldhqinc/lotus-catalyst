@@ -1,4 +1,5 @@
-export default function ContentfulBlockProductFeaturesAccordion(entry) {
+// eslint-disable-next-line
+export default function ContentfulBlockProductFeaturesAccordion(entry: any) {
   return (
     <div>
       <h2>

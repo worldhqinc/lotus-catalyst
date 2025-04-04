@@ -1,4 +1,5 @@
-export default function ContentfulBlockProductFeatures(entry) {
+// eslint-disable-next-line
+export default function ContentfulBlockProductFeatures(entry: any) {
   return (
     <div>
       <h2>

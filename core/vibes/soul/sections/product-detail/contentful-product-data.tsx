@@ -14,7 +14,7 @@ function getContentfulField(
 ): string {
   return typeof data.fields[field] === 'string'
     ? data.fields[field]
-    : (data.fields[field]['en-US'] ?? '');
+    : (data.fields[field]?.['en-US'] ?? '');
 }
 
 export async function ContentfulProductData({ data }: Props) {
