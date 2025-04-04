@@ -106,8 +106,7 @@ const GetStoreStatusQuery = graphql(`
 const getStoreStatus = async (channelId?: string) => {
   const { data } = await client.fetch({
     document: GetStoreStatusQuery,
-    fetchOptions: { next: { revalidate: 300 } },
-    channelId,
+    fetchOptions: channelId,
   });
 
   return data.site.settings?.status;
