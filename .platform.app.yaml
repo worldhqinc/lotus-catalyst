@@ -17,6 +17,9 @@ mounts:
     '/core/build-config':
         source: local
         source_path: 'build-config'
+    '/core/messages':
+        source: local
+        source_path: 'messages'
 web:
     locations:
         '/':
