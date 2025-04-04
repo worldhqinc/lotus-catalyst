@@ -1,11 +1,10 @@
-import clsx from 'clsx';
+import { clsx } from 'clsx';
+import { Pause } from 'lucide-react';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 
-import InspirationCards from '../../primitives/inspiration-cards';
 import { PageStandardPageContentField } from '../../../[...rest]/page-data';
-
-import { Pause } from 'lucide-react';
+import InspirationCards from '../../primitives/inspiration-cards';
 
 interface InspirationBentoProps {
   heading: string;
@@ -21,7 +20,7 @@ export default function InspirationBento({
   inspirationCards,
 }: InspirationBentoProps) {
   return (
-    <section className="@container py-6 @2xl:py-8 @4xl:py-14">
+    <section className="py-6 @container @2xl:py-8 @4xl:py-14">
       <div className="container">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2>{heading}</h2>
@@ -41,7 +40,7 @@ export default function InspirationBento({
           )}
         </div>
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
-          {video && (
+          {video && video !== '' ? (
             <figure className="relative aspect-[4/5] h-full w-full rounded-lg bg-surface-image">
               <video
                 autoPlay
@@ -59,10 +58,13 @@ export default function InspirationBento({
                 <Pause size={24} strokeWidth={1} />
               </button>
             </figure>
-          )}
+          ) : null}
           {inspirationCards && (
             <div
-              className={clsx('grid grid-cols-1 gap-4 lg:grid-cols-2', video ? 'lg:col-start-2' : '')}
+              className={clsx(
+                'grid grid-cols-1 gap-4 lg:grid-cols-2',
+                video ? 'lg:col-start-2' : '',
+              )}
             >
               {inspirationCards.map(
                 (

@@ -21,10 +21,10 @@ export default function PageContentEntries({
             {field.sys.contentType.sys.id === 'inspirationBento' ? (
               <InspirationBento
                 cta={field.fields.cta}
-                heading={field.fields.heading.toString()}
+                heading={field.fields.heading}
+                inspirationCards={field.fields.inspirationCards || []}
                 key={field.sys.id}
                 video={field.fields.video}
-                inspirationCards={field.fields.inspirationCards || []}
               />
             ) : null}
           </div>

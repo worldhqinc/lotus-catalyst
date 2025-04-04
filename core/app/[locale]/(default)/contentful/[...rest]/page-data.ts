@@ -53,7 +53,7 @@ export interface PageStandardPageContentField {
         externalLink?: string;
       };
     };
-    inspirationCards?: {
+    inspirationCards?: Array<{
       sys: {
         id: string;
         type: string;
@@ -75,17 +75,17 @@ export interface PageStandardPageContentField {
                       width: number;
                     };
                   };
-                }
-              }
-            }
+                };
+              };
+            };
             pageSlug: string;
             recipeName: string;
             shortDescription: string;
-            mealTypeCategory: Array<string>;
-          }
-        }
-      }
-    }[]
+            mealTypeCategory: string[];
+          };
+        };
+      };
+    }>;
   };
 }
 

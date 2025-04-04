@@ -34,7 +34,9 @@ export default async function ContentfulPage({ params }: Props) {
   return (
     <div className="@container">
       <div className="container py-8 @2xl:py-16 @4xl:py-24">
-        <h1 className="m-0 max-w-xl font-[family-name:var(--slideshow-title-font-family,var(--font-family-heading))] text-4xl font-medium leading-none @2xl:text-5xl @2xl:leading-[.9] @4xl:text-6xl">{pageName}</h1>
+        <h1 className="m-0 max-w-xl font-[family-name:var(--slideshow-title-font-family,var(--font-family-heading))] text-4xl font-medium leading-none @2xl:text-5xl @2xl:leading-[.9] @4xl:text-6xl">
+          {pageName}
+        </h1>
       </div>
       {pageDescription ? <div dangerouslySetInnerHTML={{ __html: pageDescription }} /> : null}
       <PageContentEntries pageContent={pageContent} />
