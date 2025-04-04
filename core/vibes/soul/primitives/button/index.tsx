@@ -58,7 +58,7 @@ export function Button({
       {...props}
       aria-busy={loading}
       className={clsx(
-        'relative z-0 inline-flex h-fit items-center justify-center overflow-hidden border text-center font-[family-name:var(--button-font-family,var(--font-family-body))] leading-normal select-none after:absolute after:inset-0 after:-z-10 after:-translate-x-[110%] after:scale-110 after:transition-[opacity,transform] after:duration-300 after:[animation-timing-function:cubic-bezier(0.25,0.46,0.45,0.94)] focus-visible:outline-none',
+        'relative z-0 inline-flex h-fit items-center justify-center overflow-hidden border text-center font-[family-name:var(--button-font-family,var(--font-family-body))] leading-normal select-none after:absolute after:inset-0 after:-z-10 after:-translate-x-[110%] after:scale-110 after:transition-transform after:duration-300 after:ease-quad focus-visible:outline-none',
         {
           primary:
             'after:bg-primary-highlight focus-visible:border-primary disabled:border-disabled disabled:bg-disabled border-[var(--button-primary-border,hsl(var(--primary)))] bg-[var(--button-primary-background,hsl(var(--primary)))] text-[var(--button-primary-text,hsl(var(--background)))]',
