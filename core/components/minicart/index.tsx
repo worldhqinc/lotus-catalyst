@@ -3,7 +3,6 @@
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { Trash, X } from 'lucide-react';
-import Image from 'next/image';
 import { startTransition, useActionState, useEffect, useOptimistic } from 'react';
 import { useFormStatus } from 'react-dom';
 import { z } from 'zod';
@@ -11,9 +10,9 @@ import { z } from 'zod';
 import { NumberInput } from '@/vibes/soul/form/number-input';
 import { Button } from '@/vibes/soul/primitives/button';
 import { toast } from '@/vibes/soul/primitives/toaster';
+import { Image } from '~/components/image';
 import { Link } from '~/components/link';
-import type { CartItem } from '~/components/minicart/_actions/minicart';
-import { minicartAction } from '~/components/minicart/_actions/minicart';
+import { type CartItem, minicartAction } from '~/components/minicart/_actions/minicart';
 
 interface Props {
   cartHref: string;
@@ -42,9 +41,11 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
 
       const { id, quantity, intent } = submission.value;
 
+      if (quantity === undefined) return state;
+
       switch (intent) {
         case 'update':
-          return state.map((item) => (item.id === id ? { ...item, quantity: quantity! } : item));
+          return state.map((item) => (item.id === id ? { ...item, quantity } : item));
         case 'remove':
           return state.filter((item) => item.id !== id);
         default:
@@ -157,7 +158,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
               <div className="flex items-center justify-between">
                 <div className="flex items-end gap-2">
                   <span>${item.price}</span>
-                  {item.originalPrice && (
+                  {!!item.originalPrice && (
                     <span className="text-contrast-400 line-through">${item.originalPrice}</span>
                   )}
                 </div>
@@ -188,7 +189,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
         </div>
 
         <div className="flex gap-4">
-          <Link className="flex-1" href="/cart" onClick={onClose}>
+          <Link className="flex-1" href={cartHref} onClick={onClose}>
             <Button className="w-full" variant="secondary">
               View cart
             </Button>
