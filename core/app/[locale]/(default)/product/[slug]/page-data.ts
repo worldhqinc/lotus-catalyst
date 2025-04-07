@@ -40,7 +40,7 @@ const MultipleChoiceFieldFragment = graphql(`
     displayName
     displayStyle
     isRequired
-    values(first: 10) {
+    values(first: 50) {
       edges {
         node {
           entityId
@@ -147,7 +147,7 @@ export const ProductFormFragment = graphql(
           }
         }
       }
-      productOptions(first: 10) {
+      productOptions(first: 50) {
         edges {
           node {
             __typename
