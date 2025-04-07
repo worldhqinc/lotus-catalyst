@@ -1,6 +1,7 @@
 'use client';
 
 import { SubmissionResult } from '@conform-to/react';
+import * as Dialog from '@radix-ui/react-dialog';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import * as Popover from '@radix-ui/react-popover';
@@ -20,10 +21,13 @@ import React, {
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price } from '@/vibes/soul/primitives/price-label';
+
+import AlgoliaSearch from '~/components/header/algolia-search';
 import { Link } from '~/components/link';
+import { Minicart } from '~/components/minicart';
+
 import { usePathname, useRouter } from '~/i18n/routing';
 
-import AlgoliaSearch from '../../../../components/header/algolia-search';
 import { LogoLotus } from '../logo-lotus';
 
 interface Link {
@@ -271,6 +275,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 ) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const pathname = usePathname();
 
@@ -304,6 +309,39 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 
   const handleCloseSearch = () => {
     setIsSearchOpen(false);
+  };
+
+  // Mock cart data for demonstration
+  const cartItems = [
+    {
+      id: '1',
+      title: 'The Perfectionist™',
+      subtitle: 'Air Fry and Convection Oven',
+      price: 499,
+      originalPrice: 599,
+      quantity: 1,
+    },
+    {
+      id: '2',
+      title: 'The Sous',
+      subtitle: 'Multi-Function Cooker with Tri-Ply Dutch Oven',
+      price: 499,
+      originalPrice: 599,
+      quantity: 1,
+    },
+    {
+      id: '3',
+      title: 'The Sous (French)',
+      subtitle: 'Cuisinière multifonction avec four hollandais à trois couches',
+      price: 499,
+      originalPrice: 599,
+      quantity: 1,
+    },
+  ];
+
+  const handleQuantityChange = (id: string, quantity: number) => {
+    // Handle quantity change
+    console.log('Quantity changed:', id, quantity);
   };
 
   return (
@@ -478,24 +516,39 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
           >
             <User size={24} strokeWidth={1} />
           </Link>
-          <Link aria-label={cartLabel} className={navButtonClassName} href={cartHref}>
-            <ShoppingBag size={24} strokeWidth={1} />
-            <Stream
-              fallback={
-                <span className="bg-contrast-100 text-background absolute -top-0.5 -right-0.5 flex h-4 w-4 animate-pulse items-center justify-center rounded-full text-xs" />
-              }
-              value={streamableCartCount}
-            >
-              {(cartCount) =>
-                cartCount != null &&
-                cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--nav-cart-count-background,hsl(var(--foreground)))] text-xs text-[var(--nav-cart-count-text,hsl(var(--background)))]">
-                    {cartCount}
-                  </span>
-                )
-              }
-            </Stream>
-          </Link>
+          <Dialog.Root onOpenChange={setIsCartOpen} open={isCartOpen}>
+            <Dialog.Trigger asChild>
+              <button aria-label={cartLabel} className={navButtonClassName}>
+                <ShoppingBag size={24} strokeWidth={1} />
+                <Stream
+                  fallback={
+                    <span className="bg-contrast-100 text-background absolute -top-0.5 -right-0.5 flex h-4 w-4 animate-pulse items-center justify-center rounded-full text-xs" />
+                  }
+                  value={streamableCartCount}
+                >
+                  {(cartCount) =>
+                    cartCount != null &&
+                    cartCount > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--nav-cart-count-background,hsl(var(--foreground)))] text-xs text-[var(--nav-cart-count-text,hsl(var(--background)))]">
+                        {cartCount}
+                      </span>
+                    )
+                  }
+                </Stream>
+              </button>
+            </Dialog.Trigger>
+            <Dialog.Portal>
+              <Dialog.Overlay className="bg-foreground/50 fixed inset-0 z-50" />
+              <Dialog.Content className="fixed inset-y-0 right-0 z-50 w-96 max-w-full bg-white shadow-xl">
+                <Dialog.Title className="sr-only">Cart</Dialog.Title>
+                <Minicart
+                  items={cartItems}
+                  onClose={() => setIsCartOpen(false)}
+                  onQuantityChange={handleQuantityChange}
+                />
+              </Dialog.Content>
+            </Dialog.Portal>
+          </Dialog.Root>
 
           {/* Mobile Menu */}
           <Popover.Root onOpenChange={setIsMobileMenuOpen} open={isMobileMenuOpen}>

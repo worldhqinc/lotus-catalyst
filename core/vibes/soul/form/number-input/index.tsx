@@ -64,7 +64,7 @@ export const NumberInput = React.forwardRef<
         )}
         <div
           className={clsx(
-            'inline-flex items-center rounded-lg border',
+            'border-border inline-flex items-center rounded border',
             {
               light: 'bg-[var(--number-input-light-background,hsl(var(--background)))]',
               dark: 'bg-[var(--number-input-dark-background,hsl(var(--foreground)))]',
@@ -74,7 +74,7 @@ export const NumberInput = React.forwardRef<
           <button
             aria-label={decrementLabel}
             className={clsx(
-              'group rounded-l-lg p-3.5 focus-visible:ring-2 focus-visible:ring-[var(--number-input-focus,hsl(var(--primary)))] focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-30',
+              'group rounded-l p-2 focus-visible:ring-2 focus-visible:ring-[var(--number-input-focus,hsl(var(--primary)))] focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-30',
               {
                 light:
                   'bg-[var(--number-input-light-button-background,hsl(var(--background)))] hover:bg-[var(--number-input-light-button-background-hover,hsl(var(--contrast-100)/50%))]',
@@ -121,7 +121,7 @@ export const NumberInput = React.forwardRef<
           <button
             aria-label={incrementLabel}
             className={clsx(
-              'group rounded-r-lg p-3.5 focus-visible:ring-2 focus-visible:ring-[var(--number-input-focus,hsl(var(--primary)))] focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-30',
+              'group rounded-r p-2 focus-visible:ring-2 focus-visible:ring-[var(--number-input-focus,hsl(var(--primary)))] focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-30',
               {
                 light:
                   'bg-[var(--number-input-light-button-background,hsl(var(--background)))] hover:bg-[var(--number-input-light-button-background-hover,hsl(var(--contrast-100)/50%))]',
