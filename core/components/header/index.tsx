@@ -17,6 +17,8 @@ import { getPreferredCurrencyCode } from '~/lib/currency';
 import { switchCurrency } from './_actions/switch-currency';
 import { HeaderFragment } from './fragment';
 
+import { getMinicartItems } from '~/components/minicart/_actions/minicart';
+
 const GetCartCountQuery = graphql(`
   query GetCartCountQuery($cartId: String) {
     site {
@@ -184,6 +186,7 @@ export const Header = async () => {
         openSearchPopupLabel: t('Icons.search'),
         logoLabel: t('home'),
         cartCount: Streamable.from(getCartCount),
+        cartItems: Streamable.from(getMinicartItems),
         activeLocaleId: locale,
         locales,
         currencies,

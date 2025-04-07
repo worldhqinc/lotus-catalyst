@@ -28,6 +28,7 @@ import { Minicart } from '~/components/minicart';
 
 import { usePathname, useRouter } from '~/i18n/routing';
 
+import { CartItem } from '~/components/minicart/_actions/minicart';
 import { LogoLotus } from '../logo-lotus';
 
 interface Link {
@@ -93,6 +94,7 @@ interface Props<S extends SearchResult> {
   isFloating?: boolean;
   accountHref: string;
   cartCount?: Streamable<number | null>;
+  cartItems?: Streamable<CartItem[]>;
   cartHref: string;
   links: Streamable<Link[]>;
   linksPosition?: 'center' | 'left' | 'right';
@@ -256,6 +258,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     isFloating = false,
     cartHref,
     cartCount: streamableCartCount,
+    cartItems: streamableCartItems,
     accountHref,
     links: streamableLinks,
     logoWidth = 120,
@@ -541,11 +544,14 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
               <Dialog.Overlay className="bg-foreground/50 fixed inset-0 z-50" />
               <Dialog.Content className="fixed inset-y-0 right-0 z-50 w-96 max-w-full bg-white shadow-xl">
                 <Dialog.Title className="sr-only">Cart</Dialog.Title>
-                <Minicart
-                  items={cartItems}
-                  onClose={() => setIsCartOpen(false)}
-                  onQuantityChange={handleQuantityChange}
-                />
+                <Stream
+                  fallback={<Minicart initialItems={[]} onClose={() => setIsCartOpen(false)} />}
+                  value={streamableCartItems}
+                >
+                  {(cartItems) => (
+                    <Minicart initialItems={cartItems ?? []} onClose={() => setIsCartOpen(false)} />
+                  )}
+                </Stream>
               </Dialog.Content>
             </Dialog.Portal>
           </Dialog.Root>
