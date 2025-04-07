@@ -75,7 +75,7 @@ export default async (): Promise<NextConfig> => {
         'vibes',
       ],
     },
-    generateBuildId: async () => {
+    generateBuildId: () => {
       return process.env.PLATFORM_TREE_ID ?? null;
     },
     // default URL generation in BigCommerce uses trailing slash
