@@ -16,6 +16,7 @@ import type { CartItem } from '~/components/minicart/_actions/minicart';
 import { minicartAction } from '~/components/minicart/_actions/minicart';
 
 interface Props {
+  cartHref: string;
   initialItems: CartItem[];
   onClose: () => void;
 }
@@ -26,7 +27,7 @@ const schema = z.object({
   intent: z.enum(['update', 'remove']),
 });
 
-export function Minicart({ initialItems, onClose }: Props) {
+export function Minicart({ initialItems, onClose, cartHref }: Props) {
   const [{ items, lastResult }, formAction] = useActionState(minicartAction, {
     items: initialItems,
     lastResult: null,

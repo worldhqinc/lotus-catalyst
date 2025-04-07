@@ -21,14 +21,12 @@ import React, {
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price } from '@/vibes/soul/primitives/price-label';
-
 import AlgoliaSearch from '~/components/header/algolia-search';
 import { Link } from '~/components/link';
 import { Minicart } from '~/components/minicart';
-
+import { CartItem } from '~/components/minicart/_actions/minicart';
 import { usePathname, useRouter } from '~/i18n/routing';
 
-import { CartItem } from '~/components/minicart/_actions/minicart';
 import { LogoLotus } from '../logo-lotus';
 
 interface Link {
@@ -314,39 +312,6 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     setIsSearchOpen(false);
   };
 
-  // Mock cart data for demonstration
-  const cartItems = [
-    {
-      id: '1',
-      title: 'The Perfectionist™',
-      subtitle: 'Air Fry and Convection Oven',
-      price: 499,
-      originalPrice: 599,
-      quantity: 1,
-    },
-    {
-      id: '2',
-      title: 'The Sous',
-      subtitle: 'Multi-Function Cooker with Tri-Ply Dutch Oven',
-      price: 499,
-      originalPrice: 599,
-      quantity: 1,
-    },
-    {
-      id: '3',
-      title: 'The Sous (French)',
-      subtitle: 'Cuisinière multifonction avec four hollandais à trois couches',
-      price: 499,
-      originalPrice: 599,
-      quantity: 1,
-    },
-  ];
-
-  const handleQuantityChange = (id: string, quantity: number) => {
-    // Handle quantity change
-    console.log('Quantity changed:', id, quantity);
-  };
-
   return (
     <NavigationMenu.Root
       className={clsx(
@@ -545,11 +510,21 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
               <Dialog.Content className="fixed inset-y-0 right-0 z-50 w-96 max-w-full bg-white shadow-xl">
                 <Dialog.Title className="sr-only">Cart</Dialog.Title>
                 <Stream
-                  fallback={<Minicart initialItems={[]} onClose={() => setIsCartOpen(false)} />}
+                  fallback={
+                    <Minicart
+                      cartHref={cartHref}
+                      initialItems={[]}
+                      onClose={() => setIsCartOpen(false)}
+                    />
+                  }
                   value={streamableCartItems}
                 >
                   {(cartItems) => (
-                    <Minicart initialItems={cartItems ?? []} onClose={() => setIsCartOpen(false)} />
+                    <Minicart
+                      cartHref={cartHref}
+                      initialItems={cartItems ?? []}
+                      onClose={() => setIsCartOpen(false)}
+                    />
                   )}
                 </Stream>
               </Dialog.Content>
