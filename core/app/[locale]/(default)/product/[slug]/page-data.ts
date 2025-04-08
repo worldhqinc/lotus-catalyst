@@ -140,13 +140,6 @@ export const ProductFormFragment = graphql(
   `
     fragment ProductFormFragment on Product {
       entityId
-      variants {
-        edges {
-          node {
-            entityId
-          }
-        }
-      }
       productOptions(first: 50) {
         edges {
           node {
