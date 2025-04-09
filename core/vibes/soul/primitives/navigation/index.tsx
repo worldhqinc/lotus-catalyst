@@ -14,6 +14,7 @@ import React, {
   useActionState,
   useCallback,
   useEffect,
+  useRef,
   useState,
   useTransition,
 } from 'react';
@@ -276,17 +277,18 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 ) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isMinicartDrawerOpen, setIsMinicartDrawerOpen] = useState(false);
 
   const pathname = usePathname();
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
+    setIsMinicartDrawerOpen(false);
   }, [pathname]);
 
   useEffect(() => {
-    if (isSearchOpen || isMobileMenuOpen) {
+    if (isSearchOpen || isMobileMenuOpen || isMinicartDrawerOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -295,7 +297,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isSearchOpen, isMobileMenuOpen]);
+  }, [isSearchOpen, isMobileMenuOpen, isMinicartDrawerOpen]);
 
   useEffect(() => {
     function handleScroll() {
@@ -307,10 +309,24 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   const handleCloseSearch = () => {
     setIsSearchOpen(false);
   };
+
+  const prevCartCountRef = useRef<number | null | undefined>(undefined);
+
+  useEffect(() => {
+    (async () => {
+      const resolvedCartCount = await streamableCartCount;
+      if (
+        prevCartCountRef.current !== undefined &&
+        prevCartCountRef.current !== resolvedCartCount
+      ) {
+        setIsMinicartDrawerOpen(true);
+      }
+      prevCartCountRef.current = resolvedCartCount ?? null;
+    })();
+  }, [streamableCartCount]);
 
   return (
     <NavigationMenu.Root
@@ -484,37 +500,36 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
           >
             <User size={24} strokeWidth={1} />
           </Link>
-          <Dialog.Root onOpenChange={setIsCartOpen} open={isCartOpen}>
-            <Dialog.Trigger asChild>
-              <button aria-label={cartLabel} className={navButtonClassName}>
-                <ShoppingBag size={24} strokeWidth={1} />
-                <Stream
-                  fallback={
-                    <span className="bg-contrast-100 text-background absolute -top-0.5 -right-0.5 flex h-4 w-4 animate-pulse items-center justify-center rounded-full text-xs" />
-                  }
-                  value={streamableCartCount}
-                >
-                  {(cartCount) =>
-                    cartCount != null &&
-                    cartCount > 0 && (
-                      <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--nav-cart-count-background,hsl(var(--foreground)))] text-xs text-[var(--nav-cart-count-text,hsl(var(--background)))]">
-                        {cartCount}
-                      </span>
-                    )
-                  }
-                </Stream>
-              </button>
-            </Dialog.Trigger>
+          <Link aria-label={cartLabel} className={navButtonClassName} href={cartHref}>
+            <ShoppingBag size={24} strokeWidth={1} />
+            <Stream
+              fallback={
+                <span className="bg-contrast-100 text-background absolute -top-0.5 -right-0.5 flex h-4 w-4 animate-pulse items-center justify-center rounded-full text-xs" />
+              }
+              value={streamableCartCount}
+            >
+              {(currentDisplayCount) =>
+                currentDisplayCount != null &&
+                currentDisplayCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--nav-cart-count-background,hsl(var(--foreground)))] text-xs text-[var(--nav-cart-count-text,hsl(var(--background)))]">
+                    {currentDisplayCount}
+                  </span>
+                )
+              }
+            </Stream>
+          </Link>
+
+          <Dialog.Root onOpenChange={setIsMinicartDrawerOpen} open={isMinicartDrawerOpen}>
             <Dialog.Portal>
               <Dialog.Overlay className="bg-foreground/50 fixed inset-0 z-50" />
-              <Dialog.Content className="fixed inset-y-0 right-0 z-50 w-96 max-w-full bg-white shadow-xl">
+              <Dialog.Content className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-xl">
                 <Dialog.Title className="sr-only">Cart</Dialog.Title>
                 <Stream
                   fallback={
                     <Minicart
                       cartHref={cartHref}
                       initialItems={[]}
-                      onClose={() => setIsCartOpen(false)}
+                      onClose={() => setIsMinicartDrawerOpen(false)}
                     />
                   }
                   value={streamableCartItems}
@@ -523,7 +538,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                     <Minicart
                       cartHref={cartHref}
                       initialItems={cartItems ?? []}
-                      onClose={() => setIsCartOpen(false)}
+                      onClose={() => setIsMinicartDrawerOpen(false)}
                     />
                   )}
                 </Stream>
