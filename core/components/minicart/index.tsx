@@ -12,6 +12,7 @@ import { Button } from '@/vibes/soul/primitives/button';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { type CartItem, minicartAction } from '~/components/minicart/_actions/minicart';
+
 import { CompleteKitchen } from './complete-kitchen';
 
 interface Props {
@@ -191,10 +192,10 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
       <div className="mt-auto">
         <CompleteKitchen
           items={optimisticItems}
-          title={t('completeKitchen.title')}
-          subtitle={t('completeKitchen.addToCart')}
           nextLabel={t('completeKitchen.nextProducts')}
           previousLabel={t('completeKitchen.previousProducts')}
+          subtitle={t('completeKitchen.addToCart')}
+          title={t('completeKitchen.title')}
         />
 
         <div className="bg-background flex flex-col gap-4 border-t border-[#e5e5e5] px-4 py-4 sm:px-6">

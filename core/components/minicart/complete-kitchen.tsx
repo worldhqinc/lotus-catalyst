@@ -1,11 +1,12 @@
 'use client';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { Button } from '~/vibes/soul/primitives/button';
+
 import { type CartItem } from './_actions/minicart';
 
 interface Props {
@@ -16,51 +17,6 @@ interface Props {
   previousLabel?: string;
 }
 
-interface RelatedProduct {
-  id: string;
-  title: string;
-  subtitle?: string;
-  price: number;
-  originalPrice?: number;
-  image?: {
-    src: string;
-    alt: string;
-  };
-  href: string;
-}
-
-// Mock data for testing
-const mockRelatedProducts: RelatedProduct[] = [
-  {
-    id: '1',
-    title: 'The Perfectionist™ Pro',
-    subtitle: 'Professional Air Fryer and Convection Oven',
-    price: 499,
-    originalPrice: 599,
-    image: {
-      src: 'https://cdn11.bigcommerce.com/s-qfzerv205w/images/stencil/original/products/115/489/Perfectionist-Pro-Main__37487.1603748583.png',
-      alt: 'The Perfectionist Pro Air Fryer',
-    },
-    href: '/product/perfectionist-pro',
-  },
-  {
-    id: '2',
-    title: 'The Sous Master',
-    subtitle: 'Smart Sous Vide Precision Cooker',
-    price: 299,
-    originalPrice: 399,
-    href: '/product/sous-master',
-  },
-  {
-    id: '3',
-    title: 'The Kitchen Command™',
-    subtitle: 'Smart Kitchen Hub and Display',
-    price: 799,
-    originalPrice: 999,
-    href: '/product/kitchen-command',
-  },
-];
-
 export function CompleteKitchen({
   items,
   title = 'Complete the kitchen',
@@ -68,17 +24,14 @@ export function CompleteKitchen({
   nextLabel = 'Next products',
   previousLabel = 'Previous products',
 }: Props) {
-  const [relatedProducts, setRelatedProducts] = useState<RelatedProduct[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    // Temporarily using mock data instead of API call
-    setRelatedProducts(mockRelatedProducts);
-    setIsLoading(false);
-  }, [items]);
+  const relatedProducts = useMemo(
+    () => items.flatMap((item) => item.relatedProducts || []),
+    [items],
+  );
 
-  if (isLoading || relatedProducts.length === 0) {
+  if (relatedProducts.length === 0) {
     return null;
   }
 
@@ -130,7 +83,7 @@ export function CompleteKitchen({
             <div className="flex flex-1 flex-col justify-between gap-2">
               <div className="flex flex-col gap-2">
                 <h3 className="line-clamp-1 font-medium">{product.title}</h3>
-                {product.subtitle && (
+                {!!product.subtitle && (
                   <p className="text-contrast-400 line-clamp-1 text-xs sm:text-sm">
                     {product.subtitle}
                   </p>
