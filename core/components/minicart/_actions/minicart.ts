@@ -137,12 +137,15 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
 
   // Transform physical items
   cart.lineItems.physicalItems.forEach((item) => {
+    const listPrice = item.extendedListPrice.value / item.quantity;
+    const salePrice = item.extendedSalePrice.value / item.quantity;
+
     items.push({
       id: item.entityId,
       title: item.name,
       subtitle: item.brand || '',
-      price: item.extendedSalePrice.value / item.quantity,
-      originalPrice: item.extendedListPrice.value / item.quantity,
+      price: salePrice,
+      originalPrice: salePrice < listPrice ? listPrice : undefined,
       quantity: item.quantity,
       productEntityId: item.productEntityId,
       variantEntityId: item.variantEntityId,
@@ -157,12 +160,15 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
 
   // Transform digital items
   cart.lineItems.digitalItems.forEach((item) => {
+    const listPrice = item.extendedListPrice.value / item.quantity;
+    const salePrice = item.extendedSalePrice.value / item.quantity;
+
     items.push({
       id: item.entityId,
       title: item.name,
       subtitle: item.brand || '',
-      price: item.extendedSalePrice.value / item.quantity,
-      originalPrice: item.extendedListPrice.value / item.quantity,
+      price: salePrice,
+      originalPrice: salePrice < listPrice ? listPrice : undefined,
       quantity: item.quantity,
       productEntityId: item.productEntityId,
       variantEntityId: item.variantEntityId,

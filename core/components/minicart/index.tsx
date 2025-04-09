@@ -2,6 +2,7 @@
 
 import { parseWithZod } from '@conform-to/zod';
 import { Trash, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { startTransition, useActionState, useOptimistic } from 'react';
 import { useFormStatus } from 'react-dom';
 import { z } from 'zod';
@@ -11,6 +12,7 @@ import { Button } from '@/vibes/soul/primitives/button';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { type CartItem, minicartAction } from '~/components/minicart/_actions/minicart';
+import { CompleteKitchen } from './complete-kitchen';
 
 interface Props {
   cartHref: string;
@@ -25,6 +27,7 @@ const schema = z.object({
 });
 
 export function Minicart({ initialItems, onClose, cartHref }: Props) {
+  const t = useTranslations('Minicart');
   const [{ items }, formAction] = useActionState(minicartAction, {
     items: initialItems,
     lastResult: null,
@@ -106,7 +109,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
             >
               <X size={20} />
             </Button>
-            <h2 className="font-sans text-base font-medium">Your Cart</h2>
+            <h2 className="font-sans text-base font-medium">{t('title')}</h2>
           </div>
           <span className="text-sm sm:text-base">{pending ? 'Loading...' : '0 items'}</span>
         </div>
@@ -127,10 +130,10 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
           >
             <X size={20} />
           </Button>
-          <h2 className="font-sans text-base font-medium">Your Cart</h2>
+          <h2 className="font-sans text-base font-medium">{t('title')}</h2>
         </div>
         <span className="text-sm sm:text-base">
-          {optimisticItems.length} item{optimisticItems.length === 1 ? '' : 's'}
+          {t('items', { count: optimisticItems.length })}
         </span>
       </div>
 
@@ -151,8 +154,10 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
             <div className="flex flex-1 flex-col justify-between gap-2 sm:gap-2">
               <div className="flex items-start justify-between">
                 <div className="flex flex-col gap-2">
-                  <h3 className="font-medium">{item.title}</h3>
-                  <p className="text-xs text-gray-600 sm:text-sm">{item.subtitle}</p>
+                  <h3 className="line-clamp-1 font-medium">{item.title}</h3>
+                  <p className="text-contrast-400 line-clamp-1 text-xs sm:text-sm">
+                    {item.subtitle}
+                  </p>
                 </div>
                 <button
                   className="flex items-start p-1 text-[#737373]"
@@ -183,27 +188,39 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
         ))}
       </div>
 
-      <div className="bg-background mt-auto flex flex-col gap-4 border-t border-[#e5e5e5] px-4 py-4 sm:px-6">
-        <div className="flex flex-col gap-1">
-          <div className="flex justify-between text-sm">
-            <span>Savings</span>
-            <span>${savings.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Subtotal</span>
-            <span className="font-medium">${subtotal.toFixed(2)}</span>
-          </div>
-        </div>
+      <div className="mt-auto">
+        <CompleteKitchen
+          items={optimisticItems}
+          title={t('completeKitchen.title')}
+          subtitle={t('completeKitchen.addToCart')}
+          nextLabel={t('completeKitchen.nextProducts')}
+          previousLabel={t('completeKitchen.previousProducts')}
+        />
 
-        <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
-          <Link className="flex-1" href={cartHref} onClick={onClose}>
-            <Button className="w-full" variant="secondary">
-              View cart
-            </Button>
-          </Link>
-          <Link className="flex-1" href="/checkout" onClick={onClose}>
-            <Button className="w-full">Checkout</Button>
-          </Link>
+        <div className="bg-background flex flex-col gap-4 border-t border-[#e5e5e5] px-4 py-4 sm:px-6">
+          <div className="flex flex-col gap-1">
+            {savings > 0 && (
+              <div className="flex justify-between text-sm">
+                <span>{t('savings')}</span>
+                <span>${savings.toFixed(2)}</span>
+              </div>
+            )}
+            <div className="flex justify-between">
+              <span>{t('subtotal')}</span>
+              <span className="font-medium">${subtotal.toFixed(2)}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
+            <Link className="flex-1" href={cartHref} onClick={onClose}>
+              <Button className="w-full" variant="secondary">
+                {t('viewCart')}
+              </Button>
+            </Link>
+            <Link className="flex-1" href="/checkout" onClick={onClose}>
+              <Button className="w-full">{t('checkout')}</Button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
