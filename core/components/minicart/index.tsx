@@ -25,7 +25,7 @@ const schema = z.object({
 });
 
 export function Minicart({ initialItems, onClose, cartHref }: Props) {
-  const [{ items, lastResult }, formAction] = useActionState(minicartAction, {
+  const [{ items }, formAction] = useActionState(minicartAction, {
     items: initialItems,
     lastResult: null,
   });
@@ -44,17 +44,31 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
       switch (intent) {
         case 'update':
           return state.map((item) => (item.id === id ? { ...item, quantity } : item));
+
         case 'remove':
           return state.filter((item) => item.id !== id);
+
         default:
           return state;
       }
     },
   );
 
+  const handleRemoveItem = (id: string) => {
+    startTransition(() => {
+      const formData = new FormData();
+
+      formData.set('id', id);
+      formData.set('intent', 'remove');
+      formAction(formData);
+      setOptimisticItems(formData);
+    });
+  };
+
   const handleQuantityChange = (id: string, quantity: number) => {
     startTransition(() => {
       const formData = new FormData();
+
       formData.set('id', id);
       formData.set('quantity', quantity.toString());
       formData.set('intent', 'update');
@@ -68,19 +82,11 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
     });
   };
 
-  const handleRemoveItem = (id: string) => {
-    startTransition(() => {
-      const formData = new FormData();
-      formData.set('id', id);
-      formData.set('intent', 'remove');
-      formAction(formData);
-      setOptimisticItems(formData);
-    });
-  };
-
   const subtotal = optimisticItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
   const savings = optimisticItems.reduce((acc, item) => {
     if (!item.originalPrice) return acc;
+
     return acc + (item.originalPrice - item.price) * item.quantity;
   }, 0);
 
@@ -94,9 +100,9 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
             <Button
               className="-ml-2.5"
               onClick={onClose}
+              shape="circle"
               size="x-small"
               variant="ghost"
-              shape="circle"
             >
               <X size={20} />
             </Button>
@@ -115,9 +121,9 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
           <Button
             className="-ml-2.5"
             onClick={onClose}
+            shape="circle"
             size="x-small"
             variant="ghost"
-            shape="circle"
           >
             <X size={20} />
           </Button>
@@ -130,7 +136,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
 
       <div className="bg-background space-y-4 overflow-y-auto px-4 py-4 sm:space-y-6 sm:px-6">
         {optimisticItems.map((item) => (
-          <div key={item.id} className="flex gap-3 sm:gap-4">
+          <div className="flex gap-3 sm:gap-4" key={item.id}>
             <div className="border-surface-image bg-surface-image relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border sm:h-24 sm:w-24">
               {item.image && (
                 <Image
@@ -165,11 +171,11 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
                   )}
                 </div>
                 <NumberInput
-                  value={item.quantity}
-                  min={0}
-                  onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value, 10))}
                   decrementLabel="Decrease quantity"
                   incrementLabel="Increase quantity"
+                  min={0}
+                  onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value, 10))}
+                  value={item.quantity}
                 />
               </div>
             </div>

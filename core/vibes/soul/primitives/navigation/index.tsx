@@ -309,6 +309,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   const handleCloseSearch = () => {
     setIsSearchOpen(false);
   };
@@ -316,14 +317,16 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
   const prevCartCountRef = useRef<number | null | undefined>(undefined);
 
   useEffect(() => {
-    (async () => {
+    void (async () => {
       const resolvedCartCount = await streamableCartCount;
+
       if (
         prevCartCountRef.current !== undefined &&
         prevCartCountRef.current !== resolvedCartCount
       ) {
         setIsMinicartDrawerOpen(true);
       }
+
       prevCartCountRef.current = resolvedCartCount ?? null;
     })();
   }, [streamableCartCount]);

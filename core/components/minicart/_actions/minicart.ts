@@ -243,9 +243,12 @@ export async function minicartAction(prevState: State, formData: FormData): Prom
     }
 
     const items = await getMinicartItems();
+
     return { items, lastResult: submission.reply() };
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error updating cart:', error);
+
     return {
       ...prevState,
       lastResult: submission.reply({ formErrors: ['Failed to update cart'] }),

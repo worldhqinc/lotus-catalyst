@@ -9,6 +9,7 @@ import { client } from '~/client';
 import { graphql, readFragment } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
 import { TAGS } from '~/client/tags';
+import { getMinicartItems } from '~/components/minicart/_actions/minicart';
 import { logoTransformer } from '~/data-transformers/logo-transformer';
 import { routing } from '~/i18n/routing';
 import { getCartId } from '~/lib/cart';
@@ -16,8 +17,6 @@ import { getPreferredCurrencyCode } from '~/lib/currency';
 
 import { switchCurrency } from './_actions/switch-currency';
 import { HeaderFragment } from './fragment';
-
-import { getMinicartItems } from '~/components/minicart/_actions/minicart';
 
 const GetCartCountQuery = graphql(`
   query GetCartCountQuery($cartId: String) {
