@@ -1,6 +1,7 @@
 'use client';
 
 import { SubmissionResult } from '@conform-to/react';
+import * as Dialog from '@radix-ui/react-dialog';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import * as Popover from '@radix-ui/react-popover';
@@ -13,6 +14,7 @@ import React, {
   useActionState,
   useCallback,
   useEffect,
+  useRef,
   useState,
   useTransition,
 } from 'react';
@@ -20,10 +22,12 @@ import React, {
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price } from '@/vibes/soul/primitives/price-label';
+import AlgoliaSearch from '~/components/header/algolia-search';
 import { Link } from '~/components/link';
+import { Minicart } from '~/components/minicart';
+import { CartItem } from '~/components/minicart/_actions/minicart';
 import { usePathname, useRouter } from '~/i18n/routing';
 
-import AlgoliaSearch from '../../../../components/header/algolia-search';
 import { LogoLotus } from '../logo-lotus';
 
 interface Link {
@@ -89,6 +93,7 @@ interface Props<S extends SearchResult> {
   isFloating?: boolean;
   accountHref: string;
   cartCount?: Streamable<number | null>;
+  cartItems?: Streamable<CartItem[]>;
   cartHref: string;
   links: Streamable<Link[]>;
   linksPosition?: 'center' | 'left' | 'right';
@@ -252,6 +257,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     isFloating = false,
     cartHref,
     cartCount: streamableCartCount,
+    cartItems: streamableCartItems,
     accountHref,
     links: streamableLinks,
     logoWidth = 120,
@@ -271,16 +277,18 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 ) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMinicartDrawerOpen, setIsMinicartDrawerOpen] = useState(false);
 
   const pathname = usePathname();
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
+    setIsMinicartDrawerOpen(false);
   }, [pathname]);
 
   useEffect(() => {
-    if (isSearchOpen || isMobileMenuOpen) {
+    if (isSearchOpen || isMobileMenuOpen || isMinicartDrawerOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -289,7 +297,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isSearchOpen, isMobileMenuOpen]);
+  }, [isSearchOpen, isMobileMenuOpen, isMinicartDrawerOpen]);
 
   useEffect(() => {
     function handleScroll() {
@@ -305,6 +313,24 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
   const handleCloseSearch = () => {
     setIsSearchOpen(false);
   };
+
+  const prevCartCountRef = useRef<number | null | undefined>(undefined);
+
+  useEffect(() => {
+    void (async () => {
+      const resolvedCartCount = await streamableCartCount;
+
+      if (
+        prevCartCountRef.current !== undefined &&
+        prevCartCountRef.current !== resolvedCartCount &&
+        pathname.replace(/\/$/, '') !== cartHref.replace(/\/$/, '')
+      ) {
+        setIsMinicartDrawerOpen(true);
+      }
+
+      prevCartCountRef.current = resolvedCartCount ?? null;
+    })();
+  }, [streamableCartCount, pathname, cartHref]);
 
   return (
     <NavigationMenu.Root
@@ -486,16 +512,43 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
               }
               value={streamableCartCount}
             >
-              {(cartCount) =>
-                cartCount != null &&
-                cartCount > 0 && (
+              {(currentDisplayCount) =>
+                currentDisplayCount != null &&
+                currentDisplayCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--nav-cart-count-background,hsl(var(--foreground)))] text-xs text-[var(--nav-cart-count-text,hsl(var(--background)))]">
-                    {cartCount}
+                    {currentDisplayCount}
                   </span>
                 )
               }
             </Stream>
           </Link>
+
+          <Dialog.Root onOpenChange={setIsMinicartDrawerOpen} open={isMinicartDrawerOpen}>
+            <Dialog.Portal>
+              <Dialog.Overlay className="bg-foreground/50 fixed inset-0 z-50" />
+              <Dialog.Content className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-xl">
+                <Dialog.Title className="sr-only">Cart</Dialog.Title>
+                <Stream
+                  fallback={
+                    <Minicart
+                      cartHref={cartHref}
+                      initialItems={[]}
+                      onClose={() => setIsMinicartDrawerOpen(false)}
+                    />
+                  }
+                  value={streamableCartItems}
+                >
+                  {(cartItems) => (
+                    <Minicart
+                      cartHref={cartHref}
+                      initialItems={cartItems ?? []}
+                      onClose={() => setIsMinicartDrawerOpen(false)}
+                    />
+                  )}
+                </Stream>
+              </Dialog.Content>
+            </Dialog.Portal>
+          </Dialog.Root>
 
           {/* Mobile Menu */}
           <Popover.Root onOpenChange={setIsMobileMenuOpen} open={isMobileMenuOpen}>

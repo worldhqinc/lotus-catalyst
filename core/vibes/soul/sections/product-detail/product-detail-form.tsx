@@ -25,7 +25,6 @@ import { RadioGroup } from '@/vibes/soul/form/radio-group';
 import { Select } from '@/vibes/soul/form/select';
 import { SwatchRadioGroup } from '@/vibes/soul/form/swatch-radio-group';
 import { Button } from '@/vibes/soul/primitives/button';
-import { toast } from '@/vibes/soul/primitives/toaster';
 import { usePathname, useRouter } from '~/i18n/routing';
 
 import { Field, schema, SchemaRawShape } from './schema';
@@ -101,8 +100,6 @@ export function ProductDetailForm<F extends Field>({
 
   useEffect(() => {
     if (lastResult?.status === 'success') {
-      toast.success(successMessage);
-
       // This is needed to refresh the Data Cache after the product has been added to the cart.
       // The cart id is not picked up after the first time the cart is created/updated.
       router.refresh();

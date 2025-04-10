@@ -9,6 +9,7 @@ import { client } from '~/client';
 import { graphql, readFragment } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
 import { TAGS } from '~/client/tags';
+import { getMinicartItems } from '~/components/minicart/_actions/minicart';
 import { logoTransformer } from '~/data-transformers/logo-transformer';
 import { routing } from '~/i18n/routing';
 import { getCartId } from '~/lib/cart';
@@ -184,6 +185,7 @@ export const Header = async () => {
         openSearchPopupLabel: t('Icons.search'),
         logoLabel: t('home'),
         cartCount: Streamable.from(getCartCount),
+        cartItems: Streamable.from(getMinicartItems),
         activeLocaleId: locale,
         locales,
         currencies,

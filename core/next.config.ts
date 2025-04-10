@@ -53,7 +53,7 @@ export default async (): Promise<NextConfig> => {
       ppr: 'incremental',
     },
     images: {
-      domains: ['images.ctfassets.net'],
+      domains: ['images.ctfassets.net', 'cdn11.bigcommerce.com'],
     },
     typescript: {
       ignoreBuildErrors: !!process.env.CI,
