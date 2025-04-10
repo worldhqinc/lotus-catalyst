@@ -322,14 +322,15 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
 
       if (
         prevCartCountRef.current !== undefined &&
-        prevCartCountRef.current !== resolvedCartCount
+        prevCartCountRef.current !== resolvedCartCount &&
+        pathname.replace(/\/$/, '') !== cartHref.replace(/\/$/, '')
       ) {
         setIsMinicartDrawerOpen(true);
       }
 
       prevCartCountRef.current = resolvedCartCount ?? null;
     })();
-  }, [streamableCartCount]);
+  }, [streamableCartCount, pathname, cartHref]);
 
   return (
     <NavigationMenu.Root

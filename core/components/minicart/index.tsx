@@ -3,7 +3,7 @@
 import { parseWithZod } from '@conform-to/zod';
 import { Trash, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { startTransition, useActionState, useOptimistic } from 'react';
+import { startTransition, useActionState, useEffect, useOptimistic } from 'react';
 import { useFormStatus } from 'react-dom';
 import { z } from 'zod';
 
@@ -13,6 +13,7 @@ import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { type CartItem, minicartAction } from '~/components/minicart/_actions/minicart';
 
+import { useRouter } from '~/i18n/routing';
 import { CompleteKitchen } from './complete-kitchen';
 
 interface Props {
@@ -29,10 +30,18 @@ const schema = z.object({
 
 export function Minicart({ initialItems, onClose, cartHref }: Props) {
   const t = useTranslations('Minicart');
-  const [{ items }, formAction] = useActionState(minicartAction, {
+  const router = useRouter();
+  const [{ items, lastResult }, formAction] = useActionState(minicartAction, {
     items: initialItems,
     lastResult: null,
   });
+
+  useEffect(() => {
+    if (lastResult?.status === 'success') {
+      // This is needed to refresh the Data Cache after the cart has been updated.
+      router.refresh();
+    }
+  }, [lastResult]);
 
   const [optimisticItems, setOptimisticItems] = useOptimistic<CartItem[], FormData>(
     items,
