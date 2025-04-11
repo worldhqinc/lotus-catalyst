@@ -25,6 +25,7 @@ export default function PageContentEntries({
                 cta={field.fields.cta}
                 heading={field.fields.heading}
                 inspirationCards={field.fields.inspirationCards || []}
+                inspirationSlides={field.fields.inspirationSlides || []}
                 key={field.sys.id}
                 video={field.fields.video}
               />

@@ -4,6 +4,95 @@ import { z } from 'zod';
 
 import { contentfulClient } from '~/lib/contentful';
 
+const ContentfulSysSchema = z.object({
+  id: z.string(),
+  type: z.string(),
+  contentType: z
+    .object({
+      sys: z.object({
+        id: z.string(),
+      }),
+    })
+    .optional(),
+});
+
+const ContentfulImageSchema = z.object({
+  fields: z.object({
+    file: z.object({
+      url: z.string(),
+      details: z.object({
+        size: z.number(),
+        image: z.object({
+          width: z.number(),
+          height: z.number(),
+        }),
+      }),
+      fileName: z.string(),
+      contentType: z.string(),
+    }),
+  }),
+});
+
+const ContentfulRecipeSchema = z.object({
+  fields: z.object({
+    pageSlug: z.string(),
+    recipeName: z.string(),
+    shortDescription: z.string().nullable().optional(),
+    mealTypeCategory: z.array(z.string()).nullable().optional(),
+    featuredImage: ContentfulImageSchema.nullable().optional(),
+  }),
+});
+
+const ContentfulTutorialSchema = z.object({
+  fields: z.object({
+    pageSlug: z.string(),
+    title: z.string(),
+    shortDescription: z.string().nullable().optional(),
+    featuredImage: ContentfulImageSchema.nullable().optional(),
+  }),
+});
+
+const ContentfulInspirationCardSchema = z.object({
+  sys: ContentfulSysSchema,
+  fields: z.object({
+    title: z.string(),
+    contentReference: z.union([ContentfulRecipeSchema, ContentfulTutorialSchema]),
+  }),
+});
+
+const ContentfulInspirationSlideSchema = z.object({
+  sys: ContentfulSysSchema,
+  fields: z.object({
+    image: ContentfulImageSchema.nullable().optional(),
+    headline: z.string(),
+    subhead: z.string().nullable().optional(),
+    ctaLabel: z.string().nullable().optional(),
+    ctaLink: z
+      .object({
+        fields: z.object({
+          pageSlug: z.string(),
+        }),
+      })
+      .nullable()
+      .optional(),
+  }),
+});
+
+const ContentfulCTASchema = z.object({
+  fields: z.object({
+    text: z.string(),
+    internalReference: z
+      .object({
+        fields: z.object({
+          pageSlug: z.string(),
+        }),
+      })
+      .nullable()
+      .optional(),
+    externalLink: z.string().nullable().optional(),
+  }),
+});
+
 export const PageContentFieldSchema = z.object({
   fields: z.object({
     metaTitleSeo: z.string().nullable().optional(),
@@ -25,21 +114,10 @@ export const PageContentFieldSchema = z.object({
             }),
           }),
           fields: z.object({
-            cta: z
-              .object({
-                fields: z.object({
-                  text: z.string(),
-                  internalReference: z.object({
-                    fields: z.object({
-                      pageSlug: z.string(),
-                    }),
-                  }),
-                }),
-              })
-              .nullable()
-              .optional(),
+            cta: ContentfulCTASchema.nullable().optional(),
             heading: z.string().nullable().optional(),
-            inspirationCards: z.array(z.any()).nullable().optional(),
+            inspirationCards: z.array(ContentfulInspirationCardSchema).nullable().optional(),
+            inspirationSlides: z.array(ContentfulInspirationSlideSchema).nullable().optional(),
             video: z.string().nullable().optional(),
           }),
         }),
@@ -58,6 +136,14 @@ export const ContentfulEntrySchema = z.object({
   limit: z.number(),
   items: z.array(PageContentFieldSchema),
 });
+
+export type ContentfulSys = z.infer<typeof ContentfulSysSchema>;
+export type ContentfulImage = z.infer<typeof ContentfulImageSchema>;
+export type ContentfulRecipe = z.infer<typeof ContentfulRecipeSchema>;
+export type ContentfulTutorial = z.infer<typeof ContentfulTutorialSchema>;
+export type ContentfulInspirationCard = z.infer<typeof ContentfulInspirationCardSchema>;
+export type ContentfulInspirationSlide = z.infer<typeof ContentfulInspirationSlideSchema>;
+export type ContentfulCTA = z.infer<typeof ContentfulCTASchema>;
 
 export const getPageBySlug = cache(
   async (contentType: 'pageStandard' | 'recipe', rest: string[]) => {
