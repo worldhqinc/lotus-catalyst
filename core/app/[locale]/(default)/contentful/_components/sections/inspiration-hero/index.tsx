@@ -4,9 +4,8 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
-import { Image } from '~/components/image';
-
 import type { ContentfulInspirationSlide } from '~/app/[locale]/(default)/contentful/[...rest]/page-data';
+import { Image } from '~/components/image';
 
 interface InspirationHeroProps {
   slides?: ContentfulInspirationSlide[] | null;
@@ -17,14 +16,17 @@ export default function InspirationHero({ slides }: InspirationHeroProps) {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const validSlides = slides?.filter((slide) => {
-    const { headline } = slide.fields;
-    return headline;
+    const { headline: slideHeadline } = slide.fields;
+
+    return Boolean(slideHeadline);
   });
 
   const goToSlide = useCallback(
     (index: number) => {
       if (!validSlides?.length) return;
+
       const newIndex = (index + validSlides.length) % validSlides.length;
+
       setCurrentIndex(newIndex);
     },
     [validSlides],
@@ -42,12 +44,14 @@ export default function InspirationHero({ slides }: InspirationHeroProps) {
     if (!isAutoPlaying) return;
 
     const interval = setInterval(goToNextSlide, 5000);
+
     return () => clearInterval(interval);
   }, [goToNextSlide, isAutoPlaying]);
 
   if (!validSlides?.length) return null;
 
   const currentSlide = validSlides[currentIndex];
+
   if (!currentSlide) return null;
 
   const { headline, subhead, image, ctaLabel, ctaLink } = currentSlide.fields;
@@ -66,8 +70,8 @@ export default function InspirationHero({ slides }: InspirationHeroProps) {
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative container flex h-full flex-col items-start justify-center gap-4 text-white">
         <h1 className="max-w-2xl text-5xl font-light">{headline}</h1>
-        {subhead && <p className="max-w-xl text-xl">{subhead}</p>}
-        {ctaLabel && ctaLink && (
+        {subhead ? <p className="max-w-xl text-xl">{subhead}</p> : null}
+        {ctaLabel && ctaLink?.fields.pageSlug ? (
           <ButtonLink
             className="mt-4"
             href={`/${ctaLink.fields.pageSlug}`}
@@ -77,7 +81,7 @@ export default function InspirationHero({ slides }: InspirationHeroProps) {
           >
             {ctaLabel}
           </ButtonLink>
-        )}
+        ) : null}
       </div>
       <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-2">
         {validSlides.map((_, index) => (
