@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 import { z } from 'zod';
-import { heroSlideSchema } from '~/contentful/schema';
 
 import { contentfulClient } from '~/lib/contentful';
 
@@ -61,6 +60,24 @@ const ContentfulInspirationCardSchema = z.object({
   }),
 });
 
+const ContentfulHeroSlideSchema = z.object({
+  sys: ContentfulSysSchema,
+  fields: z.object({
+    image: ContentfulImageSchema.nullable().optional(),
+    headline: z.string(),
+    subhead: z.string().nullable().optional(),
+    ctaLabel: z.string().nullable().optional(),
+    ctaLink: z
+      .object({
+        fields: z.object({
+          pageSlug: z.string(),
+        }),
+      })
+      .nullable()
+      .optional(),
+  }),
+});
+
 const ContentfulCTASchema = z.object({
   fields: z.object({
     text: z.string(),
@@ -99,7 +116,7 @@ export const PageContentFieldSchema = z.object({
           fields: z.object({
             cta: ContentfulCTASchema.nullable().optional(),
             heading: z.string().nullable().optional(),
-            heroSlides: z.array(heroSlideSchema).nullable().optional(),
+            heroSlides: z.array(ContentfulHeroSlideSchema).nullable().optional(),
             inspirationCards: z.array(ContentfulInspirationCardSchema).nullable().optional(),
             video: z.string().nullable().optional(),
           }),
