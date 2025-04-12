@@ -1,44 +1,44 @@
 'use client';
 
 import { Slideshow } from '@/vibes/soul/sections/slideshow';
-import { PageStandard, type HeroSlide } from '~/contentful/schema';
+import {
+  IHeroSlide,
+  IHeroSlideFields,
+  IPageStandard,
+  IPageStandardFields,
+} from '~/types/generated/contentful';
 
-interface HeroCarouselProps {
-  slides: HeroSlide[];
+interface Props {
+  slides: IHeroSlide[];
 }
 
-export default function HeroCarousel({ slides }: HeroCarouselProps) {
-  const validSlides = slides.filter((slide) => {
-    const { headline: slideHeadline } = slide.fields;
-    return Boolean(slideHeadline);
-  });
-
-  if (!validSlides.length) return null;
-
+export default function HeroCarousel({ slides }: Props) {
   return (
     <section className="@container">
       <Slideshow
-        slides={validSlides.map((slide) => {
-          const ctaLink = slide.fields.ctaLink as PageStandard | undefined;
+        slides={slides.map((slide) => {
+          const fields = slide.fields as IHeroSlideFields;
+          const ctaLink = fields.ctaLink as IPageStandard;
+          const ctaLinkFields = ctaLink?.fields as IPageStandardFields;
 
           return {
-            title: slide.fields.headline,
-            description: slide.fields.subhead,
-            showDescription: Boolean(slide.fields.subhead),
-            image: slide.fields.image
+            title: fields.headline,
+            description: fields.subhead,
+            showDescription: Boolean(fields.subhead),
+            image: fields.image?.fields?.file
               ? {
-                  alt: slide.fields.headline,
-                  src: `https:${slide.fields.image.fields.file.url}`,
+                  alt: fields.headline,
+                  src: `https:${fields.image.fields.file.url}`,
                 }
               : undefined,
             cta:
-              slide.fields.ctaLabel && ctaLink?.fields.pageSlug
+              fields.ctaLabel && ctaLinkFields?.pageSlug
                 ? {
-                    label: slide.fields.ctaLabel,
-                    href: `/${ctaLink.fields.pageSlug}`,
+                    label: fields.ctaLabel,
+                    href: `/${ctaLinkFields.pageSlug}`,
                   }
                 : undefined,
-            showCta: Boolean(slide.fields.ctaLabel && ctaLink?.fields.pageSlug),
+            showCta: Boolean(fields.ctaLabel && ctaLinkFields?.pageSlug),
           };
         })}
       />

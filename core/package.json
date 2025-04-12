@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "contentful:export": "./scripts/contentful-export.sh",
     "contentful:generate": "pnpm exec contentful-to-zod --input ./contentful/contentful.json --output ./contentful/schema.ts && prettier --write ./contentful/schema.ts",
-    "contentful:update": "mkdir -p ./contentful && pnpm contentful:export && pnpm contentful:generate"
+    "contentful:update": "mkdir -p ./contentful && pnpm contentful:export && pnpm contentful:generate",
+    "contentful-typescript-codegen": "contentful-typescript-codegen --output types/generated/contentful.d.ts"
   },
   "dependencies": {
     "@bigcommerce/catalyst-client": "workspace:^",
@@ -113,6 +114,8 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4.0.15",
     "tailwindcss-animate": "1.0.7",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "contentful-typescript-codegen": "^3.4.0",
+    "contentful-management": "^11.24.0"
   }
 }

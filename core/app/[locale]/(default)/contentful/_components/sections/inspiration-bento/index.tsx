@@ -1,25 +1,78 @@
 import { clsx } from 'clsx';
+import type { Asset } from 'contentful';
 import { ArrowRight, Pause } from 'lucide-react';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import type {
-  ContentfulCTA,
-  ContentfulInspirationCard,
-  ContentfulRecipe,
-  ContentfulTutorial,
-} from '~/app/[locale]/(default)/contentful/[...rest]/page-data';
+  ICta,
+  ICtaFields,
+  IInspirationCard,
+  IInspirationCardFields,
+  IRecipe,
+  IRecipeFields,
+  ITutorial,
+  ITutorialFields,
+} from '~/types/generated/contentful';
 
 import Card from '../../primitives/card';
 
 interface InspirationBentoProps {
   heading?: string | null;
   video?: string | null;
-  cta?: ContentfulCTA | null;
-  inspirationCards?: ContentfulInspirationCard[] | null;
+  cta?: ICta | null;
+  inspirationCards?: IInspirationCard[] | null;
 }
 
-const isRecipe = (content: ContentfulRecipe | ContentfulTutorial): content is ContentfulRecipe => {
-  return 'recipeName' in content.fields;
+interface CardImage {
+  fields: {
+    file: {
+      url: string;
+      details: {
+        image: {
+          height: number;
+          width: number;
+        };
+      };
+    };
+  };
+}
+
+const isRecipe = (content: IRecipe | ITutorial): content is IRecipe => {
+  return 'recipeName' in (content.fields as IRecipeFields | ITutorialFields);
+};
+
+// Transform Contentful Asset to Card image prop type
+const transformAssetToCardImage = (asset: Asset): CardImage => {
+  const file = asset.fields?.file;
+
+  return {
+    fields: {
+      file: {
+        url: (file?.url as string) || '',
+        details: {
+          image: {
+            height: ((file?.details as any)?.height as number) || 0,
+            width: ((file?.details as any)?.width as number) || 0,
+          },
+        },
+      },
+    },
+  };
+};
+
+// Placeholder image for tutorials
+const TUTORIAL_PLACEHOLDER_IMAGE: CardImage = {
+  fields: {
+    file: {
+      url: '/images/tutorial-placeholder.jpg',
+      details: {
+        image: {
+          height: 400,
+          width: 600,
+        },
+      },
+    },
+  },
 };
 
 export default function InspirationBento({
@@ -29,7 +82,7 @@ export default function InspirationBento({
   inspirationCards,
 }: InspirationBentoProps) {
   const validCards = inspirationCards?.filter((card) => {
-    const { contentReference } = card.fields;
+    const { contentReference } = card.fields as IInspirationCardFields;
 
     if (isRecipe(contentReference)) {
       const {
@@ -38,7 +91,7 @@ export default function InspirationBento({
         pageSlug: recipeSlug,
         recipeName,
         shortDescription: recipeDescription,
-      } = contentReference.fields;
+      } = contentReference.fields as IRecipeFields;
 
       return (
         mealTypeCategory &&
@@ -49,14 +102,10 @@ export default function InspirationBento({
       );
     }
 
-    const {
-      featuredImage: tutorialImage,
-      pageSlug: tutorialSlug,
-      title,
-      shortDescription: tutorialDescription,
-    } = contentReference.fields;
+    // For tutorials, we only have the title field available
+    const { title } = contentReference.fields as ITutorialFields;
 
-    return tutorialImage?.fields.file && tutorialSlug && title && tutorialDescription;
+    return Boolean(title);
   });
 
   return (
@@ -67,16 +116,12 @@ export default function InspirationBento({
           {cta && (
             <ButtonLink
               className="[&_span]:flex [&_span]:items-center [&_span]:gap-2 [&_span]:font-medium"
-              href={
-                cta.fields.internalReference?.fields.pageSlug
-                  ? `/${cta.fields.internalReference.fields.pageSlug}`
-                  : cta.fields.externalLink || ''
-              }
+              href={(cta.fields as ICtaFields).externalLink || ''}
               shape="link"
               size="link"
               variant="link"
             >
-              {cta.fields.text}
+              {(cta.fields as ICtaFields).text}
               <ArrowRight size={24} strokeWidth={1.5} />
             </ButtonLink>
           )}
@@ -105,7 +150,7 @@ export default function InspirationBento({
               )}
             >
               {validCards.map((card) => {
-                const { contentReference } = card.fields;
+                const { contentReference } = card.fields as IInspirationCardFields;
 
                 if (isRecipe(contentReference)) {
                   const {
@@ -114,7 +159,7 @@ export default function InspirationBento({
                     pageSlug: recipeSlug,
                     recipeName,
                     shortDescription: recipeDescription,
-                  } = contentReference.fields;
+                  } = contentReference.fields as IRecipeFields;
 
                   if (
                     !mealTypeCategory ||
@@ -129,7 +174,7 @@ export default function InspirationBento({
                   return (
                     <Card
                       categories={mealTypeCategory}
-                      image={recipeImage}
+                      image={transformAssetToCardImage(recipeImage)}
                       key={card.sys.id}
                       pageSlug={recipeSlug}
                       recipeName={recipeName}
@@ -138,25 +183,21 @@ export default function InspirationBento({
                   );
                 }
 
-                const {
-                  featuredImage: tutorialImage,
-                  pageSlug: tutorialSlug,
-                  title,
-                  shortDescription: tutorialDescription,
-                } = contentReference.fields;
+                const { title } = contentReference.fields as ITutorialFields;
 
-                if (!tutorialImage || !tutorialSlug || !title || !tutorialDescription) {
+                if (!title) {
                   return null;
                 }
 
+                // For tutorials, we only show the title since that's all we have
                 return (
                   <Card
                     categories={[]}
-                    image={tutorialImage}
+                    image={TUTORIAL_PLACEHOLDER_IMAGE}
                     key={card.sys.id}
-                    pageSlug={tutorialSlug}
+                    pageSlug="tutorials"
                     recipeName={title}
-                    shortDescription={tutorialDescription}
+                    shortDescription="View this tutorial"
                   />
                 );
               })}

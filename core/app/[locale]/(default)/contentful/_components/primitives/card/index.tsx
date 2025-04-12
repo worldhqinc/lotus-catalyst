@@ -4,19 +4,21 @@ import { Link } from '~/components/link';
 
 interface CardProps {
   categories: string[];
-  image: {
-    fields: {
-      file: {
-        url: string;
-        details: {
-          image: {
-            height: number;
-            width: number;
+  image:
+    | {
+        fields: {
+          file: {
+            url: string;
+            details: {
+              image: {
+                height: number;
+                width: number;
+              };
+            };
           };
         };
-      };
-    };
-  };
+      }
+    | undefined;
   pageSlug: string;
   recipeName: string;
   shortDescription: string;
@@ -42,13 +44,15 @@ export default function Card({
   return (
     <article className="group relative max-h-max">
       <figure className="bg-surface-image relative aspect-[4/3] overflow-hidden rounded-lg">
-        <Image
-          alt={recipeName}
-          className="h-full w-full object-cover"
-          height={image.fields.file.details.image.height}
-          src={ensureImageUrl(image.fields.file.url)}
-          width={image.fields.file.details.image.width}
-        />
+        {image && (
+          <Image
+            alt={recipeName}
+            className="h-full w-full object-cover"
+            height={image.fields.file.details.image.height}
+            src={ensureImageUrl(image.fields.file.url)}
+            width={image.fields.file.details.image.width}
+          />
+        )}
       </figure>
       <div className="mt-2 flex flex-col gap-1">
         <h3 className="ease-quad group-hover:text-primary text-3xl transition-colors duration-200">
