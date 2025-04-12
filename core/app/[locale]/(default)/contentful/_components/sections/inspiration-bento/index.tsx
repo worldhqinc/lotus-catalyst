@@ -5,20 +5,17 @@ import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import type {
   ContentfulCTA,
   ContentfulInspirationCard,
-  ContentfulInspirationSlide,
   ContentfulRecipe,
   ContentfulTutorial,
 } from '~/app/[locale]/(default)/contentful/[...rest]/page-data';
 
 import Card from '../../primitives/card';
-import InspirationHero from '../inspiration-hero';
 
 interface InspirationBentoProps {
   heading?: string | null;
   video?: string | null;
   cta?: ContentfulCTA | null;
   inspirationCards?: ContentfulInspirationCard[] | null;
-  inspirationSlides?: ContentfulInspirationSlide[] | null;
 }
 
 const isRecipe = (content: ContentfulRecipe | ContentfulTutorial): content is ContentfulRecipe => {
@@ -30,7 +27,6 @@ export default function InspirationBento({
   video,
   cta,
   inspirationCards,
-  inspirationSlides,
 }: InspirationBentoProps) {
   const validCards = inspirationCards?.filter((card) => {
     const { contentReference } = card.fields;
@@ -64,11 +60,10 @@ export default function InspirationBento({
   });
 
   return (
-    <section className="@container py-24">
-      <div className="container">
+    <section className="@container">
+      <div className="mx-auto flex flex-col items-stretch gap-x-16 gap-y-10 px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-4xl">{heading}</h2>
-          <InspirationHero slides={inspirationSlides} />
           {cta && (
             <ButtonLink
               className="[&_span]:flex [&_span]:items-center [&_span]:gap-2 [&_span]:font-medium"
@@ -82,7 +77,7 @@ export default function InspirationBento({
               variant="link"
             >
               {cta.fields.text}
-              <ArrowRight size={24} strokeWidth={1} />
+              <ArrowRight size={24} strokeWidth={1.5} />
             </ButtonLink>
           )}
         </div>

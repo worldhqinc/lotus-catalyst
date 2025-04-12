@@ -1,14 +1,16 @@
-import { z } from 'zod';
+import { getPageBySlug } from '../[...rest]/page-data';
 
-import { PageContentFieldSchema } from '../[...rest]/page-data';
-
+import HeroCarousel from './sections/hero-carousel';
 import InspirationBento from './sections/inspiration-bento';
 
 export default function PageContentEntries({
-  pageContent,
+  page,
 }: {
-  pageContent: z.infer<typeof PageContentFieldSchema>['fields']['pageContent'];
+  page: Awaited<ReturnType<typeof getPageBySlug>>;
 }) {
+  const fields = page.fields;
+  const pageContent = fields.pageContent;
+
   return (
     <div>
       {Array.isArray(pageContent) &&
@@ -20,12 +22,14 @@ export default function PageContentEntries({
             {field.sys.contentType.sys.id === 'faq' ? (
               <div key={field.sys.id}>FAQ Display Component</div>
             ) : null}
+            {field.sys.contentType.sys.id === 'heroCarousel' ? (
+              <HeroCarousel slides={field.fields.heroSlides ?? []} />
+            ) : null}
             {field.sys.contentType.sys.id === 'inspirationBento' ? (
               <InspirationBento
                 cta={field.fields.cta}
                 heading={field.fields.heading}
                 inspirationCards={field.fields.inspirationCards || []}
-                inspirationSlides={field.fields.inspirationSlides || []}
                 key={field.sys.id}
                 video={field.fields.video}
               />

@@ -54,7 +54,7 @@ export default function Card({
         <h3 className="ease-quad group-hover:text-primary text-3xl transition-colors duration-200">
           {recipeName}
         </h3>
-        <p className="text-neutral-500">{shortDescription}</p>
+        <p className="text-contrast-400">{shortDescription}</p>
       </div>
       <div className="mt-4 flex flex-wrap items-center gap-2">
         {categories.map((category) => (

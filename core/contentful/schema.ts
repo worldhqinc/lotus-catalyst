@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import type { Document } from '@contentful/rich-text-types';
+import { z } from 'zod';
 
 export const contentfulRichTextSchema = z.unknown() as z.ZodType<Document>;
 

@@ -13,7 +13,7 @@
     "lint:fix": "next lint --fix",
     "typecheck": "tsc --noEmit",
     "contentful:export": "./scripts/contentful-export.sh",
-    "contentful:generate": "pnpm exec contentful-to-zod --input ./contentful/contentful.json --output ./lib/schemas/contentful.ts && prettier --write ./lib/schemas/contentful.ts",
+    "contentful:generate": "pnpm exec contentful-to-zod --input ./contentful/contentful.json --output ./contentful/schema.ts && prettier --write ./contentful/schema.ts",
     "contentful:update": "mkdir -p ./contentful && pnpm contentful:export && pnpm contentful:generate"
   },
   "dependencies": {
