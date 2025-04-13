@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import { SearchParams } from 'nuqs';
 
-import { pageStandardSchema } from '~/contentful/schema';
-
 import PageContentEntries from '../_components/page-content-entries';
 
 import { getPageBySlug } from './page-data';
@@ -15,13 +13,8 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { rest } = await params;
   const page = await getPageBySlug('pageStandard', rest);
-  const result = pageStandardSchema.safeParse(page);
 
-  if (!result.success) {
-    return {};
-  }
-
-  const { fields } = result.data;
+  const { fields } = page;
 
   return {
     title: fields.metaTitleSeo || fields.pageName,
@@ -33,11 +26,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ContentfulPage({ params }: Props) {
   const { rest } = await params;
   const page = await getPageBySlug('pageStandard', rest);
-  const result = pageStandardSchema.safeParse(page);
 
-  if (!result.success) {
-    return null;
-  }
-
-  return <PageContentEntries page={result.data} />;
+  return <PageContentEntries page={page} />;
 }

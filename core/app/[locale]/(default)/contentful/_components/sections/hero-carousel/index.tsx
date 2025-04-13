@@ -1,5 +1,6 @@
 'use client';
 
+import { ComponentProps } from 'react';
 import { z } from 'zod';
 
 import { Slideshow } from '@/vibes/soul/sections/slideshow';
@@ -9,17 +10,7 @@ interface Props {
   slides: Array<z.infer<typeof heroSlideSchema>>;
 }
 
-interface Slide {
-  title: string;
-  description?: string;
-  showDescription?: boolean;
-  image?: { alt: string; src: string };
-  cta?: {
-    label: string;
-    href: string;
-  };
-  showCta?: boolean;
-}
+type Slide = ComponentProps<typeof Slideshow>['slides'][number];
 
 export default function HeroCarousel({ slides }: Props) {
   return (
@@ -29,16 +20,15 @@ export default function HeroCarousel({ slides }: Props) {
           .map((slide) => {
             const fields = slide.fields;
             const ctaLink = fields.ctaLink;
-            const ctaLinkFields = ctaLink
-              ? pageStandardSchema.safeParse(ctaLink).data?.fields
-              : null;
+
+            const ctaLinkFields = ctaLink ? pageStandardSchema.parse(ctaLink).fields : null;
 
             const title = fields.headline;
             const description = fields.subhead;
 
             const imageAsset = fields.image;
-            const imageResult = imageAsset ? assetSchema.safeParse(imageAsset) : null;
-            const imageFile = imageResult?.success ? imageResult.data.fields.file : null;
+
+            const imageFile = imageAsset ? assetSchema.parse(imageAsset).fields.file : null;
 
             if (!title) return null;
 

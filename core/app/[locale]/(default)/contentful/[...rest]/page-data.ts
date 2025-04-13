@@ -1,23 +1,36 @@
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
+import { z } from 'zod';
 
+import { pageStandardSchema, recipeSchema } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
 
 type ContentType = 'pageStandard' | 'recipe';
 
-export const getPageBySlug = cache(async (contentType: ContentType, rest: string[]) => {
-  const response = await contentfulClient.getEntries({
-    content_type: contentType,
-    'fields.pageSlug': rest.join('/'),
-    limit: 1,
-    include: 4,
-  });
+const schemaMap = {
+  pageStandard: pageStandardSchema,
+  recipe: recipeSchema,
+};
 
-  const pageData = response.items[0];
+type ParsedPageData<T extends ContentType> = z.infer<(typeof schemaMap)[T]>;
 
-  if (!pageData) {
-    return notFound();
-  }
+export const getPageBySlug = cache(
+  async <T extends ContentType>(contentType: T, rest: string[]): Promise<ParsedPageData<T>> => {
+    const response = await contentfulClient.getEntries({
+      content_type: contentType,
+      'fields.pageSlug': rest.join('/'),
+      limit: 1,
+      include: 4,
+    });
 
-  return pageData;
-});
+    const pageData = response.items[0];
+
+    if (!pageData) {
+      notFound();
+    }
+
+    const schema = schemaMap[contentType];
+
+    return schema.parse(pageData);
+  },
+);

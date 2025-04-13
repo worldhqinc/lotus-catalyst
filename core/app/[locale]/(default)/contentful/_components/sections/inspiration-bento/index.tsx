@@ -72,43 +72,37 @@ export default function InspirationBento({
       const contentType = getEntryContentType(contentReference);
 
       if (contentType === 'recipe') {
-        const recipeResult = recipeSchema.safeParse(contentReference);
+        const recipeData = recipeSchema.parse(contentReference);
+        const { mealTypeCategory, featuredImage, pageSlug, recipeName, shortDescription } =
+          recipeData.fields;
 
-        if (recipeResult.success) {
-          const { mealTypeCategory, featuredImage, pageSlug, recipeName, shortDescription } =
-            recipeResult.data.fields;
-
-          if (mealTypeCategory && pageSlug && recipeName && shortDescription) {
-            return {
-              id: cardId,
-              type: 'recipe',
-              categories: mealTypeCategory,
-              originalImage: featuredImage,
-              pageSlug,
-              recipeName,
-              shortDescription,
-            };
-          }
+        if (mealTypeCategory && pageSlug && recipeName && shortDescription) {
+          return {
+            id: cardId,
+            type: 'recipe',
+            categories: mealTypeCategory,
+            originalImage: featuredImage,
+            pageSlug,
+            recipeName,
+            shortDescription,
+          };
         }
       }
 
       if (contentType === 'tutorial') {
-        const tutorialResult = tutorialSchema.safeParse(contentReference);
+        const tutorialData = tutorialSchema.parse(contentReference);
+        const { title } = tutorialData.fields;
 
-        if (tutorialResult.success) {
-          const { title } = tutorialResult.data.fields;
-
-          if (title) {
-            return {
-              id: cardId,
-              type: 'tutorial',
-              categories: [],
-              originalImage: null,
-              pageSlug: 'tutorials',
-              recipeName: title,
-              shortDescription: 'View this tutorial',
-            };
-          }
+        if (title) {
+          return {
+            id: cardId,
+            type: 'tutorial',
+            categories: [],
+            originalImage: null,
+            pageSlug: 'tutorials',
+            recipeName: title,
+            shortDescription: 'View this tutorial',
+          };
         }
       }
 
@@ -125,10 +119,10 @@ export default function InspirationBento({
       const refContentType = getEntryContentType(internalReference);
 
       if (refContentType === 'pageStandard') {
-        const pageResult = pageStandardSchema.safeParse(internalReference);
+        const pageData = pageStandardSchema.parse(internalReference);
 
-        if (pageResult.success && pageResult.data.fields.pageSlug) {
-          ctaHref = `/${pageResult.data.fields.pageSlug}`;
+        if (pageData.fields.pageSlug) {
+          ctaHref = `/${pageData.fields.pageSlug}`;
         }
       } else {
         ctaHref = '/not-implemented';
