@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit",
     "contentful:export": "./scripts/contentful-export.sh",
     "contentful:generate": "tsx ./scripts/generate-contentful-schema.ts && prettier --write ./contentful/schema.ts",
-    "contentful:update": "mkdir -p ./contentful && pnpm contentful:export && pnpm contentful:generate"
+    "contentful:update": "pnpm contentful:export && pnpm contentful:generate"
   },
   "dependencies": {
     "@bigcommerce/catalyst-client": "workspace:^",
