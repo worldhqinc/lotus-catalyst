@@ -1,58 +1,103 @@
-import type { Entry, EntrySkeletonType } from 'contentful';
-import type {
-  IHeroCarousel,
-  IHeroCarouselFields,
-  IInspirationBento,
-  IInspirationBentoFields,
-  IPageStandard,
-  IPageStandardFields,
-} from '~/types/generated/contentful';
+import { z } from 'zod';
+
+import {
+  ctaSchema,
+  heroCarouselSchema,
+  heroSlideSchema,
+  inspirationBentoSchema,
+  inspirationCardSchema,
+  pageStandardSchema,
+} from '~/contentful/schema';
 
 import HeroCarousel from './sections/hero-carousel';
 import InspirationBento from './sections/inspiration-bento';
 
-type ContentEntry = Entry<EntrySkeletonType>;
-
-export default function PageContentEntries({ page }: { page: IPageStandard }) {
-  const fields = page.fields as IPageStandardFields;
-  const pageContent = fields.pageContent;
+export default function PageContentEntries({ page }: { page: z.infer<typeof pageStandardSchema> }) {
+  const pageContent = page.fields.pageContent;
 
   return (
     <div>
       {Array.isArray(pageContent) &&
-        pageContent.map((field: ContentEntry) => {
-          const contentType = field.sys.contentType.sys.id;
+        pageContent.map((contentEntry) => {
+          const contentType = contentEntry.sys.contentType.sys.id;
+          const entryId = contentEntry.sys.id;
+
+          if (!contentType || !entryId) {
+            return null;
+          }
 
           switch (contentType) {
             case 'button':
-              return <div key={field.sys.id}>Button Display Component</div>;
+              return <div key={entryId}>[Button Placeholder ID: {entryId}]</div>;
+
             case 'faq':
-              return <div key={field.sys.id}>FAQ Display Component</div>;
+              return <div key={entryId}>[FAQ Placeholder ID: {entryId}]</div>;
+
             case 'heroCarousel': {
-              const heroCarousel = field as unknown as IHeroCarousel;
-              const { heroSlides = [] } = heroCarousel.fields as IHeroCarouselFields;
-              return <HeroCarousel key={field.sys.id} slides={heroSlides} />;
+              const result = heroCarouselSchema.safeParse(contentEntry);
+
+              if (!result.success) {
+                return null;
+              }
+
+              const slides =
+                result.data.fields.heroSlides
+                  ?.map((slide) => {
+                    const slideResult = heroSlideSchema.safeParse(slide);
+
+                    return slideResult.success ? slideResult.data : null;
+                  })
+                  .filter((slide): slide is z.infer<typeof heroSlideSchema> => slide !== null) ??
+                [];
+
+              return <HeroCarousel key={entryId} slides={slides} />;
             }
+
             case 'inspirationBento': {
-              const inspirationBento = field as unknown as IInspirationBento;
-              const {
-                cta,
-                heading,
-                inspirationCards = [],
-                video,
-              } = inspirationBento.fields as IInspirationBentoFields;
+              const result = inspirationBentoSchema.safeParse(contentEntry);
+
+              if (!result.success) {
+                return null;
+              }
+
+              const { cta, heading, inspirationCards, video } = result.data.fields;
+
+              // Validate CTA separately since it's optional
+              let validCta = null;
+
+              if (cta) {
+                const ctaResult = ctaSchema.safeParse(cta);
+
+                if (ctaResult.success) {
+                  validCta = ctaResult.data;
+                }
+              }
+
+              // Validate inspiration cards
+              const validCards =
+                inspirationCards
+                  ?.map((card) => {
+                    const cardResult = inspirationCardSchema.safeParse(card);
+
+                    return cardResult.success ? cardResult.data : null;
+                  })
+                  .filter((card): card is z.infer<typeof inspirationCardSchema> => card !== null) ??
+                [];
+
               return (
                 <InspirationBento
-                  cta={cta}
+                  cta={validCta}
                   heading={heading}
-                  inspirationCards={inspirationCards}
-                  key={field.sys.id}
+                  inspirationCards={validCards}
+                  key={entryId}
                   video={video}
                 />
               );
             }
-            default:
+
+            default: {
               return null;
+            }
           }
         })}
     </div>

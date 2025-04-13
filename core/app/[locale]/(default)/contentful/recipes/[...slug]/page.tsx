@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import { SearchParams } from 'nuqs';
 
-import { IRecipe, IRecipeFields } from '~/types/generated/contentful';
+import { recipeSchema } from '~/contentful/schema';
+
 import { getPageBySlug } from '../../[...rest]/page-data';
 
 interface Props {
@@ -11,8 +12,14 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const page = (await getPageBySlug('recipe', ['recipes', ...slug])) as IRecipe;
-  const fields = page.fields as IRecipeFields;
+  const page = await getPageBySlug('recipe', ['recipes', ...slug]);
+  const result = recipeSchema.safeParse(page);
+
+  if (!result.success) {
+    return {};
+  }
+
+  const { fields } = result.data;
 
   return {
     title: fields.metaTitle || fields.recipeName,
@@ -22,8 +29,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function RecipePage({ params }: Props) {
   const { slug } = await params;
-  const page = (await getPageBySlug('recipe', ['recipes', ...slug])) as IRecipe;
-  const fields = page.fields as IRecipeFields;
+  const page = await getPageBySlug('recipe', ['recipes', ...slug]);
+  const result = recipeSchema.safeParse(page);
+
+  if (!result.success) {
+    return null;
+  }
+
+  const { fields } = result.data;
   const pageName = fields.recipeName;
 
   return (

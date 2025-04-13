@@ -1,27 +1,23 @@
-import type { EntrySkeletonType } from 'contentful';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 
 import { contentfulClient } from '~/lib/contentful';
-import type { CONTENT_TYPE, IPageStandard, IRecipe } from '~/types/generated/contentful';
 
-type PageEntry = IPageStandard | IRecipe;
+type ContentType = 'pageStandard' | 'recipe';
 
-export const getPageBySlug = cache(
-  async (contentType: Extract<CONTENT_TYPE, 'pageStandard' | 'recipe'>, rest: string[]) => {
-    const response = await contentfulClient.getEntries<EntrySkeletonType>({
-      content_type: contentType,
-      'fields.pageSlug': rest.join('/'),
-      limit: 1,
-      include: 4,
-    });
+export const getPageBySlug = cache(async (contentType: ContentType, rest: string[]) => {
+  const response = await contentfulClient.getEntries({
+    content_type: contentType,
+    'fields.pageSlug': rest.join('/'),
+    limit: 1,
+    include: 4,
+  });
 
-    const page = response.items[0] as PageEntry;
+  const pageData = response.items[0];
 
-    if (!page) {
-      return notFound();
-    }
+  if (!pageData) {
+    return notFound();
+  }
 
-    return page;
-  },
-);
+  return pageData;
+});

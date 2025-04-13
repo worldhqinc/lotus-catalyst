@@ -13,9 +13,8 @@
     "lint:fix": "next lint --fix",
     "typecheck": "tsc --noEmit",
     "contentful:export": "./scripts/contentful-export.sh",
-    "contentful:generate": "pnpm exec contentful-to-zod --input ./contentful/contentful.json --output ./contentful/schema.ts && prettier --write ./contentful/schema.ts",
-    "contentful:update": "mkdir -p ./contentful && pnpm contentful:export && pnpm contentful:generate",
-    "contentful-typescript-codegen": "contentful-typescript-codegen --output types/generated/contentful.d.ts"
+    "contentful:generate": "tsx ./scripts/generate-contentful-schema.ts && prettier --write ./contentful/schema.ts",
+    "contentful:update": "mkdir -p ./contentful && pnpm contentful:export && pnpm contentful:generate"
   },
   "dependencies": {
     "@bigcommerce/catalyst-client": "workspace:^",
@@ -104,7 +103,6 @@
     "@types/react-headroom": "^3.2.3",
     "@types/uuid": "^10.0.0",
     "contentful-cli": "^3.8.5",
-    "contentful-to-zod": "^4.5.2",
     "dotenv": "^16.4.7",
     "dotenv-cli": "^8.0.0",
     "eslint": "^8.57.1",
@@ -115,7 +113,6 @@
     "tailwindcss": "^4.0.15",
     "tailwindcss-animate": "1.0.7",
     "typescript": "^5.8.2",
-    "contentful-typescript-codegen": "^3.4.0",
-    "contentful-management": "^11.24.0"
+    "tsx": "^4.7.1"
   }
 }

@@ -1,753 +1,2674 @@
 import { z } from 'zod';
-import type { Document } from '@contentful/rich-text-types';
 
-export const contentfulRichTextSchema = z.unknown() as z.ZodType<Document>;
+// ========================================
+// Base Schemas
+// ========================================
 
-export type ContentfulRichText = z.infer<typeof contentfulRichTextSchema>;
+const metadataSchema = z.object({
+  tags: z.array(z.unknown()),
+  concepts: z.array(z.unknown()),
+});
 
-export const contentfulImageSchema = z.object({
-  sys: z.object({
-    type: z.literal('Asset'),
+const sysBaseSchema = z.object({
+  space: z.object({
+    sys: z.object({
+      type: z.literal('Link'),
+      linkType: z.literal('Space'),
+      id: z.string(),
+    }),
   }),
-  fields: z.object({
-    title: z.string(),
-    description: z.string(),
-    file: z.object({
-      url: z.string(),
-      details: z.object({
-        size: z.number(),
-        image: z.object({
+  id: z.string(),
+  type: z.string(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  environment: z.object({
+    sys: z.object({
+      id: z.string(),
+      type: z.literal('Link'),
+      linkType: z.literal('Environment'),
+    }),
+  }),
+  revision: z.number(),
+  locale: z.string().optional(),
+});
+
+const sysEntrySchema = sysBaseSchema.extend({
+  type: z.literal('Entry'),
+  publishedVersion: z.number().optional(),
+  contentType: z.object({
+    sys: z.object({
+      type: z.literal('Link'),
+      linkType: z.literal('ContentType'),
+      id: z.string(),
+    }),
+  }),
+});
+
+const sysAssetSchema = sysBaseSchema.extend({
+  type: z.literal('Asset'),
+  publishedVersion: z.number().optional(),
+});
+
+const assetFieldsSchema = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  file: z.object({
+    url: z.string(),
+    details: z.object({
+      size: z.number(),
+      image: z
+        .object({
           width: z.number(),
           height: z.number(),
+        })
+        .optional(),
+    }),
+    fileName: z.string(),
+    contentType: z.string(),
+  }),
+});
+
+export const assetSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysAssetSchema,
+  fields: assetFieldsSchema,
+});
+export type Asset = z.infer<typeof assetSchema>;
+
+// ========================================
+// Content Type Specific Schemas
+// ========================================
+
+// Schema for productFinishedGoods
+export const productFinishedGoodsFieldsSchema = z.object({
+  productName: z.string(),
+  bcProductReference: z.string(),
+  pageSlug: z.string().optional(),
+  shortDescription: z.string().optional(),
+  defaultPrice: z.string(),
+  salePrice: z.string().optional(),
+  couponCodesalesDates: z.string().optional(),
+  details: z
+    .array(
+      z.object({
+        nodeType: z.string(),
+        content: z.array(z.unknown()),
+        data: z.record(z.string(), z.unknown()).optional(),
+      }),
+    )
+    .optional(),
+  faqs: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
+  featuredImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.undefined().optional(),
+      }),
+      fields: z.object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
         }),
       }),
-      fileName: z.string(),
-      contentType: z.string(),
-    }),
-  }),
-});
-
-export type ContentfulImage = z.infer<typeof contentfulImageSchema>;
-
-export const contentfulAssetSchema = z.object({
-  sys: z.object({
-    type: z.literal('Asset'),
-  }),
-  fields: z.object({
-    title: z.string(),
-    description: z.string(),
-    file: z.object({
-      url: z.string(),
-      details: z.object({
-        size: z.number(),
+    })
+    .optional(),
+  additionalImages: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Asset'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.undefined().optional(),
+        }),
+        fields: z.object({
+          title: z.string().optional(),
+          description: z.string().optional(),
+          file: z.object({
+            url: z.string(),
+            details: z.object({
+              size: z.number(),
+              image: z
+                .object({
+                  width: z.number(),
+                  height: z.number(),
+                })
+                .optional(),
+            }),
+            fileName: z.string(),
+            contentType: z.string(),
+          }),
+        }),
       }),
-      fileName: z.string(),
-      contentType: z.string(),
-    }),
-  }),
+    )
+    .optional(),
+  partsAccessories: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
+  productCarousel: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
+  metaTitle: z.string().optional(),
+  metaDescription: z.string().optional(),
+  productLine: z.array(z.string()).optional(),
+  parentCategory: z.array(z.string()).optional(),
+  subCategory: z.array(z.string()).optional(),
+  webSubCategory: z.string().optional(),
+  productFormulationInformation: z.record(z.string(), z.unknown()).optional(),
+  feature: z.array(z.string()).optional(),
+  finish: z.array(z.string()).optional(),
+  size: z.string().optional(),
+  supportDocumentation: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
+  factoryRecertifiedProduct: z.boolean().optional(),
+  modelNumber: z.string(),
+  wattage: z.string().optional(),
+  warranty: z.string().optional(),
+  spotlightVideo: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
+  outOfBoxNetWeight: z.string().optional(),
+  outOfBoxDepth: z.string().optional(),
+  outOfBoxWidth: z.string().optional(),
+  outOfBoxHeight: z.string().optional(),
+  outOfBoxSizeUom: z.string().optional(),
+  outOfBoxWeightUom: z.string().optional(),
+  archive: z.boolean().optional(),
+  productBadge: z.string().optional(),
+  isShipsFree: z.boolean().optional(),
+  inventoryQuantity: z.number().int().optional(),
+  recipes: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
+  pageContentEntries: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
 });
 
-export type ContentfulAsset = z.infer<typeof contentfulAssetSchema>;
-
-const _baseProductFinishedGoods = z.object({
-  sys: z.object({
+export const productFinishedGoodsSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('productFinishedGoods'),
       }),
     }),
   }),
-  fields: z.object({
-    productName: z.string(),
-    bcProductReference: z.string(),
-    pageSlug: z.string().optional(),
-    shortDescription: z.string().optional(),
-    defaultPrice: z.string(),
-    salePrice: z.string().optional(),
-    couponCodesalesDates: z.string().optional(),
-    details: contentfulRichTextSchema,
-    faqs: z.unknown(),
-    featuredImage: contentfulImageSchema,
-    additionalImages: z.array(contentfulAssetSchema).optional(),
-    partsAccessories: z.array(z.unknown()).optional(),
-    productCarousel: z.unknown(),
-    metaTitle: z.string().optional(),
-    metaDescription: z.string().optional(),
-    productLine: z.array(z.string()).optional(),
-    parentCategory: z.array(z.string()).optional(),
-    subCategory: z.array(z.string()).optional(),
-    webSubCategory: z.string().optional(),
-    productFormulationInformation: z.unknown().optional(),
-    feature: z.array(z.string()).optional(),
-    finish: z.array(z.string()).optional(),
-    size: z.string().optional(),
-    supportDocumentation: z.unknown(),
-    factoryRecertifiedProduct: z.boolean().optional(),
-    modelNumber: z.string(),
-    wattage: z.string().optional(),
-    warranty: z.string().optional(),
-    spotlightVideo: z.unknown(),
-    outOfBoxNetWeight: z.string().optional(),
-    outOfBoxDepth: z.string().optional(),
-    outOfBoxWidth: z.string().optional(),
-    outOfBoxHeight: z.string().optional(),
-    outOfBoxSizeUom: z.string().optional(),
-    outOfBoxWeightUom: z.string().optional(),
-    archive: z.boolean().optional(),
-    productBadge: z.string().optional(),
-    isShipsFree: z.boolean().optional(),
-    inventoryQuantity: z.number().int().optional(),
-    recipes: z.unknown(),
-    pageContentEntries: z.unknown(),
-  }),
+  fields: productFinishedGoodsFieldsSchema,
 });
 
-export type ProductFinishedGoods = z.infer<typeof _baseProductFinishedGoods> & {
-  fields: {
-    faqs?: Faq | undefined;
-    productCarousel?: CarouselProduct | undefined;
-    supportDocumentation?: SupportDocument | undefined;
-    spotlightVideo?: FeatureVideoBanner | undefined;
-    recipes?: CarouselRecipe | undefined;
-    pageContentEntries?: BlockProductFeatures | BlockProductFeaturesAccordion | undefined;
-  };
-};
+export type productFinishedGoods = z.infer<typeof productFinishedGoodsSchema>;
 
-export const productFinishedGoodsSchema: z.ZodType<ProductFinishedGoods> =
-  _baseProductFinishedGoods.extend({
-    fields: _baseProductFinishedGoods.shape.fields.extend({
-      faqs: z.lazy(() => faqSchema).optional(),
-      productCarousel: z.lazy(() => carouselProductSchema).optional(),
-      supportDocumentation: z.lazy(() => supportDocumentSchema).optional(),
-      spotlightVideo: z.lazy(() => featureVideoBannerSchema).optional(),
-      recipes: z.lazy(() => carouselRecipeSchema).optional(),
-      pageContentEntries: z
-        .lazy(() => z.union([blockProductFeaturesSchema, blockProductFeaturesAccordionSchema]))
-        .optional(),
+// Schema for faq
+export const faqFieldsSchema = z.object({
+  question: z.string(),
+  answer: z.array(
+    z.object({
+      nodeType: z.string(),
+      content: z.array(z.unknown()),
+      data: z.record(z.string(), z.unknown()).optional(),
     }),
-  });
+  ),
+  faqCategory: z.array(
+    z.object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    }),
+  ),
+  faqFilterCategory: z.string().optional(),
+});
 
-const _baseFaq = z.object({
-  sys: z.object({
+export const faqSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('faq'),
       }),
     }),
   }),
-  fields: z.object({
-    question: z.string(),
-    answer: contentfulRichTextSchema,
-    faqCategory: z.unknown(),
-    faqFilterCategory: z.string().optional(),
-  }),
+  fields: faqFieldsSchema,
 });
 
-export type Faq = z.infer<typeof _baseFaq> & { fields: { faqCategory: CategoryFaq[] } };
+export type faq = z.infer<typeof faqSchema>;
 
-export const faqSchema: z.ZodType<Faq> = _baseFaq.extend({
-  fields: _baseFaq.shape.fields.extend({
-    faqCategory: z.lazy(() => z.array(categoryFaqSchema)),
-  }),
+// Schema for carouselRecipe
+export const carouselRecipeFieldsSchema = z.object({
+  internalName: z.string(),
+  carouselTitle: z.string(),
+  recipes: z.array(
+    z.object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    }),
+  ),
 });
 
-const _baseCarouselRecipe = z.object({
-  sys: z.object({
+export const carouselRecipeSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('carouselRecipe'),
       }),
     }),
   }),
-  fields: z.object({
-    internalName: z.string(),
-    carouselTitle: z.string(),
-    recipes: z.unknown(),
-  }),
+  fields: carouselRecipeFieldsSchema,
 });
 
-export type CarouselRecipe = z.infer<typeof _baseCarouselRecipe> & {
-  fields: { recipes: Recipe[] };
-};
+export type carouselRecipe = z.infer<typeof carouselRecipeSchema>;
 
-export const carouselRecipeSchema: z.ZodType<CarouselRecipe> = _baseCarouselRecipe.extend({
-  fields: _baseCarouselRecipe.shape.fields.extend({
-    recipes: z.lazy(() => z.array(recipeSchema)),
-  }),
+// Schema for categoryFaq
+export const categoryFaqFieldsSchema = z.object({
+  faqCategoryName: z.string(),
+  parentCategory: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
 });
 
-const _baseCategoryFaq = z.object({
-  sys: z.object({
+export const categoryFaqSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('categoryFaq'),
       }),
     }),
   }),
-  fields: z.object({
-    faqCategoryName: z.string(),
-    parentCategory: z.unknown(),
-  }),
+  fields: categoryFaqFieldsSchema,
 });
 
-export type CategoryFaq = z.infer<typeof _baseCategoryFaq> & {
-  fields: { parentCategory?: CategoryFaq | undefined };
-};
+export type categoryFaq = z.infer<typeof categoryFaqSchema>;
 
-export const categoryFaqSchema: z.ZodType<CategoryFaq> = _baseCategoryFaq.extend({
-  fields: _baseCategoryFaq.shape.fields.extend({
-    parentCategory: z.lazy(() => categoryFaqSchema).optional(),
+// Schema for categoryProduct
+export const categoryProductFieldsSchema = z.object({
+  productCategoryName: z.string(),
+  productParentCategoryName: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
+  categoryDescription: z.string().optional(),
+  categoryPencilBanner: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.undefined().optional(),
+      }),
+      fields: z.object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .optional(),
+  categoryThumbnailImage: z.object({
+    metadata: z.object({
+      tags: z.array(z.unknown()),
+      concepts: z.array(z.unknown()),
+    }),
+    sys: z.object({
+      space: z.object({
+        sys: z.object({
+          type: z.literal('Link'),
+          linkType: z.literal('Space'),
+          id: z.string(),
+        }),
+      }),
+      id: z.string(),
+      type: z.literal('Asset'),
+      createdAt: z.string().datetime(),
+      updatedAt: z.string().datetime(),
+      environment: z.object({
+        sys: z.object({
+          id: z.string(),
+          type: z.literal('Link'),
+          linkType: z.literal('Environment'),
+        }),
+      }),
+      publishedVersion: z.number().optional(),
+      revision: z.number(),
+      locale: z.string().optional(),
+      contentType: z.undefined().optional(),
+    }),
+    fields: z.object({
+      title: z.string().optional(),
+      description: z.string().optional(),
+      file: z.object({
+        url: z.string(),
+        details: z.object({
+          size: z.number(),
+          image: z
+            .object({
+              width: z.number(),
+              height: z.number(),
+            })
+            .optional(),
+        }),
+        fileName: z.string(),
+        contentType: z.string(),
+      }),
+    }),
   }),
+  categoryLifestyleImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.undefined().optional(),
+      }),
+      fields: z.object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .optional(),
+  categoryLink: z.string().optional(),
+  categoryCallToActionLabel: z.string().optional(),
+  mainProduct: z.string().optional(),
 });
 
-const _baseCategoryProduct = z.object({
-  sys: z.object({
+export const categoryProductSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('categoryProduct'),
       }),
     }),
   }),
-  fields: z.object({
-    productCategoryName: z.string(),
-    productParentCategoryName: z.unknown(),
-    categoryDescription: z.string().optional(),
-    categoryPencilBanner: contentfulImageSchema,
-    categoryThumbnailImage: contentfulImageSchema,
-    categoryLifestyleImage: contentfulAssetSchema,
-    categoryLink: z.string().optional(),
-    categoryCallToActionLabel: z.string().optional(),
-    mainProduct: z.string().optional(),
-  }),
+  fields: categoryProductFieldsSchema,
 });
 
-export type CategoryProduct = z.infer<typeof _baseCategoryProduct> & {
-  fields: { productParentCategoryName?: CategoryProduct | undefined };
-};
+export type categoryProduct = z.infer<typeof categoryProductSchema>;
 
-export const categoryProductSchema: z.ZodType<CategoryProduct> = _baseCategoryProduct.extend({
-  fields: _baseCategoryProduct.shape.fields.extend({
-    productParentCategoryName: z.lazy(() => categoryProductSchema).optional(),
-  }),
+// Schema for carouselProduct
+export const carouselProductFieldsSchema = z.object({
+  internalName: z.string(),
+  carouselTitle: z.string(),
+  products: z.array(
+    z.object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    }),
+  ),
 });
 
-const _baseCarouselProduct = z.object({
-  sys: z.object({
+export const carouselProductSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('carouselProduct'),
       }),
     }),
   }),
-  fields: z.object({
-    internalName: z.string(),
-    carouselTitle: z.string(),
-    products: z.unknown(),
-  }),
+  fields: carouselProductFieldsSchema,
 });
 
-export type CarouselProduct = z.infer<typeof _baseCarouselProduct> & {
-  fields: { products: ProductFinishedGoods[] };
-};
+export type carouselProduct = z.infer<typeof carouselProductSchema>;
 
-export const carouselProductSchema: z.ZodType<CarouselProduct> = _baseCarouselProduct.extend({
-  fields: _baseCarouselProduct.shape.fields.extend({
-    products: z.lazy(() => z.array(productFinishedGoodsSchema)),
+// Schema for recipe
+export const recipeFieldsSchema = z.object({
+  recipeName: z.string(),
+  metaTitle: z.string(),
+  metaDescription: z.string(),
+  pageSlug: z.string(),
+  shortDescription: z.string().optional(),
+  mealTypeCategory: z.array(z.string()).optional(),
+  occasionCategory: z.array(z.string()).optional(),
+  ingredientsCategory: z.array(z.string()).optional(),
+  applianceTypeCategory: z.array(z.string()).optional(),
+  author: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
+  cookTime: z.string().optional(),
+  numberOfIngredients: z.string().optional(),
+  numberOfServings: z.string().optional(),
+  ingredientsLists: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
+  recipeDirections: z
+    .array(
+      z.object({
+        nodeType: z.string(),
+        content: z.array(z.unknown()),
+        data: z.record(z.string(), z.unknown()).optional(),
+      }),
+    )
+    .optional(),
+  testKitchenTips: z
+    .array(
+      z.object({
+        nodeType: z.string(),
+        content: z.array(z.unknown()),
+        data: z.record(z.string(), z.unknown()).optional(),
+      }),
+    )
+    .optional(),
+  featuredImage: z.object({
+    metadata: z.object({
+      tags: z.array(z.unknown()),
+      concepts: z.array(z.unknown()),
+    }),
+    sys: z.object({
+      space: z.object({
+        sys: z.object({
+          type: z.literal('Link'),
+          linkType: z.literal('Space'),
+          id: z.string(),
+        }),
+      }),
+      id: z.string(),
+      type: z.literal('Asset'),
+      createdAt: z.string().datetime(),
+      updatedAt: z.string().datetime(),
+      environment: z.object({
+        sys: z.object({
+          id: z.string(),
+          type: z.literal('Link'),
+          linkType: z.literal('Environment'),
+        }),
+      }),
+      publishedVersion: z.number().optional(),
+      revision: z.number(),
+      locale: z.string().optional(),
+      contentType: z.undefined().optional(),
+    }),
+    fields: z.object({
+      title: z.string().optional(),
+      description: z.string().optional(),
+      file: z.object({
+        url: z.string(),
+        details: z.object({
+          size: z.number(),
+          image: z
+            .object({
+              width: z.number(),
+              height: z.number(),
+            })
+            .optional(),
+        }),
+        fileName: z.string(),
+        contentType: z.string(),
+      }),
+    }),
   }),
+  additionalImages: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Asset'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.undefined().optional(),
+        }),
+        fields: z.object({
+          title: z.string().optional(),
+          description: z.string().optional(),
+          file: z.object({
+            url: z.string(),
+            details: z.object({
+              size: z.number(),
+              image: z
+                .object({
+                  width: z.number(),
+                  height: z.number(),
+                })
+                .optional(),
+            }),
+            fileName: z.string(),
+            contentType: z.string(),
+          }),
+        }),
+      }),
+    )
+    .optional(),
+  videoFeature: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
+  productCarousel: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
+  recipeCarousel: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
 });
 
-const _baseRecipe = z.object({
-  sys: z.object({
+export const recipeSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('recipe'),
       }),
     }),
   }),
-  fields: z.object({
-    recipeName: z.string(),
-    metaTitle: z.string(),
-    metaDescription: z.string(),
-    pageSlug: z.string(),
-    shortDescription: z.string().optional(),
-    mealTypeCategory: z.array(z.string()).optional(),
-    occasionCategory: z.array(z.string()).optional(),
-    ingredientsCategory: z.array(z.string()).optional(),
-    applianceTypeCategory: z.array(z.string()).optional(),
-    author: z.unknown(),
-    cookTime: z.string().optional(),
-    numberOfIngredients: z.string().optional(),
-    numberOfServings: z.string().optional(),
-    ingredientsLists: z.unknown(),
-    recipeDirections: contentfulRichTextSchema,
-    testKitchenTips: contentfulRichTextSchema,
-    featuredImage: contentfulImageSchema,
-    additionalImages: z.array(contentfulAssetSchema).optional(),
-    videoFeature: z.unknown(),
-    productCarousel: z.unknown(),
-    recipeCarousel: z.unknown(),
-  }),
+  fields: recipeFieldsSchema,
 });
 
-export type Recipe = z.infer<typeof _baseRecipe> & {
-  fields: {
-    author?: Author | undefined;
-    ingredientsLists?: IngredientsList | undefined;
-    videoFeature?: FeatureVideoBanner | undefined;
-    productCarousel?: CarouselProduct | undefined;
-    recipeCarousel?: CarouselRecipe | undefined;
-  };
-};
+export type recipe = z.infer<typeof recipeSchema>;
 
-export const recipeSchema: z.ZodType<Recipe> = _baseRecipe.extend({
-  fields: _baseRecipe.shape.fields.extend({
-    author: z.lazy(() => authorSchema).optional(),
-    ingredientsLists: z.lazy(() => ingredientsListSchema).optional(),
-    videoFeature: z.lazy(() => featureVideoBannerSchema).optional(),
-    productCarousel: z.lazy(() => carouselProductSchema).optional(),
-    recipeCarousel: z.lazy(() => carouselRecipeSchema).optional(),
+// Schema for productPartsAndAccessories
+export const productPartsAndAccessoriesFieldsSchema = z.object({
+  productName: z.string(),
+  bcProductReference: z.string(),
+  pageSlug: z.string(),
+  associatedFinishedGoods: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
+  relatedPartsAndAccessories: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
+  subCategory: z.array(z.string()).optional(),
+  productLine: z.array(z.string()).optional(),
+  feature: z.array(z.string()).optional(),
+  size: z.array(z.string()).optional(),
+  finish: z.array(z.string()).optional(),
+  featuredImage: z.object({
+    metadata: z.object({
+      tags: z.array(z.unknown()),
+      concepts: z.array(z.unknown()),
+    }),
+    sys: z.object({
+      space: z.object({
+        sys: z.object({
+          type: z.literal('Link'),
+          linkType: z.literal('Space'),
+          id: z.string(),
+        }),
+      }),
+      id: z.string(),
+      type: z.literal('Asset'),
+      createdAt: z.string().datetime(),
+      updatedAt: z.string().datetime(),
+      environment: z.object({
+        sys: z.object({
+          id: z.string(),
+          type: z.literal('Link'),
+          linkType: z.literal('Environment'),
+        }),
+      }),
+      publishedVersion: z.number().optional(),
+      revision: z.number(),
+      locale: z.string().optional(),
+      contentType: z.undefined().optional(),
+    }),
+    fields: z.object({
+      title: z.string().optional(),
+      description: z.string().optional(),
+      file: z.object({
+        url: z.string(),
+        details: z.object({
+          size: z.number(),
+          image: z
+            .object({
+              width: z.number(),
+              height: z.number(),
+            })
+            .optional(),
+        }),
+        fileName: z.string(),
+        contentType: z.string(),
+      }),
+    }),
   }),
+  additionalImages: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Asset'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.undefined().optional(),
+        }),
+        fields: z.object({
+          title: z.string().optional(),
+          description: z.string().optional(),
+          file: z.object({
+            url: z.string(),
+            details: z.object({
+              size: z.number(),
+              image: z
+                .object({
+                  width: z.number(),
+                  height: z.number(),
+                })
+                .optional(),
+            }),
+            fileName: z.string(),
+            contentType: z.string(),
+          }),
+        }),
+      }),
+    )
+    .optional(),
+  productCarousel: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
+  metaTitle: z.string(),
+  metaDescription: z.string().optional(),
+  parentCategory: z.record(z.string(), z.unknown()).optional(),
+  productFormulationInformation: z.record(z.string(), z.unknown()).optional(),
+  details: z
+    .array(
+      z.object({
+        nodeType: z.string(),
+        content: z.array(z.unknown()),
+        data: z.record(z.string(), z.unknown()).optional(),
+      }),
+    )
+    .optional(),
+  factoryRecertifiedProduct: z.boolean(),
+  modelNumber: z.string().optional(),
+  outOfBoxNetWeight: z.string().optional(),
+  outOfBoxDepth: z.string().optional(),
+  outOfBoxWidth: z.string().optional(),
+  outOfBoxHeight: z.string().optional(),
+  outOfBoxUnitVolume: z.string().optional(),
+  outOfBoxSizeUom: z.string().optional(),
+  outOfBoxWeightUom: z.string().optional(),
+  archived: z.boolean().optional(),
+  price: z.string().optional(),
+  couponCodesalesDates: z.string().optional(),
+  salePrice: z.string().optional(),
+  productBadge: z.string().optional(),
+  isShipsFree: z.boolean().optional(),
+  inventoryQuantity: z.number().int().optional(),
+  pageContentEntries: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
 });
 
-const _baseProductPartsAndAccessories = z.object({
-  sys: z.object({
+export const productPartsAndAccessoriesSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('productPartsAndAccessories'),
       }),
     }),
   }),
-  fields: z.object({
-    productName: z.string(),
-    bcProductReference: z.string(),
-    pageSlug: z.string(),
-    associatedFinishedGoods: z.unknown(),
-    relatedPartsAndAccessories: z.unknown(),
-    subCategory: z.array(z.string()).optional(),
-    productLine: z.array(z.string()).optional(),
-    feature: z.array(z.string()).optional(),
-    size: z.array(z.string()).optional(),
-    finish: z.array(z.string()).optional(),
-    featuredImage: contentfulImageSchema,
-    additionalImages: z.array(contentfulAssetSchema).optional(),
-    productCarousel: z.unknown(),
-    metaTitle: z.string(),
-    metaDescription: z.string().optional(),
-    parentCategory: z.unknown().optional(),
-    productFormulationInformation: z.unknown().optional(),
-    details: contentfulRichTextSchema,
-    factoryRecertifiedProduct: z.boolean(),
-    modelNumber: z.string().optional(),
-    outOfBoxNetWeight: z.string().optional(),
-    outOfBoxDepth: z.string().optional(),
-    outOfBoxWidth: z.string().optional(),
-    outOfBoxHeight: z.string().optional(),
-    outOfBoxUnitVolume: z.string().optional(),
-    outOfBoxSizeUom: z.string().optional(),
-    outOfBoxWeightUom: z.string().optional(),
-    archived: z.boolean().optional(),
-    price: z.string().optional(),
-    couponCodesalesDates: z.string().optional(),
-    salePrice: z.string().optional(),
-    productBadge: z.string().optional(),
-    isShipsFree: z.boolean().optional(),
-    inventoryQuantity: z.number().int().optional(),
-    pageContentEntries: z.unknown(),
-  }),
+  fields: productPartsAndAccessoriesFieldsSchema,
 });
 
-export type ProductPartsAndAccessories = z.infer<typeof _baseProductPartsAndAccessories> & {
-  fields: {
-    associatedFinishedGoods?: ProductFinishedGoods | undefined;
-    relatedPartsAndAccessories?: ProductPartsAndAccessories | undefined;
-    productCarousel?: CarouselProduct | undefined;
-    pageContentEntries?: BlockProductFeatures | BlockProductFeaturesAccordion | undefined;
-  };
-};
+export type productPartsAndAccessories = z.infer<typeof productPartsAndAccessoriesSchema>;
 
-export const productPartsAndAccessoriesSchema: z.ZodType<ProductPartsAndAccessories> =
-  _baseProductPartsAndAccessories.extend({
-    fields: _baseProductPartsAndAccessories.shape.fields.extend({
-      associatedFinishedGoods: z.lazy(() => productFinishedGoodsSchema).optional(),
-      relatedPartsAndAccessories: z.lazy(() => productPartsAndAccessoriesSchema).optional(),
-      productCarousel: z.lazy(() => carouselProductSchema).optional(),
-      pageContentEntries: z
-        .lazy(() => z.union([blockProductFeaturesSchema, blockProductFeaturesAccordionSchema]))
-        .optional(),
-    }),
-  });
+// Schema for ingredientsList
+export const ingredientsListFieldsSchema = z.object({
+  ingredientsListName: z.string(),
+  sectionTitle: z.string().optional(),
+  listOfIngredients: z.array(z.string()).optional(),
+});
 
-const _baseIngredientsList = z.object({
-  sys: z.object({
+export const ingredientsListSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('ingredientsList'),
       }),
     }),
   }),
-  fields: z.object({
-    ingredientsListName: z.string(),
-    sectionTitle: z.string().optional(),
-    listOfIngredients: z.array(z.string()).optional(),
-  }),
+  fields: ingredientsListFieldsSchema,
 });
 
-export type IngredientsList = z.infer<typeof _baseIngredientsList> & { fields: {} };
+export type ingredientsList = z.infer<typeof ingredientsListSchema>;
 
-export const ingredientsListSchema: z.ZodType<IngredientsList> = _baseIngredientsList.extend({
-  fields: _baseIngredientsList.shape.fields.extend({}),
+// Schema for author
+export const authorFieldsSchema = z.object({
+  authorName: z.string(),
+  authorImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.undefined().optional(),
+      }),
+      fields: z.object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .optional(),
 });
 
-const _baseAuthor = z.object({
-  sys: z.object({
+export const authorSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('author'),
       }),
     }),
   }),
-  fields: z.object({
-    authorName: z.string(),
-    authorImage: contentfulImageSchema,
-  }),
+  fields: authorFieldsSchema,
 });
 
-export type Author = z.infer<typeof _baseAuthor> & { fields: {} };
+export type author = z.infer<typeof authorSchema>;
 
-export const authorSchema: z.ZodType<Author> = _baseAuthor.extend({
-  fields: _baseAuthor.shape.fields.extend({}),
+// Schema for supportDocument
+export const supportDocumentFieldsSchema = z.object({
+  documentName: z.string(),
+  productImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.undefined().optional(),
+      }),
+      fields: z.object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .optional(),
+  documentType: z.string().optional(),
+  url: z.string(),
+  modelNumber: z.string().optional(),
 });
 
-const _baseSupportDocument = z.object({
-  sys: z.object({
+export const supportDocumentSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('supportDocument'),
       }),
     }),
   }),
-  fields: z.object({
-    documentName: z.string(),
-    productImage: contentfulAssetSchema,
-    documentType: z.string().optional(),
-    url: z.string(),
-    modelNumber: z.string().optional(),
-  }),
+  fields: supportDocumentFieldsSchema,
 });
 
-export type SupportDocument = z.infer<typeof _baseSupportDocument> & { fields: {} };
+export type supportDocument = z.infer<typeof supportDocumentSchema>;
 
-export const supportDocumentSchema: z.ZodType<SupportDocument> = _baseSupportDocument.extend({
-  fields: _baseSupportDocument.shape.fields.extend({}),
+// Schema for pageStandard
+export const pageStandardFieldsSchema = z.object({
+  pageName: z.string(),
+  metaTitleSeo: z.string(),
+  metaDescription: z.string().optional(),
+  metaKeywordsSeo: z.string().optional(),
+  pageSlug: z.string(),
+  optionalPageDescription: z
+    .array(
+      z.object({
+        nodeType: z.string(),
+        content: z.array(z.unknown()),
+        data: z.record(z.string(), z.unknown()).optional(),
+      }),
+    )
+    .optional(),
+  pageContent: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
 });
 
-const _basePageStandard = z.object({
-  sys: z.object({
+export const pageStandardSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('pageStandard'),
       }),
     }),
   }),
-  fields: z.object({
-    pageName: z.string(),
-    metaTitleSeo: z.string(),
-    metaDescription: z.string().optional(),
-    metaKeywordsSeo: z.string().optional(),
-    pageSlug: z.string(),
-    optionalPageDescription: contentfulRichTextSchema,
-    pageContent: z.array(z.unknown()).optional(),
-  }),
+  fields: pageStandardFieldsSchema,
 });
 
-export type PageStandard = z.infer<typeof _basePageStandard> & { fields: {} };
+export type pageStandard = z.infer<typeof pageStandardSchema>;
 
-export const pageStandardSchema: z.ZodType<PageStandard> = _basePageStandard.extend({
-  fields: _basePageStandard.shape.fields.extend({}),
+// Schema for megaMenu
+export const megaMenuFieldsSchema = z.object({
+  menuName: z.string(),
+  menuReference: z.array(
+    z.object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    }),
+  ),
 });
 
-const _baseMegaMenu = z.object({
-  sys: z.object({
+export const megaMenuSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('megaMenu'),
       }),
     }),
   }),
-  fields: z.object({
-    menuName: z.string(),
-    menuReference: z.array(z.unknown()),
-  }),
+  fields: megaMenuFieldsSchema,
 });
 
-export type MegaMenu = z.infer<typeof _baseMegaMenu> & { fields: {} };
+export type megaMenu = z.infer<typeof megaMenuSchema>;
 
-export const megaMenuSchema: z.ZodType<MegaMenu> = _baseMegaMenu.extend({
-  fields: _baseMegaMenu.shape.fields.extend({}),
+// Schema for carouselProductSimple
+export const carouselProductSimpleFieldsSchema = z.object({
+  internalName: z.string(),
+  carouselTitle: z.string(),
+  productReference: z.array(
+    z.object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    }),
+  ),
 });
 
-const _baseCarouselProductSimple = z.object({
-  sys: z.object({
+export const carouselProductSimpleSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('carouselProductSimple'),
       }),
     }),
   }),
-  fields: z.object({
-    internalName: z.string(),
-    carouselTitle: z.string(),
-    productReference: z.unknown(),
-  }),
+  fields: carouselProductSimpleFieldsSchema,
 });
 
-export type CarouselProductSimple = z.infer<typeof _baseCarouselProductSimple> & {
-  fields: { productReference: ProductFinishedGoods[] };
-};
+export type carouselProductSimple = z.infer<typeof carouselProductSimpleSchema>;
 
-export const carouselProductSimpleSchema: z.ZodType<CarouselProductSimple> =
-  _baseCarouselProductSimple.extend({
-    fields: _baseCarouselProductSimple.shape.fields.extend({
-      productReference: z.lazy(() => z.array(productFinishedGoodsSchema)),
+// Schema for faqList
+export const faqListFieldsSchema = z.object({
+  faqParentCategory: z.string(),
+  faqReference: z.array(
+    z.object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
     }),
-  });
+  ),
+});
 
-const _baseFaqList = z.object({
-  sys: z.object({
+export const faqListSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('faqList'),
       }),
     }),
   }),
-  fields: z.object({
-    faqParentCategory: z.string(),
-    faqReference: z.unknown(),
-  }),
+  fields: faqListFieldsSchema,
 });
 
-export type FaqList = z.infer<typeof _baseFaqList> & { fields: { faqReference: Faq[] } };
+export type faqList = z.infer<typeof faqListSchema>;
 
-export const faqListSchema: z.ZodType<FaqList> = _baseFaqList.extend({
-  fields: _baseFaqList.shape.fields.extend({
-    faqReference: z.lazy(() => z.array(faqSchema)),
-  }),
+// Schema for blockProductFeatures
+export const blockProductFeaturesFieldsSchema = z.object({
+  heading: z.string(),
 });
 
-const _baseBlockProductFeatures = z.object({
-  sys: z.object({
+export const blockProductFeaturesSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('blockProductFeatures'),
       }),
     }),
   }),
-  fields: z.object({
-    heading: z.string(),
-  }),
+  fields: blockProductFeaturesFieldsSchema,
 });
 
-export type BlockProductFeatures = z.infer<typeof _baseBlockProductFeatures> & { fields: {} };
+export type blockProductFeatures = z.infer<typeof blockProductFeaturesSchema>;
 
-export const blockProductFeaturesSchema: z.ZodType<BlockProductFeatures> =
-  _baseBlockProductFeatures.extend({
-    fields: _baseBlockProductFeatures.shape.fields.extend({}),
-  });
+// Schema for blockProductFeaturesAccordion
+export const blockProductFeaturesAccordionFieldsSchema = z.object({
+  heading: z.string(),
+});
 
-const _baseBlockProductFeaturesAccordion = z.object({
-  sys: z.object({
+export const blockProductFeaturesAccordionSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('blockProductFeaturesAccordion'),
       }),
     }),
   }),
-  fields: z.object({
-    heading: z.string(),
-  }),
+  fields: blockProductFeaturesAccordionFieldsSchema,
 });
 
-export type BlockProductFeaturesAccordion = z.infer<typeof _baseBlockProductFeaturesAccordion> & {
-  fields: {};
-};
+export type blockProductFeaturesAccordion = z.infer<typeof blockProductFeaturesAccordionSchema>;
 
-export const blockProductFeaturesAccordionSchema: z.ZodType<BlockProductFeaturesAccordion> =
-  _baseBlockProductFeaturesAccordion.extend({
-    fields: _baseBlockProductFeaturesAccordion.shape.fields.extend({}),
-  });
+// Schema for cta
+export const ctaFieldsSchema = z.object({
+  text: z.string(),
+  internalReference: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
+  externalLink: z.string().optional(),
+});
 
-const _baseCTA = z.object({
-  sys: z.object({
+export const ctaSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('cta'),
       }),
     }),
   }),
-  fields: z.object({
-    text: z.string(),
-    internalReference: z.unknown(),
-    externalLink: z.string().optional(),
-  }),
+  fields: ctaFieldsSchema,
 });
 
-export type CTA = z.infer<typeof _baseCTA> & {
-  fields: {
-    internalReference?:
-      | ProductFinishedGoods
-      | ProductPartsAndAccessories
-      | PageStandard
-      | undefined;
-  };
-};
+export type cta = z.infer<typeof ctaSchema>;
 
-export const ctaSchema: z.ZodType<CTA> = _baseCTA.extend({
-  fields: _baseCTA.shape.fields.extend({
-    internalReference: z
-      .lazy(() =>
-        z.union([productFinishedGoodsSchema, productPartsAndAccessoriesSchema, pageStandardSchema]),
-      )
-      .optional(),
-  }),
+// Schema for inspirationBento
+export const inspirationBentoFieldsSchema = z.object({
+  heading: z.string().optional(),
+  cta: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
+  video: z.string().optional(),
+  inspirationCards: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
 });
 
-const _baseInspirationBento = z.object({
-  sys: z.object({
+export const inspirationBentoSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('inspirationBento'),
       }),
     }),
   }),
-  fields: z.object({
-    heading: z.string().optional(),
-    cta: z.unknown(),
-    video: z.string().optional(),
-    inspirationCards: z.unknown(),
+  fields: inspirationBentoFieldsSchema,
+});
+
+export type inspirationBento = z.infer<typeof inspirationBentoSchema>;
+
+// Schema for inspirationCard
+export const inspirationCardFieldsSchema = z.object({
+  title: z.string(),
+  contentReference: z.object({
+    metadata: z.object({
+      tags: z.array(z.unknown()),
+      concepts: z.array(z.unknown()),
+    }),
+    sys: z.object({
+      space: z.object({
+        sys: z.object({
+          type: z.literal('Link'),
+          linkType: z.literal('Space'),
+          id: z.string(),
+        }),
+      }),
+      id: z.string(),
+      type: z.literal('Entry'),
+      createdAt: z.string().datetime(),
+      updatedAt: z.string().datetime(),
+      environment: z.object({
+        sys: z.object({
+          id: z.string(),
+          type: z.literal('Link'),
+          linkType: z.literal('Environment'),
+        }),
+      }),
+      publishedVersion: z.number().optional(),
+      revision: z.number(),
+      locale: z.string().optional(),
+      contentType: z.object({
+        sys: z.object({
+          type: z.literal('Link'),
+          linkType: z.literal('ContentType'),
+          id: z.string(),
+        }),
+      }),
+    }),
+    fields: z.record(z.string(), z.unknown()),
   }),
 });
 
-export type InspirationBento = z.infer<typeof _baseInspirationBento> & {
-  fields: { cta?: CTA | undefined; inspirationCards?: InspirationCard | undefined };
-};
-
-export const inspirationBentoSchema: z.ZodType<InspirationBento> = _baseInspirationBento.extend({
-  fields: _baseInspirationBento.shape.fields.extend({
-    cta: z.lazy(() => ctaSchema).optional(),
-    inspirationCards: z.lazy(() => inspirationCardSchema).optional(),
-  }),
-});
-
-const _baseInspirationCard = z.object({
-  sys: z.object({
+export const inspirationCardSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('inspirationCard'),
       }),
     }),
   }),
-  fields: z.object({
-    title: z.string(),
-    contentReference: z.unknown(),
-  }),
+  fields: inspirationCardFieldsSchema,
 });
 
-export type InspirationCard = z.infer<typeof _baseInspirationCard> & {
-  fields: { contentReference: Tutorial | Recipe };
-};
+export type inspirationCard = z.infer<typeof inspirationCardSchema>;
 
-export const inspirationCardSchema: z.ZodType<InspirationCard> = _baseInspirationCard.extend({
-  fields: _baseInspirationCard.shape.fields.extend({
-    contentReference: z.lazy(() => z.union([tutorialSchema, recipeSchema])),
-  }),
+// Schema for tutorial
+export const tutorialFieldsSchema = z.object({
+  title: z.string(),
 });
 
-const _baseTutorial = z.object({
-  sys: z.object({
+export const tutorialSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('tutorial'),
       }),
     }),
   }),
-  fields: z.object({
-    title: z.string(),
-  }),
+  fields: tutorialFieldsSchema,
 });
 
-export type Tutorial = z.infer<typeof _baseTutorial> & { fields: {} };
+export type tutorial = z.infer<typeof tutorialSchema>;
 
-export const tutorialSchema: z.ZodType<Tutorial> = _baseTutorial.extend({
-  fields: _baseTutorial.shape.fields.extend({}),
+// Schema for heroCarousel
+export const heroCarouselFieldsSchema = z.object({
+  heroSlides: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
 });
 
-const _baseHeroCarousel = z.object({
-  sys: z.object({
+export const heroCarouselSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('heroCarousel'),
       }),
     }),
   }),
-  fields: z.object({
-    heroSlides: z.unknown(),
-  }),
+  fields: heroCarouselFieldsSchema,
 });
 
-export type HeroCarousel = z.infer<typeof _baseHeroCarousel> & {
-  fields: { heroSlides?: HeroSlide | undefined };
-};
+export type heroCarousel = z.infer<typeof heroCarouselSchema>;
 
-export const heroCarouselSchema: z.ZodType<HeroCarousel> = _baseHeroCarousel.extend({
-  fields: _baseHeroCarousel.shape.fields.extend({
-    heroSlides: z.lazy(() => heroSlideSchema).optional(),
-  }),
+// Schema for heroSlide
+export const heroSlideFieldsSchema = z.object({
+  image: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.undefined().optional(),
+      }),
+      fields: z.object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .optional(),
+  headline: z.string(),
+  subhead: z.string().optional(),
+  ctaLabel: z.string().optional(),
+  ctaLink: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
 });
 
-const _baseHeroSlide = z.object({
-  sys: z.object({
+export const heroSlideSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('heroSlide'),
       }),
     }),
   }),
-  fields: z.object({
-    image: contentfulAssetSchema,
-    headline: z.string(),
-    subhead: z.string().optional(),
-    ctaLabel: z.string().optional(),
-    ctaLink: z.unknown().optional(),
+  fields: heroSlideFieldsSchema,
+});
+
+export type heroSlide = z.infer<typeof heroSlideSchema>;
+
+// Schema for featureVideoBanner
+export const featureVideoBannerFieldsSchema = z.object({
+  internalName: z.string(),
+  sectionTitle: z.string().optional(),
+  subTitle: z.string().optional(),
+  descriptiveBodyCopy: z.string().optional(),
+  video: z.object({
+    metadata: z.object({
+      tags: z.array(z.unknown()),
+      concepts: z.array(z.unknown()),
+    }),
+    sys: z.object({
+      space: z.object({
+        sys: z.object({
+          type: z.literal('Link'),
+          linkType: z.literal('Space'),
+          id: z.string(),
+        }),
+      }),
+      id: z.string(),
+      type: z.literal('Asset'),
+      createdAt: z.string().datetime(),
+      updatedAt: z.string().datetime(),
+      environment: z.object({
+        sys: z.object({
+          id: z.string(),
+          type: z.literal('Link'),
+          linkType: z.literal('Environment'),
+        }),
+      }),
+      publishedVersion: z.number().optional(),
+      revision: z.number(),
+      locale: z.string().optional(),
+      contentType: z.undefined().optional(),
+    }),
+    fields: z.object({
+      title: z.string().optional(),
+      description: z.string().optional(),
+      file: z.object({
+        url: z.string(),
+        details: z.object({
+          size: z.number(),
+          image: z
+            .object({
+              width: z.number(),
+              height: z.number(),
+            })
+            .optional(),
+        }),
+        fileName: z.string(),
+        contentType: z.string(),
+      }),
+    }),
   }),
+  registrationCookieMessage: z.string().optional(),
 });
 
-export type HeroSlide = z.infer<typeof _baseHeroSlide> & { fields: {} };
-
-export const heroSlideSchema: z.ZodType<HeroSlide> = _baseHeroSlide.extend({
-  fields: _baseHeroSlide.shape.fields.extend({}),
-});
-
-const _baseFeatureVideoBanner = z.object({
-  sys: z.object({
+export const featureVideoBannerSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
     contentType: z.object({
       sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
         id: z.literal('featureVideoBanner'),
       }),
     }),
   }),
-  fields: z.object({
-    internalName: z.string(),
-    sectionTitle: z.string().optional(),
-    subTitle: z.string().optional(),
-    descriptiveBodyCopy: z.string().optional(),
-    video: contentfulAssetSchema,
-    registrationCookieMessage: z.string().optional(),
-  }),
+  fields: featureVideoBannerFieldsSchema,
 });
 
-export type FeatureVideoBanner = z.infer<typeof _baseFeatureVideoBanner> & { fields: {} };
+export type featureVideoBanner = z.infer<typeof featureVideoBannerSchema>;
 
-export const featureVideoBannerSchema: z.ZodType<FeatureVideoBanner> =
-  _baseFeatureVideoBanner.extend({
-    fields: _baseFeatureVideoBanner.shape.fields.extend({}),
-  });
+// ========================================
+// Union Schema and Helper Object
+// ========================================
+
+export const contentfulEntrySchemaUnion = z.union([
+  productFinishedGoodsSchema,
+  faqSchema,
+  carouselRecipeSchema,
+  categoryFaqSchema,
+  categoryProductSchema,
+  carouselProductSchema,
+  recipeSchema,
+  productPartsAndAccessoriesSchema,
+  ingredientsListSchema,
+  authorSchema,
+  supportDocumentSchema,
+  pageStandardSchema,
+  megaMenuSchema,
+  carouselProductSimpleSchema,
+  faqListSchema,
+  blockProductFeaturesSchema,
+  blockProductFeaturesAccordionSchema,
+  ctaSchema,
+  inspirationBentoSchema,
+  inspirationCardSchema,
+  tutorialSchema,
+  heroCarouselSchema,
+  heroSlideSchema,
+  featureVideoBannerSchema,
+]);
+export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
+
+export const genericEntrySchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema,
+  fields: z.record(z.unknown()),
+});
+export type GenericEntry = z.infer<typeof genericEntrySchema>;
+
+export const contentfulSchemas = {
+  asset: assetSchema,
+  productFinishedGoods: productFinishedGoodsSchema,
+  faq: faqSchema,
+  carouselRecipe: carouselRecipeSchema,
+  categoryFaq: categoryFaqSchema,
+  categoryProduct: categoryProductSchema,
+  carouselProduct: carouselProductSchema,
+  recipe: recipeSchema,
+  productPartsAndAccessories: productPartsAndAccessoriesSchema,
+  ingredientsList: ingredientsListSchema,
+  author: authorSchema,
+  supportDocument: supportDocumentSchema,
+  pageStandard: pageStandardSchema,
+  megaMenu: megaMenuSchema,
+  carouselProductSimple: carouselProductSimpleSchema,
+  faqList: faqListSchema,
+  blockProductFeatures: blockProductFeaturesSchema,
+  blockProductFeaturesAccordion: blockProductFeaturesAccordionSchema,
+  cta: ctaSchema,
+  inspirationBento: inspirationBentoSchema,
+  inspirationCard: inspirationCardSchema,
+  tutorial: tutorialSchema,
+  heroCarousel: heroCarouselSchema,
+  heroSlide: heroSlideSchema,
+  featureVideoBanner: featureVideoBannerSchema,
+};

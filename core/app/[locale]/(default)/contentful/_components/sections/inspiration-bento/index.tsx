@@ -1,79 +1,62 @@
 import { clsx } from 'clsx';
-import type { Asset } from 'contentful';
-import { ArrowRight, Pause } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { z } from 'zod';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
-import type {
-  ICta,
-  ICtaFields,
-  IInspirationCard,
-  IInspirationCardFields,
-  IRecipe,
-  IRecipeFields,
-  ITutorial,
-  ITutorialFields,
-} from '~/types/generated/contentful';
+import {
+  assetSchema,
+  ctaSchema,
+  inspirationCardSchema,
+  pageStandardSchema,
+  recipeSchema,
+  tutorialSchema,
+} from '~/contentful/schema';
 
 import Card from '../../primitives/card';
 
 interface InspirationBentoProps {
   heading?: string | null;
   video?: string | null;
-  cta?: ICta | null;
-  inspirationCards?: IInspirationCard[] | null;
+  cta?: z.infer<typeof ctaSchema> | null;
+  inspirationCards?: Array<z.infer<typeof inspirationCardSchema>> | null;
 }
 
-interface CardImage {
+interface CardImageProp {
   fields: {
     file: {
       url: string;
       details: {
-        image: {
-          height: number;
-          width: number;
-        };
+        image: { height: number; width: number };
       };
     };
+    title?: string;
   };
 }
 
-const isRecipe = (content: IRecipe | ITutorial): content is IRecipe => {
-  return 'recipeName' in (content.fields as IRecipeFields | ITutorialFields);
-};
+interface MappedCardData {
+  id: string;
+  type: 'recipe' | 'tutorial';
+  categories: string[];
+  originalImage?: z.infer<typeof assetSchema> | null;
+  pageSlug: string;
+  recipeName: string;
+  shortDescription: string;
+}
 
-// Transform Contentful Asset to Card image prop type
-const transformAssetToCardImage = (asset: Asset): CardImage => {
-  const file = asset.fields?.file;
-
-  return {
-    fields: {
-      file: {
-        url: (file?.url as string) || '',
-        details: {
-          image: {
-            height: ((file?.details as any)?.height as number) || 0,
-            width: ((file?.details as any)?.width as number) || 0,
-          },
-        },
-      },
-    },
+interface ContentfulEntry {
+  sys: {
+    contentType?: {
+      sys: {
+        id: string;
+      };
+    };
+    id: string;
   };
-};
+}
 
-// Placeholder image for tutorials
-const TUTORIAL_PLACEHOLDER_IMAGE: CardImage = {
-  fields: {
-    file: {
-      url: '/images/tutorial-placeholder.jpg',
-      details: {
-        image: {
-          height: 400,
-          width: 600,
-        },
-      },
-    },
-  },
-};
+function getEntryContentType(entry: ContentfulEntry | null) {
+  return entry?.sys.contentType?.sys.id ?? null;
+}
 
 export default function InspirationBento({
   heading,
@@ -81,128 +64,155 @@ export default function InspirationBento({
   cta,
   inspirationCards,
 }: InspirationBentoProps) {
-  const validCards = inspirationCards?.filter((card) => {
-    const { contentReference } = card.fields as IInspirationCardFields;
+  const validCardsData = inspirationCards
+    ?.map((card): MappedCardData | null => {
+      const { contentReference } = card.fields;
+      const cardId = card.sys.id;
 
-    if (isRecipe(contentReference)) {
-      const {
-        mealTypeCategory,
-        featuredImage: recipeImage,
-        pageSlug: recipeSlug,
-        recipeName,
-        shortDescription: recipeDescription,
-      } = contentReference.fields as IRecipeFields;
+      const contentType = getEntryContentType(contentReference);
 
-      return (
-        mealTypeCategory &&
-        recipeImage?.fields.file &&
-        recipeSlug &&
-        recipeName &&
-        recipeDescription
-      );
+      if (contentType === 'recipe') {
+        const recipeResult = recipeSchema.safeParse(contentReference);
+
+        if (recipeResult.success) {
+          const { mealTypeCategory, featuredImage, pageSlug, recipeName, shortDescription } =
+            recipeResult.data.fields;
+
+          if (mealTypeCategory && pageSlug && recipeName && shortDescription) {
+            return {
+              id: cardId,
+              type: 'recipe',
+              categories: mealTypeCategory,
+              originalImage: featuredImage,
+              pageSlug,
+              recipeName,
+              shortDescription,
+            };
+          }
+        }
+      }
+
+      if (contentType === 'tutorial') {
+        const tutorialResult = tutorialSchema.safeParse(contentReference);
+
+        if (tutorialResult.success) {
+          const { title } = tutorialResult.data.fields;
+
+          if (title) {
+            return {
+              id: cardId,
+              type: 'tutorial',
+              categories: [],
+              originalImage: null,
+              pageSlug: 'tutorials',
+              recipeName: title,
+              shortDescription: 'View this tutorial',
+            };
+          }
+        }
+      }
+
+      return null;
+    })
+    .filter((item): item is MappedCardData => item !== null);
+
+  let ctaHref = '#';
+
+  if (cta?.fields) {
+    const { internalReference, externalLink } = cta.fields;
+
+    if (internalReference) {
+      const refContentType = getEntryContentType(internalReference);
+
+      if (refContentType === 'pageStandard') {
+        const pageResult = pageStandardSchema.safeParse(internalReference);
+
+        if (pageResult.success && pageResult.data.fields.pageSlug) {
+          ctaHref = `/${pageResult.data.fields.pageSlug}`;
+        }
+      } else {
+        ctaHref = '/not-implemented';
+      }
+    } else if (externalLink) {
+      ctaHref = externalLink;
     }
-
-    // For tutorials, we only have the title field available
-    const { title } = contentReference.fields as ITutorialFields;
-
-    return Boolean(title);
-  });
+  }
 
   return (
     <section className="@container">
       <div className="mx-auto flex flex-col items-stretch gap-x-16 gap-y-10 px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-4xl">{heading}</h2>
-          {cta && (
+          {heading ? <h2 className="text-4xl">{heading}</h2> : null}
+          {cta?.fields.text ? (
             <ButtonLink
               className="[&_span]:flex [&_span]:items-center [&_span]:gap-2 [&_span]:font-medium"
-              href={(cta.fields as ICtaFields).externalLink || ''}
+              href={ctaHref}
               shape="link"
               size="link"
               variant="link"
             >
-              {(cta.fields as ICtaFields).text}
+              {cta.fields.text}
               <ArrowRight size={24} strokeWidth={1.5} />
             </ButtonLink>
-          )}
+          ) : null}
         </div>
         <div className="mt-8 grid gap-8 lg:grid-cols-2">
-          {video && video !== '' ? (
-            <figure className="bg-surface-image relative aspect-[3/4] h-full w-full rounded-lg lg:aspect-auto">
-              <video
-                autoPlay
-                className="h-full w-full"
-                loop
-                muted
-                playsInline
-                src={`http://fast.wistia.net/embed/iframe/${video}`}
+          {video ? (
+            <figure className="bg-surface-image relative aspect-[3/4] h-full w-full overflow-hidden rounded-lg lg:aspect-auto">
+              <iframe
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                className="h-full w-full border-0"
+                src={`//fast.wistia.net/embed/iframe/${video}?videoFoam=true`}
+                title={`${heading || 'Inspiration'} Video`}
               />
-              <button className="absolute right-4 bottom-4">
-                <Pause size={24} strokeWidth={1} />
-              </button>
             </figure>
           ) : null}
-          {validCards && validCards.length > 0 && (
+          {validCardsData?.length ? (
             <div
               className={clsx(
                 'grid grid-cols-1 gap-8 md:grid-cols-2',
                 video ? 'lg:col-start-2' : 'lg:col-span-2',
               )}
             >
-              {validCards.map((card) => {
-                const { contentReference } = card.fields as IInspirationCardFields;
+              {validCardsData.map((cardData) => {
+                let imagePropForCard: CardImageProp | undefined;
 
-                if (isRecipe(contentReference)) {
-                  const {
-                    mealTypeCategory,
-                    featuredImage: recipeImage,
-                    pageSlug: recipeSlug,
-                    recipeName,
-                    shortDescription: recipeDescription,
-                  } = contentReference.fields as IRecipeFields;
+                if (cardData.originalImage?.fields) {
+                  const imageFile = cardData.originalImage.fields.file;
+                  const imageDetails = imageFile.details.image;
 
-                  if (
-                    !mealTypeCategory ||
-                    !recipeImage ||
-                    !recipeSlug ||
-                    !recipeName ||
-                    !recipeDescription
-                  ) {
-                    return null;
+                  if (imageDetails) {
+                    imagePropForCard = {
+                      fields: {
+                        file: {
+                          url: imageFile.url ? `https:${imageFile.url}` : '/placeholder.jpg',
+                          details: {
+                            image: {
+                              height: imageDetails.height,
+                              width: imageDetails.width,
+                            },
+                          },
+                        },
+                        title: cardData.originalImage.fields.title ?? cardData.recipeName,
+                      },
+                    };
                   }
-
-                  return (
-                    <Card
-                      categories={mealTypeCategory}
-                      image={transformAssetToCardImage(recipeImage)}
-                      key={card.sys.id}
-                      pageSlug={recipeSlug}
-                      recipeName={recipeName}
-                      shortDescription={recipeDescription}
-                    />
-                  );
                 }
 
-                const { title } = contentReference.fields as ITutorialFields;
-
-                if (!title) {
-                  return null;
-                }
-
-                // For tutorials, we only show the title since that's all we have
                 return (
                   <Card
-                    categories={[]}
-                    image={TUTORIAL_PLACEHOLDER_IMAGE}
-                    key={card.sys.id}
-                    pageSlug="tutorials"
-                    recipeName={title}
-                    shortDescription="View this tutorial"
+                    categories={cardData.categories}
+                    image={imagePropForCard}
+                    key={cardData.id}
+                    pageSlug={cardData.pageSlug}
+                    recipeName={cardData.recipeName}
+                    shortDescription={cardData.shortDescription}
                   />
                 );
               })}
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </section>
