@@ -70,6 +70,7 @@ export default function PageContentEntries({ page }: { page: z.infer<typeof page
 
             case 'newsletterForm': {
               const newsletterData = newsletterFormSchema.parse(contentEntry);
+
               return <NewsletterForm key={entryId} {...newsletterData.fields} />;
             }
 

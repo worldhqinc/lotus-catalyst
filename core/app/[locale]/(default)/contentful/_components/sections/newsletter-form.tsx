@@ -23,18 +23,18 @@ export default function NewsletterForm({
             )}
           >
             <input
-              type="email"
-              placeholder={inputPlaceholder || 'Enter your email'}
               className="h-16 w-full bg-transparent pr-16 pl-6 text-white placeholder-white placeholder:font-normal focus:outline-none"
+              placeholder={inputPlaceholder || 'Enter your email'}
+              type="email"
             />
             <div className="absolute top-1/2 right-0 -translate-y-1/2 pr-0">
               <Button
                 aria-label="Submit newsletter"
+                className="border-background !text-background hover:!bg-background hover:!text-primary border"
                 shape="circle"
                 size="medium"
                 type="submit"
                 variant="ghost"
-                className="border-background !text-background hover:!bg-background hover:!text-primary border"
               >
                 <ArrowRight size={20} strokeWidth={1.5} />
               </Button>
