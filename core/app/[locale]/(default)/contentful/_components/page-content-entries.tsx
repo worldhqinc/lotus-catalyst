@@ -6,11 +6,13 @@ import {
   heroSlideSchema,
   inspirationBentoSchema,
   inspirationCardSchema,
+  newsletterFormSchema,
   pageStandardSchema,
 } from '~/contentful/schema';
 
 import HeroCarousel from './sections/hero-carousel';
 import InspirationBento from './sections/inspiration-bento';
+import NewsletterForm from './sections/newsletter-form';
 
 export default function PageContentEntries({ page }: { page: z.infer<typeof pageStandardSchema> }) {
   const pageContent = page.fields.pageContent;
@@ -64,6 +66,11 @@ export default function PageContentEntries({ page }: { page: z.infer<typeof page
                   video={video}
                 />
               );
+            }
+
+            case 'newsletterForm': {
+              const newsletterData = newsletterFormSchema.parse(contentEntry);
+              return <NewsletterForm key={entryId} {...newsletterData.fields} />;
             }
 
             default: {

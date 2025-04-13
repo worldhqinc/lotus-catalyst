@@ -2606,6 +2606,29 @@ export const featureVideoBannerSchema = z.object({
 
 export type featureVideoBanner = z.infer<typeof featureVideoBannerSchema>;
 
+// Schema for newsletterForm
+export const newsletterFormFieldsSchema = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  inputPlaceholder: z.string().optional(),
+});
+
+export const newsletterFormSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('newsletterForm'),
+      }),
+    }),
+  }),
+  fields: newsletterFormFieldsSchema,
+});
+
+export type newsletterForm = z.infer<typeof newsletterFormSchema>;
+
 // ========================================
 // Union Schema and Helper Object
 // ========================================
@@ -2635,6 +2658,7 @@ export const contentfulEntrySchemaUnion = z.union([
   heroCarouselSchema,
   heroSlideSchema,
   featureVideoBannerSchema,
+  newsletterFormSchema,
 ]);
 export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
 
@@ -2671,4 +2695,5 @@ export const contentfulSchemas = {
   heroCarousel: heroCarouselSchema,
   heroSlide: heroSlideSchema,
   featureVideoBanner: featureVideoBannerSchema,
+  newsletterForm: newsletterFormSchema,
 };

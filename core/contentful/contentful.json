@@ -4002,6 +4002,93 @@
           "omitted": false
         }
       ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "newsletterForm",
+        "type": "ContentType",
+        "createdAt": "2025-04-13T19:15:35.558Z",
+        "updatedAt": "2025-04-13T19:15:36.071Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 1,
+        "publishedAt": "2025-04-13T19:15:36.071Z",
+        "firstPublishedAt": "2025-04-13T19:15:36.071Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 2,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/newsletterForm"
+      },
+      "displayField": "title",
+      "name": "Newsletter Form",
+      "description": "",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "inputPlaceholder",
+          "name": "Input Placeholder",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
     }
   ],
   "locales": [
