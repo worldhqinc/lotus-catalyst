@@ -101,7 +101,7 @@ To manage your Contentful content model, Catalyst provides a set of scripts in `
   pnpm run contentful:export
   ```
 
-  This writes your content types and settings to `core/contentful/contentful.json`.
+  This writes your content types and settings to `core/contentful/schema.json`.
 
 - Generate TypeScript schemas from the exported model:
 

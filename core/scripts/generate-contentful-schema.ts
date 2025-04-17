@@ -5,8 +5,8 @@ import { z } from 'zod';
 
 import { generateContentfulSchemas } from '../contentful/schema-generator';
 
-// Read the contentful.json file
-const contentfulJsonPath = resolve(__dirname, '../contentful/contentful.json');
+// Read the schema.json file
+const contentfulJsonPath = resolve(__dirname, '../contentful/schema.json');
 const contentfulSchema = JSON.parse(readFileSync(contentfulJsonPath, 'utf-8'));
 
 // Generate schemas for the 'fields' part only

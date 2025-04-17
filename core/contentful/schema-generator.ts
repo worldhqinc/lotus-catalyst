@@ -231,7 +231,7 @@ export function generateContentfulSchemas(
 }
 
 // Example usage:
-// const contentfulSchema = require('./contentful.json');
+// const contentfulSchema = require('./schema.json');
 // const schemas = generateContentfulSchemas(contentfulSchema);
 //
 // // Validate a specific content type
