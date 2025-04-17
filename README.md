@@ -36,7 +36,6 @@ times before. You can instead go straight to work building your brand and making
 
 ![-----------------------------------------------------](https://storage.googleapis.com/bigcommerce-developers/images/catalyst_readme_hr.png)
 
-
 ## Deploy on Vercel
 
 The easiest way to deploy your Catalyst Storefront is to use the [Vercel Platform](https://vercel.com/new) from the creators of Next.js.
@@ -90,3 +89,36 @@ Learn more about Catalyst at [catalyst.dev](https://catalyst.dev).
 > [!IMPORTANT]
 > If you just want to build a storefront, start with the [CLI](#quickstart) which will install the Next.js application in [/core](/core/).
 > If you wish to contribute back to Catalyst or create a fork of Catalyst, you can check the [docs for this monorepo](https://catalyst.dev/docs/monorepo) to get started.
+
+## Contentful Schema
+
+To manage your Contentful content model, Catalyst provides a set of scripts in `core/package.json`:
+
+- Export your content model from Contentful:
+
+  ```bash
+  cd core
+  pnpm run contentful:export
+  ```
+
+  This writes your content types and settings to `core/contentful/contentful.json`.
+
+- Generate TypeScript schemas from the exported model:
+
+  ```bash
+  pnpm run contentful:generate
+  ```
+
+  This produces `core/contentful/schema.ts`, which is used across the app to type and validate Contentful entries.
+
+- Update both export and generation in one go:
+  ```bash
+  pnpm run contentful:update
+  ```
+
+Make sure to add the following environment variables to your `.env.local` file:
+
+```dotenv
+CONTENTFUL_SPACE_ID=<your Contentful Space ID>
+CONTENTFUL_MANAGEMENT_TOKEN=<your Contentful Management Token>
+```
