@@ -13,6 +13,7 @@
     "lint:fix": "next lint --fix",
     "typecheck": "tsc --noEmit",
     "contentful:export": "./scripts/contentful-export.sh",
+    "contentful:import": "./scripts/contentful-import.sh",
     "contentful:generate": "tsx ./scripts/generate-contentful-schema.ts && prettier --write ./contentful/schema.ts",
     "contentful:update": "pnpm contentful:export && pnpm contentful:generate"
   },
