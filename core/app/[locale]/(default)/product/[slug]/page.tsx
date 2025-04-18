@@ -16,14 +16,13 @@ import { getPreferredCurrencyCode } from '~/lib/currency';
 import { addToCart } from './_actions/add-to-cart';
 import { ProductSchema } from './_components/product-schema';
 import { ProductViewed } from './_components/product-viewed';
-
 import { Reviews } from './_components/reviews';
 import {
+  getContentfulProductData,
   getProduct,
   getProductPageMetadata,
   getProductPricingAndRelatedProducts,
   getStreamableProduct,
-  getContentfulProductData,
 } from './page-data';
 
 interface Props {
