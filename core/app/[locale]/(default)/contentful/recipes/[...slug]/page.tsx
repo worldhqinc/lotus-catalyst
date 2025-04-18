@@ -11,19 +11,20 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const page = await getPageBySlug('recipe', ['recipes', ...slug]);
-  const fields = page.fields;
+
+  const { fields } = page;
 
   return {
-    title: fields.metaTitleSeo || fields.recipeName,
+    title: fields.metaTitle || fields.recipeName,
     description: fields.metaDescription,
-    keywords: fields.metaKeywordsSeo,
   };
 }
 
 export default async function RecipePage({ params }: Props) {
   const { slug } = await params;
   const page = await getPageBySlug('recipe', ['recipes', ...slug]);
-  const fields = page.fields;
+
+  const { fields } = page;
   const pageName = fields.recipeName;
 
   return (
