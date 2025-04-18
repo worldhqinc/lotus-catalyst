@@ -1,13 +1,25 @@
 import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
+import { notFound } from 'next/navigation';
 import { SearchParams } from 'nuqs/server';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
+import {
+  Carousel,
+  CarouselButtons,
+  CarouselContent,
+  CarouselItem,
+  CarouselScrollbar,
+} from '@/vibes/soul/primitives/carousel';
 import { FeaturedProductCarousel } from '@/vibes/soul/sections/featured-product-carousel';
 import { ProductDetail } from '@/vibes/soul/sections/product-detail';
 import { getSessionCustomerAccessToken } from '~/auth';
+import {
+  carouselRecipeSchema,
+  productFinishedGoodsSchema,
+  recipeSchema,
+} from '~/contentful/schema';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
@@ -306,6 +318,34 @@ export default async function Product(props: Props) {
         scrollbarLabel={t('RelatedProducts.scrollbar')}
         title={t('RelatedProducts.title')}
       />
+
+      <Stream fallback={null} value={contentful}>
+        {(contentfulData) => {
+          if (!contentfulData?.fields.recipes) return null;
+          const parsed = productFinishedGoodsSchema.parse(contentfulData);
+          const carouselData = carouselRecipeSchema.parse(parsed.fields.recipes);
+          const recipeItems = carouselData.fields.recipes.map((r) => recipeSchema.parse(r));
+
+          return (
+            <section className="my-8">
+              <h2 className="mb-4 text-xl font-bold">{carouselData.fields.carouselTitle}</h2>
+              <Carousel className="gap-4">
+                <CarouselButtons />
+                <CarouselContent>
+                  {recipeItems.map((recipe) => (
+                    <CarouselItem key={recipe.sys.id}>
+                      <div className="rounded border p-2">
+                        <p className="font-semibold">{recipe.fields.recipeName}</p>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselScrollbar />
+              </Carousel>
+            </section>
+          );
+        }}
+      </Stream>
 
       <Reviews productId={productId} searchParams={props.searchParams} />
 

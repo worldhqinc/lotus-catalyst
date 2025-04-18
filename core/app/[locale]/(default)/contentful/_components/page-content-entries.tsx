@@ -80,7 +80,7 @@ export default function PageContentEntries({ page }: { page: z.infer<typeof page
               const postGridData = postGridSchema.parse(contentEntry);
               const { title, subtitle, type } = postGridData.fields;
 
-              return <PostGrid key={entryId} title={title} subtitle={subtitle} type={type} />;
+              return <PostGrid key={entryId} subtitle={subtitle} title={title} type={type} />;
             }
 
             default: {

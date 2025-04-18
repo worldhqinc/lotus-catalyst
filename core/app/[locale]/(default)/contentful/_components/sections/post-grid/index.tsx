@@ -1,8 +1,9 @@
 'use client';
 
-import { Button } from '@/vibes/soul/primitives/button';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { Configure, InstantSearch, RefinementList, useInfiniteHits } from 'react-instantsearch';
+
+import { Button } from '@/vibes/soul/primitives/button';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 
@@ -17,51 +18,82 @@ interface PostGridProps {
   type: string;
 }
 
-function InfiniteHits({ hits, hasMore, refineNext }: any) {
+type Localized<T> = Record<string, T>;
+
+interface PostGridHit {
+  objectID: string;
+  fields?: {
+    productName?: Localized<string>;
+    pageName?: Localized<string>;
+    recipeName?: Localized<string>;
+    shortDescription?: Localized<string>;
+    pageSlug?: Localized<string>;
+    featuredImage?: Localized<{ fields: { file: { url: string } } }>;
+    pageImage?: Localized<string>;
+    mealTypeCategory?: Localized<string[]>;
+    productLine?: Localized<string[]>;
+    parentCategory?: Localized<string[]>;
+  };
+}
+
+interface InfiniteHitsProps {
+  hits: PostGridHit[];
+  hasMore: boolean;
+  refineNext: () => void;
+}
+
+function InfiniteHits({ hits, hasMore, refineNext }: InfiniteHitsProps) {
   return (
     <>
       <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {hits.map((hit: any) => {
+        {hits.map((hit: PostGridHit) => {
           const f = hit.fields ?? {};
           const title =
             f.productName?.['en-US'] || f.pageName?.['en-US'] || f.recipeName?.['en-US'] || '';
           const description = f.shortDescription?.['en-US'] || '';
           const slug = f.pageSlug?.['en-US'] || '';
-          const imgField =
-            f.featuredImage?.['en-US']?.fields?.file?.url || f.pageImage?.['en-US'] || null;
-          const imgUrl = imgField
-            ? imgField.startsWith('http')
-              ? imgField
-              : `https:${imgField}`
-            : null;
+          const imgField = f.featuredImage?.['en-US']
+            ? f.featuredImage['en-US'].fields.file.url
+            : f.pageImage?.['en-US'] || null;
+          let imgUrl: string | null = null;
+
+          if (imgField) {
+            if (imgField.startsWith('http')) {
+              imgUrl = imgField;
+            } else {
+              imgUrl = `https:${imgField}`;
+            }
+          }
+
           const categories =
             f.mealTypeCategory?.['en-US'] ||
             f.productLine?.['en-US'] ||
             f.parentCategory?.['en-US'] ||
             [];
+
           return (
-            <article key={hit.objectID} className="group relative">
+            <article className="group relative" key={hit.objectID}>
               {imgUrl ? (
                 <figure className="bg-surface-image aspect-square w-full rounded-lg">
-                  <Image alt={title} src={imgUrl} className="object-cover" />
+                  <Image alt={title} className="object-cover" src={imgUrl} />
                 </figure>
               ) : (
                 <figure className="bg-surface-image aspect-square w-full rounded-lg" />
               )}
               <div className="space-y-1 py-2">
                 {slug ? (
-                  <Link href={`/${slug}`} className="font-body text-lg font-medium">
+                  <Link className="font-body text-lg font-medium" href={`/${slug}`}>
                     <h3>{title}</h3>
                   </Link>
                 ) : (
                   <h3 className="font-body text-lg font-medium">{title}</h3>
                 )}
-                {description && <p className="text-neutral-500">{description}</p>}
+                {description ? <p className="text-neutral-500">{description}</p> : null}
               </div>
               {categories.length ? (
                 <div className="flex flex-wrap gap-2">
                   {categories.map((cat: string) => (
-                    <span key={cat} className="rounded border px-2 py-1 text-xs">
+                    <span className="rounded border px-2 py-1 text-xs" key={cat}>
                       {cat}
                     </span>
                   ))}
@@ -73,7 +105,7 @@ function InfiniteHits({ hits, hasMore, refineNext }: any) {
       </div>
       <div className="flex w-full flex-col items-center">
         {hasMore && (
-          <Button size="small" variant="tertiary" onClick={() => refineNext()}>
+          <Button onClick={() => refineNext()} size="small" variant="tertiary">
             Load more
           </Button>
         )}
@@ -83,10 +115,10 @@ function InfiniteHits({ hits, hasMore, refineNext }: any) {
 }
 
 function InfiniteHitsWrapper() {
-  const { items, showMore, isLastPage } = useInfiniteHits();
+  const { items, showMore, isLastPage } = useInfiniteHits<PostGridHit>();
   const hasMore = !isLastPage;
 
-  return <InfiniteHits hits={items} hasMore={hasMore} refineNext={showMore} />;
+  return <InfiniteHits hasMore={hasMore} hits={items} refineNext={showMore} />;
 }
 
 export default function PostGrid({ title, subtitle, type }: PostGridProps) {
@@ -97,11 +129,11 @@ export default function PostGrid({ title, subtitle, type }: PostGridProps) {
           <h1 className="m-0 max-w-xl text-center font-[family-name:var(--slideshow-title-font-family,var(--font-family-heading))] text-4xl leading-none font-medium uppercase @2xl:text-5xl @2xl:leading-[.9] @4xl:text-6xl">
             {title}
           </h1>
-          {subtitle && (
+          {subtitle ? (
             <p className="mt-2 max-w-3xl text-center text-base leading-normal text-neutral-500 @xl:mt-3 @xl:text-lg">
               {subtitle}
             </p>
-          )}
+          ) : null}
         </div>
         <InstantSearch
           indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? ''}
