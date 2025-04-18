@@ -357,6 +357,7 @@ export const withRoutes: MiddlewareFactory = () => {
         const nonContentfulPaths = [
           '/account',
           '/cart',
+          '/checkout',
           '/compare',
           '/login',
           '/logout',
