@@ -2629,6 +2629,50 @@ export const newsletterFormSchema = z.object({
 
 export type newsletterForm = z.infer<typeof newsletterFormSchema>;
 
+// Schema for story
+export const storyFieldsSchema = z.object({
+  title: z.string().optional(),
+});
+
+export const storySchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('story'),
+      }),
+    }),
+  }),
+  fields: storyFieldsSchema,
+});
+
+export type story = z.infer<typeof storySchema>;
+
+// Schema for postGrid
+export const postGridFieldsSchema = z.object({
+  title: z.string(),
+  subtitle: z.string().optional(),
+  type: z.string(),
+});
+
+export const postGridSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('postGrid'),
+      }),
+    }),
+  }),
+  fields: postGridFieldsSchema,
+});
+
+export type postGrid = z.infer<typeof postGridSchema>;
+
 // ========================================
 // Union Schema and Helper Object
 // ========================================
@@ -2659,6 +2703,8 @@ export const contentfulEntrySchemaUnion = z.union([
   heroSlideSchema,
   featureVideoBannerSchema,
   newsletterFormSchema,
+  storySchema,
+  postGridSchema,
 ]);
 export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
 
@@ -2696,4 +2742,6 @@ export const contentfulSchemas = {
   heroSlide: heroSlideSchema,
   featureVideoBanner: featureVideoBannerSchema,
   newsletterForm: newsletterFormSchema,
+  story: storySchema,
+  postGrid: postGridSchema,
 };

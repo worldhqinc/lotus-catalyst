@@ -1,20 +1,39 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
-import { Entry } from 'contentful';
 
-import { ProductFinishedGoodsData } from '~/app/[locale]/(default)/product/[slug]/page-data';
+import { productFinishedGoods } from '~/contentful/schema';
 
 interface Props {
-  data: Entry<ProductFinishedGoodsData> | null | undefined;
+  data: productFinishedGoods | null | undefined;
+}
+
+interface LocalizedField {
+  'en-US'?: unknown;
+}
+
+function isLocalizedField(value: unknown): value is LocalizedField {
+  return value != null && typeof value === 'object' && 'en-US' in value;
 }
 
 function getContentfulField(
-  data: Entry<ProductFinishedGoodsData>,
-  field: keyof ProductFinishedGoodsData['fields'],
+  data: productFinishedGoods,
+  field: keyof productFinishedGoods['fields'],
 ): string {
-  return typeof data.fields[field] === 'string'
-    ? data.fields[field]
-    : (data.fields[field]?.['en-US'] ?? '');
+  const value = data.fields[field];
+
+  if (typeof value === 'string') {
+    return value;
+  }
+
+  if (isLocalizedField(value)) {
+    const nested = value['en-US'];
+
+    if (typeof nested === 'string') {
+      return nested;
+    }
+  }
+
+  return '';
 }
 
 export async function ContentfulProductData({ data }: Props) {
