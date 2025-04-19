@@ -635,6 +635,45 @@ export const carouselRecipeFieldsSchema = z.object({
       fields: z.record(z.string(), z.unknown()),
     }),
   ),
+  cta: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
 });
 
 export const carouselRecipeSchema = z.object({
@@ -929,6 +968,7 @@ export type categoryProduct = z.infer<typeof categoryProductSchema>;
 export const carouselProductFieldsSchema = z.object({
   internalName: z.string(),
   carouselTitle: z.string(),
+  subtitle: z.string().optional(),
   products: z.array(
     z.object({
       metadata: z.object({
@@ -2632,6 +2672,7 @@ export type newsletterForm = z.infer<typeof newsletterFormSchema>;
 // Schema for story
 export const storyFieldsSchema = z.object({
   title: z.string().optional(),
+  subtitle: z.string().optional(),
 });
 
 export const storySchema = z.object({

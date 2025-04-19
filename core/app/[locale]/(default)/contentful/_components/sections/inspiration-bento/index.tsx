@@ -1,13 +1,11 @@
 import { clsx } from 'clsx';
-import { ArrowRight } from 'lucide-react';
 import { z } from 'zod';
 
-import { ButtonLink } from '@/vibes/soul/primitives/button-link';
+import ContentfulCta from '~/components/contentful/cta';
 import {
   assetSchema,
   ctaSchema,
   inspirationCardSchema,
-  pageStandardSchema,
   recipeSchema,
   tutorialSchema,
 } from '~/contentful/schema';
@@ -43,21 +41,6 @@ interface MappedCardData {
   shortDescription: string;
 }
 
-interface ContentfulEntry {
-  sys: {
-    contentType?: {
-      sys: {
-        id: string;
-      };
-    };
-    id: string;
-  };
-}
-
-function getEntryContentType(entry: ContentfulEntry | null) {
-  return entry?.sys.contentType?.sys.id ?? null;
-}
-
 export default function InspirationBento({
   heading,
   video,
@@ -69,7 +52,7 @@ export default function InspirationBento({
       const { contentReference } = card.fields;
       const cardId = card.sys.id;
 
-      const contentType = getEntryContentType(contentReference);
+      const contentType = contentReference.sys.contentType.sys.id;
 
       if (contentType === 'recipe') {
         const recipeData = recipeSchema.parse(contentReference);
@@ -110,45 +93,12 @@ export default function InspirationBento({
     })
     .filter((item): item is MappedCardData => item !== null);
 
-  let ctaHref = '#';
-
-  if (cta?.fields) {
-    const { internalReference, externalLink } = cta.fields;
-
-    if (internalReference) {
-      const refContentType = getEntryContentType(internalReference);
-
-      if (refContentType === 'pageStandard') {
-        const pageData = pageStandardSchema.parse(internalReference);
-
-        if (pageData.fields.pageSlug) {
-          ctaHref = `/${pageData.fields.pageSlug}`;
-        }
-      } else {
-        ctaHref = '/not-implemented';
-      }
-    } else if (externalLink) {
-      ctaHref = externalLink;
-    }
-  }
-
   return (
     <section className="@container">
       <div className="mx-auto flex flex-col items-stretch gap-x-16 gap-y-10 px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
         <div className="flex flex-wrap items-center justify-between gap-4">
           {heading ? <h2 className="text-4xl">{heading}</h2> : null}
-          {cta?.fields.text ? (
-            <ButtonLink
-              className="[&_span]:flex [&_span]:items-center [&_span]:gap-2 [&_span]:font-medium"
-              href={ctaHref}
-              shape="link"
-              size="link"
-              variant="link"
-            >
-              {cta.fields.text}
-              <ArrowRight size={24} strokeWidth={1.5} />
-            </ButtonLink>
-          ) : null}
+          <ContentfulCta cta={cta} />
         </div>
         <div className="mt-8 grid gap-8 lg:grid-cols-2">
           {video ? (

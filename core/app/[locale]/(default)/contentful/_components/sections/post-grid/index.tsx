@@ -1,11 +1,11 @@
 'use client';
 
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
+import { clsx } from 'clsx';
 import { Configure, InstantSearch, RefinementList, useInfiniteHits } from 'react-instantsearch';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Button } from '@/vibes/soul/primitives/button';
-import clsx from 'clsx';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 
@@ -43,6 +43,7 @@ function InfiniteHits() {
   const hasMore = !isLastPage;
   const totalCount = results?.nbHits ?? 0;
   const progressPercent = totalCount > 0 ? (items.length / totalCount) * 100 : 0;
+
   return (
     <>
       <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -124,6 +125,7 @@ function InfiniteHits() {
 
 export default function PostGrid({ title, subtitle, type }: PostGridProps) {
   const categories = ['Category 1', 'Category 2', 'Category 3'];
+
   return (
     <section className="@container">
       <div className="mx-auto flex flex-col items-start gap-4 px-4 py-10 @xl:px-6 @xl:py-14">
@@ -142,8 +144,8 @@ export default function PostGrid({ title, subtitle, type }: PostGridProps) {
                 {categories.map((cat, index) => (
                   <Button
                     className={clsx('!font-normal uppercase', index > 0 && 'text-neutral-500')}
-                    size="small"
                     key={cat}
+                    size="small"
                     variant={index === 0 ? 'secondary' : 'tertiary'}
                   >
                     {cat}

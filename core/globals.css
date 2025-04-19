@@ -131,6 +131,9 @@
   --color-background: hsl(var(--background));
 
   --color-disabled: hsl(var(--disabled));
+  
+  --color-icon-primary: hsl(var(--icon-primary));
+  --color-icon-secondary: hsl(var(--icon-secondary));
 
   --color-contrast-100: hsl(var(--contrast-100));
   --color-contrast-200: hsl(var(--contrast-200));
@@ -367,6 +370,8 @@
   --error: 0 100% 60%;
   --warning: 40 100% 60%;
   --info: 220 70% 45%;
+  --icon-primary: 0 0% 9%;
+  --icon-secondary: 0 0% 45%;
   --border-primary: 0 0% 83%;
   --border-secondary: 0 0% 90%;
   --border-input: 0 0% 83%;

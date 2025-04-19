@@ -323,7 +323,7 @@ export const getContentfulProductData = async (sku: string) => {
   const contentfulData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',
     'fields.bcProductReference': sku,
-    include: 2,
+    include: 4,
   });
 
   if (contentfulData.items.length === 0) {

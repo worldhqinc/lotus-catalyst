@@ -5,21 +5,9 @@ import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/serve
 import { SearchParams } from 'nuqs/server';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
-import {
-  Carousel,
-  CarouselButtons,
-  CarouselContent,
-  CarouselItem,
-  CarouselScrollbar,
-} from '@/vibes/soul/primitives/carousel';
 import { FeaturedProductCarousel } from '@/vibes/soul/sections/featured-product-carousel';
 import { ProductDetail } from '@/vibes/soul/sections/product-detail';
 import { getSessionCustomerAccessToken } from '~/auth';
-import {
-  carouselRecipeSchema,
-  productFinishedGoodsSchema,
-  recipeSchema,
-} from '~/contentful/schema';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
@@ -28,6 +16,7 @@ import { getPreferredCurrencyCode } from '~/lib/currency';
 import { addToCart } from './_actions/add-to-cart';
 import { ProductSchema } from './_components/product-schema';
 import { ProductViewed } from './_components/product-viewed';
+import RecipeCarousel from './_components/recipe-carousel';
 import { Reviews } from './_components/reviews';
 import {
   getContentfulProductData,
@@ -307,7 +296,6 @@ export default async function Product(props: Props) {
         quantityLabel={t('ProductDetails.quantity')}
         thumbnailLabel={t('ProductDetails.thumbnail')}
       />
-
       <FeaturedProductCarousel
         cta={{ label: t('RelatedProducts.cta'), href: '/shop-all' }}
         emptyStateSubtitle={t('RelatedProducts.browseCatalog')}
@@ -318,38 +306,8 @@ export default async function Product(props: Props) {
         scrollbarLabel={t('RelatedProducts.scrollbar')}
         title={t('RelatedProducts.title')}
       />
-
-      <Stream fallback={null} value={contentful}>
-        {(contentfulData) => {
-          if (!contentfulData?.fields.recipes) return null;
-
-          const parsed = productFinishedGoodsSchema.parse(contentfulData);
-          const carouselData = carouselRecipeSchema.parse(parsed.fields.recipes);
-          const recipeItems = carouselData.fields.recipes.map((r) => recipeSchema.parse(r));
-
-          return (
-            <section className="my-8">
-              <h2 className="mb-4 text-xl font-bold">{carouselData.fields.carouselTitle}</h2>
-              <Carousel className="gap-4">
-                <CarouselButtons />
-                <CarouselContent>
-                  {recipeItems.map((recipe) => (
-                    <CarouselItem key={recipe.sys.id}>
-                      <div className="rounded border p-2">
-                        <p className="font-semibold">{recipe.fields.recipeName}</p>
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselScrollbar />
-              </Carousel>
-            </section>
-          );
-        }}
-      </Stream>
-
+      <RecipeCarousel contentful={contentful} />;
       <Reviews productId={productId} searchParams={props.searchParams} />
-
       <Stream
         fallback={null}
         value={Streamable.from(async () =>

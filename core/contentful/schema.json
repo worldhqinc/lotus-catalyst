@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-04-17T18:12:31.693Z",
+        "updatedAt": "2025-04-19T19:01:10.520Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 121,
-        "publishedAt": "2025-04-17T18:12:31.693Z",
+        "publishedVersion": 123,
+        "publishedAt": "2025-04-19T19:01:10.520Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -37,8 +37,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 61,
-        "version": 122,
+        "publishedCounter": 62,
+        "version": 124,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -638,7 +638,8 @@
           "validations": [
             {
               "linkContentType": [
-                "carouselRecipe"
+                "carouselRecipe",
+                "inspirationBento"
               ]
             }
           ],
@@ -872,7 +873,7 @@
         "id": "carouselRecipe",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.320Z",
-        "updatedAt": "2025-04-17T18:12:32.461Z",
+        "updatedAt": "2025-04-19T20:06:26.743Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -880,8 +881,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-17T18:12:32.461Z",
+        "publishedVersion": 5,
+        "publishedAt": "2025-04-19T20:06:26.743Z",
         "firstPublishedAt": "2025-03-07T21:04:12.731Z",
         "createdBy": {
           "sys": {
@@ -897,8 +898,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 2,
-        "version": 4,
+        "publishedCounter": 3,
+        "version": 6,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -963,6 +964,23 @@
             ],
             "linkType": "Entry"
           }
+        },
+        {
+          "id": "cta",
+          "name": "CTA",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "linkContentType": [
+                "cta"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Entry"
         }
       ]
     },
@@ -1264,7 +1282,7 @@
         "id": "carouselProduct",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.638Z",
-        "updatedAt": "2025-04-17T18:12:33.648Z",
+        "updatedAt": "2025-04-19T18:51:27.391Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1272,8 +1290,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-17T18:12:33.648Z",
+        "publishedVersion": 7,
+        "publishedAt": "2025-04-19T18:51:27.391Z",
         "firstPublishedAt": "2025-03-07T21:04:12.043Z",
         "createdBy": {
           "sys": {
@@ -1289,8 +1307,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 2,
-        "version": 4,
+        "publishedCounter": 4,
+        "version": 8,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -1321,6 +1339,17 @@
           "type": "Symbol",
           "localized": true,
           "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "subtitle",
+          "name": "Subtitle",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
           "validations": [
           ],
           "disabled": false,
@@ -4102,7 +4131,7 @@
         "id": "story",
         "type": "ContentType",
         "createdAt": "2025-04-16T22:54:48.937Z",
-        "updatedAt": "2025-04-16T22:54:49.252Z",
+        "updatedAt": "2025-04-19T16:42:14.027Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4110,8 +4139,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 1,
-        "publishedAt": "2025-04-16T22:54:49.252Z",
+        "publishedVersion": 3,
+        "publishedAt": "2025-04-19T16:42:14.027Z",
         "firstPublishedAt": "2025-04-16T22:54:49.252Z",
         "createdBy": {
           "sys": {
@@ -4127,8 +4156,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 1,
-        "version": 2,
+        "publishedCounter": 2,
+        "version": 4,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -4152,6 +4181,17 @@
           ],
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "subtitle",
+          "name": "Subtitle",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
         }
       ]
     },
@@ -4167,7 +4207,7 @@
         "id": "postGrid",
         "type": "ContentType",
         "createdAt": "2025-04-17T18:27:38.014Z",
-        "updatedAt": "2025-04-17T18:27:38.322Z",
+        "updatedAt": "2025-04-19T20:13:23.258Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4175,8 +4215,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 1,
-        "publishedAt": "2025-04-17T18:27:38.322Z",
+        "publishedVersion": 3,
+        "publishedAt": "2025-04-19T20:13:23.258Z",
         "firstPublishedAt": "2025-04-17T18:27:38.322Z",
         "createdBy": {
           "sys": {
@@ -4192,8 +4232,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 1,
-        "version": 2,
+        "publishedCounter": 2,
+        "version": 4,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -4238,7 +4278,8 @@
           "validations": [
             {
               "in": [
-                "recipe"
+                "recipe",
+                "feature"
               ]
             }
           ],
