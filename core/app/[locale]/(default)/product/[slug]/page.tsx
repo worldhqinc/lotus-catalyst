@@ -1,7 +1,7 @@
 import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
 import { Metadata } from 'next';
-import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
 import { SearchParams } from 'nuqs/server';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
@@ -322,6 +322,7 @@ export default async function Product(props: Props) {
       <Stream fallback={null} value={contentful}>
         {(contentfulData) => {
           if (!contentfulData?.fields.recipes) return null;
+
           const parsed = productFinishedGoodsSchema.parse(contentfulData);
           const carouselData = carouselRecipeSchema.parse(parsed.fields.recipes);
           const recipeItems = carouselData.fields.recipes.map((r) => recipeSchema.parse(r));
