@@ -10,6 +10,7 @@ import {
   productFinishedGoods,
   recipeSchema,
 } from '~/contentful/schema';
+import { ensureImageUrl } from '~/lib/utils';
 
 interface RecipeCarouselProps {
   contentful: Streamable<productFinishedGoods | null | undefined>;
@@ -45,7 +46,7 @@ export default function RecipeCarousel({ contentful }: RecipeCarouselProps) {
                           alt={recipe.fields.recipeName}
                           className="h-full w-full object-cover"
                           height={file.details.image?.height}
-                          src={`https:${file.url}`}
+                          src={ensureImageUrl(file.url)}
                           width={file.details.image?.width}
                         />
                       </figure>

@@ -8,6 +8,7 @@ import { Badge } from '@/vibes/soul/primitives/badge';
 import { Button } from '@/vibes/soul/primitives/button';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
+import { ensureImageUrl } from '~/lib/utils';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? '',
@@ -55,15 +56,7 @@ function InfiniteHits() {
           const slug = f.pageSlug?.['en-US'] || '';
           const imgField =
             f.featuredImage?.['en-US']?.fields?.file?.url || f.pageImage?.['en-US'] || null;
-          let imgUrl: string | null = null;
-
-          if (imgField) {
-            if (imgField.startsWith('http')) {
-              imgUrl = imgField;
-            } else {
-              imgUrl = `https:${imgField}`;
-            }
-          }
+          const imgUrl = imgField ? ensureImageUrl(imgField) : null;
 
           const categories =
             f.mealTypeCategory?.['en-US'] ||

@@ -5,6 +5,7 @@ import { z } from 'zod';
 
 import { Slideshow } from '@/vibes/soul/sections/slideshow';
 import { assetSchema, heroSlideSchema, pageStandardSchema } from '~/contentful/schema';
+import { ensureImageUrl } from '~/lib/utils';
 
 interface Props {
   slides: Array<z.infer<typeof heroSlideSchema>>;
@@ -39,7 +40,7 @@ export default function HeroCarousel({ slides }: Props) {
               image: imageFile
                 ? {
                     alt: title,
-                    src: `https:${imageFile.url}`,
+                    src: ensureImageUrl(imageFile.url),
                   }
                 : undefined,
               cta:

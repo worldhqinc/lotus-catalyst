@@ -9,6 +9,7 @@ import {
   recipeSchema,
   tutorialSchema,
 } from '~/contentful/schema';
+import { ensureImageUrl } from '~/lib/utils';
 
 import Card from '../../primitives/card';
 
@@ -130,7 +131,7 @@ export default function InspirationBento({
                     imagePropForCard = {
                       fields: {
                         file: {
-                          url: imageFile.url ? `https:${imageFile.url}` : '/placeholder.jpg',
+                          url: imageFile.url ? ensureImageUrl(imageFile.url) : '/placeholder.jpg',
                           details: {
                             image: {
                               height: imageDetails.height,
