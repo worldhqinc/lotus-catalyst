@@ -24,12 +24,14 @@ web:
     locations:
         '/':
             root: 'core'
+            scripts: false
+            passthru: true
             request_buffering:
                 enabled: false
             headers:
                 X-Frame-Options: SAMEORIGIN
     commands:
-        start: cd /app/core && NODE_ENV=production pnpm exec next start -p $PORT
+        start: cd /app/core && NODE_ENV=production node .next/standalone/core/server.js
 build:
     flavor: none
 hooks:
@@ -38,6 +40,7 @@ hooks:
         chmod +x scripts/setup_env_vars.sh
         chmod +x scripts/setup_mounts.sh
         ./scripts/setup_env_vars.sh
+        cp /app/core/.env.local /app/core/.next/standalone/core/.env.local
         pnpm install
         NODE_OPTIONS="--max-old-space-size=8192" pnpm build
         ./scripts/setup_mounts.sh
