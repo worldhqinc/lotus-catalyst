@@ -354,33 +354,25 @@ export const withRoutes: MiddlewareFactory = () => {
 
         const cleanPathName = clearLocaleFromPath(pathname, locale);
 
-        url = `/${locale}${cleanPathName}`;
+        const nonContentfulPaths = [
+          '/account',
+          '/cart',
+          '/checkout',
+          '/compare',
+          '/login',
+          '/logout',
+          '/register',
+        ];
+        const isContentfulPath = !nonContentfulPaths.some((path) => {
+          return cleanPathName.startsWith(path);
+        });
+
+        if (isContentfulPath && cleanPathName !== '/') {
+          url = `/${locale}/contentful${cleanPathName}`;
+        } else {
+          url = `/${locale}${cleanPathName}`;
+        }
       }
-
-      // default: {
-      //   const { pathname } = new URL(request.url);
-
-      //   const cleanPathName = clearLocaleFromPath(pathname, locale);
-
-      //   const nonContentfulPaths = [
-      //     '/account',
-      //     '/cart',
-      //     '/checkout',
-      //     '/compare',
-      //     '/login',
-      //     '/logout',
-      //     '/register',
-      //   ];
-      //   const isContentfulPath = !nonContentfulPaths.some((path) => {
-      //     return cleanPathName.startsWith(path);
-      //   });
-
-      //   if (isContentfulPath && cleanPathName !== '/') {
-      //     url = `/${locale}/contentful${cleanPathName}`;
-      //   } else {
-      //     url = `/${locale}${cleanPathName}`;
-      //   }
-      // }
     }
 
     const rewriteUrl = new URL(url, request.url);
