@@ -1,6 +1,7 @@
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
+import { ensureImageUrl } from '~/lib/utils';
 
 interface CardProps {
   categories: string[];
@@ -31,16 +32,6 @@ export default function Card({
   recipeName,
   shortDescription,
 }: CardProps) {
-  const ensureImageUrl = (url: string) => {
-    if (!url) return '';
-
-    if (url.startsWith('//')) {
-      return `https:${url}`;
-    }
-
-    return url;
-  };
-
   return (
     <article className="group relative max-h-max">
       <figure className="bg-surface-image relative aspect-[4/3] overflow-hidden rounded-lg">

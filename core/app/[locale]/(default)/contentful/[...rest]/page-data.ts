@@ -2,14 +2,15 @@ import { notFound } from 'next/navigation';
 import { cache } from 'react';
 import { z } from 'zod';
 
-import { pageStandardSchema, recipeSchema } from '~/contentful/schema';
+import { featureSchema, pageStandardSchema, recipeSchema } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
 
-type ContentType = 'pageStandard' | 'recipe';
+type ContentType = 'pageStandard' | 'recipe' | 'feature';
 
 const schemaMap = {
   pageStandard: pageStandardSchema,
   recipe: recipeSchema,
+  feature: featureSchema,
 };
 
 type ParsedPageData<T extends ContentType> = z.infer<(typeof schemaMap)[T]>;

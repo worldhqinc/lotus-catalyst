@@ -1,4 +1,5 @@
 import { clsx } from 'clsx';
+import { Star } from 'lucide-react';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price, PriceLabel } from '@/vibes/soul/primitives/price-label';
@@ -52,7 +53,7 @@ export interface ProductCardProps {
  * ```
  */
 export function ProductCard({
-  product: { id, title, subtitle, badge, price, image, href },
+  product: { id, title, subtitle, badge, price, image, href, rating },
   colorScheme = 'light',
   className,
   showCompare = false,
@@ -119,7 +120,7 @@ export function ProductCard({
           )}
         </div>
 
-        <div className="mt-2 flex flex-col items-start gap-x-4 gap-y-3 px-1 @xs:mt-3 @2xl:flex-row">
+        <div className="mt-2 flex flex-wrap items-start gap-x-4 gap-y-3 px-1 @xs:mt-3">
           <div className="flex-1 text-sm @[16rem]:text-base">
             <span
               className={clsx(
@@ -148,6 +149,12 @@ export function ProductCard({
             )}
             {price != null && <PriceLabel colorScheme={colorScheme} price={price} />}
           </div>
+          {rating != null && (
+            <div className="text-foreground mb-2 flex items-center gap-1 text-sm">
+              <Star aria-hidden className="h-4 w-4" fill="currentColor" />
+              <span className="text-sm font-normal">{rating.toFixed(1)}</span>
+            </div>
+          )}
         </div>
         <Link
           aria-label={title}

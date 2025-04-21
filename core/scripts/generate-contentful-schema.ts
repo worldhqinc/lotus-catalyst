@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { BLOCKS } from '@contentful/rich-text-types';
 import { readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { z } from 'zod';
@@ -12,40 +13,40 @@ const contentfulSchema = JSON.parse(readFileSync(contentfulJsonPath, 'utf-8'));
 // Generate schemas for the 'fields' part only
 const fieldSchemasMap = generateContentfulSchemas(contentfulSchema);
 
-// Helper to convert a field schema to a string representation
+// Name for the known recursive Rich Text schema
+const RICH_TEXT_SCHEMA_NAME = 'RichTextNodeSchema';
+
+// Helper to convert a field schema to a string representation (Simplified for recursion)
 function zodToString(schema: any, indentationLevel = 0): string {
   if (!schema?._def) return 'z.unknown()';
 
   const indent = '  '.repeat(indentationLevel);
   const nextIndent = '  '.repeat(indentationLevel + 1);
 
-  if (schema._def.typeName === 'ZodEffects') {
-    return zodToString(schema._def.schema, indentationLevel);
-  }
-
+  // --- Type Handling (Simplified Lazy Handling) ---
   switch (schema._def.typeName) {
+    case 'ZodLazy':
+      // Directly return the predefined name. Assumes this is the Rich Text schema.
+      // This prevents recursion during string generation.
+      return RICH_TEXT_SCHEMA_NAME;
+    case 'ZodEffects':
+      return zodToString(schema._def.schema, indentationLevel);
     case 'ZodString':
-      if (schema._def.checks?.some((c: any) => c.kind === 'datetime')) {
-        return 'z.string().datetime()';
-      }
-
-      return 'z.string()';
-
+      return schema._def.checks?.some((c: any) => c.kind === 'datetime')
+        ? 'z.string().datetime()'
+        : 'z.string()';
     case 'ZodNumber':
       return schema._def.checks?.some((c: any) => c.kind === 'int')
         ? 'z.number().int()'
         : 'z.number()';
-
     case 'ZodBoolean':
       return 'z.boolean()';
-
-    case 'ZodArray':
+    case 'ZodArray': {
       const itemTypeString = schema._def.type
         ? zodToString(schema._def.type, indentationLevel)
         : 'z.unknown()';
-
       return `z.array(${itemTypeString})`;
-
+    }
     case 'ZodObject': {
       const shape = schema._def.shape();
       const fields = Object.entries(shape)
@@ -55,18 +56,15 @@ function zodToString(schema: any, indentationLevel = 0): string {
             : `${nextIndent}${key}: z.unknown() /* Non-Zod value encountered */`,
         )
         .join(',\n');
-
       return `z.object({\n${fields}${fields ? '\n' : ''}${indent}})`;
     }
-
-    case 'ZodOptional':
+    case 'ZodOptional': {
       const optionalTypeString = schema._def.innerType
         ? zodToString(schema._def.innerType, indentationLevel)
         : 'z.unknown()';
-
       return `${optionalTypeString}.optional()`;
-
-    case 'ZodRecord':
+    }
+    case 'ZodRecord': {
       const keyTypeString =
         schema._def.keyType instanceof z.ZodType
           ? zodToString(schema._def.keyType, indentationLevel)
@@ -75,13 +73,14 @@ function zodToString(schema: any, indentationLevel = 0): string {
         schema._def.valueType instanceof z.ZodType
           ? zodToString(schema._def.valueType, indentationLevel + 1)
           : 'z.unknown()';
-
       return `z.record(${keyTypeString}, ${valueTypeString})`;
-
+    }
     case 'ZodLiteral':
+      if (schema._def.value === BLOCKS.DOCUMENT) {
+        return `z.literal(BLOCKS.DOCUMENT)`;
+      }
       return `z.literal(${JSON.stringify(schema._def.value)})`;
-
-    case 'ZodUnion':
+    case 'ZodUnion': {
       const unionOptions = Array.isArray(schema._def.options)
         ? schema._def.options
             .map((opt: any) =>
@@ -89,27 +88,23 @@ function zodToString(schema: any, indentationLevel = 0): string {
             )
             .join(', ')
         : '';
-
       return `z.union([${unionOptions}])`;
-
+    }
     case 'ZodUnknown':
       return 'z.unknown()';
-
     case 'ZodNever':
       return 'z.never()';
-
     case 'ZodUndefined':
       return 'z.undefined()';
-
     default:
-      console.warn(`${indent}Unhandled Zod type: ${schema._def.typeName}`);
-
+      console.warn(`Unhandled Zod type: ${schema._def.typeName}`);
       return 'z.unknown()';
   }
 }
 
 // Convert schemas to TypeScript code
 const schemaCode = `import { z } from 'zod';
+import { BLOCKS } from '@contentful/rich-text-types';
 
 // ========================================
 // Base Schemas
@@ -185,13 +180,31 @@ export const assetSchema = z.object({
 export type Asset = z.infer<typeof assetSchema>;
 
 // ========================================
+// Recursive Schemas (Defined First)
+// ========================================
+
+// Define the recursive ${RICH_TEXT_SCHEMA_NAME} using z.lazy
+const ${RICH_TEXT_SCHEMA_NAME}: z.ZodType<any> = z.lazy(() => z.object({
+  nodeType: z.string(),
+  data: z.record(z.unknown()),
+  // Leaf node approximation for the union, ensure it aligns with your actual leaf structure
+  content: z.array(z.union([${RICH_TEXT_SCHEMA_NAME}, z.object({ nodeType: z.literal('text'), data: z.record(z.unknown()), marks: z.array(z.any()), value: z.string() })])).optional(),
+  marks: z.array(z.any()).optional(), // Adjust marks as needed
+  value: z.string().optional()
+}));
+// Optional: Define a type alias for convenience
+export type RichTextNode = z.infer<typeof ${RICH_TEXT_SCHEMA_NAME}>;
+
+// ========================================
 // Content Type Specific Schemas
 // ========================================
 
 ${Object.entries(fieldSchemasMap)
   .map(([key, fields]) => {
+    // Generate the string for the fields object schema using the simplified zodToString
     const fieldsSchemaString = zodToString(z.object(fields), 1);
 
+    // Construct the full schema definition string for the content type
     return `
 // Schema for ${key}
 export const ${key}FieldsSchema = ${fieldsSchemaString};

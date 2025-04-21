@@ -8,6 +8,8 @@ import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { FeaturedProductCarousel } from '@/vibes/soul/sections/featured-product-carousel';
 import { ProductDetail } from '@/vibes/soul/sections/product-detail';
 import { getSessionCustomerAccessToken } from '~/auth';
+import { RecipeCarousel } from '~/components/contentful/carousels/recipe-carousel';
+import { carouselRecipeSchema } from '~/contentful/schema';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
@@ -295,7 +297,6 @@ export default async function Product(props: Props) {
         quantityLabel={t('ProductDetails.quantity')}
         thumbnailLabel={t('ProductDetails.thumbnail')}
       />
-
       <FeaturedProductCarousel
         cta={{ label: t('RelatedProducts.cta'), href: '/shop-all' }}
         emptyStateSubtitle={t('RelatedProducts.browseCatalog')}
@@ -306,9 +307,16 @@ export default async function Product(props: Props) {
         scrollbarLabel={t('RelatedProducts.scrollbar')}
         title={t('RelatedProducts.title')}
       />
+      <Stream fallback={null} value={contentful}>
+        {(product) => {
+          if (!product?.fields.recipes) return null;
 
+          const carouselData = carouselRecipeSchema.parse(product.fields.recipes);
+
+          return <RecipeCarousel carousel={carouselData} />;
+        }}
+      </Stream>
       <Reviews productId={productId} searchParams={props.searchParams} />
-
       <Stream
         fallback={null}
         value={Streamable.from(async () =>

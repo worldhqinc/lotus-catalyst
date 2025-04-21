@@ -1,14 +1,14 @@
 import { Streamable } from '@/vibes/soul/lib/streamable';
-import { ProductFinishedGoodsData } from '~/app/[locale]/(default)/product/[slug]/page-data';
+import { productFinishedGoods } from '~/contentful/schema';
 
 import ContentfulBlockProductFeatures from '../contentful-block-product-features';
 import ContentfulBlockProductFeaturesAccordion from '../contentful-block-product-features-accordion';
 
 interface ContentfulProductSectionsProps {
-  data: Streamable<ProductFinishedGoodsData>;
+  data: Streamable<productFinishedGoods>;
 }
 
-type ContentEntry = NonNullable<ProductFinishedGoodsData['fields']['pageContentEntries']>[number];
+type ContentEntry = NonNullable<productFinishedGoods['fields']['pageContentEntries']>[number];
 
 export default async function ContentfulProductSections({ data }: ContentfulProductSectionsProps) {
   const productData = await data;

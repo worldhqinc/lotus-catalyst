@@ -1,3 +1,4 @@
+import { BLOCKS, Document } from '@contentful/rich-text-types';
 import { z } from 'zod';
 
 // Types for Contentful content type definitions
@@ -45,13 +46,27 @@ function createBaseFieldSchema(field: Partial<ContentfulField>): z.ZodTypeAny {
     case 'Object':
       return z.record(z.unknown());
     case 'RichText':
-      return z
-        .object({
+      // Simplified Rich Text Schema to potentially avoid excessive recursion issues
+      // during schema generation or processing.
+      // Defines the basic structure but uses z.any() for nested content.
+      const simplifiedRichTextNode: z.ZodType<any> = z.lazy(() =>
+        z.object({
           nodeType: z.string(),
-          content: z.array(z.unknown()),
-          data: z.record(z.unknown()).optional(),
-        })
-        .array();
+          data: z.record(z.unknown()),
+          content: z.array(z.any()).optional(), // Use z.any() for content to break deep recursion
+          marks: z.array(z.any()).optional(),
+          value: z.string().optional(),
+        }),
+      );
+
+      const simplifiedRichTextSchema = z.object({
+        nodeType: z.literal(BLOCKS.DOCUMENT),
+        data: z.record(z.unknown()),
+        content: z.array(simplifiedRichTextNode),
+      });
+
+      // Cast the simplified schema to provide the Document type hint
+      return simplifiedRichTextSchema as z.ZodType<Document>;
     case 'Array':
       if (field.items) {
         const itemSchema =

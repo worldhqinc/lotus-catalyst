@@ -1,4 +1,3 @@
-import { Entry } from 'contentful';
 import { ReactNode } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
@@ -8,7 +7,7 @@ import { Rating } from '@/vibes/soul/primitives/rating';
 import * as Skeleton from '@/vibes/soul/primitives/skeleton';
 import { type Breadcrumb, Breadcrumbs } from '@/vibes/soul/sections/breadcrumbs';
 import { ProductGallery } from '@/vibes/soul/sections/product-detail/product-gallery';
-import { ProductFinishedGoodsData } from '~/app/[locale]/(default)/product/[slug]/page-data';
+import { productFinishedGoods } from '~/contentful/schema';
 
 import { ContentfulProductData } from './contentful-product-data';
 import { ProductDetailForm, ProductDetailFormAction } from './product-detail-form';
@@ -36,7 +35,7 @@ interface ProductDetailProduct {
 export interface ProductDetailProps<F extends Field> {
   breadcrumbs?: Streamable<Breadcrumb[]>;
   product: Streamable<ProductDetailProduct | null>;
-  contentful: Streamable<Entry<ProductFinishedGoodsData> | null | undefined>;
+  contentful: Streamable<productFinishedGoods | null | undefined>;
   action: ProductDetailFormAction<F>;
   fields: Streamable<F[]>;
   quantityLabel?: string;

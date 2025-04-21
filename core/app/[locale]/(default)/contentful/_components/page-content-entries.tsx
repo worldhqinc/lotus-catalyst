@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
+import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import {
+  carouselProductSchema,
   ctaSchema,
   heroCarouselSchema,
   heroSlideSchema,
@@ -8,11 +10,13 @@ import {
   inspirationCardSchema,
   newsletterFormSchema,
   pageStandardSchema,
+  postGridSchema,
 } from '~/contentful/schema';
 
 import HeroCarousel from './sections/hero-carousel';
 import InspirationBento from './sections/inspiration-bento';
 import NewsletterForm from './sections/newsletter-form';
+import PostGrid from './sections/post-grid';
 
 export default function PageContentEntries({ page }: { page: z.infer<typeof pageStandardSchema> }) {
   const pageContent = page.fields.pageContent;
@@ -72,6 +76,19 @@ export default function PageContentEntries({ page }: { page: z.infer<typeof page
               const newsletterData = newsletterFormSchema.parse(contentEntry);
 
               return <NewsletterForm key={entryId} {...newsletterData.fields} />;
+            }
+
+            case 'postGrid': {
+              const postGridData = postGridSchema.parse(contentEntry);
+              const { title, subtitle, type } = postGridData.fields;
+
+              return <PostGrid key={entryId} subtitle={subtitle} title={title} type={type} />;
+            }
+
+            case 'carouselProduct': {
+              const carouselData = carouselProductSchema.parse(contentEntry);
+
+              return <ProductCarousel carousel={carouselData} key={entryId} />;
             }
 
             default: {

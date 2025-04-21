@@ -1,4 +1,3 @@
-import { EntryFieldTypes } from 'contentful';
 import { cache } from 'react';
 
 import { client } from '~/client';
@@ -6,30 +5,11 @@ import { PricingFragment } from '~/client/fragments/pricing';
 import { graphql, VariablesOf } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
 import { FeaturedProductsCarouselFragment } from '~/components/featured-products-carousel/fragment';
+import { productFinishedGoodsSchema } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
 
 import { ProductSchemaFragment } from './_components/product-schema/fragment';
 import { ProductViewedFragment } from './_components/product-viewed/fragment';
-
-export interface ProductFinishedGoodsData {
-  contentTypeId: string;
-  fields: {
-    bcProductReference: EntryFieldTypes.Text;
-    defaultPrice: EntryFieldTypes.Text;
-    shortDescription: EntryFieldTypes.Text;
-    pageContentEntries?: Array<{
-      sys: {
-        id: string;
-        contentType: {
-          sys: {
-            id: string;
-          };
-        };
-      };
-      fields: Record<string, unknown>;
-    }>;
-  };
-}
 
 const MultipleChoiceFieldFragment = graphql(`
   fragment MultipleChoiceFieldFragment on MultipleChoiceOption {
@@ -340,14 +320,15 @@ export const getProductPricingAndRelatedProducts = cache(
 );
 
 export const getContentfulProductData = async (sku: string) => {
-  const contentfulData = await contentfulClient.getEntries<ProductFinishedGoodsData>({
+  const contentfulData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',
     'fields.bcProductReference': sku,
+    include: 4,
   });
 
   if (contentfulData.items.length === 0) {
     return null;
   }
 
-  return contentfulData.items[0];
+  return productFinishedGoodsSchema.parse(contentfulData.items[0]);
 };

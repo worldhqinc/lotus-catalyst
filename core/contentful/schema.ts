@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { BLOCKS } from '@contentful/rich-text-types';
 
 // ========================================
 // Base Schemas
@@ -76,6 +77,36 @@ export const assetSchema = z.object({
 export type Asset = z.infer<typeof assetSchema>;
 
 // ========================================
+// Recursive Schemas (Defined First)
+// ========================================
+
+// Define the recursive RichTextNodeSchema using z.lazy
+const RichTextNodeSchema: z.ZodType<any> = z.lazy(() =>
+  z.object({
+    nodeType: z.string(),
+    data: z.record(z.unknown()),
+    // Leaf node approximation for the union, ensure it aligns with your actual leaf structure
+    content: z
+      .array(
+        z.union([
+          RichTextNodeSchema,
+          z.object({
+            nodeType: z.literal('text'),
+            data: z.record(z.unknown()),
+            marks: z.array(z.any()),
+            value: z.string(),
+          }),
+        ]),
+      )
+      .optional(),
+    marks: z.array(z.any()).optional(), // Adjust marks as needed
+    value: z.string().optional(),
+  }),
+);
+// Optional: Define a type alias for convenience
+export type RichTextNode = z.infer<typeof RichTextNodeSchema>;
+
+// ========================================
 // Content Type Specific Schemas
 // ========================================
 
@@ -89,13 +120,11 @@ export const productFinishedGoodsFieldsSchema = z.object({
   salePrice: z.string().optional(),
   couponCodesalesDates: z.string().optional(),
   details: z
-    .array(
-      z.object({
-        nodeType: z.string(),
-        content: z.array(z.unknown()),
-        data: z.record(z.string(), z.unknown()).optional(),
-      }),
-    )
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
     .optional(),
   faqs: z
     .array(
@@ -527,13 +556,11 @@ export type productFinishedGoods = z.infer<typeof productFinishedGoodsSchema>;
 // Schema for faq
 export const faqFieldsSchema = z.object({
   question: z.string(),
-  answer: z.array(
-    z.object({
-      nodeType: z.string(),
-      content: z.array(z.unknown()),
-      data: z.record(z.string(), z.unknown()).optional(),
-    }),
-  ),
+  answer: z.object({
+    nodeType: z.literal(BLOCKS.DOCUMENT),
+    data: z.record(z.string(), z.unknown()),
+    content: z.array(RichTextNodeSchema),
+  }),
   faqCategory: z.array(
     z.object({
       metadata: z.object({
@@ -635,6 +662,45 @@ export const carouselRecipeFieldsSchema = z.object({
       fields: z.record(z.string(), z.unknown()),
     }),
   ),
+  cta: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
 });
 
 export const carouselRecipeSchema = z.object({
@@ -929,6 +995,7 @@ export type categoryProduct = z.infer<typeof categoryProductSchema>;
 export const carouselProductFieldsSchema = z.object({
   internalName: z.string(),
   carouselTitle: z.string(),
+  subtitle: z.string().optional(),
   products: z.array(
     z.object({
       metadata: z.object({
@@ -1081,22 +1148,18 @@ export const recipeFieldsSchema = z.object({
     )
     .optional(),
   recipeDirections: z
-    .array(
-      z.object({
-        nodeType: z.string(),
-        content: z.array(z.unknown()),
-        data: z.record(z.string(), z.unknown()).optional(),
-      }),
-    )
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
     .optional(),
   testKitchenTips: z
-    .array(
-      z.object({
-        nodeType: z.string(),
-        content: z.array(z.unknown()),
-        data: z.record(z.string(), z.unknown()).optional(),
-      }),
-    )
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
     .optional(),
   featuredImage: z.object({
     metadata: z.object({
@@ -1569,13 +1632,11 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
   parentCategory: z.record(z.string(), z.unknown()).optional(),
   productFormulationInformation: z.record(z.string(), z.unknown()).optional(),
   details: z
-    .array(
-      z.object({
-        nodeType: z.string(),
-        content: z.array(z.unknown()),
-        data: z.record(z.string(), z.unknown()).optional(),
-      }),
-    )
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
     .optional(),
   factoryRecertifiedProduct: z.boolean(),
   modelNumber: z.string().optional(),
@@ -1828,13 +1889,11 @@ export const pageStandardFieldsSchema = z.object({
   metaKeywordsSeo: z.string().optional(),
   pageSlug: z.string(),
   optionalPageDescription: z
-    .array(
-      z.object({
-        nodeType: z.string(),
-        content: z.array(z.unknown()),
-        data: z.record(z.string(), z.unknown()).optional(),
-      }),
-    )
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
     .optional(),
   pageContent: z
     .array(
@@ -2629,6 +2688,149 @@ export const newsletterFormSchema = z.object({
 
 export type newsletterForm = z.infer<typeof newsletterFormSchema>;
 
+// Schema for postGrid
+export const postGridFieldsSchema = z.object({
+  title: z.string(),
+  subtitle: z.string().optional(),
+  type: z.string(),
+});
+
+export const postGridSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('postGrid'),
+      }),
+    }),
+  }),
+  fields: postGridFieldsSchema,
+});
+
+export type postGrid = z.infer<typeof postGridSchema>;
+
+// Schema for feature
+export const featureFieldsSchema = z.object({
+  featuredImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.undefined().optional(),
+      }),
+      fields: z.object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .optional(),
+  categories: z.array(z.string()).optional(),
+  title: z.string(),
+  subtitle: z.string().optional(),
+  pageSlug: z.string(),
+  story: z
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
+    .optional(),
+  productCarousel: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
+});
+
+export const featureSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('feature'),
+      }),
+    }),
+  }),
+  fields: featureFieldsSchema,
+});
+
+export type feature = z.infer<typeof featureSchema>;
+
 // ========================================
 // Union Schema and Helper Object
 // ========================================
@@ -2659,6 +2861,8 @@ export const contentfulEntrySchemaUnion = z.union([
   heroSlideSchema,
   featureVideoBannerSchema,
   newsletterFormSchema,
+  postGridSchema,
+  featureSchema,
 ]);
 export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
 
@@ -2696,4 +2900,6 @@ export const contentfulSchemas = {
   heroSlide: heroSlideSchema,
   featureVideoBanner: featureVideoBannerSchema,
   newsletterForm: newsletterFormSchema,
+  postGrid: postGridSchema,
+  feature: featureSchema,
 };

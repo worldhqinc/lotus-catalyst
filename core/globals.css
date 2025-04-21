@@ -9,6 +9,12 @@
 @source './components/**/*.{ts,tsx}';
 @source './vibes/**/*.{ts,tsx}';
 
+@theme inline {
+  --font-body: var(--font-family-body);
+  --font-heading: var(--font-family-heading);
+  --font-mono: var(--font-family-mono);
+}
+
 @layer utilities {
   .prose {
     :where(h1):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
@@ -123,6 +129,12 @@
 
   --color-foreground: hsl(var(--foreground));
   --color-background: hsl(var(--background));
+
+  --color-disabled: hsl(var(--disabled));
+  
+  --color-icon-primary: hsl(var(--icon-primary));
+  --color-icon-secondary: hsl(var(--icon-secondary));
+
   --color-contrast-100: hsl(var(--contrast-100));
   --color-contrast-200: hsl(var(--contrast-200));
   --color-contrast-300: hsl(var(--contrast-300));
@@ -136,7 +148,7 @@
   --color-surface: hsl(var(--surface-primary));
   --color-surface-secondary: hsl(var(--surface-secondary));
   --color-surface-image: hsl(var(--surface-image));
-
+  
   --text-xs: var(--font-size-xs, 0.75rem);
   --text-sm: var(--font-size-sm, 0.875rem);
   --text-base: var(--font-size-base, 1rem);
@@ -353,10 +365,13 @@
   --background: 0 0% 100%;
   --image: 0 0% 90%;
   --foreground: 0 0% 9%;
+  --disabled: 0 0% 64%;
   --success: 116 78% 65%;
   --error: 0 100% 60%;
   --warning: 40 100% 60%;
   --info: 220 70% 45%;
+  --icon-primary: 0 0% 9%;
+  --icon-secondary: 0 0% 45%;
   --border-primary: 0 0% 83%;
   --border-secondary: 0 0% 90%;
   --border-input: 0 0% 83%;
