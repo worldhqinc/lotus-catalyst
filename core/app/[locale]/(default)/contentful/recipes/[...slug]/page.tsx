@@ -1,17 +1,25 @@
-import { ProductCard } from '@/vibes/soul/primitives/product-card';
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
-import { BLOCKS, Document as RichDocument } from '@contentful/rich-text-types';
-import { Mail, Printer } from 'lucide-react';
 import { Metadata } from 'next';
-import Image from 'next/image';
 import { SearchParams } from 'nuqs';
+import { z } from 'zod';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
-import { authorSchema } from '~/contentful/schema';
+import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
+import { RecipeCarousel } from '~/components/contentful/carousels/recipe-carousel';
+import { Image } from '~/components/image';
+import {
+  authorSchema,
+  carouselProductSchema,
+  carouselRecipeSchema,
+  ingredientsListSchema,
+} from '~/contentful/schema';
 import { ensureImageUrl } from '~/lib/utils';
+
 import { getPageBySlug } from '../../[...rest]/page-data';
+import { RecipeActions } from '../_components/recipe-actions';
 
 interface Props {
   params: Promise<{ locale: string; slug: string[] }>;
@@ -30,190 +38,183 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+type IngredientsListEntry = z.infer<typeof ingredientsListSchema>;
+
+const renderIngredientsList = (lists: IngredientsListEntry[] = []) => {
+  return lists.map((list) => {
+    const sectionTitle = list.fields.sectionTitle || list.fields.ingredientsListName || '';
+    const items = list.fields.listOfIngredients || [];
+
+    return (
+      <div key={list.sys.id}>
+        <h3 className="mt-8 text-base font-semibold">{sectionTitle}</h3>
+        <ul className="mt-8 grid grid-cols-2 gap-x-8 gap-y-8">
+          {items.map((item) => (
+            <li className="text-contrast-500 text-sm" key={item}>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  });
+};
+
+const renderMetaInfo = (
+  authorEntry: { fields: { authorName: string } } | null,
+  cookTime: string | undefined,
+) => {
+  return (
+    <div className="text-icon-secondary mt-6 flex items-center gap-2 text-sm">
+      {authorEntry ? (
+        <span>
+          <span className="text-icon-primary font-medium">Recipe by</span>{' '}
+          {authorEntry.fields.authorName}
+        </span>
+      ) : null}
+      {authorEntry && cookTime ? <span>•</span> : null}
+      {cookTime ? (
+        <span>
+          <span className="text-icon-primary font-medium">Total Time</span> {cookTime}
+        </span>
+      ) : null}
+    </div>
+  );
+};
+
 export default async function RecipePage({ params }: Props) {
   const { slug } = await params;
   const page = await getPageBySlug('recipe', ['recipes', ...slug]);
-
   const { fields } = page;
 
-  // Parse author entry if present
   const authorEntry = fields.author ? authorSchema.parse(fields.author) : null;
-  const authorName = authorEntry?.fields.authorName;
-  const authorImage = authorEntry?.fields.authorImage;
 
-  // Render markdown for short description
   const shortDescDoc = fields.shortDescription
     ? await richTextFromMarkdown(fields.shortDescription)
     : null;
   const shortDescHtml = shortDescDoc ? documentToHtmlString(shortDescDoc) : '';
 
-  // Featured Hero Image
-  const featuredImage = fields.featuredImage;
+  const directionsHtml = fields.recipeDirections
+    ? documentToHtmlString(fields.recipeDirections)
+    : '';
 
-  // Render rich text fields to HTML
-  // Construct Rich Text Document for directions
-  const directionsDoc: RichDocument = {
-    nodeType: BLOCKS.DOCUMENT,
-    data: {},
-    content: (fields.recipeDirections as any) ?? [],
-  };
-  const directionsHtml = documentToHtmlString(directionsDoc);
-  // Construct Rich Text Document for pro tip
-  const proTipDoc: RichDocument = {
-    nodeType: BLOCKS.DOCUMENT,
-    data: {},
-    content: (fields.testKitchenTips as any) ?? [],
-  };
-  const proTipHtml = documentToHtmlString(proTipDoc);
+  const proTipHtml = fields.testKitchenTips ? documentToHtmlString(fields.testKitchenTips) : '';
+
+  const recipeCarousel = fields.recipeCarousel
+    ? carouselRecipeSchema.parse(fields.recipeCarousel)
+    : null;
+
+  const productCarousel = fields.productCarousel
+    ? carouselProductSchema.parse(fields.productCarousel)
+    : null;
+
+  // Parse the ingredients list using the schema
+  const ingredientsListsData = fields.ingredientsLists
+    ? z.array(ingredientsListSchema).parse(fields.ingredientsLists)
+    : [];
 
   return (
     <article>
       {/* Hero Section */}
-      <div className="bg-primary relative">
-        <div className="bg-background absolute inset-0 bottom-1/3 z-0" />
-        <SectionLayout className="relative z-10">
-          <div className="grid grid-cols-1 items-center gap-8 xl:grid-cols-2">
-            <div>
-              {/* Category Pill */}
-              {fields.mealTypeCategory?.[0] && (
-                <Badge shape="pill" className="mb-4">
-                  {fields.mealTypeCategory[0]}
-                </Badge>
-              )}
+      <div className="bg-primary relative pb-18">
+        <div className="bg-background absolute inset-0 bottom-1/2 lg:hidden" />
+        <div className="bg-background top-0 right-0 left-0 lg:absolute">
+          <SectionLayout className="relative" containerSize="xl">
+            <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2">
+              <div className="max-w-xl">
+                {/* Category Pill */}
+                {fields.mealTypeCategory?.[0] ? (
+                  <Badge className="uppercase">{fields.mealTypeCategory[0]}</Badge>
+                ) : null}
 
-              {/* Title */}
-              <h1 className="font-[family-name:var(--font-family-heading)] text-5xl leading-tight">
-                {fields.recipeName}
-              </h1>
+                {/* Title */}
+                <h1 className="text-icon-primary font-heading mt-6 text-4xl leading-tight font-medium uppercase md:text-5xl">
+                  {fields.recipeName}
+                </h1>
 
-              {/* Meta Info */}
-              <div className="text-contrast-500 mt-2 flex items-center text-sm">
-                {authorEntry && <span>Recipe by {authorName}</span>}
-                {authorEntry && fields.cookTime && <span className="mx-2">•</span>}
-                {fields.cookTime && <span>Total Time {fields.cookTime}</span>}
+                {/* Meta Info */}
+                {renderMetaInfo(authorEntry, fields.cookTime)}
+
+                {/* Description */}
+                {shortDescHtml ? (
+                  <div
+                    className="prose [&_p]:text-icon-secondary mt-6 max-w-none"
+                    dangerouslySetInnerHTML={{ __html: shortDescHtml }}
+                  />
+                ) : null}
+
+                {fields.applianceTypeCategory?.length ? (
+                  <>
+                    <div className="text-icon-secondary mt-6">—</div>
+                    <p className="text-icon-secondary mt-6 text-sm">
+                      Ideal for: {fields.applianceTypeCategory.join(', ')}
+                    </p>
+                  </>
+                ) : null}
               </div>
-
-              {/* Description */}
-              {fields.shortDescription && (
-                <div
-                  className="prose text-contrast-500 mt-4 max-w-none"
-                  dangerouslySetInnerHTML={{ __html: shortDescHtml }}
-                />
-              )}
-
-              {fields.applianceTypeCategory?.length && (
-                <p className="text-primary text-sm">
-                  Ideal for: {fields.applianceTypeCategory.join(', ')}
-                </p>
-              )}
             </div>
-
+          </SectionLayout>
+        </div>
+        <SectionLayout containerClassName="pt-0" containerSize="xl">
+          <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2">
+            <div />
             {/* Hero Image */}
-            {featuredImage && (
-              <div>
+            {fields.featuredImage ? (
+              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg shadow-lg">
                 <Image
-                  src={ensureImageUrl(featuredImage.fields.file.url)}
-                  alt={featuredImage.fields.title || ''}
-                  width={600}
-                  height={400}
-                  className="rounded-lg object-cover shadow-lg"
+                  alt={fields.featuredImage.fields.title || ''}
+                  className="object-cover"
+                  fill
+                  priority
+                  sizes="(min-width: 1280px) 50vw, 100vw"
+                  src={ensureImageUrl(fields.featuredImage.fields.file.url)}
                 />
               </div>
-            )}
+            ) : null}
           </div>
         </SectionLayout>
       </div>
 
       {/* Social Share Section */}
-      <SectionLayout>
-        <div className="mb-6 flex justify-center space-x-6">
-          <a href="#" className="text-contrast-500 hover:text-foreground transition">
-            <Mail size={20} aria-label="Share via Email" />
-          </a>
-          <a href="#" className="text-contrast-500 hover:text-foreground transition">
-            <Printer size={20} aria-label="Print recipe" />
-          </a>
-        </div>
-        <hr className="border-contrast-100 mt-6" />
+      <SectionLayout containerClassName="!pb-0" containerSize="md">
+        <RecipeActions recipeName={fields.recipeName} />
+        <hr className="border-border" />
       </SectionLayout>
 
       {/* Ingredients Section */}
       <SectionLayout containerSize="md">
-        <h2 className="text-lg font-semibold uppercase">Ingredients</h2>
-        {fields.numberOfServings && (
-          <p className="text-primary mt-2 text-sm uppercase">Serves {fields.numberOfServings}</p>
-        )}
-        <div className="mt-6">
-          {fields.ingredientsLists?.map((list) => {
-            const sectionTitle =
-              (list.fields.sectionTitle as string) || (list.fields.ingredientsListName as string);
-            const items = list.fields.listOfIngredients as string[] | undefined;
-            return (
-              <div key={list.sys.id}>
-                <h3 className="mt-8 text-base font-semibold">{sectionTitle}</h3>
-                <ul className="mt-4 grid grid-cols-2 gap-x-8 gap-y-2">
-                  {items?.map((item: string) => (
-                    <li key={item} className="text-contrast-500 text-sm">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
-        </div>
-      </SectionLayout>
-
-      {/* Equipment Section */}
-      <SectionLayout containerSize="md">
-        <h2 className="text-lg font-semibold uppercase">What You'll Need</h2>
-        <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {fields.additionalImages?.map((asset) => {
-            const title = asset.fields.title || 'Unnamed Item';
-            const desc = asset.fields.description || '';
-            const src = ensureImageUrl(asset.fields.file.url);
-            return (
-              <ProductCard
-                key={asset.sys.id}
-                product={{
-                  id: asset.sys.id,
-                  title,
-                  subtitle: desc,
-                  image: { src, alt: title },
-                  href: '#',
-                  price: '$499.95',
-                  rating: 4.9,
-                }}
-                colorScheme="light"
-              />
-            );
-          })}
-        </div>
+        <h2 className="text-2xl font-medium uppercase">Ingredients</h2>
+        {fields.numberOfServings ? (
+          <p className="text-primary mt-8 text-2xl font-medium uppercase">
+            Serves {fields.numberOfServings}
+          </p>
+        ) : null}
+        <div className="mt-8">{renderIngredientsList(ingredientsListsData)}</div>
       </SectionLayout>
 
       {/* Directions Section */}
       <SectionLayout containerSize="md">
-        <h2 className="text-lg font-semibold uppercase">Directions</h2>
+        <h2 className="text-2xl font-medium uppercase">Directions</h2>
         <div
           className="prose text-contrast-500 mt-4 max-w-none"
           dangerouslySetInnerHTML={{ __html: directionsHtml }}
         />
       </SectionLayout>
 
-      {/* Variations Section */}
-      <SectionLayout containerSize="md">
-        <h2 className="text-primary text-lg font-semibold uppercase">Variations</h2>
-        <div className="prose text-contrast-500 mt-4 max-w-none">TODO: render variations here</div>
-      </SectionLayout>
-
       {/* Pro Tip Section */}
       <SectionLayout containerSize="md">
-        <h2 className="text-primary text-lg font-semibold uppercase">Pro Tip</h2>
+        <h2 className="text-primary text-2xl font-medium uppercase">Pro Tip</h2>
         <div
           className="prose text-contrast-500 mt-4 max-w-none"
           dangerouslySetInnerHTML={{ __html: proTipHtml }}
         />
       </SectionLayout>
+
+      {/* Recipe Carousel Section */}
+      {recipeCarousel ? <RecipeCarousel carousel={recipeCarousel} /> : null}
+
+      {/* Product Carousel Section */}
+      {productCarousel ? <ProductCarousel carousel={productCarousel} /> : null}
     </article>
   );
 }

@@ -18,12 +18,14 @@ export function SectionLayout({
   className,
   children,
   containerSize = '2xl',
+  containerClassName,
   hideOverflow = false,
 }: {
   className?: string;
   children: React.ReactNode;
   containerSize?: 'md' | 'lg' | 'xl' | '2xl';
   hideOverflow?: boolean;
+  containerClassName?: string;
 }) {
   return (
     <section className={clsx('@container', hideOverflow && 'overflow-hidden', className)}>
@@ -36,6 +38,7 @@ export function SectionLayout({
             xl: 'max-w-[var(--section-max-width-xl,1280px)]',
             '2xl': 'max-w-[var(--section-max-width-2xl,1536px)]',
           }[containerSize],
+          containerClassName,
         )}
       >
         {children}

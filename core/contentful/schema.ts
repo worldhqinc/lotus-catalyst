@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { BLOCKS } from '@contentful/rich-text-types';
 
 // ========================================
 // Base Schemas
@@ -76,6 +77,36 @@ export const assetSchema = z.object({
 export type Asset = z.infer<typeof assetSchema>;
 
 // ========================================
+// Recursive Schemas (Defined First)
+// ========================================
+
+// Define the recursive RichTextNodeSchema using z.lazy
+const RichTextNodeSchema: z.ZodType<any> = z.lazy(() =>
+  z.object({
+    nodeType: z.string(),
+    data: z.record(z.unknown()),
+    // Leaf node approximation for the union, ensure it aligns with your actual leaf structure
+    content: z
+      .array(
+        z.union([
+          RichTextNodeSchema,
+          z.object({
+            nodeType: z.literal('text'),
+            data: z.record(z.unknown()),
+            marks: z.array(z.any()),
+            value: z.string(),
+          }),
+        ]),
+      )
+      .optional(),
+    marks: z.array(z.any()).optional(), // Adjust marks as needed
+    value: z.string().optional(),
+  }),
+);
+// Optional: Define a type alias for convenience
+export type RichTextNode = z.infer<typeof RichTextNodeSchema>;
+
+// ========================================
 // Content Type Specific Schemas
 // ========================================
 
@@ -89,13 +120,11 @@ export const productFinishedGoodsFieldsSchema = z.object({
   salePrice: z.string().optional(),
   couponCodesalesDates: z.string().optional(),
   details: z
-    .array(
-      z.object({
-        nodeType: z.string(),
-        content: z.array(z.unknown()),
-        data: z.record(z.string(), z.unknown()).optional(),
-      }),
-    )
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
     .optional(),
   faqs: z
     .array(
@@ -527,13 +556,11 @@ export type productFinishedGoods = z.infer<typeof productFinishedGoodsSchema>;
 // Schema for faq
 export const faqFieldsSchema = z.object({
   question: z.string(),
-  answer: z.array(
-    z.object({
-      nodeType: z.string(),
-      content: z.array(z.unknown()),
-      data: z.record(z.string(), z.unknown()).optional(),
-    }),
-  ),
+  answer: z.object({
+    nodeType: z.literal(BLOCKS.DOCUMENT),
+    data: z.record(z.string(), z.unknown()),
+    content: z.array(RichTextNodeSchema),
+  }),
   faqCategory: z.array(
     z.object({
       metadata: z.object({
@@ -1121,22 +1148,18 @@ export const recipeFieldsSchema = z.object({
     )
     .optional(),
   recipeDirections: z
-    .array(
-      z.object({
-        nodeType: z.string(),
-        content: z.array(z.unknown()),
-        data: z.record(z.string(), z.unknown()).optional(),
-      }),
-    )
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
     .optional(),
   testKitchenTips: z
-    .array(
-      z.object({
-        nodeType: z.string(),
-        content: z.array(z.unknown()),
-        data: z.record(z.string(), z.unknown()).optional(),
-      }),
-    )
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
     .optional(),
   featuredImage: z.object({
     metadata: z.object({
@@ -1609,13 +1632,11 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
   parentCategory: z.record(z.string(), z.unknown()).optional(),
   productFormulationInformation: z.record(z.string(), z.unknown()).optional(),
   details: z
-    .array(
-      z.object({
-        nodeType: z.string(),
-        content: z.array(z.unknown()),
-        data: z.record(z.string(), z.unknown()).optional(),
-      }),
-    )
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
     .optional(),
   factoryRecertifiedProduct: z.boolean(),
   modelNumber: z.string().optional(),
@@ -1868,13 +1889,11 @@ export const pageStandardFieldsSchema = z.object({
   metaKeywordsSeo: z.string().optional(),
   pageSlug: z.string(),
   optionalPageDescription: z
-    .array(
-      z.object({
-        nodeType: z.string(),
-        content: z.array(z.unknown()),
-        data: z.record(z.string(), z.unknown()).optional(),
-      }),
-    )
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
     .optional(),
   pageContent: z
     .array(

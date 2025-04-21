@@ -23,7 +23,36 @@ interface Props {
   carousel: z.infer<typeof carouselProductSchema>;
 }
 
-export default function CarouselProductSection({ carousel }: Props) {
+function NavHeader({ title, subtitle }: { title: string; subtitle?: string }) {
+  const { scrollPrev, scrollNext, canScrollPrev, canScrollNext } = useCarousel();
+
+  return (
+    <div className="mb-12 flex items-start justify-between">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-4xl">{title}</h2>
+        {subtitle ? <p className="text-icon-secondary max-w-md text-base">{subtitle}</p> : null}
+      </div>
+      <div className="flex gap-2">
+        <button
+          className="border-border rounded-full border bg-white p-2 disabled:opacity-50"
+          disabled={!canScrollPrev}
+          onClick={scrollPrev}
+        >
+          <ArrowLeft className="text-icon-primary h-4 w-4" />
+        </button>
+        <button
+          className="border-border rounded-full border bg-white p-2 disabled:opacity-50"
+          disabled={!canScrollNext}
+          onClick={scrollNext}
+        >
+          <ArrowRight className="text-icon-primary h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export function ProductCarousel({ carousel }: Props) {
   const { carouselTitle, subtitle, products: productEntries } = carousel.fields;
 
   const items: CarouselProduct[] = productEntries.map((entry) => {
@@ -79,34 +108,5 @@ export default function CarouselProductSection({ carousel }: Props) {
         </Carousel>
       </div>
     </section>
-  );
-}
-
-function NavHeader({ title, subtitle }: { title: string; subtitle?: string }) {
-  const { scrollPrev, scrollNext, canScrollPrev, canScrollNext } = useCarousel();
-
-  return (
-    <div className="mb-12 flex items-start justify-between">
-      <div className="flex flex-col gap-2">
-        <h2 className="text-4xl">{title}</h2>
-        {subtitle ? <p className="text-icon-secondary max-w-md text-base">{subtitle}</p> : null}
-      </div>
-      <div className="flex gap-2">
-        <button
-          className="border-border rounded-full border bg-white p-2 disabled:opacity-50"
-          disabled={!canScrollPrev}
-          onClick={scrollPrev}
-        >
-          <ArrowLeft className="text-icon-primary h-4 w-4" />
-        </button>
-        <button
-          className="border-border rounded-full border bg-white p-2 disabled:opacity-50"
-          disabled={!canScrollNext}
-          onClick={scrollNext}
-        >
-          <ArrowRight className="text-icon-primary h-4 w-4" />
-        </button>
-      </div>
-    </div>
   );
 }
