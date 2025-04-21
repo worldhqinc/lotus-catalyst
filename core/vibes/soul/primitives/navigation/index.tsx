@@ -319,10 +319,12 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
   useEffect(() => {
     void (async () => {
       const resolvedCartCount = await streamableCartCount;
+      const newCount = resolvedCartCount ?? 0;
+      const oldCount = prevCartCountRef.current ?? 0;
 
       if (
         prevCartCountRef.current !== undefined &&
-        prevCartCountRef.current !== resolvedCartCount &&
+        newCount > oldCount &&
         pathname.replace(/\/$/, '') !== cartHref.replace(/\/$/, '')
       ) {
         setIsMinicartDrawerOpen(true);
