@@ -25,8 +25,8 @@ clean_mount_defn(){
 stage_files() {
     MOUNT=`clean_mount_defn $1`
     # Create the tmp directory (MOUNT_TMP) on the first pass only. (/app/platformsh-mounts on Platform.sh)
-    if [ -d $PLATFORM_APP_DIR/$MOUNT_TMP ]; then
-        mkdir $PLATFORM_APP_DIR/$MOUNT_TMP
+    if [ ! -d "$PLATFORM_APP_DIR/$MOUNT_TMP" ]; then
+        mkdir "$PLATFORM_APP_DIR/$MOUNT_TMP"
     fi
     # Duplicate the mount directory in MOUNT_TMP.
     mkdir -p $PLATFORM_APP_DIR/$MOUNT_TMP/$MOUNT-tmp
