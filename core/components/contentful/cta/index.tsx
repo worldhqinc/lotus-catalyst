@@ -45,7 +45,7 @@ export default function ContentfulCta({ cta }: ContentfulCtaProps) {
       variant="link"
     >
       {text}
-      <ArrowRight size={24} strokeWidth={1.5} />
+      <ArrowRight size={24} strokeWidth={1.4} />
     </ButtonLink>
   );
 }
