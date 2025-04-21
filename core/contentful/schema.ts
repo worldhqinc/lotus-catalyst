@@ -2688,28 +2688,6 @@ export const newsletterFormSchema = z.object({
 
 export type newsletterForm = z.infer<typeof newsletterFormSchema>;
 
-// Schema for story
-export const storyFieldsSchema = z.object({
-  title: z.string().optional(),
-  subtitle: z.string().optional(),
-});
-
-export const storySchema = z.object({
-  metadata: metadataSchema,
-  sys: sysEntrySchema.extend({
-    contentType: z.object({
-      sys: z.object({
-        type: z.literal('Link'),
-        linkType: z.literal('ContentType'),
-        id: z.literal('story'),
-      }),
-    }),
-  }),
-  fields: storyFieldsSchema,
-});
-
-export type story = z.infer<typeof storySchema>;
-
 // Schema for postGrid
 export const postGridFieldsSchema = z.object({
   title: z.string(),
@@ -2732,6 +2710,126 @@ export const postGridSchema = z.object({
 });
 
 export type postGrid = z.infer<typeof postGridSchema>;
+
+// Schema for feature
+export const featureFieldsSchema = z.object({
+  featuredImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.undefined().optional(),
+      }),
+      fields: z.object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .optional(),
+  categories: z.array(z.string()).optional(),
+  title: z.string(),
+  subtitle: z.string().optional(),
+  pageSlug: z.string(),
+  story: z
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
+    .optional(),
+  productCarousel: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
+});
+
+export const featureSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('feature'),
+      }),
+    }),
+  }),
+  fields: featureFieldsSchema,
+});
+
+export type feature = z.infer<typeof featureSchema>;
 
 // ========================================
 // Union Schema and Helper Object
@@ -2763,8 +2861,8 @@ export const contentfulEntrySchemaUnion = z.union([
   heroSlideSchema,
   featureVideoBannerSchema,
   newsletterFormSchema,
-  storySchema,
   postGridSchema,
+  featureSchema,
 ]);
 export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
 
@@ -2802,6 +2900,6 @@ export const contentfulSchemas = {
   heroSlide: heroSlideSchema,
   featureVideoBanner: featureVideoBannerSchema,
   newsletterForm: newsletterFormSchema,
-  story: storySchema,
   postGrid: postGridSchema,
+  feature: featureSchema,
 };

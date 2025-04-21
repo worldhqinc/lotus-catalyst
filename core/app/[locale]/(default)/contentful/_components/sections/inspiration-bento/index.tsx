@@ -5,6 +5,7 @@ import ContentfulCta from '~/components/contentful/cta';
 import {
   assetSchema,
   ctaSchema,
+  featureSchema,
   inspirationCardSchema,
   recipeSchema,
   tutorialSchema,
@@ -34,7 +35,7 @@ interface CardImageProp {
 
 interface MappedCardData {
   id: string;
-  type: 'recipe' | 'tutorial';
+  type: 'recipe' | 'tutorial' | 'feature';
   categories: string[];
   originalImage?: z.infer<typeof assetSchema> | null;
   pageSlug: string;
@@ -86,6 +87,23 @@ export default function InspirationBento({
             pageSlug: 'tutorials',
             recipeName: title,
             shortDescription: 'View this tutorial',
+          };
+        }
+      }
+
+      if (contentType === 'feature') {
+        const featureData = featureSchema.parse(contentReference);
+        const { title, subtitle, categories, featuredImage, pageSlug } = featureData.fields;
+
+        if (title) {
+          return {
+            id: cardId,
+            type: 'feature',
+            categories: categories ?? [],
+            originalImage: featuredImage,
+            pageSlug,
+            recipeName: title,
+            shortDescription: subtitle ?? '',
           };
         }
       }

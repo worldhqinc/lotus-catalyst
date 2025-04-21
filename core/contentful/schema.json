@@ -3583,7 +3583,7 @@
         "id": "inspirationCard",
         "type": "ContentType",
         "createdAt": "2025-04-03T18:16:56.554Z",
-        "updatedAt": "2025-04-17T18:12:38.274Z",
+        "updatedAt": "2025-04-21T02:55:51.778Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3591,8 +3591,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 19,
-        "publishedAt": "2025-04-17T18:12:38.274Z",
+        "publishedVersion": 21,
+        "publishedAt": "2025-04-21T02:55:51.778Z",
         "firstPublishedAt": "2025-04-03T18:16:56.910Z",
         "createdBy": {
           "sys": {
@@ -3608,8 +3608,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 10,
-        "version": 20,
+        "publishedCounter": 11,
+        "version": 22,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3644,7 +3644,8 @@
             {
               "linkContentType": [
                 "tutorial",
-                "recipe"
+                "recipe",
+                "feature"
               ]
             }
           ],
@@ -4128,82 +4129,6 @@
             "id": "esj3sw7u4uve"
           }
         },
-        "id": "story",
-        "type": "ContentType",
-        "createdAt": "2025-04-16T22:54:48.937Z",
-        "updatedAt": "2025-04-19T16:42:14.027Z",
-        "environment": {
-          "sys": {
-            "id": "master",
-            "type": "Link",
-            "linkType": "Environment"
-          }
-        },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-19T16:42:14.027Z",
-        "firstPublishedAt": "2025-04-16T22:54:49.252Z",
-        "createdBy": {
-          "sys": {
-            "type": "Link",
-            "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
-          }
-        },
-        "updatedBy": {
-          "sys": {
-            "type": "Link",
-            "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
-          }
-        },
-        "publishedCounter": 2,
-        "version": 4,
-        "publishedBy": {
-          "sys": {
-            "type": "Link",
-            "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
-          }
-        },
-        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/story"
-      },
-      "displayField": "title",
-      "name": "Story",
-      "description": "",
-      "fields": [
-        {
-          "id": "title",
-          "name": "Title",
-          "type": "Symbol",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "subtitle",
-          "name": "Subtitle",
-          "type": "Symbol",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        }
-      ]
-    },
-    {
-      "sys": {
-        "space": {
-          "sys": {
-            "type": "Link",
-            "linkType": "Space",
-            "id": "esj3sw7u4uve"
-          }
-        },
         "id": "postGrid",
         "type": "ContentType",
         "createdAt": "2025-04-17T18:27:38.014Z",
@@ -4285,6 +4210,180 @@
           ],
           "disabled": false,
           "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "feature",
+        "type": "ContentType",
+        "createdAt": "2025-04-19T21:02:00.973Z",
+        "updatedAt": "2025-04-21T03:22:39.040Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 13,
+        "publishedAt": "2025-04-21T03:22:39.040Z",
+        "firstPublishedAt": "2025-04-19T21:02:01.287Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "publishedCounter": 7,
+        "version": 14,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/feature"
+      },
+      "displayField": "title",
+      "name": "Feature",
+      "description": "Represents a feature story or section, potentially linking products.",
+      "fields": [
+        {
+          "id": "featuredImage",
+          "name": "Featured Image",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
+        },
+        {
+          "id": "categories",
+          "name": "Categories",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": [
+            ]
+          }
+        },
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "subtitle",
+          "name": "Subtitle",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "pageSlug",
+          "name": "Page Slug",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [
+            {
+              "unique": true
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "story",
+          "name": "Story",
+          "type": "RichText",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "enabledNodeTypes": [
+                "heading-1",
+                "heading-2",
+                "heading-3",
+                "heading-4",
+                "heading-5",
+                "heading-6",
+                "ordered-list",
+                "unordered-list",
+                "hr",
+                "blockquote",
+                "embedded-entry-block",
+                "embedded-asset-block",
+                "hyperlink",
+                "entry-hyperlink",
+                "asset-hyperlink",
+                "embedded-entry-inline"
+              ]
+            },
+            {
+              "enabledMarks": [
+                "bold",
+                "italic",
+                "underline",
+                "code"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "productCarousel",
+          "name": "Product Carousel",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "linkContentType": [
+                "carouselProduct"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Entry"
         }
       ]
     }
