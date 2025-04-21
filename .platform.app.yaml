@@ -40,9 +40,9 @@ hooks:
         chmod +x scripts/setup_env_vars.sh
         chmod +x scripts/setup_mounts.sh
         ./scripts/setup_env_vars.sh
-        cp /app/core/.env.local /app/core/.next/standalone/core/.env.local
         pnpm install
         NODE_OPTIONS="--max-old-space-size=8192" pnpm build
+        cp /app/core/.env.local /app/core/.next/standalone/core/.env.local
         ./scripts/setup_mounts.sh
     deploy: |
         set -eu
