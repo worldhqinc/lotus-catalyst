@@ -175,7 +175,7 @@ const config = {
   skipCSRFCheck: undefined,
   // Set this environment variable if you want to trust the host when using `next build` & `next start`.
   // Otherwise, this will be controlled by process.env.NODE_ENV within the library.
-  trustHost: true,
+  trustHost: process.env.AUTH_TRUST_HOST === 'true' ? true : undefined,
   session: {
     strategy: 'jwt',
   },
