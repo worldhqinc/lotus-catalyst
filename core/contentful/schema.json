@@ -4386,6 +4386,578 @@
           "linkType": "Entry"
         }
       ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "heroSection",
+        "type": "ContentType",
+        "createdAt": "2025-04-21T14:33:30.959Z",
+        "updatedAt": "2025-04-21T14:35:44.484Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 2,
+        "publishedAt": "2025-04-21T14:35:44.484Z",
+        "firstPublishedAt": "2025-04-21T14:35:44.484Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/heroSection"
+      },
+      "displayField": "heroTitle",
+      "name": "Hero Section",
+      "description": "Hero section with tagline for Our Story page.",
+      "fields": [
+        {
+          "id": "heroTitle",
+          "name": "Hero Title",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "heroTagline",
+          "name": "Hero Tagline",
+          "type": "Text",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "guidingPrinciplesSection",
+        "type": "ContentType",
+        "createdAt": "2025-04-21T14:33:30.993Z",
+        "updatedAt": "2025-04-21T14:36:07.956Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 2,
+        "publishedAt": "2025-04-21T14:36:07.956Z",
+        "firstPublishedAt": "2025-04-21T14:36:07.956Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/guidingPrinciplesSection"
+      },
+      "displayField": "sectionTitle",
+      "name": "Guiding Principles Section",
+      "description": "Section listing guiding principles with title and description.",
+      "fields": [
+        {
+          "id": "sectionTitle",
+          "name": "Section Title",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "sectionDescription",
+          "name": "Section Description",
+          "type": "Text",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "principles",
+          "name": "Principles",
+          "type": "Array",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkContentType": [
+                  "guidingPrinciple"
+                ]
+              }
+            ],
+            "linkType": "Entry"
+          }
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "culinaryPassionSection",
+        "type": "ContentType",
+        "createdAt": "2025-04-21T14:33:31.130Z",
+        "updatedAt": "2025-04-21T14:36:14.337Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 2,
+        "publishedAt": "2025-04-21T14:36:14.337Z",
+        "firstPublishedAt": "2025-04-21T14:36:14.337Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/culinaryPassionSection"
+      },
+      "displayField": "sectionTitle",
+      "name": "Culinary Passion Section",
+      "description": "Section with image and text about culinary passion.",
+      "fields": [
+        {
+          "id": "sectionTitle",
+          "name": "Section Title",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "sectionText",
+          "name": "Section Text",
+          "type": "Text",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "sectionImage",
+          "name": "Section Image",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "guidingPrinciple",
+        "type": "ContentType",
+        "createdAt": "2025-04-21T14:33:31.132Z",
+        "updatedAt": "2025-04-21T14:35:56.993Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 2,
+        "publishedAt": "2025-04-21T14:35:56.993Z",
+        "firstPublishedAt": "2025-04-21T14:35:56.993Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/guidingPrinciple"
+      },
+      "displayField": "title",
+      "name": "Guiding Principle",
+      "description": "Single guiding principle with number, title, and description.",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "Text",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "ctaSection",
+        "type": "ContentType",
+        "createdAt": "2025-04-21T14:33:31.601Z",
+        "updatedAt": "2025-04-21T14:36:21.828Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 2,
+        "publishedAt": "2025-04-21T14:36:21.828Z",
+        "firstPublishedAt": "2025-04-21T14:36:21.828Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 3,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/ctaSection"
+      },
+      "displayField": "sectionTitle",
+      "name": "CTA Section",
+      "description": "Call-to-action with optional title and button.",
+      "fields": [
+        {
+          "id": "sectionTitle",
+          "name": "Section Title",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "buttonText",
+          "name": "Button Text",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "buttonLink",
+          "name": "Button Link",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "communitySection",
+        "type": "ContentType",
+        "createdAt": "2025-04-21T14:33:32.689Z",
+        "updatedAt": "2025-04-21T15:00:47.262Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 4,
+        "publishedAt": "2025-04-21T15:00:47.262Z",
+        "firstPublishedAt": "2025-04-21T14:36:26.502Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "publishedCounter": 2,
+        "version": 5,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/communitySection"
+      },
+      "displayField": "sectionTitle",
+      "name": "Community Section",
+      "description": "Section for email signup and social follow.",
+      "fields": [
+        {
+          "id": "sectionTitle",
+          "name": "Section Title",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "sectionDescription",
+          "name": "Section Description",
+          "type": "Text",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "signUpLabel",
+          "name": "Sign Up Label",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "signUpDescription",
+          "name": "Sign Up Description",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "signUpPlaceholder",
+          "name": "Sign Up Placeholder",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "socialLabel",
+          "name": "Social Label",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "socialDescription",
+          "name": "Social Description",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "socialLinks",
+          "name": "Social Links",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": [
+            ]
+          }
+        }
+      ]
     }
   ],
   "locales": [

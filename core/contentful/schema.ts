@@ -2831,6 +2831,234 @@ export const featureSchema = z.object({
 
 export type feature = z.infer<typeof featureSchema>;
 
+// Schema for heroSection
+export const heroSectionFieldsSchema = z.object({
+  heroTitle: z.string(),
+  heroTagline: z.string(),
+});
+
+export const heroSectionSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('heroSection'),
+      }),
+    }),
+  }),
+  fields: heroSectionFieldsSchema,
+});
+
+export type heroSection = z.infer<typeof heroSectionSchema>;
+
+// Schema for guidingPrinciplesSection
+export const guidingPrinciplesSectionFieldsSchema = z.object({
+  sectionTitle: z.string(),
+  sectionDescription: z.string().optional(),
+  principles: z.array(
+    z.object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    }),
+  ),
+});
+
+export const guidingPrinciplesSectionSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('guidingPrinciplesSection'),
+      }),
+    }),
+  }),
+  fields: guidingPrinciplesSectionFieldsSchema,
+});
+
+export type guidingPrinciplesSection = z.infer<typeof guidingPrinciplesSectionSchema>;
+
+// Schema for culinaryPassionSection
+export const culinaryPassionSectionFieldsSchema = z.object({
+  sectionTitle: z.string(),
+  sectionText: z.string(),
+  sectionImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.undefined().optional(),
+      }),
+      fields: z.object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .optional(),
+});
+
+export const culinaryPassionSectionSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('culinaryPassionSection'),
+      }),
+    }),
+  }),
+  fields: culinaryPassionSectionFieldsSchema,
+});
+
+export type culinaryPassionSection = z.infer<typeof culinaryPassionSectionSchema>;
+
+// Schema for guidingPrinciple
+export const guidingPrincipleFieldsSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+});
+
+export const guidingPrincipleSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('guidingPrinciple'),
+      }),
+    }),
+  }),
+  fields: guidingPrincipleFieldsSchema,
+});
+
+export type guidingPrinciple = z.infer<typeof guidingPrincipleSchema>;
+
+// Schema for ctaSection
+export const ctaSectionFieldsSchema = z.object({
+  sectionTitle: z.string().optional(),
+  buttonText: z.string(),
+  buttonLink: z.string(),
+});
+
+export const ctaSectionSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('ctaSection'),
+      }),
+    }),
+  }),
+  fields: ctaSectionFieldsSchema,
+});
+
+export type ctaSection = z.infer<typeof ctaSectionSchema>;
+
+// Schema for communitySection
+export const communitySectionFieldsSchema = z.object({
+  sectionTitle: z.string(),
+  sectionDescription: z.string().optional(),
+  signUpLabel: z.string(),
+  signUpDescription: z.string().optional(),
+  signUpPlaceholder: z.string(),
+  socialLabel: z.string().optional(),
+  socialDescription: z.string().optional(),
+  socialLinks: z.array(z.string()).optional(),
+});
+
+export const communitySectionSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('communitySection'),
+      }),
+    }),
+  }),
+  fields: communitySectionFieldsSchema,
+});
+
+export type communitySection = z.infer<typeof communitySectionSchema>;
+
 // ========================================
 // Union Schema and Helper Object
 // ========================================
@@ -2863,6 +3091,12 @@ export const contentfulEntrySchemaUnion = z.union([
   newsletterFormSchema,
   postGridSchema,
   featureSchema,
+  heroSectionSchema,
+  guidingPrinciplesSectionSchema,
+  culinaryPassionSectionSchema,
+  guidingPrincipleSchema,
+  ctaSectionSchema,
+  communitySectionSchema,
 ]);
 export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
 
@@ -2902,4 +3136,10 @@ export const contentfulSchemas = {
   newsletterForm: newsletterFormSchema,
   postGrid: postGridSchema,
   feature: featureSchema,
+  heroSection: heroSectionSchema,
+  guidingPrinciplesSection: guidingPrinciplesSectionSchema,
+  culinaryPassionSection: culinaryPassionSectionSchema,
+  guidingPrinciple: guidingPrincipleSchema,
+  ctaSection: ctaSectionSchema,
+  communitySection: communitySectionSchema,
 };
