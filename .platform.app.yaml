@@ -43,6 +43,8 @@ hooks:
         pnpm install
         NODE_OPTIONS="--max-old-space-size=8192" pnpm build
         cp /app/core/.env.local /app/core/.next/standalone/core/.env.local
+        cp -r /app/core/public /app/core/.next/standalone/core/
+        cp -r /app/core/.next/static /app/core/.next/standalone/core/.next/
         ./scripts/setup_mounts.sh
     deploy: |
         set -eu
