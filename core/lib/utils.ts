@@ -14,10 +14,10 @@ export function ensureImageUrl(url: string) {
   return url;
 }
 
-export function getLinkHref(cta: cta) {
+export function getLinkHref({ fields }: cta) {
   let linkHref = '#';
 
-  const { internalReference, externalLink, text } = cta.fields;
+  const { internalReference, externalLink } = fields;
 
   if (internalReference) {
     const type = internalReference.sys.contentType.sys.id;

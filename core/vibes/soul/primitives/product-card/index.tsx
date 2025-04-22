@@ -69,11 +69,8 @@ export function ProductCard({
 }: ProductCardProps) {
   // determine aspect ratio class: only apply when not fillContainer or when specifically overridden
   const ratioMapping = { '5:6': 'aspect-5/6', '3:4': 'aspect-3/4', '1:1': 'aspect-square' };
-  const ratioClass = ratioOverride
-    ? ratioOverride
-    : !fillContainer
-      ? ratioMapping[aspectRatio]
-      : undefined;
+  const ratioClass = ratioOverride || (!fillContainer ? ratioMapping[aspectRatio] : undefined);
+
   return (
     <article
       className={clsx(

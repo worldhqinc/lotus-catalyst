@@ -240,6 +240,9 @@ export function Slideshow({
         {/* Progress Buttons */}
         {scrollSnaps.map((_: number, index: number) => {
           const dimensionStyle = index === selectedIndex ? 30 : undefined;
+          const animationStyle = vertical
+            ? 'animate-in slide-in-from-top opacity-100 ease-linear'
+            : 'animate-in slide-in-from-left opacity-100 ease-linear';
 
           return (
             <button
@@ -258,11 +261,7 @@ export function Slideshow({
                     'fill-mode-forwards absolute size-2 bg-[var(--slideshow-pagination,hsl(var(--background)))] opacity-0',
                     'transition-all duration-300',
                     isPlaying ? 'running' : 'paused',
-                    index === selectedIndex
-                      ? vertical
-                        ? 'animate-in slide-in-from-top opacity-100 ease-linear'
-                        : 'animate-in slide-in-from-left opacity-100 ease-linear'
-                      : 'animate-out fade-out ease-out',
+                    index === selectedIndex ? animationStyle : 'animate-out fade-out ease-out',
                   )}
                   key={`progress-${playCount}`} // Force the animation to restart when pressing "Play", to match animation with embla's autoplay timer
                   style={
