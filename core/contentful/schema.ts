@@ -2464,6 +2464,7 @@ export const heroCarouselFieldsSchema = z.object({
       }),
     )
     .optional(),
+  vertical: z.boolean().optional(),
 });
 
 export const heroCarouselSchema = z.object({

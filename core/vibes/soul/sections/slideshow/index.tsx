@@ -33,6 +33,7 @@ interface Props {
   playOnInit?: boolean;
   interval?: number;
   className?: string;
+  vertical?: boolean;
 }
 
 interface UseProgressButtonType {
@@ -104,11 +105,17 @@ const useProgressButton = (
  * }
  * ```
  */
-export function Slideshow({ slides, playOnInit = true, interval = 5000, className }: Props) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 20 }, [
-    Autoplay({ delay: interval, playOnInit }),
-    Fade(),
-  ]);
+export function Slideshow({
+  slides,
+  playOnInit = true,
+  interval = 5000,
+  className,
+  vertical = false,
+}: Props) {
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, duration: 20, axis: vertical ? 'y' : 'x' },
+    [Autoplay({ delay: interval, playOnInit }), Fade()],
+  );
   const { selectedIndex, scrollSnaps, onProgressButtonClick } = useProgressButton(emblaApi);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
@@ -158,7 +165,7 @@ export function Slideshow({ slides, playOnInit = true, interval = 5000, classNam
       )}
     >
       <div className="h-full overflow-hidden" ref={emblaRef}>
-        <div className="flex h-full">
+        <div className={clsx('flex h-full', vertical && 'flex-col')}>
           {slides.map(
             ({ title, description, showDescription = true, image, cta, showCta = true }, idx) => {
               return (
@@ -166,8 +173,19 @@ export function Slideshow({ slides, playOnInit = true, interval = 5000, classNam
                   className="relative h-full w-full min-w-0 shrink-0 grow-0 basis-full"
                   key={idx}
                 >
-                  <div className="absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-[var(--slideshow-mask,hsl(var(--foreground)/80%))] to-transparent">
-                    <div className="mx-auto w-full max-w-(--breakpoint-2xl) px-4 pt-12 pb-16 text-balance @xl:px-6 @xl:pt-16 @xl:pb-20 @4xl:px-8 @4xl:pt-20">
+                  <div
+                    className={clsx(
+                      'absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-[var(--slideshow-mask,hsl(var(--foreground)/80%))] to-transparent',
+                      vertical &&
+                        'absolute inset-y-0 left-0 z-10 bg-linear-to-r from-[var(--slideshow-mask,hsl(var(--foreground)/80%))] to-transparent',
+                    )}
+                  >
+                    <div
+                      className={clsx(
+                        'mx-auto w-full max-w-(--breakpoint-2xl) px-4 pt-12 pb-16 text-balance @xl:px-6 @xl:pt-16 @xl:pb-20 @4xl:px-8 @4xl:pt-20',
+                        vertical && 'flex h-full flex-col justify-center',
+                      )}
+                    >
                       <h1 className="m-0 max-w-xl font-[family-name:var(--slideshow-title-font-family,var(--font-family-heading))] text-4xl leading-none font-medium text-[var(--slideshow-title,hsl(var(--background)))] @2xl:text-5xl @2xl:leading-[.9] @4xl:text-6xl">
                         {title}
                       </h1>
@@ -212,9 +230,17 @@ export function Slideshow({ slides, playOnInit = true, interval = 5000, classNam
       </div>
 
       {/* Controls */}
-      <div className="absolute bottom-4 left-1/2 flex w-full max-w-(--breakpoint-2xl) -translate-x-1/2 flex-wrap items-center px-4 @xl:bottom-6 @xl:px-6 @4xl:px-8">
+      <div
+        className={
+          vertical
+            ? 'absolute top-1/2 right-4 flex w-auto -translate-y-1/2 flex-col items-center'
+            : 'absolute bottom-4 left-1/2 flex w-full max-w-(--breakpoint-2xl) -translate-x-1/2 flex-wrap items-center px-4 @xl:bottom-6 @xl:px-6 @4xl:px-8'
+        }
+      >
         {/* Progress Buttons */}
         {scrollSnaps.map((_: number, index: number) => {
+          const dimensionStyle = index === selectedIndex ? 30 : undefined;
+
           return (
             <button
               aria-label={`View image number ${index + 1}`}
@@ -225,27 +251,36 @@ export function Slideshow({ slides, playOnInit = true, interval = 5000, classNam
                 resetAutoplay();
               }}
             >
-              <div className="relative overflow-hidden">
+              <div className="relative overflow-hidden rounded-full">
                 {/* White Bar - Current Index Indicator / Progress Bar */}
                 <div
                   className={clsx(
-                    'absolute h-0.5 bg-[var(--slideshow-pagination,hsl(var(--background)))]',
-                    'fill-mode-forwards opacity-0',
+                    'fill-mode-forwards absolute size-2 bg-[var(--slideshow-pagination,hsl(var(--background)))] opacity-0',
+                    'transition-all duration-300',
                     isPlaying ? 'running' : 'paused',
                     index === selectedIndex
-                      ? 'animate-in slide-in-from-left opacity-100 ease-linear'
+                      ? vertical
+                        ? 'animate-in slide-in-from-top opacity-100 ease-linear'
+                        : 'animate-in slide-in-from-left opacity-100 ease-linear'
                       : 'animate-out fade-out ease-out',
                   )}
                   key={`progress-${playCount}`} // Force the animation to restart when pressing "Play", to match animation with embla's autoplay timer
-                  style={{
-                    animationDuration: index === selectedIndex ? `${interval}ms` : '200ms',
-                    width: `${150 / slides.length}px`,
-                  }}
+                  style={
+                    vertical
+                      ? {
+                          animationDuration: index === selectedIndex ? `${interval}ms` : '200ms',
+                          height: dimensionStyle,
+                        }
+                      : {
+                          animationDuration: index === selectedIndex ? `${interval}ms` : '200ms',
+                          width: dimensionStyle,
+                        }
+                  }
                 />
                 {/* Grey Bar BG */}
                 <div
-                  className="h-0.5 bg-[var(--slideshow-pagination,hsl(var(--background)))] opacity-30"
-                  style={{ width: `${150 / slides.length}px` }}
+                  className="size-2 bg-[var(--slideshow-pagination,hsl(var(--background)))] opacity-30 transition-all duration-300"
+                  style={vertical ? { height: dimensionStyle } : { width: dimensionStyle }}
                 />
               </div>
             </button>

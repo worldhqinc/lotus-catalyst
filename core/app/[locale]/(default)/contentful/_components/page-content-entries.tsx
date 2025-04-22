@@ -14,7 +14,6 @@ import {
   heroBannerSchema,
   heroCarouselSchema,
   heroSectionSchema,
-  heroSlideSchema,
   inspirationBentoSchema,
   inspirationCardSchema,
   introSectionSchema,
@@ -45,13 +44,9 @@ type ContentEntry = NonNullable<PageContent>[number];
 
 const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: ContentEntry }>> = {
   heroCarousel: ({ contentEntry }) => {
-    const heroCarouselData = heroCarouselSchema.parse(contentEntry);
-    const slides =
-      heroCarouselData.fields.heroSlides?.map((slide) => {
-        return heroSlideSchema.parse(slide);
-      }) ?? [];
+    const data = heroCarouselSchema.parse(contentEntry);
 
-    return <HeroCarousel slides={slides} />;
+    return <HeroCarousel data={data} />;
   },
   inspirationBento: ({ contentEntry }) => {
     const bentoData = inspirationBentoSchema.parse(contentEntry);

@@ -3754,7 +3754,7 @@
         "id": "heroCarousel",
         "type": "ContentType",
         "createdAt": "2025-04-11T15:58:34.563Z",
-        "updatedAt": "2025-04-17T18:12:38.875Z",
+        "updatedAt": "2025-04-22T17:08:22.367Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3762,8 +3762,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 5,
-        "publishedAt": "2025-04-17T18:12:38.875Z",
+        "publishedVersion": 7,
+        "publishedAt": "2025-04-22T17:08:22.367Z",
         "firstPublishedAt": "2025-04-11T15:58:34.810Z",
         "createdBy": {
           "sys": {
@@ -3779,8 +3779,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 3,
-        "version": 6,
+        "publishedCounter": 4,
+        "version": 8,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3815,6 +3815,20 @@
             ],
             "linkType": "Entry"
           }
+        },
+        {
+          "id": "vertical",
+          "name": "Vertical",
+          "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "defaultValue": {
+            "en-US": false
+          },
+          "disabled": false,
+          "omitted": false
         }
       ]
     },
