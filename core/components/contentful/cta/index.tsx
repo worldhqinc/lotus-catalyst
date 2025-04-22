@@ -3,7 +3,8 @@
 import { ArrowRight } from 'lucide-react';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
-import { cta as CtaEntry, pageStandardSchema } from '~/contentful/schema';
+import { cta as CtaEntry } from '~/contentful/schema';
+import { getLinkHref } from '~/lib/utils';
 
 export interface ContentfulCtaProps {
   cta?: CtaEntry | null;
@@ -14,27 +15,9 @@ export default function ContentfulCta({ cta }: ContentfulCtaProps) {
     return null;
   }
 
-  let linkHref = '#';
+  const { text } = cta.fields;
 
-  const { internalReference, externalLink, text } = cta.fields;
-
-  if (internalReference) {
-    const type = internalReference.sys.contentType.sys.id;
-
-    if (type === 'pageStandard') {
-      try {
-        const page = pageStandardSchema.parse(internalReference);
-
-        linkHref = page.fields.pageSlug ? `/${page.fields.pageSlug}` : '#';
-      } catch {
-        // parse error, keep default
-      }
-    } else {
-      linkHref = '/not-implemented';
-    }
-  } else if (externalLink) {
-    linkHref = externalLink;
-  }
+  const linkHref = getLinkHref(cta);
 
   return (
     <ButtonLink
