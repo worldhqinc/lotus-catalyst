@@ -45,7 +45,6 @@ hooks:
         mkdir -p /app/core/.next
         cp /app/core/.next/standalone/core/server.js /app/core/.next/
         cp -r /app/core/.next/standalone/core/.next/server /app/core/.next/
-        cp -r /app/core/.next/static /app/core/.next/
         cp /app/core/.env.local /app/core/.next/.env.local
         ./scripts/setup_mounts.sh
     deploy: |
