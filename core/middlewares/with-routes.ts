@@ -367,8 +367,8 @@ export const withRoutes: MiddlewareFactory = () => {
           return cleanPathName.startsWith(path);
         });
 
-        if (isContentfulPath && cleanPathName !== '/') {
-          url = `/${locale}/contentful${cleanPathName}`;
+        if (isContentfulPath) {
+          url = `/${locale}/contentful${cleanPathName === '/' ? '/home' : cleanPathName}`;
         } else {
           url = `/${locale}${cleanPathName}`;
         }

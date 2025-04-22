@@ -1,140 +1,174 @@
-import { z } from 'zod';
+import { Fragment } from 'react';
 
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import {
+  cardSectionSchema,
   carouselProductSchema,
+  carouselSectionSchema,
   communitySectionSchema,
   ctaSchema,
   ctaSectionSchema,
   culinaryPassionSectionSchema,
+  featureGridSchema,
   guidingPrinciplesSectionSchema,
+  heroBannerSchema,
   heroCarouselSchema,
   heroSectionSchema,
   heroSlideSchema,
   inspirationBentoSchema,
   inspirationCardSchema,
+  introSectionSchema,
   newsletterFormSchema,
-  pageStandardSchema,
+  pageStandard,
   postGridSchema,
+  testimonialsSchema,
 } from '~/contentful/schema';
 
+import CardSection from './sections/card-section';
+import CarouselSection from './sections/carousel-section';
 import CommunitySection from './sections/community-section';
 import CtaSection from './sections/cta-section';
 import CulinaryPassionSection from './sections/culinary-passion-section';
+import FeatureGrid from './sections/feature-grid';
 import GuidingPrinciplesSection from './sections/guiding-principles-section';
+import HeroBanner from './sections/hero-banner';
 import HeroCarousel from './sections/hero-carousel';
 import HeroSection from './sections/hero-section';
 import InspirationBento from './sections/inspiration-bento';
+import IntroSection from './sections/intro-section';
 import NewsletterForm from './sections/newsletter-form';
 import PostGrid from './sections/post-grid';
+import Testimonials from './sections/testimonials';
 
-export default function PageContentEntries({ page }: { page: z.infer<typeof pageStandardSchema> }) {
+type PageContent = pageStandard['fields']['pageContent'];
+type ContentEntry = NonNullable<PageContent>[number];
+
+const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: ContentEntry }>> = {
+  heroCarousel: ({ contentEntry }) => {
+    const heroCarouselData = heroCarouselSchema.parse(contentEntry);
+    const slides =
+      heroCarouselData.fields.heroSlides?.map((slide) => {
+        return heroSlideSchema.parse(slide);
+      }) ?? [];
+
+    return <HeroCarousel slides={slides} />;
+  },
+  inspirationBento: ({ contentEntry }) => {
+    const bentoData = inspirationBentoSchema.parse(contentEntry);
+    const { cta, heading, inspirationCards, video } = bentoData.fields;
+    const validCta = cta ? ctaSchema.parse(cta) : null;
+    const validCards =
+      inspirationCards?.map((card) => {
+        return inspirationCardSchema.parse(card);
+      }) ?? [];
+
+    return (
+      <InspirationBento
+        cta={validCta}
+        heading={heading}
+        inspirationCards={validCards}
+        video={video}
+      />
+    );
+  },
+  newsletterForm: ({ contentEntry }) => {
+    const data = newsletterFormSchema.parse(contentEntry);
+
+    return <NewsletterForm {...data.fields} />;
+  },
+  postGrid: ({ contentEntry }) => {
+    const postGridData = postGridSchema.parse(contentEntry);
+    const { title, subtitle, type } = postGridData.fields;
+
+    return <PostGrid subtitle={subtitle} title={title} type={type} />;
+  },
+  carouselProduct: ({ contentEntry }) => {
+    const carouselData = carouselProductSchema.parse(contentEntry);
+
+    return <ProductCarousel carousel={carouselData} />;
+  },
+  heroSection: ({ contentEntry }) => {
+    const heroData = heroSectionSchema.parse(contentEntry);
+
+    return <HeroSection {...heroData.fields} />;
+  },
+  guidingPrinciplesSection: ({ contentEntry }) => {
+    const sectionData = guidingPrinciplesSectionSchema.parse(contentEntry);
+
+    return <GuidingPrinciplesSection {...sectionData.fields} />;
+  },
+  culinaryPassionSection: ({ contentEntry }) => {
+    const sectionData = culinaryPassionSectionSchema.parse(contentEntry);
+
+    return <CulinaryPassionSection {...sectionData.fields} />;
+  },
+  communitySection: ({ contentEntry }) => {
+    const sectionData = communitySectionSchema.parse(contentEntry);
+
+    return <CommunitySection {...sectionData.fields} />;
+  },
+  ctaSection: ({ contentEntry }) => {
+    const sectionData = ctaSectionSchema.parse(contentEntry);
+
+    return <CtaSection {...sectionData.fields} />;
+  },
+  heroBanner: ({ contentEntry }) => {
+    const data = heroBannerSchema.parse(contentEntry);
+
+    return <HeroBanner {...data.fields} />;
+  },
+  introSection: ({ contentEntry }) => {
+    const data = introSectionSchema.parse(contentEntry);
+
+    return <IntroSection {...data.fields} />;
+  },
+  carouselSection: ({ contentEntry }) => {
+    const data = carouselSectionSchema.parse(contentEntry);
+
+    return <CarouselSection {...data.fields} />;
+  },
+  featureGrid: ({ contentEntry }) => {
+    const data = featureGridSchema.parse(contentEntry);
+
+    return <FeatureGrid {...data.fields} />;
+  },
+  testimonials: ({ contentEntry }) => {
+    const data = testimonialsSchema.parse(contentEntry);
+
+    return <Testimonials {...data.fields} />;
+  },
+  cardSection: ({ contentEntry }) => {
+    const data = cardSectionSchema.parse(contentEntry);
+
+    return <CardSection {...data.fields} />;
+  },
+};
+
+export default function PageContentEntries({ page }: { page: pageStandard }) {
   const pageContent = page.fields.pageContent;
 
   return (
     <div>
       {Array.isArray(pageContent) &&
-        pageContent.map((contentEntry) => {
-          const contentType = contentEntry.sys.contentType.sys.id;
-          const entryId = contentEntry.sys.id;
+        pageContent.map((entry) => {
+          const contentType = entry.sys.contentType.sys.id;
+          const entryId = entry.sys.id;
 
           if (!contentType || !entryId) {
             return null;
           }
 
-          switch (contentType) {
-            case 'button':
-              return <div key={entryId}>[Button Placeholder ID: {entryId}]</div>;
+          const Component = ContentComponentMap[contentType];
 
-            case 'faq':
-              return <div key={entryId}>[FAQ Placeholder ID: {entryId}]</div>;
-
-            case 'heroCarousel': {
-              const heroCarouselData = heroCarouselSchema.parse(contentEntry);
-
-              const slides =
-                heroCarouselData.fields.heroSlides?.map((slide) => {
-                  return heroSlideSchema.parse(slide);
-                }) ?? [];
-
-              return <HeroCarousel key={entryId} slides={slides} />;
-            }
-
-            case 'inspirationBento': {
-              const bentoData = inspirationBentoSchema.parse(contentEntry);
-              const { cta, heading, inspirationCards, video } = bentoData.fields;
-
-              const validCta = cta ? ctaSchema.parse(cta) : null;
-
-              const validCards =
-                inspirationCards?.map((card) => {
-                  return inspirationCardSchema.parse(card);
-                }) ?? [];
-
-              return (
-                <InspirationBento
-                  cta={validCta}
-                  heading={heading}
-                  inspirationCards={validCards}
-                  key={entryId}
-                  video={video}
-                />
-              );
-            }
-
-            case 'newsletterForm': {
-              const newsletterData = newsletterFormSchema.parse(contentEntry);
-
-              return <NewsletterForm key={entryId} {...newsletterData.fields} />;
-            }
-
-            case 'postGrid': {
-              const postGridData = postGridSchema.parse(contentEntry);
-              const { title, subtitle, type } = postGridData.fields;
-
-              return <PostGrid key={entryId} subtitle={subtitle} title={title} type={type} />;
-            }
-
-            case 'carouselProduct': {
-              const carouselData = carouselProductSchema.parse(contentEntry);
-
-              return <ProductCarousel carousel={carouselData} key={entryId} />;
-            }
-
-            case 'heroSection': {
-              const heroData = heroSectionSchema.parse(contentEntry);
-
-              return <HeroSection key={entryId} {...heroData.fields} />;
-            }
-
-            case 'guidingPrinciplesSection': {
-              const sectionData = guidingPrinciplesSectionSchema.parse(contentEntry);
-
-              return <GuidingPrinciplesSection key={entryId} {...sectionData.fields} />;
-            }
-
-            case 'culinaryPassionSection': {
-              const sectionData = culinaryPassionSectionSchema.parse(contentEntry);
-
-              return <CulinaryPassionSection key={entryId} {...sectionData.fields} />;
-            }
-
-            case 'communitySection': {
-              const sectionData = communitySectionSchema.parse(contentEntry);
-
-              return <CommunitySection key={entryId} {...sectionData.fields} />;
-            }
-
-            case 'ctaSection': {
-              const sectionData = ctaSectionSchema.parse(contentEntry);
-
-              return <CtaSection key={entryId} {...sectionData.fields} />;
-            }
-
-            default: {
-              return null;
-            }
+          if (!Component) {
+            return null;
           }
+
+          return (
+            <Fragment key={entryId}>
+              <Component contentEntry={entry} />
+            </Fragment>
+          );
         })}
     </div>
   );
