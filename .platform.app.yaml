@@ -31,7 +31,7 @@ web:
             headers:
                 X-Frame-Options: SAMEORIGIN
     commands:
-        start: cd /app/core && NODE_ENV=production node .next/server.js
+        start: cd /app/core && NODE_ENV=production pnpm exec next start -p $PORT
 build:
     flavor: none
 hooks:
@@ -42,10 +42,6 @@ hooks:
         ./scripts/setup_env_vars.sh
         pnpm install
         NODE_OPTIONS="--max-old-space-size=8192" pnpm build
-        mkdir -p /app/core/.next
-        cp /app/core/.next/standalone/core/server.js /app/core/.next/
-        cp -r /app/core/.next/standalone/core/.next/server /app/core/.next/
-        cp /app/core/.env.local /app/core/.next/.env.local
         ./scripts/setup_mounts.sh
     deploy: |
         set -eu
