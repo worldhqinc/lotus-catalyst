@@ -46,7 +46,7 @@ export default function HeroBanner({
     <div className="bg-surface-image relative flex items-end overflow-hidden p-8 text-white">
       {mediaElement}
       <div className="absolute inset-x-0 top-1/2 bottom-0 h-full w-full bg-gradient-to-b from-black/0 to-black" />
-      <div className="relative z-10 flex w-full flex-col gap-8 pt-40 md:flex-row md:items-end md:justify-between">
+      <div className="relative flex w-full flex-col gap-8 pt-40 md:flex-row md:items-end md:justify-between">
         <div className="max-w-3xl">
           <h1 className="font-heading mb-4 max-w-xl text-6xl uppercase md:text-8xl">{title}</h1>
           {description ? <p className="mb-8 text-lg">{description}</p> : null}

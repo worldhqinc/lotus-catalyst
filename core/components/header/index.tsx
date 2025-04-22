@@ -10,7 +10,6 @@ import { graphql, readFragment } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
 import { TAGS } from '~/client/tags';
 import { getMinicartItems } from '~/components/minicart/_actions/minicart';
-import { logoTransformer } from '~/data-transformers/logo-transformer';
 import { routing } from '~/i18n/routing';
 import { getCartId } from '~/lib/cart';
 import { getPreferredCurrencyCode } from '~/lib/currency';
@@ -105,12 +104,6 @@ const getLinks = async () => {
   ]);
 };
 
-const getLogo = async () => {
-  const data = await getLayoutData();
-
-  return data.settings ? logoTransformer(data.settings) : '';
-};
-
 const getCartCount = async () => {
   const cartId = await getCartId();
 
@@ -180,10 +173,8 @@ export const Header = async () => {
         cartHref: '/cart',
         cartLabel: t('Icons.cart'),
         links: Streamable.from(getLinks),
-        logo: Streamable.from(getLogo),
         mobileMenuTriggerLabel: t('toggleNavigation'),
         openSearchPopupLabel: t('Icons.search'),
-        logoLabel: t('home'),
         cartCount: Streamable.from(getCartCount),
         cartItems: Streamable.from(getMinicartItems),
         activeLocaleId: locale,
