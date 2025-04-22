@@ -11,9 +11,9 @@ dependencies:
     nodejs:
         pnpm: "10.6.5"
 mounts:
-    '/core/.next':
+    '/core':
         source: local
-        source_path: 'next'
+        source_path: '.next/standalone/core'
     '/core/build-config':
         source: local
         source_path: 'build-config'
@@ -44,7 +44,6 @@ hooks:
         NODE_OPTIONS="--max-old-space-size=8192" pnpm build
         cp /app/core/.env.local /app/core/.next/standalone/core/.env.local
         cp -r /app/core/.next/static /app/core/.next/standalone/core/.next/
-        cp -r /app/core/.next/server /app/core/.next/standalone/core/.next/
         ./scripts/setup_mounts.sh
     deploy: |
         set -eu
