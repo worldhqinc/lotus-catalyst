@@ -78,17 +78,8 @@ export type SearchResult =
     };
 
 type CurrencyAction = Action<SubmissionResult | null, FormData>;
-type SearchAction<S extends SearchResult> = Action<
-  {
-    searchResults: S[] | null;
-    lastResult: SubmissionResult | null;
-    emptyStateTitle?: string;
-    emptyStateSubtitle?: string;
-  },
-  FormData
->;
 
-interface Props<S extends SearchResult> {
+interface Props {
   className?: string;
   isFloating?: boolean;
   accountHref: string;
@@ -102,18 +93,11 @@ interface Props<S extends SearchResult> {
   currencies?: Currency[];
   activeCurrencyId?: string;
   currencyAction?: CurrencyAction;
-  logo?: Streamable<string | { src: string; alt: string } | null>;
   logoWidth?: number;
   logoHeight?: number;
-  logoHref?: string;
-  logoLabel?: string;
-  searchAction?: SearchAction<S>;
-  searchCtaLabel?: string;
-  searchInputPlaceholder?: string;
   cartLabel?: string;
   accountLabel?: string;
   openSearchPopupLabel?: string;
-  searchLabel?: string;
   mobileMenuTriggerLabel?: string;
 }
 
@@ -125,7 +109,7 @@ const MobileMenuButton = forwardRef<
     <button
       {...rest}
       className={clsx(
-        'group relative rounded-lg p-2 ring-[var(--nav-focus,hsl(var(--primary)))] outline-0 transition-colors focus-visible:ring-2',
+        'group relative overflow-hidden rounded-lg p-2 ring-[var(--nav-focus,hsl(var(--primary)))] outline-0 transition-colors focus-visible:ring-2',
         className,
       )}
       ref={ref}
@@ -139,7 +123,7 @@ const MobileMenuButton = forwardRef<
         />
         <div
           className={clsx(
-            'h-px transform rounded-sm bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all delay-75 duration-300',
+            'h-px transform rounded bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all delay-75 duration-300',
             open ? 'translate-x-10' : 'w-7',
           )}
         />
@@ -152,7 +136,7 @@ const MobileMenuButton = forwardRef<
 
         <div
           className={clsx(
-            'absolute top-2 flex transform items-center justify-between bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all duration-500',
+            'absolute top-4 flex transform items-center justify-between bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all duration-500',
             open ? 'w-12 translate-x-0' : 'w-0 -translate-x-10',
           )}
         >
@@ -251,7 +235,7 @@ const navButtonClassName =
  * }
  * ```
  */
-export const Navigation = forwardRef(function Navigation<S extends SearchResult>(
+export const Navigation = forwardRef(function Navigation(
   {
     className,
     isFloating = false,
@@ -272,7 +256,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
     accountLabel = 'Profile',
     openSearchPopupLabel = 'Open search popup',
     mobileMenuTriggerLabel = 'Toggle navigation',
-  }: Props<S>,
+  }: Props,
   ref: Ref<HTMLDivElement>,
 ) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -391,9 +375,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                 <NavigationMenu.Item key={i} value={i.toString()}>
                   <NavigationMenu.Trigger asChild>
                     <Link
-                      className={clsx(
-                        '@4xl:after:bg-border @4xl:after:ease-quad after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:transition-transform @4xl:after:duration-200',
-                      )}
+                      className="@4xl:after:bg-border @4xl:after:ease-quad text-nowrap after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:transition-transform @4xl:after:duration-200"
                       href={item.href}
                     >
                       {item.label}
@@ -476,7 +458,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
           )}
         >
           <Popover.Root onOpenChange={setIsSearchOpen} open={isSearchOpen}>
-            <Popover.Anchor className="absolute top-0 right-0 left-0" />
+            <Popover.Anchor className="absolute top-full right-0 left-0" />
             <Popover.Trigger asChild>
               <button
                 aria-label={openSearchPopupLabel}
@@ -490,7 +472,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
             </Popover.Trigger>
             <Popover.Portal>
               <Popover.Content
-                className="data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn @container h-screen w-[var(--radix-popper-anchor-width)]"
+                className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @container h-screen w-[var(--radix-popper-anchor-width)]"
                 side="top"
               >
                 <div className="flex h-[inherit] flex-col bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out @4xl:inset-x-0">
@@ -564,8 +546,8 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
               />
             </Popover.Trigger>
             <Popover.Portal>
-              <Popover.Content className="data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn @container z-10 h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)]">
-                <div className="flex h-[inherit] flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-white px-4 py-8">
+              <Popover.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @container z-10 h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)]">
+                <div className="flex h-[inherit] flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-[var(--nav-mobile-background,hsl(var(--background)))] px-4 py-8">
                   <Stream
                     fallback={
                       <ul className="flex animate-pulse flex-col gap-4 p-5 @4xl:gap-2 @4xl:p-5">
@@ -591,7 +573,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
                           if (!item.groups?.length) return null;
 
                           return (
-                            <ul className="flex flex-col gap-4" key={i}>
+                            <ul className="flex flex-col gap-4 pb-8" key={i}>
                               {item.groups.map((group, groupIndex) => {
                                 if (!group.label) return null;
 
@@ -677,7 +659,7 @@ export const Navigation = forwardRef(function Navigation<S extends SearchResult>
       </div>
 
       <div className="absolute top-full right-0 left-0 z-50 flex w-full justify-center perspective-[2000px]">
-        <NavigationMenu.Viewport className="data-[state=closed]:animate-clipOut data-[state=open]:animate-clipIn relative w-full shadow-md" />
+        <NavigationMenu.Viewport className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative w-full shadow-md" />
       </div>
     </NavigationMenu.Root>
   );

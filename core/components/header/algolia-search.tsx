@@ -3,8 +3,8 @@
 import { Hit } from 'algoliasearch';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { clsx } from 'clsx';
-import { Search, X } from 'lucide-react';
-import { Hits, InstantSearch, SearchBox, useHits, useSearchBox } from 'react-instantsearch';
+import { ArrowRight, Search, X } from 'lucide-react';
+import { Hits, InstantSearch, SearchBox, useSearchBox } from 'react-instantsearch';
 
 import { Button } from '@/vibes/soul/primitives/button';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
@@ -43,8 +43,8 @@ const Groups = [
     slug: 'search_tag:Support',
   },
   {
-    name: 'Documents',
-    slug: 'search_tag:Documents',
+    name: 'Recipes',
+    slug: 'search_tag:Recipes',
   },
 ];
 
@@ -137,11 +137,13 @@ function GroupTabs() {
   const content = Groups.map((group) => ({
     value: group.slug,
     children: (
-      <div className="py-8 first:mt-8">
+      <div className="py-12 first:mt-8">
         <div className="flex items-center justify-between gap-4">
-          <h2>{group.name}</h2>
+          <h2 className="text-icon-primary text-4xl">{group.name}</h2>
           <ButtonLink href="#" shape="link" size="link" variant="link">
-            View more
+            <span className="flex items-center gap-2 text-base font-normal">
+              View more <ArrowRight size={20} strokeWidth={1.5} />
+            </span>
           </ButtonLink>
         </div>
         <div className="mt-8">
@@ -165,30 +167,38 @@ interface SearchComponentProps {
 
 function SearchComponent({ closeSearch }: SearchComponentProps) {
   const { query } = useSearchBox();
-  const { items } = useHits();
 
   const formStyles =
     '[&_form]:flex [&_form]:gap-4 [&_form_button.ais-SearchBox-submit]:hidden [&_form_button.ais-SearchBox-reset]:hidden';
   const inputStyles =
-    '[&_input]:flex-1 [&_input]:min-h-12 [&_input]:focus-within:outline-0 [&_input::-webkit-search-cancel-button]:appearance-none';
+    '[&_input]:flex-1 [&_input]:min-h-12 text-icon-primary text-lg [&_input]:focus-within:outline-0 [&_input::-webkit-search-cancel-button]:appearance-none';
   const searchHitsStyles = 'grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8';
 
   return (
     <>
-      <div className="border-border ease-quad focus-within:border-primary flex items-center gap-2 border-b transition-colors duration-200">
-        <Button onClick={closeSearch} shape="link" size="link" variant="link">
-          <X size={24} strokeWidth={1} />
-        </Button>
-        <Search size={24} strokeWidth={1} />
+      <div className="flex items-center gap-3">
+        <span className="text-icon-primary">
+          <Search size={20} strokeWidth={1.5} />
+        </span>
         <SearchBox
           className={clsx('flex-1', formStyles, inputStyles)}
-          placeholder="Search Lotus for products, guides, or resources…"
+          placeholder="Search Products"
         />
+        <Button
+          className="border-none md:border-solid"
+          onClick={closeSearch}
+          shape="circle"
+          size="small"
+          variant="tertiary"
+        >
+          <X size={20} strokeWidth={1.5} />
+        </Button>
       </div>
-      <GroupTabs />
-      {query && items.length > 0 ? (
+      {!query ? (
+        <GroupTabs />
+      ) : (
         <Hits classNames={{ root: 'mt-16', list: clsx(searchHitsStyles) }} hitComponent={Result} />
-      ) : null}
+      )}
     </>
   );
 }
