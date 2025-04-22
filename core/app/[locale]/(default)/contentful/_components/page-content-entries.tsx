@@ -3,8 +3,13 @@ import { z } from 'zod';
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import {
   carouselProductSchema,
+  communitySectionSchema,
   ctaSchema,
+  ctaSectionSchema,
+  culinaryPassionSectionSchema,
+  guidingPrinciplesSectionSchema,
   heroCarouselSchema,
+  heroSectionSchema,
   heroSlideSchema,
   inspirationBentoSchema,
   inspirationCardSchema,
@@ -13,7 +18,12 @@ import {
   postGridSchema,
 } from '~/contentful/schema';
 
+import CommunitySection from './sections/community-section';
+import CtaSection from './sections/cta-section';
+import CulinaryPassionSection from './sections/culinary-passion-section';
+import GuidingPrinciplesSection from './sections/guiding-principles-section';
 import HeroCarousel from './sections/hero-carousel';
+import HeroSection from './sections/hero-section';
 import InspirationBento from './sections/inspiration-bento';
 import NewsletterForm from './sections/newsletter-form';
 import PostGrid from './sections/post-grid';
@@ -89,6 +99,36 @@ export default function PageContentEntries({ page }: { page: z.infer<typeof page
               const carouselData = carouselProductSchema.parse(contentEntry);
 
               return <ProductCarousel carousel={carouselData} key={entryId} />;
+            }
+
+            case 'heroSection': {
+              const heroData = heroSectionSchema.parse(contentEntry);
+
+              return <HeroSection key={entryId} {...heroData.fields} />;
+            }
+
+            case 'guidingPrinciplesSection': {
+              const sectionData = guidingPrinciplesSectionSchema.parse(contentEntry);
+
+              return <GuidingPrinciplesSection key={entryId} {...sectionData.fields} />;
+            }
+
+            case 'culinaryPassionSection': {
+              const sectionData = culinaryPassionSectionSchema.parse(contentEntry);
+
+              return <CulinaryPassionSection key={entryId} {...sectionData.fields} />;
+            }
+
+            case 'communitySection': {
+              const sectionData = communitySectionSchema.parse(contentEntry);
+
+              return <CommunitySection key={entryId} {...sectionData.fields} />;
+            }
+
+            case 'ctaSection': {
+              const sectionData = ctaSectionSchema.parse(contentEntry);
+
+              return <CtaSection key={entryId} {...sectionData.fields} />;
             }
 
             default: {
