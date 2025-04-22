@@ -91,7 +91,7 @@ interface Props {
   locales?: Locale[];
   activeLocaleId?: string;
   currencies?: Currency[];
-  activeCurrencyId?: string;
+  activeCurrencyId?: Streamable<string | undefined>;
   currencyAction?: CurrencyAction;
   logoWidth?: number;
   logoHeight?: number;
@@ -249,8 +249,8 @@ export const Navigation = forwardRef(function Navigation(
     linksPosition = 'center',
     activeLocaleId,
     locales,
-    currencies,
-    activeCurrencyId,
+    currencies: streamableCurrencies,
+    activeCurrencyId: streamableActiveCurrencyId,
     currencyAction,
     cartLabel = 'Cart',
     accountLabel = 'Profile',
@@ -353,7 +353,7 @@ export const Navigation = forwardRef(function Navigation(
         >
           <Stream
             fallback={
-              <ul className="flex animate-pulse flex-row p-2 @4xl:gap-2 @4xl:p-5">
+              <ul className="flex animate-pulse flex-row @4xl:gap-6 @4xl:p-2.5">
                 <li>
                   <span className="bg-contrast-100 block h-4 w-10 rounded-md" />
                 </li>
@@ -647,14 +647,21 @@ export const Navigation = forwardRef(function Navigation(
           ) : null}
 
           {/* Currency Dropdown */}
-          {currencies && currencies.length > 1 && currencyAction ? (
-            <CurrencyForm
-              action={currencyAction}
-              activeCurrencyId={activeCurrencyId}
-              // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-              currencies={currencies as [Currency, ...Currency[]]}
-            />
-          ) : null}
+          <Stream
+            fallback={null}
+            value={Streamable.all([streamableCurrencies, streamableActiveCurrencyId])}
+          >
+            {([currencies, activeCurrencyId]) =>
+              currencies && currencies.length > 1 && currencyAction ? (
+                <CurrencyForm
+                  action={currencyAction}
+                  activeCurrencyId={activeCurrencyId}
+                  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                  currencies={currencies as [Currency, ...Currency[]]}
+                />
+              ) : null
+            }
+          </Stream>
         </div>
       </div>
 
