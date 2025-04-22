@@ -1,19 +1,28 @@
 'use client';
 
 import { ComponentProps } from 'react';
-import { z } from 'zod';
 
 import { Slideshow } from '@/vibes/soul/sections/slideshow';
-import { assetSchema, heroSlideSchema, pageStandardSchema } from '~/contentful/schema';
+import {
+  assetSchema,
+  heroCarousel,
+  heroSlideSchema,
+  pageStandardSchema,
+} from '~/contentful/schema';
 import { ensureImageUrl } from '~/lib/utils';
 
 interface Props {
-  slides: Array<z.infer<typeof heroSlideSchema>>;
+  data: heroCarousel;
 }
 
 type Slide = ComponentProps<typeof Slideshow>['slides'][number];
 
-export default function HeroCarousel({ slides }: Props) {
+export default function HeroCarousel({ data }: Props) {
+  const slides =
+    data.fields.heroSlides?.map((slide) => {
+      return heroSlideSchema.parse(slide);
+    }) ?? [];
+
   return (
     <section className="@container">
       <Slideshow
@@ -56,6 +65,7 @@ export default function HeroCarousel({ slides }: Props) {
             return slideData;
           })
           .filter((slide): slide is Slide => slide !== null)}
+        vertical={data.fields.vertical}
       />
     </section>
   );

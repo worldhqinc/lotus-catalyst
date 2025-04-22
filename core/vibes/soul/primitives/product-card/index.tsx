@@ -29,6 +29,8 @@ export interface ProductCardProps {
   imageSizes?: string;
   compareLabel?: string;
   compareParamName?: string;
+  fillContainer?: boolean;
+  ratioOverride?: string;
   product: Product;
 }
 
@@ -62,23 +64,29 @@ export function ProductCard({
   compareParamName,
   imagePriority = false,
   imageSizes = '(min-width: 80rem) 20vw, (min-width: 64rem) 25vw, (min-width: 42rem) 33vw, (min-width: 24rem) 50vw, 100vw',
+  fillContainer = false,
+  ratioOverride,
 }: ProductCardProps) {
+  // determine aspect ratio class: only apply when not fillContainer or when specifically overridden
+  const ratioMapping = { '5:6': 'aspect-5/6', '3:4': 'aspect-3/4', '1:1': 'aspect-square' };
+  const ratioClass = ratioOverride || (!fillContainer ? ratioMapping[aspectRatio] : undefined);
+
   return (
     <article
       className={clsx(
-        'group @container flex max-w-md min-w-0 flex-col gap-2 font-[family-name:var(--card-font-family,var(--font-family-body))]',
+        fillContainer
+          ? 'group @container flex h-full w-full min-w-0 flex-col gap-2 font-[family-name:var(--card-font-family,var(--font-family-body))]'
+          : 'group @container flex max-w-md min-w-0 flex-col gap-2 font-[family-name:var(--card-font-family,var(--font-family-body))]',
         className,
       )}
     >
       <div className="relative">
         <div
           className={clsx(
-            'relative overflow-hidden rounded-xl @md:rounded-2xl',
-            {
-              '5:6': 'aspect-5/6',
-              '3:4': 'aspect-3/4',
-              '1:1': 'aspect-square',
-            }[aspectRatio],
+            fillContainer
+              ? '@container relative overflow-hidden rounded-xl @md:rounded-2xl'
+              : 'relative overflow-hidden rounded-xl @md:rounded-2xl',
+            ratioClass,
             {
               light: 'bg-[var(--product-card-light-background,hsl(var(--contrast-100)))]',
               dark: 'bg-[var(--product-card-dark-background,hsl(var(--contrast-500)))]',

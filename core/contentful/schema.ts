@@ -2464,6 +2464,7 @@ export const heroCarouselFieldsSchema = z.object({
       }),
     )
     .optional(),
+  vertical: z.boolean().optional(),
 });
 
 export const heroCarouselSchema = z.object({
@@ -3773,6 +3774,182 @@ export const featureItemSchema = z.object({
 
 export type featureItem = z.infer<typeof featureItemSchema>;
 
+// Schema for productBento
+export const productBentoFieldsSchema = z.object({
+  title: z.string(),
+  subtitle: z.string().optional(),
+  products: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
+});
+
+export const productBentoSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('productBento'),
+      }),
+    }),
+  }),
+  fields: productBentoFieldsSchema,
+});
+
+export type productBento = z.infer<typeof productBentoSchema>;
+
+// Schema for highlights
+export const highlightsFieldsSchema = z.object({
+  title: z.string(),
+  quoteText: z.string().optional(),
+  quoteAuthorImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.undefined().optional(),
+      }),
+      fields: z.object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .optional(),
+  quoteAuthorName: z.string().optional(),
+  quoteAuthorTitle: z.string().optional(),
+  cta: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional(),
+        revision: z.number(),
+        locale: z.string().optional(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional(),
+});
+
+export const highlightsSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('highlights'),
+      }),
+    }),
+  }),
+  fields: highlightsFieldsSchema,
+});
+
+export type highlights = z.infer<typeof highlightsSchema>;
+
 // ========================================
 // Union Schema and Helper Object
 // ========================================
@@ -3818,6 +3995,8 @@ export const contentfulEntrySchemaUnion = z.union([
   cardSectionSchema,
   testimonialsSchema,
   featureItemSchema,
+  productBentoSchema,
+  highlightsSchema,
 ]);
 export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
 
@@ -3870,4 +4049,6 @@ export const contentfulSchemas = {
   cardSection: cardSectionSchema,
   testimonials: testimonialsSchema,
   featureItem: featureItemSchema,
+  productBento: productBentoSchema,
+  highlights: highlightsSchema,
 };

@@ -14,13 +14,14 @@ import {
   heroBannerSchema,
   heroCarouselSchema,
   heroSectionSchema,
-  heroSlideSchema,
+  highlightsSchema,
   inspirationBentoSchema,
   inspirationCardSchema,
   introSectionSchema,
   newsletterFormSchema,
   pageStandard,
   postGridSchema,
+  productBentoSchema,
   testimonialsSchema,
 } from '~/contentful/schema';
 
@@ -34,10 +35,12 @@ import GuidingPrinciplesSection from './sections/guiding-principles-section';
 import HeroBanner from './sections/hero-banner';
 import HeroCarousel from './sections/hero-carousel';
 import HeroSection from './sections/hero-section';
+import Highlights from './sections/highlights';
 import InspirationBento from './sections/inspiration-bento';
 import IntroSection from './sections/intro-section';
 import NewsletterForm from './sections/newsletter-form';
 import PostGrid from './sections/post-grid';
+import ProductBento from './sections/product-bento';
 import Testimonials from './sections/testimonials';
 
 type PageContent = pageStandard['fields']['pageContent'];
@@ -45,13 +48,9 @@ type ContentEntry = NonNullable<PageContent>[number];
 
 const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: ContentEntry }>> = {
   heroCarousel: ({ contentEntry }) => {
-    const heroCarouselData = heroCarouselSchema.parse(contentEntry);
-    const slides =
-      heroCarouselData.fields.heroSlides?.map((slide) => {
-        return heroSlideSchema.parse(slide);
-      }) ?? [];
+    const data = heroCarouselSchema.parse(contentEntry);
 
-    return <HeroCarousel slides={slides} />;
+    return <HeroCarousel data={data} />;
   },
   inspirationBento: ({ contentEntry }) => {
     const bentoData = inspirationBentoSchema.parse(contentEntry);
@@ -81,6 +80,11 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
     const { title, subtitle, type } = postGridData.fields;
 
     return <PostGrid subtitle={subtitle} title={title} type={type} />;
+  },
+  productBento: ({ contentEntry }) => {
+    const data = productBentoSchema.parse(contentEntry);
+
+    return <ProductBento {...data.fields} />;
   },
   carouselProduct: ({ contentEntry }) => {
     const carouselData = carouselProductSchema.parse(contentEntry);
@@ -116,6 +120,11 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
     const data = heroBannerSchema.parse(contentEntry);
 
     return <HeroBanner {...data.fields} />;
+  },
+  highlights: ({ contentEntry }) => {
+    const data = highlightsSchema.parse(contentEntry);
+
+    return <Highlights {...data.fields} />;
   },
   introSection: ({ contentEntry }) => {
     const data = introSectionSchema.parse(contentEntry);
