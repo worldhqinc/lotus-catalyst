@@ -424,7 +424,7 @@ export const Navigation = forwardRef(function Navigation(
                           <div className="mt-8 flex flex-col items-start">
                             <Link
                               className={clsx(navLinkClassName, 'text-medium text-base')}
-                              href="/shop-all"
+                              href="/shop"
                             >
                               Shop all products
                             </Link>
@@ -604,7 +604,7 @@ export const Navigation = forwardRef(function Navigation(
                                 );
                               })}
                               <li>
-                                <Link className="text-lg tracking-widest" href="/shop-all">
+                                <Link className="text-lg tracking-widest" href="/shop">
                                   Shop all products
                                 </Link>
                               </li>
