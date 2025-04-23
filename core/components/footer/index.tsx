@@ -19,6 +19,7 @@ import { revalidate } from '~/client/revalidate-target';
 import { logoTransformer } from '~/data-transformers/logo-transformer';
 
 import { subscribe } from '../subscribe/_actions/subscribe';
+
 import { FooterFragment, FooterSectionsFragment } from './fragment';
 
 const socialIcons: Record<string, { icon: JSX.Element }> = {

@@ -3,20 +3,19 @@ import { cache } from 'react';
 
 import { Streamable } from '@/vibes/soul/lib/streamable';
 import { HeaderSection } from '@/vibes/soul/sections/header-section';
-import { GetLinksAndSectionsQuery, LayoutQuery } from '~/app/[locale]/(default)/page-data';
+import { LayoutQuery } from '~/app/[locale]/(default)/page-data';
 import { getSessionCustomerAccessToken } from '~/auth';
 import { client } from '~/client';
 import { graphql, readFragment } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
 import { TAGS } from '~/client/tags';
 import { getMinicartItems } from '~/components/minicart/_actions/minicart';
-import { logoTransformer } from '~/data-transformers/logo-transformer';
 import { routing } from '~/i18n/routing';
 import { getCartId } from '~/lib/cart';
 import { getPreferredCurrencyCode } from '~/lib/currency';
 
 import { switchCurrency } from './_actions/switch-currency';
-import { HeaderFragment, HeaderLinksFragment } from './fragment';
+import { HeaderFragment } from './fragment';
 
 const GetCartCountQuery = graphql(`
   query GetCartCountQuery($cartId: String) {
@@ -47,16 +46,6 @@ const getCartCount = async (cartId: string, customerAccessToken?: string) => {
   return response.data.site.cart?.lineItems.totalQuantity ?? null;
 };
 
-const getHeaderLinks = cache(async (customerAccessToken?: string) => {
-  const { data: response } = await client.fetch({
-    document: GetLinksAndSectionsQuery,
-    customerAccessToken,
-    fetchOptions: customerAccessToken ? { cache: 'no-store' } : { next: { revalidate } },
-  });
-
-  return readFragment(HeaderLinksFragment, response).site.categoryTree;
-});
-
 const getHeaderData = cache(async () => {
   const { data: response } = await client.fetch({
     document: LayoutQuery,
@@ -71,8 +60,6 @@ export const Header = async () => {
   const locale = await getLocale();
 
   const data = await getHeaderData();
-
-  const logo = data.settings ? logoTransformer(data.settings) : '';
 
   const locales = routing.locales.map((enabledLocales) => ({
     id: enabledLocales,
