@@ -29,7 +29,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
           Email Address
         </label>
         <input
-          className="rounded-md border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          className="focus:border-primary focus:ring-primary rounded-md border border-gray-300 px-3 py-2 focus:ring-1 focus:outline-none"
           id="email"
           name="email"
           required
@@ -44,7 +44,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
           <p className="text-sm text-gray-500">{field.description}</p>
           {field.custom_field_options ? (
             <select
-              className="rounded-md border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="focus:border-primary focus:ring-primary rounded-md border border-gray-300 px-3 py-2 focus:ring-1 focus:outline-none"
               id={field.id.toString()}
               name={field.id.toString()}
               required={field.required}
@@ -58,7 +58,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
             </select>
           ) : (
             <input
-              className="rounded-md border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="focus:border-primary focus:ring-primary rounded-md border border-gray-300 px-3 py-2 focus:ring-1 focus:outline-none"
               id={field.id.toString()}
               name={field.id.toString()}
               required={field.required}
@@ -68,7 +68,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
         </div>
       ))}
       <button
-        className="mt-4 inline-flex justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        className="bg-primary hover:bg-primary/90 focus:ring-primary mt-4 inline-flex justify-center rounded-md px-4 py-2 text-sm font-medium text-white focus:ring-2 focus:ring-offset-2 focus:outline-none"
         type="submit"
       >
         Submit
