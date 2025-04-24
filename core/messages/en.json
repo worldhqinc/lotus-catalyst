@@ -440,5 +440,20 @@
       "description": "Stay up to date with the latest news and offers from our store.",
       "success": "Thank you for your interest! Newsletter feature is coming soon!"
     }
+  },
+  "Minicart": {
+    "title": "Your Cart",
+    "items": "{count, plural, =1 {1 item} other {# items}}",
+    "emptyState": "Your cart is empty",
+    "viewCart": "View cart",
+    "checkout": "Checkout",
+    "subtotal": "Subtotal",
+    "savings": "Savings",
+    "completeKitchen": {
+      "title": "Complete the kitchen",
+      "addToCart": "Add to cart",
+      "nextProducts": "Next products",
+      "previousProducts": "Previous products"
+    }
   }
 }
