@@ -19,6 +19,7 @@ import { routing } from '~/i18n/routing';
 import { getToastNotification } from '../../lib/server-toast';
 import { CookieNotifications } from '../notifications';
 import { Providers } from '../providers';
+import WeglotClient from '~/components/weglot-client';
 
 const RootLayoutMetadataQuery = graphql(`
   query RootLayoutMetadataQuery {
@@ -96,6 +97,7 @@ export default async function RootLayout({ params, children }: Props) {
     <html className={clsx(fonts.map((f) => f.variable))} lang={locale}>
       <body className="font-body flex min-h-screen flex-col antialiased [&_[data-radix-popper-content-wrapper]]:!z-20">
         <NextIntlClientProvider>
+          <WeglotClient />
           <NuqsAdapter>
             <Providers>
               {toastNotificationCookieData && (
