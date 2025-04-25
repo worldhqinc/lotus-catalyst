@@ -766,7 +766,7 @@ function LocaleSwitcher({
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         className={clsx(
-          'flex items-center gap-1 p-0 text-base uppercase transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30',
+          'flex items-center gap-1 p-0 text-base transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30',
         )}
         disabled={isPending}
       >
