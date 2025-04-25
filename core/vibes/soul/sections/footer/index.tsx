@@ -246,7 +246,7 @@ export const Footer = forwardRef(function Footer(
                 <li>
                   <Link
                     className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
-                    href="/orders"
+                    href="/account/orders"
                   >
                     Orders
                   </Link>
