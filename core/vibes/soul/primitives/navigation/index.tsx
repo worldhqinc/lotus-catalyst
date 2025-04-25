@@ -101,6 +101,49 @@ interface Props {
   mobileMenuTriggerLabel?: string;
 }
 
+const Banner = ({
+  activeLocaleId = '',
+  locales = [],
+}: {
+  activeLocaleId?: string;
+  locales?: Locale[];
+}) => {
+  return (
+    <div className="bg-primary py-4 text-white">
+      <div className="@container container flex flex-row items-center justify-between">
+        <div>
+          <p>PROMO CODE HERE</p>
+        </div>
+        <div>
+          <ul className="flex flex-row items-center justify-between gap-6">
+            <li className="hidden @4xl:block">
+              <Link href="/shop-in-store">Shop In-Store</Link>
+            </li>
+            <li>
+              <div className="flex items-center gap-2">
+                <div className="rounded-full border-2 border-white">
+                  <PersonStandingIcon size={22} strokeWidth={2} />
+                </div>
+                <p className="hidden @4xl:block">Accessibility</p>
+              </div>
+            </li>
+            <li className="hidden @4xl:block">
+              {/* Locale / Language Dropdown */}
+              {locales.length > 1 ? (
+                <LocaleSwitcher
+                  activeLocaleId={activeLocaleId}
+                  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                  locales={locales as [Locale, Locale, ...Locale[]]}
+                />
+              ) : null}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const MobileMenuButton = forwardRef<
   React.ComponentRef<'button'>,
   { open: boolean } & React.ComponentPropsWithoutRef<'button'>
@@ -444,10 +487,7 @@ export const Navigation = forwardRef(function Navigation(
                               </ul>
                             ))}
                             <div className="mt-8 flex flex-col items-start">
-                              <Link
-                                className="link text-primary"
-                                href="/shop"
-                              >
+                              <Link className="link text-primary" href="/shop">
                                 Shop all products
                               </Link>
                             </div>
@@ -590,10 +630,12 @@ export const Navigation = forwardRef(function Navigation(
                         <>
                           {links.map((item, i) => {
                             if (!item.groups?.length) return null;
+
                             return (
                               <ul className="flex flex-col gap-4 pb-8" key={i}>
                                 {item.groups.map((group, groupIndex) => {
                                   if (!group.label) return null;
+
                                   return (
                                     <li key={groupIndex}>
                                       {group.href != null &&
@@ -628,7 +670,7 @@ export const Navigation = forwardRef(function Navigation(
                               </ul>
                             );
                           })}
-                          <ul className="flex flex-col gap-4 [&:not(:first-of-type)]:pt-6">
+                          <ul className="flex flex-col gap-4 [&:not(:first-of-type)]:py-6">
                             {links.map((item, i) => (
                               <li key={i}>
                                 <Link className={clsx('text-lg tracking-widest')} href={item.href}>
@@ -649,6 +691,14 @@ export const Navigation = forwardRef(function Navigation(
                         </>
                       )}
                     </Stream>
+                    {/* Locale / Language Dropdown */}
+                    {locales && locales.length > 1 ? (
+                      <LocaleSwitcher
+                        activeLocaleId={activeLocaleId}
+                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                        locales={locales as [Locale, Locale, ...Locale[]]}
+                      />
+                    ) : null}
                   </div>
                 </Popover.Content>
               </Popover.Portal>
@@ -681,49 +731,6 @@ export const Navigation = forwardRef(function Navigation(
 
 Navigation.displayName = 'Navigation';
 
-const Banner = ({
-  activeLocaleId = '',
-  locales = [],
-}: {
-  activeLocaleId?: string;
-  locales?: Locale[];
-}) => {
-  return (
-    <div className="bg-primary py-4 text-white">
-      <div className="@container container flex flex-row items-center justify-between">
-        <div>
-          <p>PROMO CODE HERE</p>
-        </div>
-        <div>
-          <ul className="flex flex-row items-center justify-between gap-6">
-            <li className="hidden @4xl:block">
-              <Link href="/shop-in-store">Shop In-Store</Link>
-            </li>
-            <li>
-              <div className="flex items-center gap-2">
-                <div className="border-2 border-white rounded-full">
-                  <PersonStandingIcon size={22} strokeWidth={2} />
-                </div>
-                <p className="hidden @4xl:block">Accessibility</p>
-              </div>
-            </li>
-            <li className="hidden @4xl:block">
-              {/* Locale / Language Dropdown */}
-              {locales && locales.length > 1 ? (
-                <LocaleSwitcher
-                  activeLocaleId={activeLocaleId}
-                  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                  locales={locales as [Locale, Locale, ...Locale[]]}
-                />
-              ) : null}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const useSwitchLocale = () => {
   const pathname = usePathname();
   const router = useRouter();
@@ -749,54 +756,75 @@ function LocaleSwitcher({
   activeLocaleId?: string;
   locales: [Locale, ...Locale[]];
 }) {
-  const activeLocale = locales.find((locale) => locale.id === activeLocaleId);
+  // const activeLocale = locales.find((locale) => locale.id === activeLocaleId);
   const [isPending, startTransition] = useTransition();
   const switchLocale = useSwitchLocale();
-  let label = '';
+  let localeLabel = '';
 
   if (activeLocaleId === 'en') {
-    label = 'English';
+    localeLabel = 'English';
   } else if (activeLocaleId === 'fr') {
-    label = 'Français';
+    localeLabel = 'Français';
   } else if (activeLocaleId === 'es') {
-    label = 'Español';
+    localeLabel = 'Español';
   }
 
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger
-        className={clsx(
-          'flex items-center gap-1 p-0 text-base transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30',
-        )}
-        disabled={isPending}
-      >
-        {label}
-        <ChevronDown size={16} strokeWidth={1.5} />
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Portal>
-        <DropdownMenu.Content
-          align="end"
-          className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
-          sideOffset={16}
-        >
-          {locales.map(({ id, label }) => (
-            <DropdownMenu.Item
+    <>
+      <div className="hidden @4xl:inline-block">
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger
+            className={clsx(
+              'flex items-center gap-1 p-0 text-base transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30',
+            )}
+            disabled={isPending}
+          >
+            {localeLabel}
+            <ChevronDown size={16} strokeWidth={1.5} />
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              align="end"
+              className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
+              sideOffset={16}
+            >
+              {locales.map(({ id, label }) => (
+                <DropdownMenu.Item
+                  className={clsx(
+                    'cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
+                    {
+                      'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
+                        id === activeLocaleId,
+                    },
+                  )}
+                  key={id}
+                  onSelect={() => startTransition(() => switchLocale(id))}
+                >
+                  {label}
+                </DropdownMenu.Item>
+              ))}
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
+      </div>
+
+      <div className="flex flex-row items-center gap-2 @4xl:hidden">
+        {locales.map(({ id, label }) => {
+          return (
+            <button
               className={clsx(
-                'cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
-                {
-                  'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
-                    id === activeLocaleId,
-                },
+                'rounded-lg px-3 py-2 text-base',
+                id === activeLocaleId ? 'bg-contrast-100' : 'bg-transparent',
               )}
               key={id}
               onSelect={() => startTransition(() => switchLocale(id))}
             >
               {label}
-            </DropdownMenu.Item>
-          ))}
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu.Root>
+            </button>
+          );
+        })}
+      </div>
+    </>
   );
 }
 
