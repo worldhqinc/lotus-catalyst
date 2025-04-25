@@ -14,6 +14,7 @@ import { fonts } from '~/app/fonts';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
+import WeglotClient from '~/components/weglot-client';
 import { routing } from '~/i18n/routing';
 
 import { getToastNotification } from '../../lib/server-toast';
@@ -96,6 +97,7 @@ export default async function RootLayout({ params, children }: Props) {
     <html className={clsx(fonts.map((f) => f.variable))} lang={locale}>
       <body className="font-body flex min-h-screen flex-col antialiased [&_[data-radix-popper-content-wrapper]]:!z-20">
         <NextIntlClientProvider>
+          <WeglotClient />
           <NuqsAdapter>
             <Providers>
               {toastNotificationCookieData && (
