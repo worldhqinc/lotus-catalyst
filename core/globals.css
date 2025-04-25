@@ -15,6 +15,12 @@
   --font-mono: var(--font-family-mono);
 }
 
+@layer base {
+  a:not([class]) {
+    @apply text-inherit relative inline-block after:absolute after:top-full after:left-0 after:w-full after:h-px after:bg-current after:scale-x-0 after:origin-left after:transition-transform after:duration-200 after:ease-quad hover:after:scale-x-100;
+  }
+}
+
 @layer utilities {
   .prose {
     :where(h1):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
@@ -131,7 +137,7 @@
   --color-background: hsl(var(--background));
 
   --color-disabled: hsl(var(--disabled));
-  
+
   --color-icon-primary: hsl(var(--icon-primary));
   --color-icon-secondary: hsl(var(--icon-secondary));
 
@@ -148,7 +154,7 @@
   --color-surface: hsl(var(--surface-primary));
   --color-surface-secondary: hsl(var(--surface-secondary));
   --color-surface-image: hsl(var(--surface-image));
-  
+
   --text-xs: var(--font-size-xs, 0.75rem);
   --text-sm: var(--font-size-sm, 0.875rem);
   --text-base: var(--font-size-base, 1rem);
