@@ -305,6 +305,7 @@ export const Navigation = forwardRef(function Navigation(
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMinicartDrawerOpen, setIsMinicartDrawerOpen] = useState(false);
+  const [value, setValue] = useState('');
 
   const pathname = usePathname();
 
@@ -312,6 +313,7 @@ export const Navigation = forwardRef(function Navigation(
     setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
     setIsMinicartDrawerOpen(false);
+    setValue('');
   }, [pathname]);
 
   useEffect(() => {
@@ -330,6 +332,7 @@ export const Navigation = forwardRef(function Navigation(
     function handleScroll() {
       setIsSearchOpen(false);
       setIsMobileMenuOpen(false);
+      setValue('');
     }
 
     window.addEventListener('scroll', handleScroll);
@@ -371,8 +374,12 @@ export const Navigation = forwardRef(function Navigation(
           isFloating ? 'shadow-md' : 'shadow-none',
         )}
         delayDuration={0}
-        onValueChange={() => setIsSearchOpen(false)}
+        onValueChange={(newValue) => {
+          setIsSearchOpen(false);
+          setValue(newValue);
+        }}
         ref={ref}
+        value={value}
       >
         <div className="container flex items-center justify-between gap-1 bg-[var(--nav-background,hsl(var(--background)))] py-2 @4xl:py-4">
           {/* Logo */}
@@ -456,9 +463,12 @@ export const Navigation = forwardRef(function Navigation(
                                     {group.href != null &&
                                     group.href !== '' &&
                                     !group.comingSoon ? (
-                                      <Link className={navGroupClassName} href={group.href}>
+                                      <NavigationMenu.Link
+                                        className={navGroupClassName}
+                                        href={group.href}
+                                      >
                                         {group.label}
-                                      </Link>
+                                      </NavigationMenu.Link>
                                     ) : (
                                       <span
                                         className={clsx(
@@ -479,17 +489,20 @@ export const Navigation = forwardRef(function Navigation(
                                 {group.links.map((link, idx) => (
                                   // Third Level Links
                                   <li key={idx}>
-                                    <Link className={navLinkClassName} href={link.href}>
+                                    <NavigationMenu.Link
+                                      className={navLinkClassName}
+                                      href={link.href}
+                                    >
                                       {link.label}
-                                    </Link>
+                                    </NavigationMenu.Link>
                                   </li>
                                 ))}
                               </ul>
                             ))}
                             <div className="mt-8 flex flex-col items-start">
-                              <Link className="link text-primary" href="/shop-all">
+                              <NavigationMenu.Link className="link text-primary" href="/shop-all">
                                 Shop all products
-                              </Link>
+                              </NavigationMenu.Link>
                             </div>
                           </div>
                           {/* TODO: Add dynamic content */}
