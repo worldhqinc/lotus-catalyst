@@ -14,12 +14,12 @@ import { fonts } from '~/app/fonts';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
+import WeglotClient from '~/components/weglot-client';
 import { routing } from '~/i18n/routing';
 
 import { getToastNotification } from '../../lib/server-toast';
 import { CookieNotifications } from '../notifications';
 import { Providers } from '../providers';
-import WeglotClient from '~/components/weglot-client';
 
 const RootLayoutMetadataQuery = graphql(`
   query RootLayoutMetadataQuery {
