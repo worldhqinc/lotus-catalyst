@@ -566,14 +566,14 @@ export const Navigation = forwardRef(function Navigation(
               <ShoppingBag size={24} strokeWidth={1} />
               <Stream
                 fallback={
-                  <span className="bg-contrast-100 text-background absolute -top-0.5 -right-0.5 flex h-4 w-4 animate-pulse items-center justify-center rounded-full text-xs" />
+                  <span className="bg-contrast-100 text-background absolute top-1 right-1 flex h-4 w-4 animate-pulse items-center justify-center rounded-full text-xs" />
                 }
                 value={streamableCartCount}
               >
                 {(currentDisplayCount) =>
                   currentDisplayCount != null &&
                   currentDisplayCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--nav-cart-count-background,hsl(var(--foreground)))] text-xs text-[var(--nav-cart-count-text,hsl(var(--background)))]">
+                    <span className="bg-primary absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full border border-white text-xs text-white">
                       {currentDisplayCount}
                     </span>
                   )
