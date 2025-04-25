@@ -15,6 +15,7 @@ import { fonts } from '~/app/fonts';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
+import LoadGoogleTagManager from '~/components/gtm';
 import WeglotClient from '~/components/weglot-client';
 import { routing } from '~/i18n/routing';
 
@@ -97,6 +98,7 @@ export default async function RootLayout({ params, children }: Props) {
   return (
     <html className={clsx(fonts.map((f) => f.variable))} lang={locale}>
       <body className="font-body flex min-h-screen flex-col antialiased [&_[data-radix-popper-content-wrapper]]:!z-20">
+        <LoadGoogleTagManager />
         <NextIntlClientProvider>
           <WeglotClient />
           <NuqsAdapter>
