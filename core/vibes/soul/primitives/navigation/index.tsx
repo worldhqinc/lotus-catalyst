@@ -6,7 +6,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
-import { ChevronDown, Search, ShoppingBag, User } from 'lucide-react';
+import { ChevronDown, PersonStandingIcon, Search, ShoppingBag, User } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, {
   forwardRef,
@@ -100,6 +100,49 @@ interface Props {
   openSearchPopupLabel?: string;
   mobileMenuTriggerLabel?: string;
 }
+
+const Banner = ({
+  activeLocaleId = '',
+  locales = [],
+}: {
+  activeLocaleId?: string;
+  locales?: Locale[];
+}) => {
+  return (
+    <div className="bg-primary py-4 text-white">
+      <div className="@container container flex flex-row items-center justify-between">
+        <div>
+          <p>PROMO CODE HERE</p>
+        </div>
+        <div>
+          <ul className="flex flex-row items-center justify-between gap-6">
+            <li className="hidden @4xl:block">
+              <Link href="/shop-in-store">Shop In-Store</Link>
+            </li>
+            <li>
+              <div className="flex items-center gap-2">
+                <div className="rounded-full border-2 border-white">
+                  <PersonStandingIcon size={22} strokeWidth={2} />
+                </div>
+                <p className="hidden @4xl:block">Accessibility</p>
+              </div>
+            </li>
+            <li className="hidden @4xl:block">
+              {/* Locale / Language Dropdown */}
+              {locales.length > 1 ? (
+                <LocaleSwitcher
+                  activeLocaleId={activeLocaleId}
+                  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                  locales={locales as [Locale, Locale, ...Locale[]]}
+                />
+              ) : null}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const MobileMenuButton = forwardRef<
   React.ComponentRef<'button'>,
@@ -247,8 +290,8 @@ export const Navigation = forwardRef(function Navigation(
     logoWidth = 120,
     logoHeight = 40,
     linksPosition = 'center',
-    activeLocaleId,
     locales,
+    activeLocaleId,
     currencies: streamableCurrencies,
     activeCurrencyId: streamableActiveCurrencyId,
     currencyAction,
@@ -319,279 +362,110 @@ export const Navigation = forwardRef(function Navigation(
   }, [streamableCartCount, pathname, cartHref]);
 
   return (
-    <NavigationMenu.Root
-      className={clsx(
-        'font-body @container relative w-full bg-white',
-        className,
-        isFloating ? 'shadow-md' : 'shadow-none',
-      )}
-      delayDuration={0}
-      onValueChange={() => setIsSearchOpen(false)}
-      ref={ref}
-    >
-      <div className="container flex items-center justify-between gap-1 bg-[var(--nav-background,hsl(var(--background)))] py-2 @4xl:py-4">
-        {/* Logo */}
-        <div
-          className={clsx(
-            'flex items-center justify-start self-stretch',
-            linksPosition === 'center' ? 'flex-1' : 'flex-1 @4xl:flex-none',
-          )}
-        >
-          <LogoLotus height={logoHeight} type="full" width={logoWidth} />
-        </div>
-
-        {/* Top Level Nav Links */}
-        <ul
-          className={clsx(
-            'hidden gap-1 @4xl:flex @4xl:flex-1',
-            {
-              left: '@4xl:justify-start',
-              center: '@4xl:justify-center',
-              right: '@4xl:justify-end',
-            }[linksPosition],
-          )}
-        >
-          <Stream
-            fallback={
-              <ul className="flex animate-pulse flex-row @4xl:gap-6 @4xl:p-2.5">
-                <li>
-                  <span className="bg-contrast-100 block h-4 w-10 rounded-md" />
-                </li>
-                <li>
-                  <span className="bg-contrast-100 block h-4 w-14 rounded-md" />
-                </li>
-                <li>
-                  <span className="bg-contrast-100 block h-4 w-24 rounded-md" />
-                </li>
-                <li>
-                  <span className="bg-contrast-100 block h-4 w-16 rounded-md" />
-                </li>
-              </ul>
-            }
-            value={streamableLinks}
+    <>
+      <Banner activeLocaleId={activeLocaleId} locales={locales} />
+      <NavigationMenu.Root
+        className={clsx(
+          'font-body @container relative w-full bg-white',
+          className,
+          isFloating ? 'shadow-md' : 'shadow-none',
+        )}
+        delayDuration={0}
+        onValueChange={() => setIsSearchOpen(false)}
+        ref={ref}
+      >
+        <div className="container flex items-center justify-between gap-1 bg-[var(--nav-background,hsl(var(--background)))] py-2 @4xl:py-4">
+          {/* Logo */}
+          <div
+            className={clsx(
+              'flex items-center justify-start self-stretch',
+              linksPosition === 'center' ? 'flex-1' : 'flex-1 @4xl:flex-none',
+            )}
           >
-            {(links) =>
-              links.map((item, i) => (
-                <NavigationMenu.Item key={i} value={i.toString()}>
-                  <NavigationMenu.Trigger asChild>
-                    <Link
-                      className="@4xl:after:bg-border @4xl:after:ease-quad text-nowrap after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:transition-transform @4xl:after:duration-200"
-                      href={item.href}
-                    >
-                      {item.label}
-                    </Link>
-                  </NavigationMenu.Trigger>
-                  {item.groups != null && item.groups.length > 0 && (
-                    <NavigationMenu.Content className="bg-[var(--nav-menu-background,hsl(var(--background)))]">
-                      <div className="container m-auto grid grid-cols-3 justify-center gap-5 py-16">
-                        <div className="flex flex-col items-start gap-6">
-                          {item.groups.map((group, columnIndex) => (
-                            <ul className="flex flex-col gap-6" key={columnIndex}>
-                              {/* Second Level Links */}
-                              {group.label != null && group.label !== '' && (
-                                <li>
-                                  {group.href != null && group.href !== '' && !group.comingSoon ? (
-                                    <Link className={navGroupClassName} href={group.href}>
-                                      {group.label}
-                                    </Link>
-                                  ) : (
-                                    <span
-                                      className={clsx(
-                                        navGroupClassName,
-                                        'cursor-not-allowed text-neutral-400 hover:!text-neutral-400',
-                                      )}
-                                    >
-                                      {group.label}
-                                      {group.comingSoon && (
-                                        <Badge shape="rounded" variant="primary">
-                                          Coming Soon
-                                        </Badge>
-                                      )}
-                                    </span>
-                                  )}
-                                </li>
-                              )}
-                              {group.links.map((link, idx) => (
-                                // Third Level Links
-                                <li key={idx}>
-                                  <Link className={navLinkClassName} href={link.href}>
-                                    {link.label}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          ))}
-                          <div className="mt-8 flex flex-col items-start">
-                            <Link
-                              className={clsx(navLinkClassName, 'text-medium text-base')}
-                              href="/shop"
-                            >
-                              Shop all products
-                            </Link>
-                          </div>
-                        </div>
-                        {/* TODO: Add dynamic content */}
-                        <div className="col-start-3 grid grid-cols-2 gap-5">
-                          <div className="flex flex-col">
-                            <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
-                            <span className="text-medium py-2">Shop The Perfectionist™</span>
-                          </div>
-                          <div className="flex flex-col">
-                            <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
-                            <span className="text-medium py-2">Shop The Sous</span>
-                          </div>
-                        </div>
-                      </div>
-                    </NavigationMenu.Content>
-                  )}
-                </NavigationMenu.Item>
-              ))
-            }
-          </Stream>
-        </ul>
-
-        {/* Icon Buttons */}
-        <div
-          className={clsx(
-            'flex items-center justify-end transition-colors duration-300',
-            linksPosition === 'center' ? 'flex-1' : 'flex-1 @4xl:flex-none',
-          )}
-        >
-          <Popover.Root onOpenChange={setIsSearchOpen} open={isSearchOpen}>
-            <Popover.Anchor className="absolute top-full right-0 left-0" />
-            <Popover.Trigger asChild>
-              <button
-                aria-label={openSearchPopupLabel}
-                className={navButtonClassName}
-                onPointerEnter={(e) => e.preventDefault()}
-                onPointerLeave={(e) => e.preventDefault()}
-                onPointerMove={(e) => e.preventDefault()}
-              >
-                <Search size={20} strokeWidth={1} />
-              </button>
-            </Popover.Trigger>
-            <Popover.Portal>
-              <Popover.Content
-                className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @container h-screen w-[var(--radix-popper-anchor-width)]"
-                side="top"
-              >
-                <div className="flex h-[inherit] flex-col bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out @4xl:inset-x-0">
-                  <AlgoliaSearch closeSearch={handleCloseSearch} />
-                </div>
-              </Popover.Content>
-            </Popover.Portal>
-          </Popover.Root>
-          <Link
-            aria-label={accountLabel}
-            className={clsx(navButtonClassName, 'hidden @4xl:inline-block')}
-            href={accountHref}
+            <LogoLotus height={logoHeight} type="full" width={logoWidth} />
+          </div>
+          {/* Top Level Nav Links */}
+          <ul
+            className={clsx(
+              'hidden gap-1 @4xl:flex @4xl:flex-1',
+              {
+                left: '@4xl:justify-start',
+                center: '@4xl:justify-center',
+                right: '@4xl:justify-end',
+              }[linksPosition],
+            )}
           >
-            <User size={24} strokeWidth={1} />
-          </Link>
-          <Link aria-label={cartLabel} className={navButtonClassName} href={cartHref}>
-            <ShoppingBag size={24} strokeWidth={1} />
             <Stream
               fallback={
-                <span className="bg-contrast-100 text-background absolute -top-0.5 -right-0.5 flex h-4 w-4 animate-pulse items-center justify-center rounded-full text-xs" />
+                <ul className="flex animate-pulse flex-row @4xl:gap-6 @4xl:p-2.5">
+                  <li>
+                    <span className="bg-contrast-100 block h-4 w-10 rounded-md" />
+                  </li>
+                  <li>
+                    <span className="bg-contrast-100 block h-4 w-14 rounded-md" />
+                  </li>
+                  <li>
+                    <span className="bg-contrast-100 block h-4 w-24 rounded-md" />
+                  </li>
+                  <li>
+                    <span className="bg-contrast-100 block h-4 w-16 rounded-md" />
+                  </li>
+                </ul>
               }
-              value={streamableCartCount}
+              value={streamableLinks}
             >
-              {(currentDisplayCount) =>
-                currentDisplayCount != null &&
-                currentDisplayCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--nav-cart-count-background,hsl(var(--foreground)))] text-xs text-[var(--nav-cart-count-text,hsl(var(--background)))]">
-                    {currentDisplayCount}
-                  </span>
-                )
-              }
-            </Stream>
-          </Link>
-
-          <Dialog.Root onOpenChange={setIsMinicartDrawerOpen} open={isMinicartDrawerOpen}>
-            <Dialog.Portal>
-              <Dialog.Overlay className="bg-foreground/50 fixed inset-0 z-50" />
-              <Dialog.Content className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-xl">
-                <Dialog.Title className="sr-only">Cart</Dialog.Title>
-                <Stream
-                  fallback={
-                    <Minicart
-                      cartHref={cartHref}
-                      initialItems={[]}
-                      onClose={() => setIsMinicartDrawerOpen(false)}
-                    />
-                  }
-                  value={streamableCartItems}
-                >
-                  {(cartItems) => (
-                    <Minicart
-                      cartHref={cartHref}
-                      initialItems={cartItems ?? []}
-                      onClose={() => setIsMinicartDrawerOpen(false)}
-                    />
-                  )}
-                </Stream>
-              </Dialog.Content>
-            </Dialog.Portal>
-          </Dialog.Root>
-
-          {/* Mobile Menu */}
-          <Popover.Root onOpenChange={setIsMobileMenuOpen} open={isMobileMenuOpen}>
-            <Popover.Anchor className="absolute top-full right-0 left-0" />
-            <Popover.Trigger asChild>
-              <MobileMenuButton
-                aria-label={mobileMenuTriggerLabel}
-                className="mr-1 @4xl:hidden"
-                onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-                open={isMobileMenuOpen}
-              />
-            </Popover.Trigger>
-            <Popover.Portal>
-              <Popover.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @container z-10 h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)]">
-                <div className="flex h-[inherit] flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-[var(--nav-mobile-background,hsl(var(--background)))] px-4 py-8">
-                  <Stream
-                    fallback={
-                      <ul className="flex animate-pulse flex-col gap-4 p-5 @4xl:gap-2 @4xl:p-5">
-                        <li>
-                          <span className="bg-contrast-100 block h-4 w-10 rounded-md" />
-                        </li>
-                        <li>
-                          <span className="bg-contrast-100 block h-4 w-14 rounded-md" />
-                        </li>
-                        <li>
-                          <span className="bg-contrast-100 block h-4 w-24 rounded-md" />
-                        </li>
-                        <li>
-                          <span className="bg-contrast-100 block h-4 w-16 rounded-md" />
-                        </li>
-                      </ul>
-                    }
-                    value={streamableLinks}
-                  >
-                    {(links) => (
-                      <>
-                        {links.map((item, i) => {
-                          if (!item.groups?.length) return null;
-
-                          return (
-                            <ul className="flex flex-col gap-4 pb-8" key={i}>
-                              {item.groups.map((group, groupIndex) => {
-                                if (!group.label) return null;
-
-                                return (
-                                  <li key={groupIndex}>
+              {(links) =>
+                links.map((item, i) => (
+                  <NavigationMenu.Item key={i} value={i.toString()}>
+                    <NavigationMenu.Trigger
+                      asChild
+                      onPointerEnter={(event) => event.preventDefault()}
+                      onPointerLeave={(event) => event.preventDefault()}
+                      onPointerMove={(event) => event.preventDefault()}
+                    >
+                      {item.groups != null && item.groups.length > 0 ? (
+                        <button
+                          className={clsx(
+                            '@4xl:after:bg-border @4xl:after:ease-quad hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:transition-transform @4xl:after:duration-200',
+                          )}
+                        >
+                          {item.label}
+                        </button>
+                      ) : (
+                        <Link
+                          className="@4xl:after:bg-border @4xl:after:ease-quad text-nowrap after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:transition-transform @4xl:after:duration-200"
+                          href={item.href}
+                        >
+                          {item.label}
+                        </Link>
+                      )}
+                    </NavigationMenu.Trigger>
+                    {item.groups != null && item.groups.length > 0 && (
+                      <NavigationMenu.Content
+                        className="bg-[var(--nav-menu-background,hsl(var(--background)))]"
+                        onPointerEnter={(event) => event.preventDefault()}
+                        onPointerLeave={(event) => event.preventDefault()}
+                      >
+                        <div className="container m-auto grid grid-cols-3 justify-center gap-5 py-16">
+                          <div className="flex flex-col items-start gap-6">
+                            {item.groups.map((group, columnIndex) => (
+                              <ul className="flex flex-col gap-6" key={columnIndex}>
+                                {/* Second Level Links */}
+                                {group.label != null && group.label !== '' && (
+                                  <li>
                                     {group.href != null &&
                                     group.href !== '' &&
                                     !group.comingSoon ? (
-                                      <Link
-                                        className={clsx(
-                                          'flex items-center gap-2 text-lg tracking-widest',
-                                        )}
-                                        href={group.href}
-                                      >
+                                      <Link className={navGroupClassName} href={group.href}>
                                         {group.label}
                                       </Link>
                                     ) : (
-                                      <span className="flex cursor-not-allowed items-center gap-2 text-lg tracking-widest text-neutral-400 hover:!text-neutral-400">
+                                      <span
+                                        className={clsx(
+                                          navGroupClassName,
+                                          'cursor-not-allowed text-neutral-400 hover:!text-neutral-400',
+                                        )}
+                                      >
                                         {group.label}
                                         {group.comingSoon && (
                                           <Badge shape="rounded" variant="primary">
@@ -601,74 +475,257 @@ export const Navigation = forwardRef(function Navigation(
                                       </span>
                                     )}
                                   </li>
-                                );
-                              })}
-                              <li>
-                                <Link className="text-lg tracking-widest" href="/shop">
-                                  Shop all products
-                                </Link>
-                              </li>
-                            </ul>
-                          );
-                        })}
-                        <ul className="flex flex-col gap-4 [&:not(:first-of-type)]:pt-6">
-                          {links.map((item, i) => (
-                            <li key={i}>
-                              <Link className={clsx('text-lg tracking-widest')} href={item.href}>
-                                {item.label}
+                                )}
+                                {group.links.map((link, idx) => (
+                                  // Third Level Links
+                                  <li key={idx}>
+                                    <Link className={navLinkClassName} href={link.href}>
+                                      {link.label}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            ))}
+                            <div className="mt-8 flex flex-col items-start">
+                              <Link className="link text-primary" href="/shop">
+                                Shop all products
                               </Link>
-                            </li>
-                          ))}
-                          <li>
-                            <Link
-                              aria-label={accountLabel}
-                              className="text-lg tracking-widest"
-                              href={accountHref}
-                            >
-                              Sign in/Account
-                            </Link>
-                          </li>
-                        </ul>
-                      </>
+                            </div>
+                          </div>
+                          {/* TODO: Add dynamic content */}
+                          <div className="col-start-3 grid grid-cols-2 gap-5">
+                            <div className="flex flex-col">
+                              <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
+                              <span className="text-medium py-2">Shop The Perfectionist™</span>
+                            </div>
+                            <div className="flex flex-col">
+                              <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
+                              <span className="text-medium py-2">Shop The Sous</span>
+                            </div>
+                          </div>
+                        </div>
+                      </NavigationMenu.Content>
+                    )}
+                  </NavigationMenu.Item>
+                ))
+              }
+            </Stream>
+          </ul>
+          {/* Icon Buttons */}
+          <div
+            className={clsx(
+              'flex items-center justify-end transition-colors duration-300',
+              linksPosition === 'center' ? 'flex-1' : 'flex-1 @4xl:flex-none',
+            )}
+          >
+            <Popover.Root onOpenChange={setIsSearchOpen} open={isSearchOpen}>
+              <Popover.Anchor className="absolute top-full right-0 left-0" />
+              <Popover.Trigger asChild>
+                <button
+                  aria-label={openSearchPopupLabel}
+                  className={navButtonClassName}
+                  onPointerEnter={(e) => e.preventDefault()}
+                  onPointerLeave={(e) => e.preventDefault()}
+                  onPointerMove={(e) => e.preventDefault()}
+                >
+                  <Search size={20} strokeWidth={1} />
+                </button>
+              </Popover.Trigger>
+              <Popover.Portal>
+                <Popover.Content
+                  className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @container h-screen w-[var(--radix-popper-anchor-width)]"
+                  side="top"
+                >
+                  <div className="flex h-[inherit] flex-col bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out @4xl:inset-x-0">
+                    <AlgoliaSearch closeSearch={handleCloseSearch} />
+                  </div>
+                </Popover.Content>
+              </Popover.Portal>
+            </Popover.Root>
+            <Link
+              aria-label={accountLabel}
+              className={clsx(navButtonClassName, 'hidden @4xl:inline-block')}
+              href={accountHref}
+            >
+              <User size={24} strokeWidth={1} />
+            </Link>
+            <Link aria-label={cartLabel} className={navButtonClassName} href={cartHref}>
+              <ShoppingBag size={24} strokeWidth={1} />
+              <Stream
+                fallback={
+                  <span className="bg-contrast-100 text-background absolute -top-0.5 -right-0.5 flex h-4 w-4 animate-pulse items-center justify-center rounded-full text-xs" />
+                }
+                value={streamableCartCount}
+              >
+                {(currentDisplayCount) =>
+                  currentDisplayCount != null &&
+                  currentDisplayCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--nav-cart-count-background,hsl(var(--foreground)))] text-xs text-[var(--nav-cart-count-text,hsl(var(--background)))]">
+                      {currentDisplayCount}
+                    </span>
+                  )
+                }
+              </Stream>
+            </Link>
+            <Dialog.Root onOpenChange={setIsMinicartDrawerOpen} open={isMinicartDrawerOpen}>
+              <Dialog.Portal>
+                <Dialog.Overlay className="bg-foreground/50 fixed inset-0 z-50" />
+                <Dialog.Content className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-xl">
+                  <Dialog.Title className="sr-only">Cart</Dialog.Title>
+                  <Stream
+                    fallback={
+                      <Minicart
+                        cartHref={cartHref}
+                        initialItems={[]}
+                        onClose={() => setIsMinicartDrawerOpen(false)}
+                      />
+                    }
+                    value={streamableCartItems}
+                  >
+                    {(cartItems) => (
+                      <Minicart
+                        cartHref={cartHref}
+                        initialItems={cartItems ?? []}
+                        onClose={() => setIsMinicartDrawerOpen(false)}
+                      />
                     )}
                   </Stream>
-                </div>
-              </Popover.Content>
-            </Popover.Portal>
-          </Popover.Root>
-
-          {/* Locale / Language Dropdown */}
-          {locales && locales.length > 1 ? (
-            <LocaleSwitcher
-              activeLocaleId={activeLocaleId}
-              // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-              locales={locales as [Locale, Locale, ...Locale[]]}
-            />
-          ) : null}
-
-          {/* Currency Dropdown */}
-          <Stream
-            fallback={null}
-            value={Streamable.all([streamableCurrencies, streamableActiveCurrencyId])}
-          >
-            {([currencies, activeCurrencyId]) =>
-              currencies && currencies.length > 1 && currencyAction ? (
-                <CurrencyForm
-                  action={currencyAction}
-                  activeCurrencyId={activeCurrencyId}
-                  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                  currencies={currencies as [Currency, ...Currency[]]}
+                </Dialog.Content>
+              </Dialog.Portal>
+            </Dialog.Root>
+            {/* Mobile Menu */}
+            <Popover.Root onOpenChange={setIsMobileMenuOpen} open={isMobileMenuOpen}>
+              <Popover.Anchor className="absolute top-full right-0 left-0" />
+              <Popover.Trigger asChild>
+                <MobileMenuButton
+                  aria-label={mobileMenuTriggerLabel}
+                  className="mr-1 @4xl:hidden"
+                  onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+                  open={isMobileMenuOpen}
                 />
-              ) : null
-            }
-          </Stream>
-        </div>
-      </div>
+              </Popover.Trigger>
+              <Popover.Portal>
+                <Popover.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @container z-10 h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)]">
+                  <div className="flex h-[inherit] flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-[var(--nav-mobile-background,hsl(var(--background)))] px-4 py-8">
+                    <Stream
+                      fallback={
+                        <ul className="flex animate-pulse flex-col gap-4 p-5 @4xl:gap-2 @4xl:p-5">
+                          <li>
+                            <span className="bg-contrast-100 block h-4 w-10 rounded-md" />
+                          </li>
+                          <li>
+                            <span className="bg-contrast-100 block h-4 w-14 rounded-md" />
+                          </li>
+                          <li>
+                            <span className="bg-contrast-100 block h-4 w-24 rounded-md" />
+                          </li>
+                          <li>
+                            <span className="bg-contrast-100 block h-4 w-16 rounded-md" />
+                          </li>
+                        </ul>
+                      }
+                      value={streamableLinks}
+                    >
+                      {(links) => (
+                        <>
+                          {links.map((item, i) => {
+                            if (!item.groups?.length) return null;
 
-      <div className="absolute top-full right-0 left-0 z-50 flex w-full justify-center perspective-[2000px]">
-        <NavigationMenu.Viewport className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative w-full shadow-md" />
-      </div>
-    </NavigationMenu.Root>
+                            return (
+                              <ul className="flex flex-col gap-4 pb-8" key={i}>
+                                {item.groups.map((group, groupIndex) => {
+                                  if (!group.label) return null;
+
+                                  return (
+                                    <li key={groupIndex}>
+                                      {group.href != null &&
+                                      group.href !== '' &&
+                                      !group.comingSoon ? (
+                                        <Link
+                                          className={clsx(
+                                            'flex items-center gap-2 text-lg tracking-widest',
+                                          )}
+                                          href={group.href}
+                                        >
+                                          {group.label}
+                                        </Link>
+                                      ) : (
+                                        <span className="flex cursor-not-allowed items-center gap-2 text-lg tracking-widest text-neutral-400 hover:!text-neutral-400">
+                                          {group.label}
+                                          {group.comingSoon && (
+                                            <Badge shape="rounded" variant="primary">
+                                              Coming Soon
+                                            </Badge>
+                                          )}
+                                        </span>
+                                      )}
+                                    </li>
+                                  );
+                                })}
+                                <li>
+                                  <Link className="text-lg tracking-widest" href="/shop">
+                                    Shop all products
+                                  </Link>
+                                </li>
+                              </ul>
+                            );
+                          })}
+                          <ul className="flex flex-col gap-4 [&:not(:first-of-type)]:py-6">
+                            {links.map((item, i) => (
+                              <li key={i}>
+                                <Link className={clsx('text-lg tracking-widest')} href={item.href}>
+                                  {item.label}
+                                </Link>
+                              </li>
+                            ))}
+                            <li>
+                              <Link
+                                aria-label={accountLabel}
+                                className="text-lg tracking-widest"
+                                href={accountHref}
+                              >
+                                Sign in/Account
+                              </Link>
+                            </li>
+                          </ul>
+                        </>
+                      )}
+                    </Stream>
+                    {/* Locale / Language Dropdown */}
+                    {locales && locales.length > 1 ? (
+                      <LocaleSwitcher
+                        activeLocaleId={activeLocaleId}
+                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                        locales={locales as [Locale, Locale, ...Locale[]]}
+                      />
+                    ) : null}
+                  </div>
+                </Popover.Content>
+              </Popover.Portal>
+            </Popover.Root>
+            {/* Currency Dropdown */}
+            <Stream
+              fallback={null}
+              value={Streamable.all([streamableCurrencies, streamableActiveCurrencyId])}
+            >
+              {([currencies, activeCurrencyId]) =>
+                currencies && currencies.length > 1 && currencyAction ? (
+                  <CurrencyForm
+                    action={currencyAction}
+                    activeCurrencyId={activeCurrencyId}
+                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                    currencies={currencies as [Currency, ...Currency[]]}
+                  />
+                ) : null
+              }
+            </Stream>
+          </div>
+        </div>
+        <div className="absolute top-full right-0 left-0 z-50 flex w-full justify-center perspective-[2000px]">
+          <NavigationMenu.Viewport className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative w-full shadow-md" />
+        </div>
+      </NavigationMenu.Root>
+    </>
   );
 });
 
@@ -699,46 +756,75 @@ function LocaleSwitcher({
   activeLocaleId?: string;
   locales: [Locale, ...Locale[]];
 }) {
-  const activeLocale = locales.find((locale) => locale.id === activeLocaleId);
+  // const activeLocale = locales.find((locale) => locale.id === activeLocaleId);
   const [isPending, startTransition] = useTransition();
   const switchLocale = useSwitchLocale();
+  let localeLabel = '';
+
+  if (activeLocaleId === 'en') {
+    localeLabel = 'English';
+  } else if (activeLocaleId === 'fr') {
+    localeLabel = 'Français';
+  } else if (activeLocaleId === 'es') {
+    localeLabel = 'Español';
+  }
 
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger
-        className={clsx(
-          'flex items-center gap-1 text-xs uppercase transition-opacity disabled:opacity-30',
-          navButtonClassName,
-        )}
-        disabled={isPending}
-      >
-        {activeLocale?.id ?? locales[0].id}
-        <ChevronDown size={16} strokeWidth={1.5} />
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Portal>
-        <DropdownMenu.Content
-          align="end"
-          className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
-          sideOffset={16}
-        >
-          {locales.map(({ id, label }) => (
-            <DropdownMenu.Item
+    <>
+      <div className="hidden @4xl:inline-block">
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger
+            className={clsx(
+              'flex items-center gap-1 p-0 text-base transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30',
+            )}
+            disabled={isPending}
+          >
+            {localeLabel}
+            <ChevronDown size={16} strokeWidth={1.5} />
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              align="end"
+              className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
+              sideOffset={16}
+            >
+              {locales.map(({ id, label }) => (
+                <DropdownMenu.Item
+                  className={clsx(
+                    'cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
+                    {
+                      'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
+                        id === activeLocaleId,
+                    },
+                  )}
+                  key={id}
+                  onSelect={() => startTransition(() => switchLocale(id))}
+                >
+                  {label}
+                </DropdownMenu.Item>
+              ))}
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
+      </div>
+
+      <div className="flex flex-row items-center gap-2 @4xl:hidden">
+        {locales.map(({ id, label }) => {
+          return (
+            <button
               className={clsx(
-                'nav-locale-item cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
-                {
-                  'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
-                    id === activeLocaleId,
-                },
+                'rounded-lg px-3 py-2 text-base',
+                id === activeLocaleId ? 'bg-contrast-100' : 'bg-transparent',
               )}
               key={id}
               onSelect={() => startTransition(() => switchLocale(id))}
             >
               {label}
-            </DropdownMenu.Item>
-          ))}
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu.Root>
+            </button>
+          );
+        })}
+      </div>
+    </>
   );
 }
 

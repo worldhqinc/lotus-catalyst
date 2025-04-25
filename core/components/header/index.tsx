@@ -108,19 +108,19 @@ export const Header = async () => {
         groups: [
           {
             label: 'Professional Series',
-            href: '#',
+            href: '/shop/professional-series',
             links: [],
             comingSoon: false,
           },
           {
             label: 'Signature Series',
-            href: '#',
+            href: '/shop/signature-series',
             links: [],
             comingSoon: true,
           },
           {
             label: 'Accessories',
-            href: '#',
+            href: '/shop/accessories',
             links: [],
             comingSoon: false,
           },
