@@ -3,6 +3,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { clsx } from 'clsx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import Script from 'next/script';
 import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
@@ -14,6 +15,7 @@ import { fonts } from '~/app/fonts';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
+import LoadGoogleTagManager from '~/components/gtm';
 import WeglotClient from '~/components/weglot-client';
 import { routing } from '~/i18n/routing';
 
@@ -96,6 +98,7 @@ export default async function RootLayout({ params, children }: Props) {
   return (
     <html className={clsx(fonts.map((f) => f.variable))} lang={locale}>
       <body className="font-body flex min-h-screen flex-col antialiased [&_[data-radix-popper-content-wrapper]]:!z-20">
+        <LoadGoogleTagManager />
         <NextIntlClientProvider>
           <WeglotClient />
           <NuqsAdapter>
@@ -108,6 +111,11 @@ export default async function RootLayout({ params, children }: Props) {
           </NuqsAdapter>
         </NextIntlClientProvider>
         <VercelComponents />
+        <Script
+          id="ze-snippet"
+          src={`https://static.zdassets.com/ekr/snippet.js?key=${process.env.NEXT_PUBLIC_ZENDESK_KEY}`}
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

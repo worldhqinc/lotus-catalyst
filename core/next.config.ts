@@ -53,7 +53,18 @@ export default async (): Promise<NextConfig> => {
       ppr: 'incremental',
     },
     images: {
-      domains: ['images.ctfassets.net', 'cdn11.bigcommerce.com'],
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'images.ctfassets.net',
+          pathname: '**',
+        },
+        {
+          protocol: 'https',
+          hostname: 'cdn11.bigcommerce.com',
+          pathname: '**',
+        },
+      ],
     },
     typescript: {
       ignoreBuildErrors: !!process.env.CI,
