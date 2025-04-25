@@ -26,7 +26,7 @@ export default function WeglotClient() {
       onLoad={() => {
         window.Weglot.initialize({
           api_key: `${process.env.NEXT_PUBLIC_WEGLOT_API_KEY}`,
-          hide_switcher: false,
+          hide_switcher: true,
           cache: true,
         });
 
