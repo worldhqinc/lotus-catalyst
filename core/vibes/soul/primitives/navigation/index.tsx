@@ -373,16 +373,35 @@ export const Navigation = forwardRef(function Navigation(
             {(links) =>
               links.map((item, i) => (
                 <NavigationMenu.Item key={i} value={i.toString()}>
-                  <NavigationMenu.Trigger asChild>
-                    <Link
-                      className="@4xl:after:bg-border @4xl:after:ease-quad text-nowrap after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:transition-transform @4xl:after:duration-200"
-                      href={item.href}
-                    >
-                      {item.label}
-                    </Link>
+                  <NavigationMenu.Trigger
+                    asChild
+                    onPointerEnter={(event) => event.preventDefault()}
+                    onPointerLeave={(event) => event.preventDefault()}
+                    onPointerMove={(event) => event.preventDefault()}
+                  >
+                    {item.groups != null && item.groups.length > 0 ? (
+                      <button
+                        className={clsx(
+                          'hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:left-0 @4xl:after:top-full @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:bg-border @4xl:after:transition-transform @4xl:after:duration-200 @4xl:after:ease-quad',
+                        )}
+                      >
+                        {item.label}
+                      </button>
+                    ) : (
+                      <Link
+                        className="@4xl:after:bg-border @4xl:after:ease-quad text-nowrap after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:scale-x-0 @4xl:after:transition-transform @4xl:after:duration-200"
+                        href={item.href}
+                      >
+                        {item.label}
+                      </Link>
+                    )}
                   </NavigationMenu.Trigger>
                   {item.groups != null && item.groups.length > 0 && (
-                    <NavigationMenu.Content className="bg-[var(--nav-menu-background,hsl(var(--background)))]">
+                    <NavigationMenu.Content
+                      className="bg-[var(--nav-menu-background,hsl(var(--background)))]"
+                      onPointerEnter={(event) => event.preventDefault()}
+                      onPointerLeave={(event) => event.preventDefault()}
+                    >
                       <div className="container m-auto grid grid-cols-3 justify-center gap-5 py-16">
                         <div className="flex flex-col items-start gap-6">
                           {item.groups.map((group, columnIndex) => (
