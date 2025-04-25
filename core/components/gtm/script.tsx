@@ -64,7 +64,7 @@ export default function GoogleTagManagerScript() {
       return;
     }
 
-    (function (w: Window, d: Document, s: string, l: string, i: string) {
+    (function (w: Window & { [key: string]: any[] }, d: Document, s: string, l: string, i: string) {
       w[l] = w[l] || [];
       w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
       const f = d.getElementsByTagName(s)[0];
@@ -78,7 +78,13 @@ export default function GoogleTagManagerScript() {
       if (f && f.parentNode) {
         f.parentNode.insertBefore(j, f);
       }
-    })(window, document, 'script', 'dataLayer', gtm_id);
+    })(
+      window as unknown as Window & { [key: string]: any[] },
+      document,
+      'script',
+      'dataLayer',
+      gtm_id,
+    );
   }, []);
 
   return null;
