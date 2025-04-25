@@ -487,7 +487,7 @@ export const Navigation = forwardRef(function Navigation(
                               </ul>
                             ))}
                             <div className="mt-8 flex flex-col items-start">
-                              <Link className="link text-primary" href="/shop">
+                              <Link className="link text-primary" href="/shop-all">
                                 Shop all products
                               </Link>
                             </div>
@@ -663,7 +663,7 @@ export const Navigation = forwardRef(function Navigation(
                                   );
                                 })}
                                 <li>
-                                  <Link className="text-lg tracking-widest" href="/shop">
+                                  <Link className="text-lg tracking-widest" href="/shop-all">
                                     Shop all products
                                   </Link>
                                 </li>
