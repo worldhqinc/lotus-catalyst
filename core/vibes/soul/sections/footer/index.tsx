@@ -81,8 +81,6 @@ interface Props {
 export const Footer = forwardRef(function Footer(
   {
     action,
-    sections: streamableSections,
-    contactTitle = 'Contact Us',
     contactInformation: streamableContactInformation,
     socialMediaLinks: streamableSocialMediaLinks,
     copyright: streamableCopyright,
@@ -98,7 +96,7 @@ export const Footer = forwardRef(function Footer(
       )}
       ref={ref}
     >
-      <div className="container py-6 @xl:py-10 @4xl:py-20">
+      <div className="container py-6 @xl:py-10 @4xl:py-12">
         <div className="flex flex-col justify-between gap-x-8 gap-y-12 @3xl:flex-row @4xl:gap-x-16 @6xl:gap-x-32">
           <div className="flex flex-1 flex-col gap-4 @3xl:w-1/3 @3xl:gap-6 @4xl:flex-none">
             {/* Logo Information */}
@@ -125,7 +123,10 @@ export const Footer = forwardRef(function Footer(
                 if (contactInformation?.address != null || contactInformation?.phone != null) {
                   return (
                     <div>
-                      <p className="text-lg">Join our mailing list for insider updates, exclusive offers, and cooking inspiration.</p>
+                      <p className="text-lg">
+                        Join our mailing list for insider updates, exclusive offers, and cooking
+                        inspiration.
+                      </p>
                       <div className="mt-8">
                         <InlineEmailForm action={action} />
                       </div>
@@ -170,7 +171,7 @@ export const Footer = forwardRef(function Footer(
           </div>
 
           {/* Footer Columns of Links */}
-          <div className="grid w-full flex-1 grid-cols-1 justify-end divide-y divide-contrast-200 @xl:gap-y-10 @3xl:divide-y-0 @3xl:grid-cols-2 @4xl:grid-cols-4 @4xl:gap-x-4">
+          <div className="divide-contrast-200 grid w-full flex-1 grid-cols-1 justify-end divide-y @xl:gap-y-10 @3xl:grid-cols-2 @3xl:divide-y-0 @4xl:grid-cols-4 @4xl:gap-x-4">
             <div className="py-6 @3xl:py-0">
               <span className="text-foreground mb-3 block text-lg font-medium">Products</span>
               <ul className="flex flex-col items-start gap-4">
@@ -346,7 +347,7 @@ export const Footer = forwardRef(function Footer(
             }}
           </Stream>
 
-          <div className="flex flex-col items-start gap-4 @4xl:flex-row @4xl:items-center @4xl:gap-4">
+          <div className="flex flex-col items-start gap-4 @4xl:flex-row @4xl:items-center @4xl:gap-8">
             <Link
               className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
               href="/privacy-policy"

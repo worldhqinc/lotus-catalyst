@@ -20,7 +20,7 @@ export function InlineEmailForm({
   className,
   action,
   submitLabel = 'Submit',
-  placeholder = 'Enter your email',
+  placeholder = 'Newsletter address',
 }: {
   className?: string;
   placeholder?: string;
@@ -64,7 +64,7 @@ export function InlineEmailForm({
       >
         <input
           {...getInputProps(fields.email, { type: 'email' })}
-          className="placeholder-contrast-gray-500 text-foreground h-14 w-full bg-transparent pr-16 placeholder:font-heading placeholder:font-normal focus:outline-hidden"
+          className="placeholder-contrast-gray-500 text-foreground placeholder:font-heading h-14 w-full bg-transparent pr-16 placeholder:font-normal focus:outline-hidden @4xl:placeholder:text-xl"
           data-1p-ignore
           key={fields.email.id}
           placeholder={placeholder}
