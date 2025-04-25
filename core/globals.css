@@ -16,7 +16,7 @@
 }
 
 @layer base {
-  a:not([class]) {
+  a:not([class]), .link {
     @apply text-inherit relative inline-block after:absolute after:top-full after:left-0 after:w-full after:h-px after:bg-current after:scale-x-0 after:origin-left after:transition-transform after:duration-200 after:ease-quad hover:after:scale-x-100;
   }
 }

@@ -445,7 +445,7 @@ export const Navigation = forwardRef(function Navigation(
                             ))}
                             <div className="mt-8 flex flex-col items-start">
                               <Link
-                                className={clsx(navLinkClassName, 'text-medium text-base')}
+                                className="link text-primary"
                                 href="/shop"
                               >
                                 Shop all products
