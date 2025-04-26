@@ -81,8 +81,6 @@ interface Props {
 export const Footer = forwardRef(function Footer(
   {
     action,
-    sections: streamableSections,
-    contactTitle = 'Contact Us',
     contactInformation: streamableContactInformation,
     socialMediaLinks: streamableSocialMediaLinks,
     copyright: streamableCopyright,
@@ -93,13 +91,13 @@ export const Footer = forwardRef(function Footer(
   return (
     <footer
       className={clsx(
-        '@container border-t border-b-4 border-t-[var(--footer-border-top,hsl(var(--contrast-100)))] border-b-[var(--footer-border-bottom,hsl(var(--primary)))] bg-[var(--footer-background,hsl(var(--background)))]',
+        '@container border-t border-t-[var(--footer-border-top,hsl(var(--contrast-100)))] bg-[var(--footer-background,hsl(var(--background)))]',
         className,
       )}
       ref={ref}
     >
-      <div className="container py-6 @xl:py-10 @4xl:py-20">
-        <div className="flex flex-col justify-between gap-x-8 gap-y-12 @3xl:flex-row">
+      <div className="container py-6 @xl:py-10 @4xl:py-12">
+        <div className="flex flex-col justify-between gap-x-8 gap-y-12 @3xl:flex-row @4xl:gap-x-16 @6xl:gap-x-32">
           <div className="flex flex-1 flex-col gap-4 @3xl:w-1/3 @3xl:gap-6 @4xl:flex-none">
             {/* Logo Information */}
             <LogoLotus height={40} type="icon" width={80} />
@@ -125,7 +123,10 @@ export const Footer = forwardRef(function Footer(
                 if (contactInformation?.address != null || contactInformation?.phone != null) {
                   return (
                     <div>
-                      <p className="text-lg">{contactTitle}</p>
+                      <p className="text-lg">
+                        Join our mailing list for insider updates, exclusive offers, and cooking
+                        inspiration.
+                      </p>
                       <div className="mt-8">
                         <InlineEmailForm action={action} />
                       </div>
@@ -170,164 +171,162 @@ export const Footer = forwardRef(function Footer(
           </div>
 
           {/* Footer Columns of Links */}
-          <Stream
-            fallback={
-              <div className="grid w-full flex-1 animate-pulse [grid-template-columns:_repeat(auto-fill,_150px)] gap-8 @xl:gap-y-10">
-                <div className="pr-8">
-                  <div className="mb-3 flex h-[1lh] items-center">
-                    <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-sm" />
-                  </div>
+          <div className="divide-contrast-200 grid w-full flex-1 grid-cols-1 justify-end divide-y @xl:gap-y-10 @3xl:grid-cols-2 @3xl:divide-y-0 @4xl:grid-cols-4 @4xl:gap-x-4">
+            <div className="py-6 @3xl:py-0">
+              <span className="text-foreground mb-3 block text-lg font-medium">Products</span>
+              <ul className="flex flex-col items-start gap-4">
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/shop-all"
+                  >
+                    Shop All
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/shop/professional-series"
+                  >
+                    Professional Series
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/shop/accessories"
+                  >
+                    Accessories
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-                  <ul>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+            <div className="py-6 @3xl:py-0">
+              <span className="text-foreground mb-3 block text-lg font-medium">About Us</span>
+              <ul className="flex flex-col items-start gap-4">
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/our-story"
+                  >
+                    Our Story
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/press"
+                  >
+                    Press
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/resources"
+                  >
+                    Resources
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-                <div className="pr-8">
-                  <div className="mb-3 flex h-[1lh] items-center">
-                    <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-sm" />
-                  </div>
+            <div className="py-6 @3xl:py-0">
+              <span className="text-foreground mb-3 block text-lg font-medium">My Account</span>
+              <ul className="flex flex-col items-start gap-4">
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/login"
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/account/orders"
+                  >
+                    Orders
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/wishlist"
+                  >
+                    Wishlist
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-                  <ul>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="pr-8">
-                  <div className="mb-3 flex h-[1lh] items-center">
-                    <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-sm" />
-                  </div>
-
-                  <ul>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="pr-8">
-                  <div className="mb-3 flex h-[1lh] items-center">
-                    <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-sm" />
-                  </div>
-
-                  <ul>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                    <li className="py-2 text-sm">
-                      <div className="flex h-[1lh] items-center text-sm">
-                        <span className="bg-contrast-100 h-[1ex] w-[10ch] rounded-xs" />
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            }
-            value={streamableSections}
-          >
-            {(sections) => {
-              if (sections.length > 0) {
-                return (
-                  <div className="grid w-full flex-1 [grid-template-columns:_repeat(auto-fill,_150px)] justify-end gap-8 @xl:gap-y-10">
-                    {sections.map(({ title, links }, i) => (
-                      <div key={i}>
-                        {title != null && (
-                          <span className="text-foreground mb-3 block text-lg font-semibold">
-                            {title}
-                          </span>
-                        )}
-
-                        <ul className="flex flex-col items-start gap-4">
-                          {links.map((link, idx) => {
-                            return (
-                              <li key={idx}>
-                                <Link
-                                  className="ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
-                                  href={link.href}
-                                >
-                                  {link.label}
-                                </Link>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                );
-              }
-            }}
-          </Stream>
+            <div className="py-6 @3xl:py-0">
+              <span className="text-foreground mb-3 block text-lg font-medium">Support</span>
+              <ul className="flex flex-col items-start gap-4">
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/contact-us"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/registration"
+                  >
+                    Registration
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/faqs"
+                  >
+                    FAQs
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/tutorials"
+                  >
+                    Tutorials
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/free-shipping"
+                  >
+                    Free Shipping
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/warranty"
+                  >
+                    Warranty
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
+                    href="/returns"
+                  >
+                    Returns
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col-reverse items-start gap-y-8 pt-16 @3xl:flex-row-reverse @3xl:items-end @3xl:pt-20">
+        <div className="flex flex-col-reverse items-start gap-y-8 pt-12 @3xl:flex-row-reverse @3xl:items-start @3xl:justify-between">
           {/* Copyright */}
           <Stream
             fallback={
@@ -348,8 +347,35 @@ export const Footer = forwardRef(function Footer(
             }}
           </Stream>
 
+          <div className="flex flex-col items-start gap-4 @4xl:flex-row @4xl:items-center @4xl:gap-8">
+            <Link
+              className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
+              href="/privacy-policy"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
+              href="#"
+            >
+              Don't Sell or Share My Information
+            </Link>
+            <Link
+              className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
+              href="/terms-of-service"
+            >
+              Terms of Service
+            </Link>
+            <Link
+              className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
+              href="/#"
+            >
+              Cookie Preferences
+            </Link>
+          </div>
+
           {/* Social Media Links */}
-          <Stream
+          {/* <Stream
             fallback={
               <div className="flex animate-pulse flex-wrap gap-2">
                 <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
@@ -381,7 +407,7 @@ export const Footer = forwardRef(function Footer(
                 );
               }
             }}
-          </Stream>
+          </Stream> */}
         </div>
       </div>
     </footer>
