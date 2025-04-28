@@ -5,6 +5,10 @@ import { useActionState, useState } from 'react';
 import { submitForm } from '../_actions/submit-form';
 import { TicketField } from '../page';
 
+import { Input } from '@/vibes/soul/form/input';
+import { Label } from '@/vibes/soul/form/label';
+import { Select } from '@/vibes/soul/form/select';
+
 import { Button } from '@/vibes/soul/primitives/button';
 import { Modal } from '@/vibes/soul/primitives/modal';
 
@@ -32,15 +36,18 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
       isOpen={isOpen}
       setOpen={setIsOpen}
       title="Send an email"
-      trigger={<Button className="w-full md:w-auto" size="medium">Send an email</Button>}
+      trigger={
+        <Button className="w-full md:w-auto" size="medium">
+          Send an email
+        </Button>
+      }
     >
-      <form action={formAction} className="mt-6 flex max-w-lg flex-col gap-4">
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-gray-700" htmlFor="email">
+      <form action={formAction} className="flex max-w-lg flex-col gap-6 md:gap-4">
+        <div className="flex flex-col gap-1">
+          <Label className="text-foreground text-sm font-medium" htmlFor="email">
             Email Address
-          </label>
-          <input
-            className="focus:border-primary focus:ring-primary rounded-md border border-gray-300 px-3 py-2 focus:ring-1 focus:outline-none"
+          </Label>
+          <Input
             id="email"
             name="email"
             required
@@ -48,28 +55,25 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
           />
         </div>
         {fields.map((field) => (
-          <div className="flex flex-col gap-2" key={field.id}>
-            <label className="text-sm font-medium text-gray-700" htmlFor={field.id.toString()}>
+          <div className="flex flex-col gap-1" key={field.id}>
+            <Label className="text-foreground text-sm font-medium" htmlFor={field.id.toString()}>
               {field.title_in_portal}
-            </label>
-            <p className="text-sm text-gray-500">{field.description}</p>
+            </Label>
+            {field.description && (
+              <p className="text-contrast-400 text-xs">{field.description}</p>
+            )}
             {field.custom_field_options ? (
-              <select
-                className="focus:border-primary focus:ring-primary rounded-md border border-gray-300 px-3 py-2 focus:ring-1 focus:outline-none"
+              <Select
                 id={field.id.toString()}
                 name={field.id.toString()}
+                options={field.custom_field_options.map((option) => ({
+                  label: option.name,
+                  value: option.value,
+                }))}
                 required={field.required}
-              >
-                <option value="">-</option>
-                {field.custom_field_options.map((option) => (
-                  <option key={option.id} value={option.value}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
+              />
             ) : (
-              <input
-                className="focus:border-primary focus:ring-primary rounded-md border border-gray-300 px-3 py-2 focus:ring-1 focus:outline-none"
+              <Input
                 id={field.id.toString()}
                 name={field.id.toString()}
                 required={field.required}
@@ -78,12 +82,14 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
             )}
           </div>
         ))}
-        <button
-          className="bg-primary hover:bg-primary/90 focus:ring-primary mt-4 inline-flex justify-center rounded-md px-4 py-2 text-sm font-medium text-white focus:ring-2 focus:ring-offset-2 focus:outline-none"
-          type="submit"
-        >
-          Submit
-        </button>
+        <div className="flex justify-end gap-2 md:mt-2">
+          <Button className="flex-1 md:flex-none" onClick={() => setIsOpen(false)} size="medium" variant="tertiary">
+            Cancel
+          </Button>
+          <Button className="flex-1 md:flex-none" size="medium" type="submit">
+            Submit
+          </Button>
+        </div>
       </form>
     </Modal>
   );

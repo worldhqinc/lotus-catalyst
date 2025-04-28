@@ -60,7 +60,7 @@ export const Modal = ({
             <div className="flex flex-col">
               <div
                 className={clsx(
-                  'border-b-contrast-200 mb-5 flex min-h-10 flex-row items-center border-b py-3 pl-5',
+                  'flex min-h-10 flex-row items-center pt-6 pl-5',
                   hideHeader ? 'sr-only' : '',
                 )}
               >
@@ -77,7 +77,7 @@ export const Modal = ({
                   </div>
                 )}
               </div>
-              <div className={clsx('mb-5 flex-1 px-5', hideHeader ? 'mt-5' : '')}>{children}</div>
+              <div className="my-6 flex-1 px-6">{children}</div>
             </div>
           </Dialog.Content>
         </Dialog.Overlay>

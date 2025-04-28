@@ -101,7 +101,7 @@ export function Select({
             variant === 'rectangle' ? 'rounded-lg' : 'rounded-full',
             {
               light:
-                'bg-[var(--select-light-trigger-background,hsl(var(--white)))] text-[var(--select-light-trigger-text,hsl(var(--foreground)))] hover:border-[var(--select-light-trigger-border-hover,hsl(var(--contrast-300)))] hover:bg-[var(--select-light-trigger-background-hover,hsl(var(--contrast-100)))] focus-visible:ring-[var(--select-light-trigger-focus,hsl(var(--primary)))]',
+                'bg-[var(--select-light-trigger-background,hsl(var(--white)))] text-[var(--select-light-trigger-text,hsl(var(--foreground)))] hover:border-[var(--select-light-trigger-border-hover,hsl(var(--primary)))] focus-visible:ring-[var(--select-light-trigger-focus,hsl(var(--primary)))]',
               dark: 'bg-[var(--select-dark-trigger-background,hsl(var(--black)))] text-[var(--select-dark-trigger-text,hsl(var(--background)))] hover:border-[var(--select-dark-trigger-border-hover,hsl(var(--contrast-300)))] hover:bg-[var(--select-dark-trigger-background-hover,hsl(var(--contrast-500)))] focus-visible:ring-[var(--select-dark-trigger-focus,hsl(var(--primary)))]',
             }[colorScheme],
             {
