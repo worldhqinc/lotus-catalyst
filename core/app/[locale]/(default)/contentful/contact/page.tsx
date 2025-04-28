@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { revalidate } from '~/client/revalidate-target';
 
 import { ContactForm } from './_components/contact-form';
+import { Button } from '@/vibes/soul/primitives/button';
 
 const TicketFormSchema = z.object({
   ticket_form: z.object({
@@ -149,9 +150,63 @@ export default async function ContactPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-      <h1>Contact</h1>
-      <ContactForm fields={fields} />
-    </div>
+    <>
+      <div className="bg-primary py-8 text-center text-white md:py-16">
+        <div className="container max-w-[300px] md:max-w-lg lg:max-w-2xl">
+          <h1 className="font-heading text-4xl uppercase md:text-6xl">Contact Lotus</h1>
+          <p className="mt-4">Have a question? Need a hand? Our team is ready to help.</p>
+        </div>
+      </div>
+      <div className="container my-8 md:my-16 lg:max-w-[1142px]">
+        <div className="border-contrast-200 divide-contrast-200 divide-y rounded-lg border lg:grid lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+          <div className="flex flex-col p-4 lg:p-8">
+            <div>
+              <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
+                Chat
+              </h2>
+              <p className="mt-4 lg:pb-6 lg:leading-[24px]">Representatives are available.</p>
+            </div>
+            <div className="my-8">
+              <Button className="w-full md:w-auto" size="medium">
+                Message us
+              </Button>
+            </div>
+          </div>
+          <div className="flex flex-col p-4 lg:p-8">
+            <div>
+              <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
+                Email
+              </h2>
+              <p className="mt-4 lg:pb-6 lg:leading-[24px]">Don't have time to chat today?</p>
+            </div>
+            <div className="my-8">
+              <ContactForm fields={fields} />
+            </div>
+            <p className="text-contrast-400 text-xs leading-[20px]">
+              Fill out this form and one of our customer service reps will be in touch within 48
+              hours.
+            </p>
+          </div>
+          <div className="flex flex-col p-4 lg:p-8">
+            <div>
+              <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
+                Call
+              </h2>
+              <p className="mt-4 lg:leading-[24px]">
+                Available Monday through Friday 9:00 am - 4:30 pm ET
+              </p>
+            </div>
+            <div className="my-8">
+              <Button className="w-full md:w-auto" size="medium">
+                1-888-568-8761
+              </Button>
+            </div>
+            <p className="text-contrast-400 text-xs leading-[20px]">
+              Note: we are closed on major US holidays
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
