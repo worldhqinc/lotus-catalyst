@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { Button } from '@/vibes/soul/primitives/button';
+import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { revalidate } from '~/client/revalidate-target';
 
 import { ContactForm } from './_components/contact-form';
@@ -164,6 +165,7 @@ export default async function ContactPage() {
               <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
                 Chat
               </h2>
+              {/* TODO: Add chat widget */}
               <p className="mt-4 lg:pb-6 lg:leading-[24px]">Representatives are available.</p>
             </div>
             <div className="my-8">
@@ -197,9 +199,9 @@ export default async function ContactPage() {
               </p>
             </div>
             <div className="my-8">
-              <Button className="w-full md:w-auto" size="medium">
+              <ButtonLink className="w-full md:w-auto" size="medium" href="tel:18885688761">
                 1-888-568-8761
-              </Button>
+              </ButtonLink>
             </div>
             <p className="text-contrast-400 text-xs leading-[20px]">
               Note: we are closed on major US holidays
