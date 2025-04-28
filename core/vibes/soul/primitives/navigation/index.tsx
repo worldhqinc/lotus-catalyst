@@ -772,14 +772,24 @@ function LocaleSwitcher({
   // const activeLocale = locales.find((locale) => locale.id === activeLocaleId);
   const [isPending, startTransition] = useTransition();
   const switchLocale = useSwitchLocale();
-  let localeLabel = '';
 
-  if (activeLocaleId === 'en') {
-    localeLabel = 'English';
-  } else if (activeLocaleId === 'fr') {
-    localeLabel = 'Français';
-  } else if (activeLocaleId === 'es') {
-    localeLabel = 'Español';
+  function getLocaleLabel(localeId: string | undefined) {
+    switch (localeId) {
+      case 'en':
+        return 'English';
+        break;
+
+      case 'fr':
+        return 'Français';
+        break;
+
+      case 'es':
+        return 'Español';
+        break;
+
+      default:
+        return 'English';
+    }
   }
 
   return (
@@ -788,11 +798,11 @@ function LocaleSwitcher({
         <DropdownMenu.Root>
           <DropdownMenu.Trigger
             className={clsx(
-              'flex items-center gap-1 p-0 text-base transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30',
+              'nav-locale-button flex items-center gap-1 p-0 text-base transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30',
             )}
             disabled={isPending}
           >
-            {localeLabel}
+            {getLocaleLabel(activeLocaleId)}
             <ChevronDown size={16} strokeWidth={1.5} />
           </DropdownMenu.Trigger>
           <DropdownMenu.Portal>
@@ -801,7 +811,7 @@ function LocaleSwitcher({
               className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
               sideOffset={16}
             >
-              {locales.map(({ id, label }) => (
+              {locales.map(({ id }) => (
                 <DropdownMenu.Item
                   className={clsx(
                     'nav-locale-item cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
@@ -813,7 +823,7 @@ function LocaleSwitcher({
                   key={id}
                   onSelect={() => startTransition(() => switchLocale(id))}
                 >
-                  {label}
+                  {getLocaleLabel(id)}
                 </DropdownMenu.Item>
               ))}
             </DropdownMenu.Content>
