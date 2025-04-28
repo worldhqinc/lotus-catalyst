@@ -358,7 +358,7 @@ function CounterForm({
   return (
     <form {...getFormProps(form)} action={action}>
       <input {...getInputProps(fields.id, { type: 'hidden' })} key={fields.id.id} />
-      <div className="flex w-full flex-wrap items-center gap-x-5 gap-y-2">
+      <div className="cart-action-buttons flex w-full flex-wrap items-center gap-x-5 gap-y-2">
         <span className="font-medium @xl:ml-auto">{lineItem.price}</span>
 
         {/* Counter */}
