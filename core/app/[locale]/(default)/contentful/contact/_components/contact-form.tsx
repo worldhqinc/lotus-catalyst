@@ -12,7 +12,7 @@ import { submitForm } from '../_actions/submit-form';
 import { TicketField } from '../page';
 
 export interface FormState {
-  errors: string[] | null;
+  errors: Record<string, string[]> | null;
   success: boolean;
 }
 
@@ -41,12 +41,18 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
         </Button>
       }
     >
-      <form action={formAction} className="flex max-w-lg flex-col gap-6 md:gap-4">
+      <form action={formAction} className="flex max-w-lg flex-col gap-6 md:gap-4" noValidate>
         <div className="flex flex-col gap-1">
           <Label className="text-foreground text-sm font-medium" htmlFor="email">
             Email Address
           </Label>
-          <Input id="email" name="email" required type="email" />
+          <Input
+            errors={state.errors?.email || undefined}
+            id="email"
+            name="email"
+            required
+            type="email"
+          />
         </div>
         {fields.map((field) => (
           <div className="flex flex-col gap-1" key={field.id}>
@@ -58,6 +64,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
             ) : null}
             {field.custom_field_options ? (
               <Select
+                errors={state.errors?.[field.id.toString()] || undefined}
                 id={field.id.toString()}
                 name={field.id.toString()}
                 options={field.custom_field_options.map((option) => ({
@@ -68,6 +75,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
               />
             ) : (
               <Input
+                errors={state.errors?.[field.id.toString()] || undefined}
                 id={field.id.toString()}
                 name={field.id.toString()}
                 required={field.required}

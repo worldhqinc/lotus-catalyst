@@ -47,10 +47,9 @@ export const Input = React.forwardRef<
         className={clsx(
           'relative overflow-hidden rounded-lg border transition-colors duration-200 focus:outline-hidden',
           {
-            light:
-              `border-[var(--input-light-border,hsl(var(--contrast-200)))] bg-[var(--input-light-background,hsl(var(--background)))] focus-within:border-[var(--input-light-focus,hsl(var(--primary)))] ${
-                errors != null && errors.length > 0 ? 'border-error' : ''
-              }`,
+            light: `border-[var(--input-light-border,hsl(var(--contrast-200)))] bg-[var(--input-light-background,hsl(var(--background)))] focus-within:border-[var(--input-light-focus,hsl(var(--primary)))] ${
+              errors != null && errors.length > 0 ? 'border-error' : ''
+            }`,
             dark: 'border-[var(--input-dark-border,hsl(var(--contrast-500)))] bg-[var(--input-dark-background,hsl(var(--foreground)))] focus-within:border-[var(--input-dark-focus,hsl(var(--background)))]',
           }[colorScheme],
         )}
@@ -73,6 +72,7 @@ export const Input = React.forwardRef<
           )}
           id={id ?? generatedId}
           ref={ref}
+          required={required}
         />
       </div>
       {errors?.map((error) => <FieldError key={error}>{error}</FieldError>)}

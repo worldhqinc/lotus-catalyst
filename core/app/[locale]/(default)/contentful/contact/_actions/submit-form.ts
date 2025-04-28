@@ -2,6 +2,15 @@
 
 import { FormState } from '../_components/contact-form';
 
+interface ContactFormData {
+  email: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  state: string | null;
+  inquiry: string | null;
+  model: string | null;
+}
+
 function isString(value: unknown): value is string {
   return typeof value === 'string';
 }
@@ -24,6 +33,48 @@ export async function submitForm(_prevState: FormState, formData: FormData) {
   const state = isString(stateValue) ? stateValue : null;
   const inquiry = isString(inquiryValue) ? inquiryValue : null;
   const model = isString(modelValue) ? modelValue : null;
+
+  const formDataModel: ContactFormData = {
+    email,
+    firstName,
+    lastName,
+    state,
+    inquiry,
+    model,
+  };
+
+  const errors: Record<string, string[]> = {};
+
+  if (!formDataModel.email) {
+    errors.email = ['Email is required'];
+  }
+
+  if (!formDataModel.firstName) {
+    errors['19286622537499'] = ['First name is required'];
+  }
+
+  if (!formDataModel.lastName) {
+    errors['19286636932123'] = ['Last name is required'];
+  }
+
+  if (!formDataModel.state) {
+    errors['19286636991003'] = ['State is required'];
+  }
+
+  if (!formDataModel.inquiry) {
+    errors['19286719042331'] = ['Inquiry type is required'];
+  }
+
+  if (!formDataModel.model) {
+    errors['19286761835035'] = ['Model is required'];
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return {
+      errors,
+      success: false,
+    };
+  }
 
   try {
     const response = await fetch(
@@ -72,7 +123,7 @@ export async function submitForm(_prevState: FormState, formData: FormData) {
 
     if (!response.ok) {
       return {
-        errors: ['Something went wrong, please try again later.'],
+        errors: { general: ['Something went wrong, please try again later.'] },
         success: false,
       };
     }
@@ -86,7 +137,7 @@ export async function submitForm(_prevState: FormState, formData: FormData) {
     console.error('Error submitting form:', error);
 
     return {
-      errors: ['Something went wrong, please try again later.'],
+      errors: { general: ['Something went wrong, please try again later.'] },
       success: false,
     };
   }
