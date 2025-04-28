@@ -199,7 +199,7 @@ export default async function ContactPage() {
               </p>
             </div>
             <div className="my-8">
-              <ButtonLink className="w-full md:w-auto" size="medium" href="tel:18885688761">
+              <ButtonLink className="w-full md:w-auto" href="tel:18885688761" size="medium">
                 1-888-568-8761
               </ButtonLink>
             </div>
