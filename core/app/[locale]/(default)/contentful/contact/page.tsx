@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
+import { Button } from '@/vibes/soul/primitives/button';
 import { revalidate } from '~/client/revalidate-target';
 
 import { ContactForm } from './_components/contact-form';
-import { Button } from '@/vibes/soul/primitives/button';
 
 const TicketFormSchema = z.object({
   ticket_form: z.object({

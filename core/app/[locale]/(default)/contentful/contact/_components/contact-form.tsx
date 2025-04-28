@@ -2,15 +2,14 @@
 
 import { useActionState, useState } from 'react';
 
-import { submitForm } from '../_actions/submit-form';
-import { TicketField } from '../page';
-
 import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
 import { Select } from '@/vibes/soul/form/select';
-
 import { Button } from '@/vibes/soul/primitives/button';
 import { Modal } from '@/vibes/soul/primitives/modal';
+
+import { submitForm } from '../_actions/submit-form';
+import { TicketField } from '../page';
 
 export interface FormState {
   errors: string[] | null;
@@ -47,21 +46,16 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
           <Label className="text-foreground text-sm font-medium" htmlFor="email">
             Email Address
           </Label>
-          <Input
-            id="email"
-            name="email"
-            required
-            type="email"
-          />
+          <Input id="email" name="email" required type="email" />
         </div>
         {fields.map((field) => (
           <div className="flex flex-col gap-1" key={field.id}>
             <Label className="text-foreground text-sm font-medium" htmlFor={field.id.toString()}>
               {field.title_in_portal}
             </Label>
-            {field.description && (
+            {field.description ? (
               <p className="text-contrast-400 text-xs">{field.description}</p>
-            )}
+            ) : null}
             {field.custom_field_options ? (
               <Select
                 id={field.id.toString()}
@@ -83,7 +77,12 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
           </div>
         ))}
         <div className="flex justify-end gap-2 md:mt-2">
-          <Button className="flex-1 md:flex-none" onClick={() => setIsOpen(false)} size="medium" variant="tertiary">
+          <Button
+            className="flex-1 md:flex-none"
+            onClick={() => setIsOpen(false)}
+            size="medium"
+            variant="tertiary"
+          >
             Cancel
           </Button>
           <Button className="flex-1 md:flex-none" size="medium" type="submit">
