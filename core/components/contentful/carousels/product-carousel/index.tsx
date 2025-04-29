@@ -1,7 +1,6 @@
 'use client';
 
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { z } from 'zod';
 
 import {
   Carousel,
@@ -13,15 +12,17 @@ import {
 import type { Price } from '@/vibes/soul/primitives/price-label';
 import { ProductCard } from '@/vibes/soul/primitives/product-card';
 import type { CarouselProduct } from '@/vibes/soul/sections/product-carousel';
+import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import {
-  assetSchema,
-  carouselProductSchema,
+  Asset,
+  carouselProduct,
   productFinishedGoodsSchema,
   productPartsAndAccessoriesSchema,
 } from '~/contentful/schema';
+import { ensureImageUrl } from '~/lib/utils';
 
 interface Props {
-  carousel: z.infer<typeof carouselProductSchema>;
+  carousel: carouselProduct;
 }
 
 function NavHeader({ title, subtitle }: { title: string; subtitle?: string }) {
@@ -53,42 +54,49 @@ function NavHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   );
 }
 
-export function ProductCarousel({ carousel }: Props) {
-  const { carouselTitle, subtitle, products: productEntries } = carousel.fields;
+function parseProductImage(imageAsset: Asset | undefined) {
+  if (!imageAsset) return undefined;
 
-  const items: CarouselProduct[] = productEntries.map((entry) => {
-    if (entry.sys.contentType.sys.id === 'productPartsAndAccessories') {
-      const parsedProduct = productPartsAndAccessoriesSchema.parse(entry);
-      const { id } = parsedProduct.sys;
-      const fields = parsedProduct.fields;
-      const imageAsset = fields.featuredImage;
-      const file = imageAsset ? assetSchema.parse(imageAsset).fields.file : null;
-      const image = file ? { src: `https:${file.url}`, alt: fields.productName } : undefined;
+  const { file } = imageAsset.fields;
 
-      const price: Price = fields.salePrice
-        ? {
-            type: 'sale',
-            previousValue: fields.price ?? '0.00',
-            currentValue: fields.salePrice,
-          }
-        : (fields.price ?? '0.00');
+  return { src: ensureImageUrl(file.url), alt: '' };
+}
 
-      return {
-        id,
-        title: fields.productName,
-        subtitle: 'Lorem ipsum dolor sit amet',
-        href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
-        image,
-        price,
-        badge: fields.productBadge ?? undefined,
-      };
-    }
-    const parsedProduct = productFinishedGoodsSchema.parse(entry);
-    const { id } = parsedProduct.sys;
-    const fields = parsedProduct.fields;
-    const imageAsset = fields.featuredImage;
-    const file = imageAsset ? assetSchema.parse(imageAsset).fields.file : null;
-    const image = file ? { src: `https:${file.url}`, alt: fields.productName } : undefined;
+function parseProduct(
+  entry: carouselProduct['fields']['products'][number],
+): CarouselProduct | undefined {
+  const entryObject = entry;
+
+  if (entryObject.sys.contentType.sys.id === 'productPartsAndAccessories') {
+    const product = productPartsAndAccessoriesSchema.parse(entry);
+    const { fields } = product;
+    const image = parseProductImage(fields.featuredImage);
+
+    if (image) image.alt = fields.productName;
+
+    const price: Price = fields.salePrice
+      ? {
+          type: 'sale',
+          previousValue: fields.price ?? '0.00',
+          currentValue: fields.salePrice,
+        }
+      : (fields.price ?? '0.00');
+
+    return {
+      id: product.sys.id,
+      title: fields.productName,
+      subtitle: 'Lorem ipsum dolor sit amet',
+      href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
+      image,
+      price,
+      badge: fields.productBadge ?? undefined,
+    };
+  } else if (entryObject.sys.contentType.sys.id === 'productFinishedGoods') {
+    const product = productFinishedGoodsSchema.parse(entry);
+    const { fields } = product;
+    const image = parseProductImage(fields.featuredImage);
+
+    if (image) image.alt = fields.productName;
 
     const price: Price = fields.salePrice
       ? {
@@ -99,7 +107,7 @@ export function ProductCarousel({ carousel }: Props) {
       : fields.defaultPrice;
 
     return {
-      id,
+      id: product.sys.id,
       title: fields.productName,
       subtitle: fields.shortDescription ?? undefined,
       href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
@@ -107,33 +115,39 @@ export function ProductCarousel({ carousel }: Props) {
       price,
       badge: fields.productBadge ?? undefined,
     };
-  });
+  }
+}
+
+export function ProductCarousel({ carousel }: Props) {
+  const { carouselTitle, subtitle, products: productEntries } = carousel.fields;
+
+  const items = productEntries
+    .map(parseProduct)
+    .filter((p): p is CarouselProduct => p !== undefined);
 
   return (
-    <section className="@container">
-      <div className="mx-auto flex flex-col items-stretch gap-x-16 gap-y-10 px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
-        <Carousel hideOverflow={false}>
-          <NavHeader subtitle={subtitle} title={carouselTitle} />
+    <SectionLayout containerSize="2xl">
+      <Carousel hideOverflow={false}>
+        <NavHeader subtitle={subtitle} title={carouselTitle} />
 
-          <CarouselContent className="mb-8 -ml-4 @2xl:-ml-5">
-            {items.map((product, index) => (
-              <CarouselItem
-                className="basis-full pl-4 @md:basis-1/2 @lg:basis-1/3 @2xl:basis-1/4 @2xl:pl-5"
-                key={`${product.id}-${index}`}
-              >
-                <ProductCard
-                  aspectRatio="1:1"
-                  product={{ ...product, rating: product.rating ?? 0 }}
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
+        <CarouselContent className="mb-8 -ml-4 @2xl:-ml-5">
+          {items.map((product, index) => (
+            <CarouselItem
+              className="basis-full pl-4 @md:basis-1/2 @lg:basis-1/3 @2xl:basis-1/4 @2xl:pl-5"
+              key={`${product.id}-${index}`}
+            >
+              <ProductCard
+                aspectRatio="1:1"
+                product={{ ...product, rating: product.rating ?? 0 }}
+              />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
 
-          <div className="mb-4 flex w-full justify-end px-4 @xl:px-6">
-            <CarouselScrollbar colorScheme="light" label="Scroll" />
-          </div>
-        </Carousel>
-      </div>
-    </section>
+        <div className="mb-4 flex w-full justify-end px-4 @xl:px-6">
+          <CarouselScrollbar colorScheme="light" label="Scroll" />
+        </div>
+      </Carousel>
+    </SectionLayout>
   );
 }

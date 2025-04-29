@@ -3268,7 +3268,7 @@
         "id": "blockProductFeatures",
         "type": "ContentType",
         "createdAt": "2025-04-02T14:46:03.597Z",
-        "updatedAt": "2025-04-29T17:27:48.136Z",
+        "updatedAt": "2025-04-29T18:30:46.821Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3276,8 +3276,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 7,
-        "publishedAt": "2025-04-29T17:27:48.136Z",
+        "publishedVersion": 9,
+        "publishedAt": "2025-04-29T18:30:46.821Z",
         "firstPublishedAt": "2025-04-02T14:46:03.893Z",
         "createdBy": {
           "sys": {
@@ -3293,8 +3293,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 4,
-        "version": 8,
+        "publishedCounter": 5,
+        "version": 10,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3340,6 +3340,20 @@
             ],
             "linkType": "Entry"
           }
+        },
+        {
+          "id": "alternate",
+          "name": "Alternate",
+          "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "defaultValue": {
+            "en-US": false
+          },
+          "disabled": false,
+          "omitted": false
         }
       ]
     },

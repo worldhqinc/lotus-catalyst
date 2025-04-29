@@ -2181,6 +2181,7 @@ export const blockProductFeaturesFieldsSchema = z.object({
       }),
     )
     .optional(),
+  alternate: z.boolean().optional(),
 });
 
 export const blockProductFeaturesSchema = z.object({

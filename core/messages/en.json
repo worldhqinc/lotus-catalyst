@@ -355,7 +355,8 @@
       }
     },
     "RelatedProducts": {
-      "title": "Related products",
+      "title": "You may also like",
+      "subtitle": "From powerhouse blenders to premium countertop ovens, fuel your culinary creativity with the finest kitchen tools.",
       "noRelatedProducts": "No related products found",
       "browseCatalog": "Try browsing our complete catalog of products.",
       "cta": "Shop all",
