@@ -1,7 +1,7 @@
 import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
+import { notFound } from 'next/navigation';
 import { SearchParams } from 'nuqs/server';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
@@ -300,10 +300,8 @@ export default async function Product(props: Props) {
         contentful={streamableContentful}
         ctaDisabled={streameableCtaDisabled}
         ctaLabel={streameableCtaLabel}
-        decrementLabel={t('ProductDetails.decreaseQuantity')}
         emptySelectPlaceholder={t('ProductDetails.emptySelectPlaceholder')}
         fields={productOptionsTransformer(baseProduct.productOptions)}
-        incrementLabel={t('ProductDetails.increaseQuantity')}
         prefetch={true}
         product={{
           id: baseProduct.entityId.toString(),
@@ -315,7 +313,6 @@ export default async function Product(props: Props) {
           rating: baseProduct.reviewSummary.averageRating,
           accordions: streameableAccordions,
         }}
-        quantityLabel={t('ProductDetails.quantity')}
       />
 
       <Stream fallback={null} value={streamableContentful}>
