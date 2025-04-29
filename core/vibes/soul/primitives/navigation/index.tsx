@@ -832,17 +832,17 @@ function LocaleSwitcher({
       </div>
 
       <div className="flex flex-row items-center gap-2 @4xl:hidden">
-        {locales.map(({ id, label }) => {
+        {locales.map(({ id }) => {
           return (
             <button
               className={clsx(
-                'rounded-lg px-3 py-2 text-base',
+                'rounded-full px-3 py-2 text-base',
                 id === activeLocaleId ? 'bg-contrast-100' : 'bg-transparent',
               )}
               key={id}
-              onSelect={() => startTransition(() => switchLocale(id))}
+              onClick={() => startTransition(() => switchLocale(id))}
             >
-              {label}
+              {getLocaleLabel(id)}
             </button>
           );
         })}
