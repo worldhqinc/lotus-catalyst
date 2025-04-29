@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { Button } from '@/vibes/soul/primitives/button';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { revalidate } from '~/client/revalidate-target';
 
+import { ChatWidgetButton } from './_components/chat-widget-button';
 import { ContactForm } from './_components/contact-form';
 
 const TicketFormSchema = z.object({
@@ -165,13 +165,10 @@ export default async function ContactPage() {
               <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
                 Chat
               </h2>
-              {/* TODO: Add chat widget */}
               <p className="mt-4 lg:pb-6 lg:leading-[24px]">Representatives are available.</p>
             </div>
             <div className="my-8">
-              <Button className="w-full md:w-auto" size="medium">
-                Message us
-              </Button>
+              <ChatWidgetButton />
             </div>
           </div>
           <div className="flex flex-col p-4 lg:p-8">

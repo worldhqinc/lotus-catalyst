@@ -11,3 +11,5 @@ interface Window {
     };
   };
 }
+
+declare function zE(action: string, command: string): void;
