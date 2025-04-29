@@ -25,7 +25,7 @@ function Content({ title, children, isMobileSidePanel = false }: Props) {
         <Dialog.Content
           className={clsx(
             'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right fixed right-0 flex flex-col transition duration-500 [animation-timing-function:cubic-bezier(0.25,0.46,0.45,0.94)]',
-            isMobileSidePanel ? 'top-[122px] h-full w-full' : 'inset-y-0 w-96 max-w-full',
+            isMobileSidePanel ? 'top-16 h-full w-full' : 'inset-y-0 w-96 max-w-full',
           )}
           forceMount
         >

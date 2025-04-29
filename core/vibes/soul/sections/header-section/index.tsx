@@ -34,9 +34,12 @@ export function HeaderSection({ navigation, banner }: HeaderProps) {
 
   return (
     <div>
-      {banner && <Banner ref={setBannerElement} {...banner} />}
+      <Banner ref={setBannerElement} {...banner}>
+        {banner?.children || null}
+      </Banner>
       <div className="bg-[var(--header-background,hsl(var(--background)))]">
         <Headroom
+          className="[&_.headroom--unpinned]:![transform:translate3d(0,0,0)]"
           onUnfix={() => setIsFloating(false)}
           onUnpin={() => setIsFloating(true)}
           pinStart={bannerHeight}

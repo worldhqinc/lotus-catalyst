@@ -166,6 +166,11 @@ export const Header = async () => {
 
   return (
     <HeaderSection
+      banner={{
+        activeLocaleId: locale,
+        children: <p>PROMO CODE HERE</p>,
+        locales,
+      }}
       navigation={{
         accountHref: '/login',
         accountLabel: t('Icons.account'),
