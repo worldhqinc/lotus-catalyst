@@ -6,7 +6,7 @@ import { CarouselProduct } from '@/vibes/soul/sections/product-carousel';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { assetSchema, productBento, productFinishedGoodsSchema } from '~/contentful/schema';
 
-export default function ProductBento(props: productBento['fields']) {
+export function ProductBento(props: productBento['fields']) {
   const items: CarouselProduct[] =
     props.products?.map((entry) => {
       const parsedProduct = productFinishedGoodsSchema.parse(entry);

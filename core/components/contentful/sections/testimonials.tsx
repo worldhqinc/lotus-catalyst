@@ -2,7 +2,7 @@ import { Image } from '~/components/image';
 import type { testimonials } from '~/contentful/schema';
 import { ensureImageUrl } from '~/lib/utils';
 
-export default function Testimonials({ quote, logos }: testimonials['fields']) {
+export function Testimonials({ quote, logos }: testimonials['fields']) {
   return (
     <div className="bg-surface-secondary p-16">
       <blockquote className="font-heading text-icon-primary mx-auto mb-16 max-w-3xl text-center text-xl md:text-3xl">

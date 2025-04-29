@@ -1,9 +1,9 @@
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { type featureGrid, featureItemSchema } from '~/contentful/schema';
 
-import FeatureItem from './feature-item';
+import { FeatureItem } from './feature-item';
 
-export default function FeatureGrid({ title, subheading, items }: featureGrid['fields']) {
+export function FeatureGrid({ title, subheading, items }: featureGrid['fields']) {
   const parsedItems = items?.map((item) => featureItemSchema.parse(item)) ?? [];
 
   return (

@@ -6,7 +6,7 @@ type FeatureItemProps = featureItem['fields'] & {
   reverseOrder?: boolean;
 };
 
-export default function FeatureItem({
+export function FeatureItem({
   heading,
   description,
   image,

@@ -62,11 +62,10 @@ function AccordionItem({
         <AccordionPrimitive.Trigger className="group flex w-full cursor-pointer items-start gap-8 border-none py-3 text-start focus:outline-hidden @md:py-4">
           <div
             className={clsx(
-              'flex-1 font-[family-name:var(--accordion-title-font-family,var(--font-family-mono))] text-sm font-normal uppercase transition-colors duration-300 ease-out select-none',
+              'flex-1 uppercase select-none',
               {
-                light:
-                  'text-[var(--accordion-light-title-text,hsl(var(--contrast-400)))] group-hover:text-[var(--accordion-light-title-text-hover,hsl(var(--foreground)))]',
-                dark: 'text-[var(--accordion-dark-title-text,hsl(var(--contrast-200)))] group-hover:text-[var(--accordion-dark-title-text-hover,hsl(var(--background)))]',
+                light: 'text-surface-foreground',
+                dark: 'text-contrast-200',
               }[colorScheme],
             )}
           >
@@ -121,23 +120,16 @@ function AnimatedChevron({
       viewBox="0 0 10 10"
       width={16}
     >
-      {/* Left Line of Chevron */}
+      {/* Horizontal line for plus/minus */}
+      <line strokeLinecap="round" x1={2} x2={8} y1={5} y2={5} />
+      {/* Vertical line for plus, hidden when open */}
       <line
-        className="group-data-[state=open]:-translate-y-[3px] group-data-[state=open]:-rotate-90"
+        className="group-data-[state=open]:opacity-0"
         strokeLinecap="round"
-        x1={2}
+        x1={5}
         x2={5}
         y1={2}
-        y2={5}
-      />
-      {/* Right Line of Chevron */}
-      <line
-        className="group-data-[state=open]:-translate-y-[3px] group-data-[state=open]:rotate-90"
-        strokeLinecap="round"
-        x1={8}
-        x2={5}
-        y1={2}
-        y2={5}
+        y2={8}
       />
     </svg>
   );

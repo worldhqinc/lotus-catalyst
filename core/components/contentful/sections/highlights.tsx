@@ -4,7 +4,7 @@ import { Image } from '~/components/image';
 import { ctaSchema, highlights } from '~/contentful/schema';
 import { ensureImageUrl, getLinkHref } from '~/lib/utils';
 
-export default function Highlights({
+export function Highlights({
   title,
   quoteText,
   quoteAuthorImage,

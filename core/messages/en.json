@@ -350,7 +350,8 @@
         "warranty": "Warranty",
         "sku": "SKU",
         "weight": "Weight",
-        "condition": "Condition"
+        "condition": "Condition",
+        "supportDocumentation": "Use & Care"
       }
     },
     "RelatedProducts": {

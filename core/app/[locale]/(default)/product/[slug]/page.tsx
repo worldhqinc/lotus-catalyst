@@ -1,25 +1,23 @@
 import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
 import { Metadata } from 'next';
-import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
 import { SearchParams } from 'nuqs/server';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { FeaturedProductCarousel } from '@/vibes/soul/sections/featured-product-carousel';
 import { ProductDetail } from '@/vibes/soul/sections/product-detail';
 import { getSessionCustomerAccessToken } from '~/auth';
-import { RecipeCarousel } from '~/components/contentful/carousels/recipe-carousel';
-import { carouselRecipeSchema } from '~/contentful/schema';
+import { PageContentEntries } from '~/components/contentful/page-content-entries';
+import { supportDocumentSchema } from '~/contentful/schema';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productCardTransformer } from '~/data-transformers/product-card-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
 import { getPreferredCurrencyCode } from '~/lib/currency';
 
-import PageContentEntries from '../../contentful/_components/page-content-entries';
 import { addToCart } from './_actions/add-to-cart';
 import { ProductSchema } from './_components/product-schema';
 import { ProductViewed } from './_components/product-viewed';
-import { Reviews } from './_components/reviews';
 import {
   getContentfulProductData,
   getProduct,
@@ -194,6 +192,7 @@ export default async function Product(props: Props) {
 
   const streameableAccordions = Streamable.from(async () => {
     const product = await streamableProduct;
+    const contentful = await getContentfulProductData(product.sku);
 
     const customFields = removeEdgesAndNodes(product.customFields);
 
@@ -238,6 +237,30 @@ export default async function Product(props: Props) {
             },
           ]
         : []),
+      ...(contentful?.fields.supportDocumentation
+        ? [
+            {
+              title: t('ProductDetails.Accordions.supportDocumentation'),
+              content: (
+                <div className="flex flex-col gap-4">
+                  {contentful.fields.supportDocumentation.map((documentation) => {
+                    const { documentName, modelNumber, productImage, url } =
+                      supportDocumentSchema.parse(documentation).fields;
+
+                    return (
+                      <div key={documentation.sys.id}>
+                        <h3>{documentName}</h3>
+                        {!!modelNumber && <p>{modelNumber}</p>}
+                        {productImage && <p>{productImage.fields.file.url}</p>}
+                        <p>{url}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              ),
+            },
+          ]
+        : []),
       ...(product.warranty
         ? [
             {
@@ -263,7 +286,7 @@ export default async function Product(props: Props) {
     return productCardTransformer(relatedProducts, format);
   });
 
-  const contentful = Streamable.from(async () => {
+  const streamableContentful = Streamable.from(async () => {
     const product = await streamableProduct;
 
     return getContentfulProductData(product.sku);
@@ -274,7 +297,7 @@ export default async function Product(props: Props) {
       <ProductDetail
         action={addToCart}
         additionalInformationTitle={t('ProductDetails.additionalInformation')}
-        contentful={contentful}
+        contentful={streamableContentful}
         ctaDisabled={streameableCtaDisabled}
         ctaLabel={streameableCtaLabel}
         decrementLabel={t('ProductDetails.decreaseQuantity')}
@@ -285,9 +308,6 @@ export default async function Product(props: Props) {
         product={{
           id: baseProduct.entityId.toString(),
           title: baseProduct.name,
-          description: (
-            <div className="prose" dangerouslySetInnerHTML={{ __html: baseProduct.description }} />
-          ),
           href: baseProduct.path,
           images: streamableImages,
           price: streamablePrices,
@@ -296,8 +316,18 @@ export default async function Product(props: Props) {
           accordions: streameableAccordions,
         }}
         quantityLabel={t('ProductDetails.quantity')}
-        thumbnailLabel={t('ProductDetails.thumbnail')}
       />
+
+      <Stream fallback={null} value={streamableContentful}>
+        {(contentful) => {
+          const pageContentEntries = contentful?.fields.pageContentEntries ?? [];
+
+          if (pageContentEntries.length === 0) return null;
+
+          return <PageContentEntries pageContent={pageContentEntries} />;
+        }}
+      </Stream>
+
       <FeaturedProductCarousel
         cta={{ label: t('RelatedProducts.cta'), href: '/shop-all' }}
         emptyStateSubtitle={t('RelatedProducts.browseCatalog')}
@@ -308,16 +338,7 @@ export default async function Product(props: Props) {
         scrollbarLabel={t('RelatedProducts.scrollbar')}
         title={t('RelatedProducts.title')}
       />
-      <Stream fallback={null} value={contentful}>
-        {(product) => {
-          if (!product?.fields.recipes) return null;
 
-          const carouselData = carouselRecipeSchema.parse(product.fields.recipes);
-
-          return <RecipeCarousel carousel={carouselData} />;
-        }}
-      </Stream>
-      <Reviews productId={productId} searchParams={props.searchParams} />
       <Stream
         fallback={null}
         value={Streamable.from(async () =>
@@ -335,7 +356,6 @@ export default async function Product(props: Props) {
           </>
         )}
       </Stream>
-      <PageContentEntries pageContent={[]} />
     </>
   );
 }

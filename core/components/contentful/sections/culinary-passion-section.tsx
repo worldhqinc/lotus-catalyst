@@ -2,7 +2,7 @@ import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
 import { culinaryPassionSection } from '~/contentful/schema';
 
-export default function CulinaryPassionSection({
+export function CulinaryPassionSection({
   sectionTitle,
   sectionText,
   sectionImage,

@@ -1,7 +1,7 @@
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { heroSection } from '~/contentful/schema';
 
-export default function HeroSection({ heroTitle, heroTagline }: heroSection['fields']) {
+export function HeroSection({ heroTitle, heroTagline }: heroSection['fields']) {
   return (
     <SectionLayout className="bg-surface-image py-20 text-center" containerSize="xl">
       <p className="text-icon-primary tracking-widest uppercase">{heroTitle}</p>

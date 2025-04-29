@@ -116,7 +116,7 @@ function InfiniteHits() {
   );
 }
 
-export default function PostGrid({ title, subtitle, type }: PostGridProps) {
+export function PostGrid({ title, subtitle, type }: PostGridProps) {
   const categories = ['Category 1', 'Category 2', 'Category 3'];
 
   return (

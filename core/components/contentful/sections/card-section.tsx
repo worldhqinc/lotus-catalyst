@@ -2,12 +2,7 @@ import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { type cardSection, inspirationCardSchema } from '~/contentful/schema';
 
-export default function CardSection({
-  title,
-  subtitle,
-  featuresCard,
-  recipesCard,
-}: cardSection['fields']) {
+export function CardSection({ title, subtitle, featuresCard, recipesCard }: cardSection['fields']) {
   const features = inspirationCardSchema.parse(featuresCard);
   const recipes = inspirationCardSchema.parse(recipesCard);
 

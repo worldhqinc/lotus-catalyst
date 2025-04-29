@@ -4,6 +4,7 @@ import { ProductCarousel } from '~/components/contentful/carousels/product-carou
 import {
   cardSectionSchema,
   carouselProductSchema,
+  carouselRecipeSchema,
   carouselSectionSchema,
   communitySectionSchema,
   ctaSchema,
@@ -25,23 +26,24 @@ import {
   testimonialsSchema,
 } from '~/contentful/schema';
 
-import CardSection from './sections/card-section';
-import CarouselSection from './sections/carousel-section';
-import CommunitySection from './sections/community-section';
-import CtaSection from './sections/cta-section';
-import CulinaryPassionSection from './sections/culinary-passion-section';
-import FeatureGrid from './sections/feature-grid';
-import GuidingPrinciplesSection from './sections/guiding-principles-section';
-import HeroBanner from './sections/hero-banner';
-import HeroCarousel from './sections/hero-carousel';
-import HeroSection from './sections/hero-section';
-import Highlights from './sections/highlights';
-import InspirationBento from './sections/inspiration-bento';
-import IntroSection from './sections/intro-section';
-import NewsletterForm from './sections/newsletter-form';
-import PostGrid from './sections/post-grid';
-import ProductBento from './sections/product-bento';
-import Testimonials from './sections/testimonials';
+import { RecipeCarousel } from './carousels/recipe-carousel';
+import { CardSection } from './sections/card-section';
+import { CarouselSection } from './sections/carousel-section';
+import { CommunitySection } from './sections/community-section';
+import { CtaSection } from './sections/cta-section';
+import { CulinaryPassionSection } from './sections/culinary-passion-section';
+import { FeatureGrid } from './sections/feature-grid';
+import { GuidingPrinciplesSection } from './sections/guiding-principles-section';
+import { HeroBanner } from './sections/hero-banner';
+import { HeroCarousel } from './sections/hero-carousel';
+import { HeroSection } from './sections/hero-section';
+import { Highlights } from './sections/highlights';
+import { InspirationBento } from './sections/inspiration-bento';
+import { IntroSection } from './sections/intro-section';
+import { NewsletterForm } from './sections/newsletter-form';
+import { PostGrid } from './sections/post-grid';
+import { ProductBento } from './sections/product-bento';
+import { Testimonials } from './sections/testimonials';
 
 type PageContent = pageStandard['fields']['pageContent'];
 type ContentEntry = NonNullable<PageContent>[number];
@@ -90,6 +92,11 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
     const carouselData = carouselProductSchema.parse(contentEntry);
 
     return <ProductCarousel carousel={carouselData} />;
+  },
+  carouselRecipe: ({ contentEntry }) => {
+    const carouselData = carouselRecipeSchema.parse(contentEntry);
+
+    return <RecipeCarousel carousel={carouselData} />;
   },
   heroSection: ({ contentEntry }) => {
     const heroData = heroSectionSchema.parse(contentEntry);
@@ -153,7 +160,7 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
   },
 };
 
-export default function PageContentEntries({
+export function PageContentEntries({
   pageContent,
 }: {
   pageContent: pageStandard['fields']['pageContent'];

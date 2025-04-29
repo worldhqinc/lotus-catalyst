@@ -17,7 +17,7 @@ interface Props {
 
 type Slide = ComponentProps<typeof Slideshow>['slides'][number];
 
-export default function HeroCarousel({ data }: Props) {
+export function HeroCarousel({ data }: Props) {
   const slides =
     data.fields.heroSlides?.map((slide) => {
       return heroSlideSchema.parse(slide);

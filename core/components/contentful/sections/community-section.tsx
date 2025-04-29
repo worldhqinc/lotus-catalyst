@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { communitySection } from '~/contentful/schema';
 
-export default function CommunitySection({
+export function CommunitySection({
   sectionTitle,
   sectionDescription,
   signUpLabel,

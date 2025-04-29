@@ -154,7 +154,8 @@
   --color-surface: hsl(var(--surface-primary));
   --color-surface-secondary: hsl(var(--surface-secondary));
   --color-surface-image: hsl(var(--surface-image));
-
+  --color-surface-foreground: hsl(var(--surface-foreground));
+  
   --text-xs: var(--font-size-xs, 0.75rem);
   --text-sm: var(--font-size-sm, 0.875rem);
   --text-base: var(--font-size-base, 1rem);
@@ -384,6 +385,7 @@
   --surface-primary: 0 0% 100%;
   --surface-secondary: 0 0% 96%;
   --surface-image: 0 0% 90%;
+  --surface-foreground: 0 0% 7%;
   --contrast-100: 0 0% 93%;
   --contrast-200: 0 0% 82%;
   --contrast-300: 0 0% 70%;
