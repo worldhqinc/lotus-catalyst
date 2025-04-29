@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import {
+  blockProductFeaturesSchema,
   cardSectionSchema,
   carouselProductSchema,
   carouselRecipeSchema,
@@ -27,6 +28,7 @@ import {
 } from '~/contentful/schema';
 
 import { RecipeCarousel } from './carousels/recipe-carousel';
+import { BlockProductFeatures } from './sections/block-product-features';
 import { CardSection } from './sections/card-section';
 import { CarouselSection } from './sections/carousel-section';
 import { CommunitySection } from './sections/community-section';
@@ -157,6 +159,11 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
     const data = cardSectionSchema.parse(contentEntry);
 
     return <CardSection {...data.fields} />;
+  },
+  blockProductFeatures: ({ contentEntry }) => {
+    const data = blockProductFeaturesSchema.parse(contentEntry);
+
+    return <BlockProductFeatures {...data.fields} />;
   },
 };
 

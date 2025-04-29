@@ -2140,6 +2140,47 @@ export type faqList = z.infer<typeof faqListSchema>;
 // Schema for blockProductFeatures
 export const blockProductFeaturesFieldsSchema = z.object({
   heading: z.string(),
+  items: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
 });
 
 export const blockProductFeaturesSchema = z.object({
@@ -2423,6 +2464,7 @@ export type tutorial = z.infer<typeof tutorialSchema>;
 
 // Schema for heroCarousel
 export const heroCarouselFieldsSchema = z.object({
+  internalName: z.string().optional(),
   heroSlides: z
     .array(
       z.object({

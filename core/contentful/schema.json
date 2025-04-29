@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-04-21T17:48:46.416Z",
+        "updatedAt": "2025-04-29T15:24:09.443Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 133,
-        "publishedAt": "2025-04-21T17:48:46.416Z",
+        "publishedVersion": 135,
+        "publishedAt": "2025-04-29T15:24:09.443Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -34,16 +34,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 67,
-        "version": 134,
+        "publishedCounter": 68,
+        "version": 136,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productFinishedGoods"
@@ -663,7 +663,8 @@
               {
                 "linkContentType": [
                   "blockProductFeatures",
-                  "blockProductFeaturesAccordion"
+                  "blockProductFeaturesAccordion",
+                  "carouselRecipe"
                 ]
               }
             ],
@@ -3265,7 +3266,7 @@
         "id": "blockProductFeatures",
         "type": "ContentType",
         "createdAt": "2025-04-02T14:46:03.597Z",
-        "updatedAt": "2025-04-17T18:12:37.085Z",
+        "updatedAt": "2025-04-29T17:27:48.136Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3273,8 +3274,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-17T18:12:37.085Z",
+        "publishedVersion": 7,
+        "publishedAt": "2025-04-29T17:27:48.136Z",
         "firstPublishedAt": "2025-04-02T14:46:03.893Z",
         "createdBy": {
           "sys": {
@@ -3290,8 +3291,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 2,
-        "version": 4,
+        "publishedCounter": 4,
+        "version": 8,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3315,6 +3316,28 @@
           ],
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "items",
+          "name": "Items",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkContentType": [
+                  "featureItem"
+                ]
+              }
+            ],
+            "linkType": "Entry"
+          }
         }
       ]
     },
@@ -3754,7 +3777,7 @@
         "id": "heroCarousel",
         "type": "ContentType",
         "createdAt": "2025-04-11T15:58:34.563Z",
-        "updatedAt": "2025-04-22T17:08:22.367Z",
+        "updatedAt": "2025-04-28T23:19:03.728Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3762,8 +3785,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 7,
-        "publishedAt": "2025-04-22T17:08:22.367Z",
+        "publishedVersion": 9,
+        "publishedAt": "2025-04-28T23:19:03.728Z",
         "firstPublishedAt": "2025-04-11T15:58:34.810Z",
         "createdBy": {
           "sys": {
@@ -3779,8 +3802,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 4,
-        "version": 8,
+        "publishedCounter": 5,
+        "version": 10,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3790,10 +3813,21 @@
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/heroCarousel"
       },
-      "displayField": null,
+      "displayField": "internalName",
       "name": "Hero Carousel",
       "description": "",
       "fields": [
+        {
+          "id": "internalName",
+          "name": "Internal Name",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
         {
           "id": "heroSlides",
           "name": "Hero Slides",

@@ -1,4 +1,4 @@
-import { Package, RefreshCw } from 'lucide-react';
+import { CircleSlash2, Microwave, Package, RefreshCw } from 'lucide-react';
 import { ReactNode } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
@@ -87,6 +87,28 @@ export function ProductDetail<F extends Field>({
                       alt: image.fields.title ?? '',
                     }))}
                   />
+                  <div className="bg-contrast-100 relative mt-4 hidden grid-cols-2 gap-2 rounded-xl px-4 py-10 @xl:grid">
+                    {[
+                      {
+                        icon: CircleSlash2,
+                        label: 'BPA-, PFOA-, and PFAS-free nonstick interior',
+                      },
+                      {
+                        icon: Microwave,
+                        label: '7 cooking modes for cooking flexibly',
+                      },
+                    ].map(({ icon: Icon, label }, index) => (
+                      <div className="flex flex-col items-center justify-center gap-4" key={index}>
+                        <Icon className="h-6 w-6" strokeWidth={1.5} />
+                        <span className="text-contrast-400 max-w-52 text-center text-balance">
+                          {label}
+                        </span>
+                      </div>
+                    ))}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="bg-contrast-200 h-20 w-[1px]" />
+                    </div>
+                  </div>
                 </div>
                 <div className="px-4 py-8 @xl:px-0 @xl:py-0">
                   <div className="mb-8 flex items-start justify-between gap-4">
