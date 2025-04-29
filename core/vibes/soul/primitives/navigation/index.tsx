@@ -719,7 +719,11 @@ export const Navigation = forwardRef(function Navigation(
                                     <ChevronRight size={24} strokeWidth={1.5} />
                                   </button>
                                 </SidePanel.Trigger>
-                                <SidePanel.Content isFloating={isFloating} isMobileSidePanel title="Back">
+                                <SidePanel.Content
+                                  isFloating={isFloating}
+                                  isMobileSidePanel
+                                  title="Back"
+                                >
                                   {links.map((innerItem, innerIndex) => {
                                     if (!innerItem.groups?.length) return null;
 
