@@ -183,15 +183,20 @@ export function ProductDetail<F extends Field>({
                     <div className="group/product-price">
                       <Stream fallback={<PriceLabelSkeleton />} value={product.price}>
                         {(price) => (
-                          <PriceLabel className="my-3 text-xl @xl:text-2xl" price={price ?? ''} />
+                          <PriceLabel className="text-xl @xl:text-2xl" price={price ?? ''} />
                         )}
                       </Stream>
                     </div>
-                    {Boolean(contentful?.fields.couponCodesalesDates) && (
-                      <div className="text-primary font-medium">
-                        {contentful?.fields.couponCodesalesDates}
-                      </div>
-                    )}
+                    <Stream fallback={null} value={product.price}>
+                      {(price) =>
+                        !!price &&
+                        typeof price === 'object' &&
+                        'type' in price &&
+                        price.type === 'sale' && (
+                          <div className="text-primary font-medium">Limited Time Offer</div>
+                        )
+                      }
+                    </Stream>
                     {Boolean(contentful?.fields.shortDescription) && (
                       <div className="text-contrast-400">{contentful?.fields.shortDescription}</div>
                     )}
