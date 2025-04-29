@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import {
+  blockProductFeaturesAccordionSchema,
   blockProductFeaturesSchema,
   cardSectionSchema,
   carouselProductSchema,
@@ -29,6 +30,7 @@ import {
 
 import { RecipeCarousel } from './carousels/recipe-carousel';
 import { BlockProductFeatures } from './sections/block-product-features';
+import { BlockProductFeaturesAccordion } from './sections/block-product-features-accordion';
 import { CardSection } from './sections/card-section';
 import { CarouselSection } from './sections/carousel-section';
 import { CommunitySection } from './sections/community-section';
@@ -164,6 +166,11 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
     const data = blockProductFeaturesSchema.parse(contentEntry);
 
     return <BlockProductFeatures {...data.fields} />;
+  },
+  blockProductFeaturesAccordion: ({ contentEntry }) => {
+    const data = blockProductFeaturesAccordionSchema.parse(contentEntry);
+
+    return <BlockProductFeaturesAccordion {...data.fields} />;
   },
 };
 

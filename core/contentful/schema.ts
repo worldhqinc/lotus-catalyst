@@ -2202,6 +2202,99 @@ export type blockProductFeatures = z.infer<typeof blockProductFeaturesSchema>;
 // Schema for blockProductFeaturesAccordion
 export const blockProductFeaturesAccordionFieldsSchema = z.object({
   heading: z.string(),
+  items: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional(),
+  media: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Asset'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional(),
+          revision: z.number(),
+          locale: z.string().optional(),
+          contentType: z.undefined().optional(),
+        }),
+        fields: z.object({
+          title: z.string().optional(),
+          description: z.string().optional(),
+          file: z.object({
+            url: z.string(),
+            details: z.object({
+              size: z.number(),
+              image: z
+                .object({
+                  width: z.number(),
+                  height: z.number(),
+                })
+                .optional(),
+            }),
+            fileName: z.string(),
+            contentType: z.string(),
+          }),
+        }),
+      }),
+    )
+    .optional(),
 });
 
 export const blockProductFeaturesAccordionSchema = z.object({
@@ -3992,6 +4085,28 @@ export const highlightsSchema = z.object({
 
 export type highlights = z.infer<typeof highlightsSchema>;
 
+// Schema for accordionItem
+export const accordionItemFieldsSchema = z.object({
+  title: z.string(),
+  detail: z.string(),
+});
+
+export const accordionItemSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('accordionItem'),
+      }),
+    }),
+  }),
+  fields: accordionItemFieldsSchema,
+});
+
+export type accordionItem = z.infer<typeof accordionItemSchema>;
+
 // ========================================
 // Union Schema and Helper Object
 // ========================================
@@ -4039,6 +4154,7 @@ export const contentfulEntrySchemaUnion = z.union([
   featureItemSchema,
   productBentoSchema,
   highlightsSchema,
+  accordionItemSchema,
 ]);
 export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
 
@@ -4093,4 +4209,5 @@ export const contentfulSchemas = {
   featureItem: featureItemSchema,
   productBento: productBentoSchema,
   highlights: highlightsSchema,
+  accordionItem: accordionItemSchema,
 };

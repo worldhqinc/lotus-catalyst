@@ -3353,7 +3353,7 @@
         "id": "blockProductFeaturesAccordion",
         "type": "ContentType",
         "createdAt": "2025-04-02T14:58:51.790Z",
-        "updatedAt": "2025-04-17T18:12:37.350Z",
+        "updatedAt": "2025-04-29T17:50:27.613Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3361,8 +3361,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-17T18:12:37.350Z",
+        "publishedVersion": 5,
+        "publishedAt": "2025-04-29T17:50:27.613Z",
         "firstPublishedAt": "2025-04-02T14:58:52.107Z",
         "createdBy": {
           "sys": {
@@ -3378,8 +3378,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 2,
-        "version": 4,
+        "publishedCounter": 3,
+        "version": 6,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3403,6 +3403,45 @@
           ],
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "items",
+          "name": "Items",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkContentType": [
+                  "accordionItem"
+                ]
+              }
+            ],
+            "linkType": "Entry"
+          }
+        },
+        {
+          "id": "media",
+          "name": "Media",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+            ],
+            "linkType": "Asset"
+          }
         }
       ]
     },
@@ -6127,6 +6166,82 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Entry"
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "accordionItem",
+        "type": "ContentType",
+        "createdAt": "2025-04-29T17:49:20.264Z",
+        "updatedAt": "2025-04-29T17:49:20.572Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 1,
+        "publishedAt": "2025-04-29T17:49:20.572Z",
+        "firstPublishedAt": "2025-04-29T17:49:20.572Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 2,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/accordionItem"
+      },
+      "displayField": "title",
+      "name": "Accordion Item",
+      "description": "",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "detail",
+          "name": "Detail",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
         }
       ]
     }

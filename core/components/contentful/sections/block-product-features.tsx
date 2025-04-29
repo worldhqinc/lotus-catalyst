@@ -30,9 +30,9 @@ export function BlockProductFeatures({ heading, items }: blockProductFeatures['f
                   width={fields.image.fields.file.details.image?.width || 400}
                 />
                 <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent p-6 md:p-8">
-                  <h3 className="font-medium text-white">{fields.heading}</h3>
+                  <h3 className="text-background font-medium">{fields.heading}</h3>
                   {!!fields.description && (
-                    <p className="text-lg text-white">{fields.description}</p>
+                    <p className="text-background text-lg">{fields.description}</p>
                   )}
                 </div>
               </div>
