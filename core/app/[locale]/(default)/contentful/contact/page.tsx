@@ -165,7 +165,10 @@ export default async function ContactPage() {
               <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
                 Chat
               </h2>
-              <p className="mt-4 lg:pb-6 lg:leading-[24px]">Representatives are available.</p>
+              <div className="mt-4 flex items-center gap-2 lg:pb-6">
+                <span className="rounded-full bg-green-500 p-[9px]"></span>
+                <p className="lg:leading-[24px]">Representatives are available.</p>
+              </div>
             </div>
             <div className="my-8">
               <ChatWidgetButton />
