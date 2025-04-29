@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-04-29T15:24:09.443Z",
+        "updatedAt": "2025-04-29T18:16:55.666Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 135,
-        "publishedAt": "2025-04-29T15:24:09.443Z",
+        "publishedVersion": 137,
+        "publishedAt": "2025-04-29T18:16:55.666Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -37,8 +37,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 68,
-        "version": 136,
+        "publishedCounter": 69,
+        "version": 138,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -664,7 +664,8 @@
                 "linkContentType": [
                   "blockProductFeatures",
                   "blockProductFeaturesAccordion",
-                  "carouselRecipe"
+                  "carouselRecipe",
+                  "carouselProduct"
                 ]
               }
             ],
@@ -1294,7 +1295,7 @@
         "id": "carouselProduct",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.638Z",
-        "updatedAt": "2025-04-19T18:51:27.391Z",
+        "updatedAt": "2025-04-29T18:06:33.548Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1302,8 +1303,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 7,
-        "publishedAt": "2025-04-19T18:51:27.391Z",
+        "publishedVersion": 9,
+        "publishedAt": "2025-04-29T18:06:33.548Z",
         "firstPublishedAt": "2025-03-07T21:04:12.043Z",
         "createdBy": {
           "sys": {
@@ -1319,8 +1320,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 4,
-        "version": 8,
+        "publishedCounter": 5,
+        "version": 10,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -1388,7 +1389,8 @@
             "validations": [
               {
                 "linkContentType": [
-                  "productFinishedGoods"
+                  "productFinishedGoods",
+                  "productPartsAndAccessories"
                 ]
               }
             ],

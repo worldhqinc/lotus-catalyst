@@ -17,6 +17,7 @@ import {
   assetSchema,
   carouselProductSchema,
   productFinishedGoodsSchema,
+  productPartsAndAccessoriesSchema,
 } from '~/contentful/schema';
 
 interface Props {
@@ -29,23 +30,23 @@ function NavHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
     <div className="mb-12 flex items-start justify-between">
       <div className="flex flex-col gap-2">
-        <h2 className="text-4xl">{title}</h2>
+        <h2 className="text-4xl uppercase">{title}</h2>
         {subtitle ? <p className="text-icon-secondary max-w-md text-base">{subtitle}</p> : null}
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-4">
         <button
-          className="border-border rounded-full border bg-white p-2 disabled:opacity-50"
+          className="border-border rounded-full border bg-white p-3 disabled:opacity-50"
           disabled={!canScrollPrev}
           onClick={scrollPrev}
         >
-          <ArrowLeft className="text-icon-primary h-4 w-4" />
+          <ArrowLeft className="text-icon-primary h-5 w-5" />
         </button>
         <button
-          className="border-border rounded-full border bg-white p-2 disabled:opacity-50"
+          className="border-border rounded-full border bg-white p-3 disabled:opacity-50"
           disabled={!canScrollNext}
           onClick={scrollNext}
         >
-          <ArrowRight className="text-icon-primary h-4 w-4" />
+          <ArrowRight className="text-icon-primary h-5 w-5" />
         </button>
       </div>
     </div>
@@ -56,6 +57,32 @@ export function ProductCarousel({ carousel }: Props) {
   const { carouselTitle, subtitle, products: productEntries } = carousel.fields;
 
   const items: CarouselProduct[] = productEntries.map((entry) => {
+    if (entry.sys.contentType.sys.id === 'productPartsAndAccessories') {
+      const parsedProduct = productPartsAndAccessoriesSchema.parse(entry);
+      const { id } = parsedProduct.sys;
+      const fields = parsedProduct.fields;
+      const imageAsset = fields.featuredImage;
+      const file = imageAsset ? assetSchema.parse(imageAsset).fields.file : null;
+      const image = file ? { src: `https:${file.url}`, alt: fields.productName } : undefined;
+
+      const price: Price = fields.salePrice
+        ? {
+            type: 'sale',
+            previousValue: fields.price ?? '0.00',
+            currentValue: fields.salePrice,
+          }
+        : (fields.price ?? '0.00');
+
+      return {
+        id,
+        title: fields.productName,
+        subtitle: 'Lorem ipsum dolor sit amet',
+        href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
+        image,
+        price,
+        badge: fields.productBadge ?? undefined,
+      };
+    }
     const parsedProduct = productFinishedGoodsSchema.parse(entry);
     const { id } = parsedProduct.sys;
     const fields = parsedProduct.fields;
