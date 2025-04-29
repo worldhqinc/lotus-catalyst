@@ -75,8 +75,8 @@ export default function ProductBento(props: productBento['fields']) {
             '1:1': 'aspect-square',
           };
           const baseRatio = mobileRatioMap[getAspectRatio(index)];
-          const spanTwo = colSpanClass === 'md:col-span-2';
-          const ratioOverride = `${baseRatio} ${spanTwo ? 'md:aspect-[5/3]' : 'md:aspect-5/6'}`;
+          // mobile: enforce aspect ratio; on md+ use a fixed height (~512px) so all images match
+          const ratioOverride = `${baseRatio} md:h-[512px] md:w-full`;
 
           return (
             <div className={colSpanClass} key={`${product.id}-${index}`}>

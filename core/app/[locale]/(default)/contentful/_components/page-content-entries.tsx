@@ -153,9 +153,11 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
   },
 };
 
-export default function PageContentEntries({ page }: { page: pageStandard }) {
-  const pageContent = page.fields.pageContent;
-
+export default function PageContentEntries({
+  pageContent,
+}: {
+  pageContent: pageStandard['fields']['pageContent'];
+}) {
   return (
     <div>
       {Array.isArray(pageContent) &&

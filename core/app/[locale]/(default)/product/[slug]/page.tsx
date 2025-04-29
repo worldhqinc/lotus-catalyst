@@ -1,7 +1,7 @@
 import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
+import { notFound } from 'next/navigation';
 import { SearchParams } from 'nuqs/server';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
@@ -15,6 +15,7 @@ import { productCardTransformer } from '~/data-transformers/product-card-transfo
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
 import { getPreferredCurrencyCode } from '~/lib/currency';
 
+import PageContentEntries from '../../contentful/_components/page-content-entries';
 import { addToCart } from './_actions/add-to-cart';
 import { ProductSchema } from './_components/product-schema';
 import { ProductViewed } from './_components/product-viewed';
@@ -334,6 +335,7 @@ export default async function Product(props: Props) {
           </>
         )}
       </Stream>
+      <PageContentEntries pageContent={[]} />
     </>
   );
 }

@@ -44,7 +44,7 @@ export default function Highlights({
             </div>
           </div>
         </div>
-        <div className="bg-surface-image flex flex-col justify-end rounded-lg p-8">
+        <div className="bg-contrast-200 flex flex-col justify-end rounded-lg p-8">
           <div>
             <ButtonLink href={linkHref}>{text}</ButtonLink>
           </div>

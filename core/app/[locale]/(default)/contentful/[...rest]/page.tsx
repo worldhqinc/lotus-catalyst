@@ -27,5 +27,5 @@ export default async function ContentfulPage({ params }: Props) {
   const { rest } = await params;
   const page = await getPageBySlug('pageStandard', rest);
 
-  return <PageContentEntries page={page} />;
+  return <PageContentEntries pageContent={page.fields.pageContent} />;
 }
