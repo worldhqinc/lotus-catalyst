@@ -6,7 +6,14 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
-import { ChevronDown, PersonStandingIcon, Search, ShoppingBag, User } from 'lucide-react';
+import {
+  ChevronDown,
+  ChevronRight,
+  PersonStandingIcon,
+  Search,
+  ShoppingBag,
+  User,
+} from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, {
   forwardRef,
@@ -22,6 +29,7 @@ import React, {
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price } from '@/vibes/soul/primitives/price-label';
+import * as SidePanel from '@/vibes/soul/primitives/side-panel';
 import AlgoliaSearch from '~/components/header/algolia-search';
 import { Link } from '~/components/link';
 import { Minicart } from '~/components/minicart';
@@ -128,7 +136,6 @@ const Banner = ({
               </div>
             </li>
             <li className="hidden @4xl:block">
-              {/* Locale / Language Dropdown */}
               {locales.length > 1 ? (
                 <LocaleSwitcher
                   activeLocaleId={activeLocaleId}
@@ -619,7 +626,7 @@ export const Navigation = forwardRef(function Navigation(
               </Popover.Trigger>
               <Popover.Portal>
                 <Popover.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @container z-10 h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)]">
-                  <div className="flex h-[inherit] flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-[var(--nav-mobile-background,hsl(var(--background)))] px-4 py-8">
+                  <div className="flex h-[100svh] flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-[var(--nav-mobile-background,hsl(var(--background)))] px-4 py-6">
                     <Stream
                       fallback={
                         <ul className="flex animate-pulse flex-col gap-4 p-5 @4xl:gap-2 @4xl:p-5">
@@ -640,78 +647,122 @@ export const Navigation = forwardRef(function Navigation(
                       value={streamableLinks}
                     >
                       {(links) => (
-                        <>
-                          {links.map((item, i) => {
-                            if (!item.groups?.length) return null;
-
-                            return (
-                              <ul className="flex flex-col gap-4 pb-8" key={i}>
-                                {item.groups.map((group, groupIndex) => {
-                                  if (!group.label) return null;
-
-                                  return (
-                                    <li key={groupIndex}>
-                                      {group.href != null &&
-                                      group.href !== '' &&
-                                      !group.comingSoon ? (
-                                        <Link
-                                          className={clsx(
-                                            'flex items-center gap-2 text-lg tracking-widest',
-                                          )}
-                                          href={group.href}
-                                        >
-                                          {group.label}
-                                        </Link>
-                                      ) : (
-                                        <span className="flex cursor-not-allowed items-center gap-2 text-lg tracking-widest text-neutral-400 hover:!text-neutral-400">
-                                          {group.label}
-                                          {group.comingSoon && (
-                                            <Badge shape="rounded" variant="primary">
-                                              Coming Soon
-                                            </Badge>
-                                          )}
-                                        </span>
+                        <ul className="flex flex-col gap-4 pb-6">
+                          {links.map((item, i) => (
+                            <li className="w-full transform-none" key={i}>
+                              {item.groups?.length && item.groups.length > 1 ? (
+                                <SidePanel.Root>
+                                  <SidePanel.Trigger asChild>
+                                    <button
+                                      className={clsx(
+                                        'flex w-full items-center justify-between gap-2 tracking-[1.28px] uppercase',
                                       )}
-                                    </li>
-                                  );
-                                })}
-                                <li>
-                                  <Link className="text-lg tracking-widest" href="/shop-all">
-                                    Shop all products
-                                  </Link>
-                                </li>
-                              </ul>
-                            );
-                          })}
-                          <ul className="flex flex-col gap-4 [&:not(:first-of-type)]:py-6">
-                            {links.map((item, i) => (
-                              <li key={i}>
-                                <Link className={clsx('text-lg tracking-widest')} href={item.href}>
+                                    >
+                                      {item.label}
+                                      <ChevronRight size={24} strokeWidth={1.5} />
+                                    </button>
+                                  </SidePanel.Trigger>
+                                  <SidePanel.Content isMobileSidePanel title="Back">
+                                    {links.map((innerItem, innerIndex) => {
+                                      if (!innerItem.groups?.length) return null;
+
+                                      return (
+                                        <ul
+                                          className="flex flex-col gap-4 pt-2 pb-6"
+                                          key={innerIndex}
+                                        >
+                                          {innerItem.groups.map((group, groupIndex) => {
+                                            if (!group.label) return null;
+
+                                            return (
+                                              <li key={groupIndex}>
+                                                {group.href != null &&
+                                                group.href !== '' &&
+                                                !group.comingSoon ? (
+                                                  <Link
+                                                    className={clsx(
+                                                      'flex items-center gap-2 text-xl',
+                                                    )}
+                                                    href={group.href}
+                                                  >
+                                                    {group.label}
+                                                  </Link>
+                                                ) : (
+                                                  <span className="flex cursor-not-allowed items-center gap-2 text-xl text-neutral-400 hover:!text-neutral-400">
+                                                    {group.label}
+                                                    {group.comingSoon && (
+                                                      <Badge shape="rounded" variant="primary">
+                                                        Coming Soon
+                                                      </Badge>
+                                                    )}
+                                                  </span>
+                                                )}
+                                              </li>
+                                            );
+                                          })}
+                                          <li>
+                                            <Link className="text-xl" href="/shop-all">
+                                              Shop all products
+                                            </Link>
+                                          </li>
+                                        </ul>
+                                      );
+                                    })}
+                                    <div className="border-border col-start-3 grid grid-cols-2 gap-5 border-t pt-6">
+                                      <div className="flex flex-col">
+                                        <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
+                                        <span className="py-2 text-sm font-medium">
+                                          Shop The Perfectionist™
+                                        </span>
+                                      </div>
+                                      <div className="flex flex-col">
+                                        <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
+                                        <span className="py-2 text-sm font-medium">
+                                          Shop The Sous
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </SidePanel.Content>
+                                </SidePanel.Root>
+                              ) : (
+                                <Link
+                                  className={clsx('tracking-[1.28px] uppercase')}
+                                  href={item.href}
+                                >
                                   {item.label}
                                 </Link>
-                              </li>
-                            ))}
-                            <li>
-                              <Link
-                                aria-label={accountLabel}
-                                className="text-lg tracking-widest"
-                                href={accountHref}
-                              >
-                                Sign in/Account
-                              </Link>
+                              )}
                             </li>
-                          </ul>
-                        </>
+                          ))}
+                        </ul>
                       )}
                     </Stream>
-                    {/* Locale / Language Dropdown */}
-                    {locales && locales.length > 1 ? (
-                      <LocaleSwitcher
-                        activeLocaleId={activeLocaleId}
-                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                        locales={locales as [Locale, Locale, ...Locale[]]}
-                      />
-                    ) : null}
+                    <ul className="flex flex-col gap-4">
+                      <li>
+                        <Link className="text-xl tracking-[1.28px]" href="shop-in-store">
+                          Shop in-store
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          aria-label={accountLabel}
+                          className="text-xl tracking-[1.28px]"
+                          href={accountHref}
+                        >
+                          Sign in/Account
+                        </Link>
+                      </li>
+                      <li>
+                        {/* Locale / Language Dropdown */}
+                        {locales && locales.length > 1 ? (
+                          <LocaleSwitcher
+                            activeLocaleId={activeLocaleId}
+                            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                            locales={locales as [Locale, Locale, ...Locale[]]}
+                          />
+                        ) : null}
+                      </li>
+                    </ul>
                   </div>
                 </Popover.Content>
               </Popover.Portal>
@@ -836,8 +887,10 @@ function LocaleSwitcher({
           return (
             <button
               className={clsx(
-                'rounded-full px-3 py-2 text-base',
-                id === activeLocaleId ? 'bg-contrast-100' : 'bg-transparent',
+                'rounded-full border px-3 py-2 text-base font-medium',
+                id === activeLocaleId
+                  ? 'bg-contrast-100 border-contrast-100 text-foreground'
+                  : 'border-contrast-200 text-contrast-400 bg-transparent',
               )}
               key={id}
               onClick={() => startTransition(() => switchLocale(id))}
