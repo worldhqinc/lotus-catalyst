@@ -19,11 +19,6 @@ import {
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Link } from '~/components/link';
 
-interface Link {
-  label: string;
-  href: string;
-}
-
 function NavHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   const { scrollPrev, scrollNext, canScrollPrev, canScrollNext } = useCarousel();
 

@@ -1,7 +1,7 @@
 import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
 import { Metadata } from 'next';
-import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
 import { SearchParams } from 'nuqs/server';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
@@ -330,8 +330,8 @@ export default async function Product(props: Props) {
         emptyStateTitle={t('RelatedProducts.noRelatedProducts')}
         products={streameableRelatedProducts}
         scrollbarLabel={t('RelatedProducts.scrollbar')}
-        title={t('RelatedProducts.title')}
         subtitle={t('RelatedProducts.subtitle')}
+        title={t('RelatedProducts.title')}
       />
 
       <Stream
