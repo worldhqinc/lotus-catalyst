@@ -73,7 +73,7 @@ export function Checkbox({
               light:
                 errors && errors.length > 0
                   ? 'border-[var(--checkbox-light-error,hsl(var(--error)))]'
-                  : 'data-[state=checked]:border-[var(--checkbox-light-checked-border,hsl(var(--foreground)))] data-[state=checked]:bg-[var(--checkbox-light-checked-background,hsl(var(--foreground)))] data-[state=checked]:text-[var(--checkbox-light-checked-text,hsl(var(--background)))] data-[state=checked]:hover:border-[var(--checkbox-light-checked-border-hover,hsl(var(--foreground)))] data-[state=unchecked]:border-[var(--checkbox-light-unchecked-border,hsl(var(--contrast-200)))] data-[state=unchecked]:bg-[var(--checkbox-light-unchecked-background,hsl(var(--background)))] data-[state=unchecked]:text-[var(--checkbox-light-unchecked-text,hsl(var(--foreground)))] data-[state=unchecked]:hover:border-[var(--checkbox-light-unchecked-border-hover,hsl(var(--contrast-300)))]',
+                  : 'data-[state=checked]:border-[var(--checkbox-light-checked-border,hsl(var(--primary)))] data-[state=checked]:bg-[var(--checkbox-light-checked-background,hsl(var(--primary)))] data-[state=checked]:text-[var(--checkbox-light-checked-text,hsl(var(--background)))] data-[state=checked]:hover:border-[var(--checkbox-light-checked-border-hover,hsl(var(--primary)))] data-[state=unchecked]:border-[var(--checkbox-light-unchecked-border,hsl(var(--contrast-200)))] data-[state=unchecked]:bg-[var(--checkbox-light-unchecked-background,hsl(var(--background)))] data-[state=unchecked]:text-[var(--checkbox-light-unchecked-text,hsl(var(--foreground)))] data-[state=unchecked]:hover:border-[var(--checkbox-light-unchecked-border-hover,hsl(var(--contrast-300)))]',
               dark:
                 errors && errors.length > 0
                   ? 'border-[var(--checkbox-dark-error,hsl(var(--error)))]'
@@ -92,7 +92,7 @@ export function Checkbox({
             className={clsx(
               'cursor-pointer text-sm',
               {
-                light: 'text-[var(--checkbox-light-label,hsl(var(--foreground)))]',
+                light: 'text-[var(--checkbox-light-label,hsl(var(--primary)))]',
                 dark: 'text-[var(--checkbox-dark-label,hsl(var(--background)))]',
               }[colorScheme],
             )}
