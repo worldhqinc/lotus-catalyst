@@ -86,7 +86,10 @@ export default function ProductRegistration() {
                 our products and services. You may unsubscribe from these communications at any
                 time. For information on how to unsubscribe, as well as our privacy practices and
                 commitment to protecting your privacy, please review our{' '}
-                <Link className="text-primary" href="/privacy-policy">Privacy Policy</Link>.
+                <Link className="text-primary" href="/privacy-policy">
+                  Privacy Policy
+                </Link>
+                .
               </p>
             </div>
           </form>
