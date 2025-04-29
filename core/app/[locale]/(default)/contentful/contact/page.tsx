@@ -166,7 +166,7 @@ export default async function ContactPage() {
                 Chat
               </h2>
               <div className="mt-4 flex items-center gap-2 lg:pb-6">
-                <span className="rounded-full bg-green-500 p-[9px]"></span>
+                <span className="rounded-full bg-green-500 p-[9px]" />
                 <p className="lg:leading-[24px]">Representatives are available.</p>
               </div>
             </div>
