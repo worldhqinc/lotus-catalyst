@@ -22,7 +22,7 @@ export function DynamicFormSection<F extends Field>({
   action,
 }: Props<F>) {
   return (
-    <SectionLayout className={clsx('mx-auto w-full max-w-4xl', className)} containerSize="lg">
+    <SectionLayout className={clsx('px-3 py-10 @xl:px-6 @4xl:py-16 @5xl:px-16', className)} containerSize="lg">
       {title != null && title !== '' && (
         <header className="pb-8 @2xl:pb-12 @4xl:pb-16">
           <h1 className="font-heading mb-5 text-4xl leading-none font-medium @xl:text-5xl">
@@ -33,7 +33,14 @@ export function DynamicFormSection<F extends Field>({
           )}
         </header>
       )}
-      <DynamicForm action={action} fields={fields} submitLabel={submitLabel} />
+      <div className="flex flex-col justify-center gap-y-4 @4xl:flex-row @4xl:gap-x-4 @5xl:gap-x-8">
+        <div className="border-contrast-200 flex w-full flex-col rounded-lg border p-4 @xl:max-w-md @5xl:p-8">
+          <DynamicForm action={action} fields={fields} submitLabel={submitLabel} />
+        </div>
+        <div className="border-contrast-200 flex w-full flex-col rounded-lg border p-4 @xl:max-w-md @5xl:p-8">
+          benefits
+        </div>
+      </div>
     </SectionLayout>
   );
 }

@@ -47,9 +47,9 @@
     },
     "Login": {
       "title": "Login",
-      "heading": "Log in",
-      "forgotPassword": "Forgot your password?",
-      "cta": "Log in",
+      "heading": "Sign in",
+      "forgotPassword": "Reset password",
+      "cta": "Sign in",
       "invalidCredentials": "Your email address or password is incorrect. Try signing in again or reset your password",
       "somethingWentWrong": "Something went wrong. Please try again later.",
       "CreateAccount": {
