@@ -25,19 +25,33 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
 
   const [state, formAction] = useActionState(submitForm, initialState);
   const [isOpen, setIsOpen] = useState(false);
+  const [formFields, setFormFields] = useState<TicketField[]>(fields);
 
   const handleSelectChange = (field: TicketField, value: string) => {
-    field.conditions?.forEach((condition) => {
-      if (condition.value === value) {
-        condition.child_fields.forEach((childField) => {
-          const originalChildField = fields.find((f) => f.id === childField.id);
-          const originalChildFieldIndex = fields.findIndex((f) => f.id === childField.id);
+    setFormFields((prevFields) => {
+      return prevFields.map((f) => {
+        if (
+          field.conditions?.some(
+            (condition) =>
+              condition.value === value &&
+              condition.child_fields.some((child) => child.id === f.id),
+          )
+        ) {
+          return { ...f, hidden: false };
+        }
 
-          if (originalChildField && originalChildFieldIndex) {
-            fields[originalChildFieldIndex].hidden = false;
-          }
-        });
-      }
+        if (
+          field.conditions?.some(
+            (condition) =>
+              condition.value !== value &&
+              condition.child_fields.some((child) => child.id === f.id),
+          )
+        ) {
+          return { ...f, hidden: true };
+        }
+
+        return f;
+      });
     });
   };
 
@@ -69,7 +83,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
             type="email"
           />
         </div>
-        {fields.map((field) => (
+        {formFields.map((field) => (
           <div className={clsx('flex flex-col gap-1', field.hidden ? 'hidden' : '')} key={field.id}>
             <Label className="text-foreground text-sm font-medium" htmlFor={field.id.toString()}>
               {field.title_in_portal}
