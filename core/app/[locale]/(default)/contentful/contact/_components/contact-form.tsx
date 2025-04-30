@@ -1,6 +1,7 @@
 'use client';
 
 import { useActionState, useState } from 'react';
+import { clsx } from 'clsx';
 
 import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
@@ -23,8 +24,22 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
   };
 
   const [state, formAction] = useActionState(submitForm, initialState);
-
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleSelectChange = (field: TicketField, value: string) => {
+    field.conditions?.forEach((condition) => {
+      if (condition.value === value) {
+        condition.child_fields.forEach((childField) => {
+          const originalChildField = fields.find((f) => f.id === childField.id);
+          const originalChildFieldIndex = fields.findIndex((f) => f.id === childField.id);
+
+          if (originalChildField && originalChildFieldIndex) {
+            fields[originalChildFieldIndex].hidden = false;
+          }
+        });
+      }
+    });
+  };
 
   if (state.success) {
     return <div>Success</div>;
@@ -55,7 +70,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
           />
         </div>
         {fields.map((field) => (
-          <div className="flex flex-col gap-1" key={field.id}>
+          <div className={clsx('flex flex-col gap-1', field.hidden ? 'hidden' : '')} key={field.id}>
             <Label className="text-foreground text-sm font-medium" htmlFor={field.id.toString()}>
               {field.title_in_portal}
             </Label>
@@ -67,6 +82,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
                 errors={state.errors?.[field.id.toString()] || undefined}
                 id={field.id.toString()}
                 name={field.id.toString()}
+                onValueChange={(value) => handleSelectChange(field, value)}
                 options={field.custom_field_options.map((option) => ({
                   label: option.name,
                   value: option.value,

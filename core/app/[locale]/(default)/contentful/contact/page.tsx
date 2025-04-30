@@ -73,6 +73,7 @@ const TicketFieldSchema = z.object({
       )
       .nullable()
       .optional(),
+    hidden: z.boolean().optional(),
     conditions: z
       .array(
         z.object({
@@ -130,6 +131,14 @@ export default async function ContactPage() {
           const ticketField: TicketField = ticketFieldData.ticket_field;
 
           if (ticketField.visible_in_portal) {
+            const conditions = ticketForm.end_user_conditions.filter((condition) =>
+              condition.child_fields.some((childField) => childField.id === ticketField.id),
+            );
+
+            if (conditions.length > 0) {
+              ticketField.hidden = true;
+            }
+
             return ticketField;
           }
         }
