@@ -13,7 +13,7 @@ export function BlockProductFeatures({
   const parsedItems = items?.map((item) => featureItemSchema.parse(item)) ?? [];
 
   return (
-    <SectionLayout containerClassName="bg-white py-24" containerSize="full">
+    <SectionLayout containerClassName="bg-white py-24" containerSize="2xl">
       <div className="mb-17 flex flex-col items-center">
         <h2 className="text-surface-foreground max-w-4xl text-center text-2xl md:text-4xl">
           {heading}
