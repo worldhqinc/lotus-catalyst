@@ -51,7 +51,7 @@ export function AddressListSection<A extends Address, F extends Field>({
   addresses,
   fields,
   minimumAddressCount = 1,
-  defaultAddress = addresses[0] ? { id: addresses[0].id } : undefined,
+  defaultAddress,
   addressAction,
   editLabel = 'Edit',
   deleteLabel = 'Delete',
@@ -192,7 +192,7 @@ export function AddressListSection<A extends Address, F extends Field>({
           });
 
           return (
-            <div className="border-contrast-200 border-b pt-5 pb-6" key={address.id}>
+            <div className="border-contrast-200 border-b py-6" key={address.id}>
               {activeAddressIds.includes(address.id) ? (
                 <div className="max-w-[480px] space-y-4">
                   <DynamicForm
