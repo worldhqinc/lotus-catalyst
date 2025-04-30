@@ -2,7 +2,7 @@ import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { Image } from '~/components/image';
 import { ctaSchema, type introSection } from '~/contentful/schema';
 
-export default function IntroSection({ title, subtitle, image, cta }: introSection['fields']) {
+export function IntroSection({ title, subtitle, image, cta }: introSection['fields']) {
   const validCta = cta ? ctaSchema.parse(cta) : null;
 
   return (

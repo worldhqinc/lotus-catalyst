@@ -4,12 +4,7 @@ import { ProductCarousel } from '~/components/contentful/carousels/alt-product-c
 import { Link } from '~/components/link';
 import { carouselProductSchema, type carouselSection, ctaSchema } from '~/contentful/schema';
 
-export default function CarouselSection({
-  heading,
-  subtitle,
-  carousel,
-  cta,
-}: carouselSection['fields']) {
+export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSection['fields']) {
   const validCta = cta ? ctaSchema.parse(cta) : null;
   const validCarousel = carouselProductSchema.parse(carousel);
 

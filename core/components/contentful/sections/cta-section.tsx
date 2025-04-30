@@ -2,7 +2,7 @@ import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { ctaSection } from '~/contentful/schema';
 
-export default function CtaSection({ sectionTitle, buttonText, buttonLink }: ctaSection['fields']) {
+export function CtaSection({ sectionTitle, buttonText, buttonLink }: ctaSection['fields']) {
   return (
     <SectionLayout className="bg-surface-image py-24 text-center" containerSize="lg">
       {sectionTitle ? (

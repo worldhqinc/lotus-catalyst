@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SearchParams } from 'nuqs';
 
-import PageContentEntries from '../_components/page-content-entries';
+import { PageContentEntries } from '~/components/contentful/page-content-entries';
 
 import { getPageBySlug } from './page-data';
 
@@ -27,5 +27,5 @@ export default async function ContentfulPage({ params }: Props) {
   const { rest } = await params;
   const page = await getPageBySlug('pageStandard', rest);
 
-  return <PageContentEntries page={page} />;
+  return <PageContentEntries pageContent={page.fields.pageContent} />;
 }

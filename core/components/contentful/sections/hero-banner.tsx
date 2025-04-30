@@ -4,7 +4,7 @@ import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { Image } from '~/components/image';
 import { ctaSchema, type heroBanner } from '~/contentful/schema';
 
-export default function HeroBanner({
+export function HeroBanner({
   title,
   description,
   image,

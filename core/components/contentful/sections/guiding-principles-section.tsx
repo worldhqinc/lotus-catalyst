@@ -2,7 +2,7 @@ import { Button } from '@/vibes/soul/primitives/button';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { guidingPrincipleSchema, guidingPrinciplesSection } from '~/contentful/schema';
 
-export default function GuidingPrinciplesSection({
+export function GuidingPrinciplesSection({
   sectionTitle,
   sectionDescription,
   principles,

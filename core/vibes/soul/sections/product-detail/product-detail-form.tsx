@@ -44,9 +44,6 @@ export interface ProductDetailFormProps<F extends Field> {
   action: ProductDetailFormAction<F>;
   productId: string;
   ctaLabel?: string;
-  quantityLabel?: string;
-  incrementLabel?: string;
-  decrementLabel?: string;
   emptySelectPlaceholder?: string;
   ctaDisabled?: boolean;
   prefetch?: boolean;
@@ -56,10 +53,7 @@ export function ProductDetailForm<F extends Field>({
   action,
   fields,
   productId,
-  ctaLabel = 'Add to cart',
-  quantityLabel = 'Quantity',
-  incrementLabel = 'Increase quantity',
-  decrementLabel = 'Decrease quantity',
+  ctaLabel = 'Add to bag',
   emptySelectPlaceholder = 'Select an option',
   ctaDisabled = false,
   prefetch = false,
@@ -123,7 +117,7 @@ export function ProductDetailForm<F extends Field>({
   return (
     <FormProvider context={form.context}>
       <FormStateInput />
-      <form {...getFormProps(form)} action={formAction} className="py-8">
+      <form {...getFormProps(form)} action={formAction}>
         <input name="id" type="hidden" value={productId} />
         <div className="space-y-6">
           {fields.map((field) => {
@@ -140,15 +134,15 @@ export function ProductDetailForm<F extends Field>({
             );
           })}
           {form.errors?.map((error, index) => (
-            <FormStatus className="pt-3" key={index} type="error">
+            <FormStatus className="py-3" key={index} type="error">
               {error}
             </FormStatus>
           ))}
-          <div className="flex gap-x-3 pt-3">
+          <div className="flex items-center gap-x-3">
             <NumberInput
-              aria-label={quantityLabel}
-              decrementLabel={decrementLabel}
-              incrementLabel={incrementLabel}
+              aria-label="Quantity"
+              decrementLabel="Decrement"
+              incrementLabel="Increment"
               min={1}
               name={formFields.quantity.name}
               onBlur={quantityControl.blur}
@@ -169,13 +163,7 @@ function SubmitButton({ children, disabled }: { children: ReactNode; disabled?: 
   const { pending } = useFormStatus();
 
   return (
-    <Button
-      className="w-auto @xl:w-56"
-      disabled={disabled}
-      loading={pending}
-      size="medium"
-      type="submit"
-    >
+    <Button className="w-full" disabled={disabled} loading={pending} size="medium" type="submit">
       {children}
     </Button>
   );

@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { Button } from '@/vibes/soul/primitives/button';
 import { newsletterFormSchema } from '~/contentful/schema';
 
-export default function NewsletterForm({
+export function NewsletterForm({
   title,
   description,
   inputPlaceholder,

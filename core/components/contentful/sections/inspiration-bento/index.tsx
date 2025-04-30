@@ -12,7 +12,7 @@ import {
 } from '~/contentful/schema';
 import { ensureImageUrl } from '~/lib/utils';
 
-import Card from '../../primitives/card';
+import { Card } from '../../primitives/card';
 
 interface InspirationBentoProps {
   heading?: string | null;
@@ -43,12 +43,7 @@ interface MappedCardData {
   shortDescription: string;
 }
 
-export default function InspirationBento({
-  heading,
-  video,
-  cta,
-  inspirationCards,
-}: InspirationBentoProps) {
+export function InspirationBento({ heading, video, cta, inspirationCards }: InspirationBentoProps) {
   const validCardsData = inspirationCards
     ?.map((card): MappedCardData | null => {
       const { contentReference } = card.fields;

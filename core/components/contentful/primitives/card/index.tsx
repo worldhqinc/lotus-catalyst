@@ -25,13 +25,7 @@ interface CardProps {
   shortDescription: string;
 }
 
-export default function Card({
-  categories,
-  image,
-  pageSlug,
-  recipeName,
-  shortDescription,
-}: CardProps) {
+export function Card({ categories, image, pageSlug, recipeName, shortDescription }: CardProps) {
   return (
     <article className="group relative max-h-max">
       <figure className="bg-surface-image relative aspect-[4/3] overflow-hidden rounded-lg">
