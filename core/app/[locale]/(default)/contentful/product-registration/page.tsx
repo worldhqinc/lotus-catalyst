@@ -52,7 +52,7 @@ export default function ProductRegistration() {
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <h2 className="mb-6 text-lg font-medium tracking-[1.8px] uppercase">
                 Sweepstakes eligibility
               </h2>
@@ -60,7 +60,7 @@ export default function ProductRegistration() {
                 <Label htmlFor="birthday">Birthday (Are you old enough to win?)</Label>
                 <Input id="birthday" name="birthday" type="date" />
               </div>
-            </div>
+            </div> */}
 
             <div>
               <div className="flex gap-4">
