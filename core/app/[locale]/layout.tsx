@@ -116,6 +116,11 @@ export default async function RootLayout({ params, children }: Props) {
           src={`https://static.zdassets.com/ekr/snippet.js?key=${process.env.NEXT_PUBLIC_ZENDESK_KEY}`}
           strategy="afterInteractive"
         />
+        <Script
+          id="klaviyo-snippet"
+          src={`https://static.klaviyo.com/onsite/js/${process.env.KLAVIYO_PUBLIC_API_KEY}/klaviyo.js`}
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
