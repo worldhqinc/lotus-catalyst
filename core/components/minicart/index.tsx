@@ -11,6 +11,7 @@ import { NumberInput } from '@/vibes/soul/form/number-input';
 import { Button } from '@/vibes/soul/primitives/button';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
+import { minicartCheckoutAction } from '~/components/minicart/_actions/checkout';
 import { type CartItem, minicartAction } from '~/components/minicart/_actions/minicart';
 import { useRouter } from '~/i18n/routing';
 
@@ -28,6 +29,16 @@ const schema = z.object({
   intent: z.enum(['update', 'remove']),
 });
 
+function CheckoutButton({ children }: { children: React.ReactNode }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button className="w-full" disabled={pending} loading={pending} type="submit">
+      {children}
+    </Button>
+  );
+}
+
 export function Minicart({ initialItems, onClose, cartHref }: Props) {
   const t = useTranslations('Minicart');
   const router = useRouter();
@@ -35,6 +46,8 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
     items: initialItems,
     lastResult: null,
   });
+
+  const [, checkoutAction] = useActionState(minicartCheckoutAction, null);
 
   useEffect(() => {
     if (lastResult?.status === 'success') {
@@ -103,9 +116,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
     return acc + (item.originalPrice - item.price) * item.quantity;
   }, 0);
 
-  const { pending } = useFormStatus();
-
-  if (pending || optimisticItems.length === 0) {
+  if (optimisticItems.length === 0) {
     return (
       <div className="bg-surface-secondary flex h-full flex-col">
         <div className="bg-background flex items-center gap-2 border-b border-[#e5e5e5] px-6 py-4">
@@ -121,7 +132,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
             </Button>
             <h2 className="font-sans text-base font-medium">{t('title')}</h2>
           </div>
-          <span className="text-sm sm:text-base">{pending ? 'Loading...' : '0 items'}</span>
+          <span className="text-sm sm:text-base">0 items</span>
         </div>
       </div>
     );
@@ -227,9 +238,9 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
                 {t('viewCart')}
               </Button>
             </Link>
-            <Link className="flex-1" href="/checkout" onClick={onClose}>
-              <Button className="w-full">{t('checkout')}</Button>
-            </Link>
+            <form action={checkoutAction} className="flex-1">
+              <CheckoutButton>{t('checkout')}</CheckoutButton>
+            </form>
           </div>
         </div>
       </div>
