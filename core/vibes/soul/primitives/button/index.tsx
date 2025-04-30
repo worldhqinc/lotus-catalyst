@@ -81,7 +81,7 @@ export function Button({
         }[shape],
         !loading && !disabled && 'hover:after:translate-x-0',
         disabled && 'cursor-not-allowed',
-        variant !== 'link' ? 'font-semibold' : 'font-normal',
+        variant !== 'link' ? 'font-medium' : 'font-normal',
         className,
       )}
       disabled={disabled || loading}
