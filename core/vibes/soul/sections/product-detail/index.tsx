@@ -5,7 +5,6 @@ import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price, PriceLabel } from '@/vibes/soul/primitives/price-label';
-import { Rating } from '@/vibes/soul/primitives/rating';
 import * as Skeleton from '@/vibes/soul/primitives/skeleton';
 import { type Breadcrumb, Breadcrumbs } from '@/vibes/soul/sections/breadcrumbs';
 import { ProductGallery } from '@/vibes/soul/sections/product-detail/product-gallery';
@@ -124,11 +123,11 @@ export function ProductDetail<F extends Field>({
                         </p>
                       )}
                     </div>
-                    <div className="group/product-rating">
+                    {/* <div className="group/product-rating">
                       <Stream fallback={<RatingSkeleton />} value={product.rating}>
                         {(rating) => <Rating rating={rating ?? 0} />}
                       </Stream>
-                    </div>
+                    </div> */}
                     <div className="group/product-price">
                       <Stream fallback={<PriceLabelSkeleton />} value={product.price}>
                         {(price) => (
@@ -255,15 +254,16 @@ function PriceLabelSkeleton() {
 }
 
 function RatingSkeleton() {
-  return (
-    <Skeleton.Root
-      className="flex w-[136px] items-center gap-1 group-has-[[data-pending]]/product-rating:animate-pulse"
-      pending
-    >
-      <Skeleton.Box className="h-4 w-[100px] rounded-md" />
-      <Skeleton.Box className="h-6 w-8 rounded-xl" />
-    </Skeleton.Root>
-  );
+  return null;
+  // return (
+  //   <Skeleton.Root
+  //     className="flex w-[136px] items-center gap-1 group-has-[[data-pending]]/product-rating:animate-pulse"
+  //     pending
+  //   >
+  //     <Skeleton.Box className="h-4 w-[100px] rounded-md" />
+  //     <Skeleton.Box className="h-6 w-8 rounded-xl" />
+  //   </Skeleton.Root>
+  // );
 }
 
 function ProductDetailFormSkeleton() {
