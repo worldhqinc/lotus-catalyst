@@ -1,7 +1,6 @@
 'use client';
 
 import { useActionState, useState } from 'react';
-import { clsx } from 'clsx';
 
 import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
@@ -83,37 +82,43 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
             type="email"
           />
         </div>
-        {formFields.map((field) => (
-          <div className={clsx('flex flex-col gap-1', field.hidden ? 'hidden' : '')} key={field.id}>
-            <Label className="text-foreground text-sm font-medium" htmlFor={field.id.toString()}>
-              {field.title_in_portal}
-            </Label>
-            {field.description ? (
-              <p className="text-contrast-400 text-xs">{field.description}</p>
-            ) : null}
-            {field.custom_field_options ? (
-              <Select
-                errors={state.errors?.[field.id.toString()] || undefined}
-                id={field.id.toString()}
-                name={field.id.toString()}
-                onValueChange={(value) => handleSelectChange(field, value)}
-                options={field.custom_field_options.map((option) => ({
-                  label: option.name,
-                  value: option.value,
-                }))}
-                required={field.required}
-              />
-            ) : (
-              <Input
-                errors={state.errors?.[field.id.toString()] || undefined}
-                id={field.id.toString()}
-                name={field.id.toString()}
-                required={field.required}
-                type="text"
-              />
-            )}
-          </div>
-        ))}
+        {formFields.map(
+          (field) =>
+            !field.hidden && (
+              <div className="flex flex-col gap-1" key={field.id}>
+                <Label
+                  className="text-foreground text-sm font-medium"
+                  htmlFor={field.id.toString()}
+                >
+                  {field.title_in_portal}
+                </Label>
+                {field.description ? (
+                  <p className="text-contrast-400 text-xs">{field.description}</p>
+                ) : null}
+                {field.custom_field_options ? (
+                  <Select
+                    errors={state.errors?.[field.id.toString()] || undefined}
+                    id={field.id.toString()}
+                    name={field.id.toString()}
+                    onValueChange={(value) => handleSelectChange(field, value)}
+                    options={field.custom_field_options.map((option) => ({
+                      label: option.name,
+                      value: option.value,
+                    }))}
+                    required={field.required}
+                  />
+                ) : (
+                  <Input
+                    errors={state.errors?.[field.id.toString()] || undefined}
+                    id={field.id.toString()}
+                    name={field.id.toString()}
+                    required={field.required}
+                    type="text"
+                  />
+                )}
+              </div>
+            ),
+        )}
         <div className="flex justify-end gap-2 md:mt-2">
           <Button
             className="flex-1 md:flex-none"

@@ -23,7 +23,12 @@ const TicketFormSchema = z.object({
         parent_field_id: z.number(),
         parent_field_type: z.string(),
         value: z.string(),
-        child_fields: z.array(z.any()),
+        child_fields: z.array(
+          z.object({
+            id: z.number(),
+            is_required: z.boolean(),
+          }),
+        ),
       }),
     ),
     agent_conditions: z.array(z.any()),
