@@ -7,7 +7,7 @@ import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price, PriceLabel } from '@/vibes/soul/primitives/price-label';
 import { Rating } from '@/vibes/soul/primitives/rating';
 import * as Skeleton from '@/vibes/soul/primitives/skeleton';
-import { type Breadcrumb, Breadcrumbs } from '@/vibes/soul/sections/breadcrumbs';
+import { Breadcrumbs, type Breadcrumb } from '@/vibes/soul/sections/breadcrumbs';
 import { ProductGallery } from '@/vibes/soul/sections/product-detail/product-gallery';
 import { productFinishedGoods } from '~/contentful/schema';
 import { ensureImageUrl } from '~/lib/utils';
@@ -87,7 +87,7 @@ export function ProductDetail<F extends Field>({
                       alt: image.fields.title ?? '',
                     }))}
                   />
-                  <div className="bg-contrast-100 relative mt-4 hidden grid-cols-2 gap-2 rounded-xl px-4 py-10 @xl:grid">
+                  <div className="bg-contrast-100 relative mt-4 hidden grid-cols-2 gap-2 rounded-xl px-4 py-10 @2xl:grid">
                     {[
                       {
                         icon: CircleSlash2,
@@ -278,20 +278,31 @@ function ProductGallerySkeleton() {
     <Skeleton.Root className="group-has-[[data-pending]]/product-gallery:animate-pulse" pending>
       <div className="w-full overflow-hidden rounded-xl @xl:rounded-2xl">
         <div className="flex">
-          <Skeleton.Box className="aspect-[4/5] h-full w-full shrink-0 grow-0 basis-full" />
+          <Skeleton.Box className="aspect-square w-full shrink-0 grow-0 basis-full @2xl:aspect-[4/5]" />
         </div>
       </div>
-      <div className="mt-2 flex max-w-full gap-2 overflow-x-auto">
-        {Array.from({ length: 5 }).map((_, idx) => (
-          <Skeleton.Box className="h-12 w-12 shrink-0 rounded-lg @md:h-16 @md:w-16" key={idx} />
+      <div className="mt-2 hidden max-w-full gap-2 overflow-x-auto md:flex">
+        {Array.from({ length: 2 }).map((_, idx) => (
+          <Skeleton.Box className="aspect-square flex-1 shrink-0 rounded-lg" key={idx} />
         ))}
+      </div>
+      <div className="bg-contrast-100 relative mt-4 hidden grid-cols-2 gap-2 rounded-xl px-4 py-10 @2xl:grid">
+        {Array.from({ length: 2 }).map((_, idx) => (
+          <div className="flex flex-col items-center justify-center gap-4" key={idx}>
+            <Skeleton.Box className="h-12 w-12 rounded-full" />
+            <Skeleton.Box className="h-4 w-52 rounded-md" />
+          </div>
+        ))}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="bg-contrast-200 h-20 w-[1px]" />
+        </div>
       </div>
     </Skeleton.Root>
   );
 }
 
 function PriceLabelSkeleton() {
-  return <Skeleton.Box className="my-5 h-4 w-20 rounded-md" />;
+  return <Skeleton.Box className="h-8 w-32 rounded-md @xl:h-10 @xl:w-40" />;
 }
 
 function RatingSkeleton() {
@@ -306,19 +317,6 @@ function RatingSkeleton() {
   );
 }
 
-function ProductSummarySkeleton() {
-  return (
-    <Skeleton.Root
-      className="flex w-full flex-col gap-3.5 pb-6 group-has-[[data-pending]]/product-summary:animate-pulse"
-      pending
-    >
-      {Array.from({ length: 3 }).map((_, idx) => (
-        <Skeleton.Box className="h-2.5 w-full" key={idx} />
-      ))}
-    </Skeleton.Root>
-  );
-}
-
 function ProductDetailFormSkeleton() {
   return (
     <Skeleton.Root
@@ -326,7 +324,7 @@ function ProductDetailFormSkeleton() {
       pending
     >
       <div className="flex flex-col gap-5">
-        <Skeleton.Box className="h-2 w-10 rounded-md" />
+        <Skeleton.Box className="h-4 w-24 rounded-md" />
         <div className="flex gap-2">
           {Array.from({ length: 3 }).map((_, idx) => (
             <Skeleton.Box className="h-11 w-[72px] rounded-full" key={idx} />
@@ -334,7 +332,7 @@ function ProductDetailFormSkeleton() {
         </div>
       </div>
       <div className="flex flex-col gap-5">
-        <Skeleton.Box className="h-3 w-16 rounded-md" />
+        <Skeleton.Box className="h-4 w-24 rounded-md" />
         <div className="flex gap-4">
           {Array.from({ length: 5 }).map((_, idx) => (
             <Skeleton.Box className="h-10 w-10 rounded-full" key={idx} />
@@ -352,54 +350,49 @@ function ProductDetailFormSkeleton() {
 function ProductAccordionsSkeleton() {
   return (
     <Skeleton.Root
-      className="flex h-[600px] w-full flex-col gap-8 pt-4 group-has-[[data-pending]]/product-accordion:animate-pulse"
+      className="flex flex-col gap-8 pt-4 group-has-[[data-pending]]/product-accordion:animate-pulse"
       pending
     >
-      <div className="flex items-center justify-between">
-        <Skeleton.Box className="h-2 w-20 rounded-xs" />
-        <Skeleton.Box className="h-3 w-3 rounded-xs" />
-      </div>
-      <div className="mb-1 flex flex-col gap-4">
-        <Skeleton.Box className="h-3 w-full rounded-xs" />
-        <Skeleton.Box className="h-3 w-full rounded-xs" />
-        <Skeleton.Box className="h-3 w-3/5 rounded-xs" />
-      </div>
-      <div className="flex items-center justify-between">
-        <Skeleton.Box className="h-2 w-24 rounded-xs" />
-        <Skeleton.Box className="h-3 w-3 rounded-full" />
-      </div>
-      <div className="flex items-center justify-between">
-        <Skeleton.Box className="h-2 w-20 rounded-xs" />
-        <Skeleton.Box className="h-3 w-3 rounded-full" />
-      </div>
-      <div className="flex items-center justify-between">
-        <Skeleton.Box className="h-2 w-32 rounded-xs" />
-        <Skeleton.Box className="h-3 w-3 rounded-full" />
-      </div>
+      {Array.from({ length: 3 }).map((_, idx) => (
+        <div className="border-contrast-200 border-t py-4" key={idx}>
+          <div className="flex items-center justify-between">
+            <Skeleton.Box className="h-4 w-32 rounded-md" />
+            <Skeleton.Box className="h-4 w-4 rounded-full" />
+          </div>
+        </div>
+      ))}
     </Skeleton.Root>
   );
 }
 
-export function ProductDetailSkeleton() {
+function ProductDetailSkeleton() {
   return (
-    <Skeleton.Root
-      className="grid grid-cols-1 items-stretch gap-x-6 gap-y-8 group-has-[[data-pending]]/product-detail:animate-pulse @2xl:grid-cols-2 @5xl:gap-x-12"
-      pending
-    >
-      <div className="hidden @2xl:block">
+    <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-8 @2xl:grid-cols-2 @5xl:gap-x-12">
+      <div className="group/product-gallery">
         <ProductGallerySkeleton />
       </div>
-      <div>
-        <Skeleton.Box className="mb-6 h-4 w-20 rounded-lg" />
-        <Skeleton.Box className="mb-6 h-6 w-72 rounded-lg" />
-        <RatingSkeleton />
-        <PriceLabelSkeleton />
-        <ProductSummarySkeleton />
-        <div className="mb-8 @2xl:hidden">
-          <ProductGallerySkeleton />
+      <div className="px-4 py-8 @xl:px-0 @xl:py-0">
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div className="flex gap-2">
+            <Skeleton.Box className="h-6 w-20 rounded" />
+            <Skeleton.Box className="h-6 w-20 rounded" />
+          </div>
+          <div className="flex items-center gap-2">
+            <Skeleton.Box className="h-4 w-20 rounded-md" />
+            <Skeleton.Box className="h-7 w-9 rounded-md" />
+          </div>
         </div>
-        <ProductDetailFormSkeleton />
+        <div className="flex flex-col gap-8">
+          <div>
+            <Skeleton.Box className="h-8 w-96 rounded-md @xl:h-10" />
+            <Skeleton.Box className="mt-4 h-6 w-64 rounded-md" />
+          </div>
+          <RatingSkeleton />
+          <PriceLabelSkeleton />
+          <Skeleton.Box className="h-4 w-32 rounded-md" />
+          <Skeleton.Box className="h-16 w-full rounded-md" />
+        </div>
       </div>
-    </Skeleton.Root>
+    </div>
   );
 }
