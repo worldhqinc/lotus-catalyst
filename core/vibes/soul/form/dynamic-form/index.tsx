@@ -50,6 +50,7 @@ export interface DynamicFormProps<F extends Field> {
   submitName?: string;
   submitValue?: string;
   onCancel?: (e: MouseEvent<HTMLButtonElement>) => void;
+  isRegisterForm?: boolean;
 }
 
 export function DynamicForm<F extends Field>({
@@ -60,6 +61,7 @@ export function DynamicForm<F extends Field>({
   submitLabel = 'Submit',
   submitName,
   submitValue,
+  isRegisterForm = false,
   onCancel,
 }: DynamicFormProps<F>) {
   const [{ lastResult, fields }, formAction] = useActionState(action, {
@@ -125,7 +127,7 @@ export function DynamicForm<F extends Field>({
 
             return <DynamicFormField field={field} formField={formField} key={formField.id} />;
           })}
-          <div className="flex gap-1 pt-3">
+          <div className="flex gap-2 pt-3">
             {onCancel && (
               <Button
                 aria-label={`${cancelLabel} ${submitLabel}`}
@@ -147,14 +149,16 @@ export function DynamicForm<F extends Field>({
           ))}
         </div>
       </form>
-      <div className="mt-4">
-        <p>
-          Already have an account?{' '}
-          <Link className="link text-primary" href="/login">
-            Sign in
-          </Link>
-        </p>
-      </div>
+      {isRegisterForm && (
+        <div className="mt-4">
+          <p>
+            Already have an account?{' '}
+            <Link className="link text-primary" href="/login">
+              Sign in
+            </Link>
+          </p>
+        </div>
+      )}
     </FormProvider>
   );
 }

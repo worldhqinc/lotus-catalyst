@@ -51,7 +51,7 @@ export function AddressListSection<A extends Address, F extends Field>({
   addresses,
   fields,
   minimumAddressCount = 1,
-  defaultAddress,
+  defaultAddress = addresses[0] ? { id: addresses[0].id } : undefined,
   addressAction,
   editLabel = 'Edit',
   deleteLabel = 'Delete',
@@ -127,18 +127,18 @@ export function AddressListSection<A extends Address, F extends Field>({
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="border-contrast-200 flex items-center justify-between border-b pb-6">
         <Title>{title}</Title>
         {!showNewAddressForm && (
-          <Button onClick={() => setShowNewAddressForm(true)} size="small">
+          <Button onClick={() => setShowNewAddressForm(true)} size="medium" variant="tertiary">
             {showAddFormLabel}
           </Button>
         )}
       </div>
-      <div>
+      <div className="grid">
         {showNewAddressForm && (
-          <div className="border-contrast-200 border-b pt-5 pb-6">
-            <div className="w-[480px] space-y-4">
+          <div className="border-contrast-200 border-b py-6">
+            <div className="max-w-[480px] space-y-4">
               <DynamicForm
                 action={(_prevState, formData) => {
                   setShowNewAddressForm(false);
@@ -153,7 +153,7 @@ export function AddressListSection<A extends Address, F extends Field>({
                     lastResult: optimisticState.lastResult,
                   };
                 }}
-                buttonSize="small"
+                buttonSize="medium"
                 cancelLabel={cancelLabel}
                 fields={optimisticState.fields.map((field) => {
                   if ('name' in field && field.name === 'id') {
@@ -194,7 +194,7 @@ export function AddressListSection<A extends Address, F extends Field>({
           return (
             <div className="border-contrast-200 border-b pt-5 pb-6" key={address.id}>
               {activeAddressIds.includes(address.id) ? (
-                <div className="w-[480px] space-y-4">
+                <div className="max-w-[480px] space-y-4">
                   <DynamicForm
                     action={(_prevState, formData) => {
                       setActiveAddressIds((prev) => prev.filter((id) => id !== address.id));
@@ -230,12 +230,11 @@ export function AddressListSection<A extends Address, F extends Field>({
                         : undefined
                     }
                   />
-                  <div className="flex gap-1">
+                  <div className="flex gap-2">
                     <Button
                       aria-label={`${editLabel}: ${address.firstName} ${address.lastName}`}
                       onClick={() => setActiveAddressIds((prev) => [...prev, address.id])}
-                      size="small"
-                      variant="tertiary"
+                      size="medium"
                     >
                       {editLabel}
                     </Button>
@@ -288,7 +287,7 @@ function Title({ children }: { children: React.ReactNode }) {
   const { pending } = useFormStatus();
 
   return (
-    <h1 className="text-4xl">
+    <h1 className="text-2xl @4xl:text-4xl">
       {children}
       {pending && (
         <span className="ml-2">
@@ -372,7 +371,7 @@ function AddressActionButton({
       <Button
         {...rest}
         name="intent"
-        size="small"
+        size="medium"
         type="submit"
         value={intent}
         variant="tertiary"

@@ -11,6 +11,7 @@ interface Props<F extends Field> {
     title: string;
     items: string[];
   };
+  isRegisterForm?: boolean;
 }
 
 export function DynamicFormSection<F extends Field>({
@@ -20,6 +21,7 @@ export function DynamicFormSection<F extends Field>({
   submitLabel,
   action,
   benefits,
+  isRegisterForm,
 }: Props<F>) {
   return (
     <div className="@container">
@@ -33,7 +35,12 @@ export function DynamicFormSection<F extends Field>({
               )}
             </header>
           )}
-          <DynamicForm action={action} fields={fields} submitLabel={submitLabel} />
+          <DynamicForm
+            action={action}
+            fields={fields}
+            isRegisterForm={isRegisterForm}
+            submitLabel={submitLabel}
+          />
         </div>
         <div className="border-contrast-200 flex w-full flex-col rounded-lg border p-4 @xl:max-w-md @5xl:p-8">
           <div>

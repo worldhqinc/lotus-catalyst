@@ -72,6 +72,7 @@ export default async function Register({ params }: Props) {
           .map(formFieldTransformer)
           .filter(exists),
       ]}
+      isRegisterForm
       submitLabel={t('cta')}
       title={t('heading')}
     />

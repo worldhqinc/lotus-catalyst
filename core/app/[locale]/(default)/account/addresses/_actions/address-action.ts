@@ -1,7 +1,9 @@
 import { SubmissionResult } from '@conform-to/react';
+import { parseWithZod } from '@conform-to/zod';
 
 import { Field, FieldGroup } from '@/vibes/soul/form/dynamic-form/schema';
 import { Address, DefaultAddressConfiguration } from '@/vibes/soul/sections/address-list-section';
+import { schema } from '@/vibes/soul/sections/address-list-section/schema';
 
 import { createAddress } from './create-address';
 import { deleteAddress } from './delete-address';
@@ -30,6 +32,23 @@ export async function addressAction(prevState: Awaited<State>, formData: FormDat
 
     case 'delete': {
       return await deleteAddress(prevState, formData);
+    }
+
+    case 'setDefault': {
+      const submission = parseWithZod(formData, { schema });
+
+      if (submission.status !== 'success') {
+        return {
+          ...prevState,
+          lastResult: submission.reply(),
+        };
+      }
+
+      return {
+        ...prevState,
+        defaultAddress: { id: submission.value.id },
+        lastResult: submission.reply({ resetForm: true }),
+      };
     }
 
     default: {
