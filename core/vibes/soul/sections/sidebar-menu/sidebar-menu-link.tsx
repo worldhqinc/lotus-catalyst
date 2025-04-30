@@ -18,10 +18,10 @@ export function SidebarMenuLink({
     <Link
       {...rest}
       className={clsx(
-        'flex min-h-10 items-center rounded-md px-3 text-sm font-semibold',
+        'ease-quad relative flex min-h-10 items-center py-2 pl-3 leading-[150%] tracking-[1.28px] uppercase transition-colors duration-200',
         linkPathname !== null && pathname.includes(linkPathname)
-          ? 'bg-contrast-100'
-          : 'hover:bg-contrast-100',
+          ? 'text-foreground after:bg-primary font-medium after:absolute after:inset-y-0 after:left-0 after:w-0.75'
+          : 'text-contrast-400 hover:text-foreground',
         className,
       )}
       href={href}
