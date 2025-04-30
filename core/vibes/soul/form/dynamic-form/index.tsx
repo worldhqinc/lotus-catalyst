@@ -28,6 +28,7 @@ import { Select } from '@/vibes/soul/form/select';
 import { SwatchRadioGroup } from '@/vibes/soul/form/swatch-radio-group';
 import { Textarea } from '@/vibes/soul/form/textarea';
 import { Button, ButtonProps } from '@/vibes/soul/primitives/button';
+import { Link } from '~/components/link';
 
 import { Field, FieldGroup, schema } from './schema';
 
@@ -100,7 +101,7 @@ export function DynamicForm<F extends Field>({
           {fields.map((field, index) => {
             if (Array.isArray(field)) {
               return (
-                <div className="flex gap-4" key={index}>
+                <div className="flex flex-col gap-4 md:flex-row" key={index}>
                   {field.map((f) => {
                     const groupFormField = formFields[f.name];
 
@@ -146,6 +147,14 @@ export function DynamicForm<F extends Field>({
           ))}
         </div>
       </form>
+      <div className="mt-4">
+        <p>
+          Already have an account?{' '}
+          <Link className="link text-primary" href="/login">
+            Sign in
+          </Link>
+        </p>
+      </div>
     </FormProvider>
   );
 }

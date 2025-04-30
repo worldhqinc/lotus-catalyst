@@ -71,9 +71,17 @@
     },
     "Register": {
       "title": "Register account",
-      "heading": "New account",
+      "heading": "Create an account",
       "cta": "Create account",
-      "somethingWentWrong": "Something went wrong. Please try again later."
+      "somethingWentWrong": "Something went wrong. Please try again later.",
+      "AccountBenefits": {
+        "title": "Creating an account is easy. Enjoy:",
+        "fastCheckout": "Faster checkout",
+        "multipleAddresses": "Address book for multiple recipients",
+        "ordersHistory": "Detailed order history",
+        "ordersTracking": "Real-time order tracking",
+        "wishlists": "Save-and-Share wishlist"
+      }
     }
   },
   "Faceted": {
