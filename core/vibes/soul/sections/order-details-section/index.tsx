@@ -1,6 +1,7 @@
 import { ArrowLeft } from 'lucide-react';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
+import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 
@@ -90,22 +91,19 @@ export function OrderDetailsSection({
   return (
     <div className="@container">
       <div className="border-contrast-100 flex gap-4 border-b pb-8">
-        <Link
-          className="border-contrast-100 text-foreground ring-primary hover:border-contrast-200 hover:bg-contrast-100 mt-1 flex h-12 w-12 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:ring-2 focus-visible:outline-0"
-          href={prevHref}
-        >
+        <ButtonLink href={prevHref} shape="link" size="link" variant="link">
           <ArrowLeft />
-        </Link>
+        </ButtonLink>
         <div className="space-y-1">
           <div className="flex items-center gap-3">
-            <h1 className="text-4xl">{title}</h1>
-            <Badge variant={order.statusColor}>{order.status}</Badge>
+            <h1 className="text-4xl leading-[120%]">{title}</h1>
+            <Badge>{order.status}</Badge>
           </div>
           <p>{order.date}</p>
         </div>
       </div>
       <div className="grid @3xl:flex">
-        <div className="order-2 flex-1 pr-12 @3xl:order-1">
+        <div className="order-2 flex-1 @3xl:order-1 @3xl:pr-12">
           {order.destinations.map((destination) => (
             <Shipment
               addressLabel={shipmentAddressLabel}
@@ -115,7 +113,7 @@ export function OrderDetailsSection({
             />
           ))}
         </div>
-        <div className="order-1 basis-72 pt-8 @3xl:order-2">
+        <div className="order-1 pt-8 @3xl:order-2 @3xl:basis-72">
           <Summary summary={order.summary} totalLabel={summaryTotalLabel} />
         </div>
       </div>
@@ -133,26 +131,32 @@ function Shipment({
   methodLabel?: string;
 }) {
   return (
-    <div className="border-contrast-100 @container border-b py-8">
+    <div className="border-contrast-100 border-b py-8">
       <div className="space-y-6">
-        <div className="text-2xl font-medium">{destination.title}</div>
+        <h3 className="text-xl @4xl:text-2xl @4xl:font-medium @4xl:tracking-[2.4px] @4xl:uppercase">
+          {destination.title}
+        </h3>
         <div className="grid gap-8 @xl:flex @xl:gap-20">
-          <div className="text-sm">
-            <h3 className="font-semibold">{addressLabel}</h3>
-            <p>{destination.address.name}</p>
-            <p>{destination.address.street1}</p>
-            <p>{destination.address.street2}</p>
-            <p>
-              {`${destination.address.city}, ${destination.address.state} ${destination.address.zipcode}`}
-            </p>
-            <p>{destination.address.country}</p>
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium">{addressLabel}</h4>
+            <div className="text-contrast-400">
+              <p>{destination.address.name}</p>
+              <p>{destination.address.street1}</p>
+              <p>{destination.address.street2}</p>
+              <p>
+                {`${destination.address.city}, ${destination.address.state} ${destination.address.zipcode}`}
+              </p>
+              <p>{destination.address.country}</p>
+            </div>
           </div>
           {destination.shipments.map((shipment) => (
-            <div className="text-sm" key={shipment.name}>
-              <h3 className="font-semibold">{methodLabel}</h3>
-              <p>{shipment.name}</p>
-              <p>{shipment.status}</p>
-              <ShipmentTracking tracking={shipment.tracking} />
+            <div key={shipment.name}>
+              <h4 className="text-sm font-medium">{methodLabel}</h4>
+              <div>
+                <p>{shipment.name}</p>
+                <p>{shipment.status}</p>
+                <ShipmentTracking tracking={shipment.tracking} />
+              </div>
             </div>
           ))}
         </div>
@@ -199,15 +203,15 @@ function ShipmentTracking({
 function ShipmentLineItem({ lineItem }: { lineItem: ShipmentLineItem }) {
   return lineItem.href ? (
     <Link
-      className="group ring-primary grid shrink-0 cursor-pointer gap-8 rounded-xl ring-offset-4 focus-visible:ring-2 focus-visible:outline-0 @sm:flex @sm:rounded-2xl"
+      className="group ring-primary flex shrink-0 cursor-pointer items-start gap-8 rounded-xl ring-offset-4 focus-visible:ring-2 focus-visible:outline-0 @sm:flex @sm:rounded-2xl"
       href={lineItem.href}
       id={lineItem.id}
     >
-      <div className="border-contrast-100 bg-contrast-100 relative aspect-square basis-40 overflow-hidden rounded-[inherit] border">
+      <figure className="border-contrast-100 bg-contrast-200 aspect-square h-auto w-36 overflow-hidden rounded-lg border">
         {lineItem.image?.src != null ? (
           <Image
             alt={lineItem.image.alt}
-            className="bg-contrast-100 w-full scale-100 object-cover transition-transform duration-500 ease-out select-none group-hover:scale-110"
+            className="h-full w-full object-cover"
             fill
             sizes="10rem"
             src={lineItem.image.src}
@@ -217,24 +221,24 @@ function ShipmentLineItem({ lineItem }: { lineItem: ShipmentLineItem }) {
             {lineItem.title}
           </div>
         )}
-      </div>
+      </figure>
 
-      <div className="space-y-3 text-sm leading-snug">
+      <div className="space-y-3 text-sm">
         <div>
-          <div className="font-semibold">{lineItem.title}</div>
+          <div className="leading-[150%] font-medium">{lineItem.title}</div>
           {lineItem.subtitle != null && lineItem.subtitle !== '' && (
             <div className="text-contrast-500 font-normal">{lineItem.subtitle}</div>
           )}
         </div>
         <div className="flex gap-1 text-sm">
-          <span className="font-semibold">{lineItem.price}</span>
+          <span>{lineItem.price}</span>
           <span>×</span>
-          <span className="font-semibold">{lineItem.quantity}</span>
+          <span>{lineItem.quantity}</span>
         </div>
         <div>
           {lineItem.metadata?.map((metadata, index) => (
             <div className="flex gap-1 text-sm" key={index}>
-              <span className="font-semibold">{metadata.label}:</span>
+              <span className="font-medium">{metadata.label}:</span>
               <span>{metadata.value}</span>
             </div>
           ))}
@@ -242,12 +246,15 @@ function ShipmentLineItem({ lineItem }: { lineItem: ShipmentLineItem }) {
       </div>
     </Link>
   ) : (
-    <div className="group grid shrink-0 gap-8 rounded-xl @sm:flex @sm:rounded-2xl" id={lineItem.id}>
-      <div className="border-contrast-100 bg-contrast-100 relative aspect-square basis-40 overflow-hidden rounded-[inherit] border">
+    <div
+      className="group flex shrink-0 items-start gap-8 rounded-xl @sm:flex @sm:rounded-2xl"
+      id={lineItem.id}
+    >
+      <figure className="border-contrast-100 bg-contrast-200 aspect-square h-auto w-36 overflow-hidden rounded-lg border">
         {lineItem.image?.src != null ? (
           <Image
             alt={lineItem.image.alt}
-            className="bg-contrast-100 w-full scale-100 object-cover transition-transform duration-500 ease-out select-none group-hover:scale-110"
+            className="h-full w-full object-cover"
             fill
             sizes="10rem"
             src={lineItem.image.src}
@@ -257,24 +264,24 @@ function ShipmentLineItem({ lineItem }: { lineItem: ShipmentLineItem }) {
             {lineItem.title}
           </div>
         )}
-      </div>
+      </figure>
 
       <div className="space-y-3 text-sm leading-snug">
         <div>
-          <div className="font-semibold">{lineItem.title}</div>
+          <div className="font-medium">{lineItem.title}</div>
           {lineItem.subtitle != null && lineItem.subtitle !== '' && (
             <div className="text-contrast-500 font-normal">{lineItem.subtitle}</div>
           )}
         </div>
         <div className="flex gap-1 text-sm">
-          <span className="font-semibold">{lineItem.price}</span>
+          <span className="font-medium">{lineItem.price}</span>
           <span>×</span>
-          <span className="font-semibold">{lineItem.quantity}</span>
+          <span className="font-medium">{lineItem.quantity}</span>
         </div>
         <div>
           {lineItem.metadata?.map((metadata, index) => (
             <div className="flex gap-1 text-sm" key={index}>
-              <span className="font-semibold">{metadata.label}:</span>
+              <span className="font-medium">{metadata.label}:</span>
               <span>{metadata.value}</span>
             </div>
           ))}
@@ -286,24 +293,28 @@ function ShipmentLineItem({ lineItem }: { lineItem: ShipmentLineItem }) {
 
 function Summary({ summary, totalLabel = 'Total' }: { summary: Summary; totalLabel?: string }) {
   return (
-    <div className="divide-y divide-gray-100">
-      <div className="space-y-2 pt-5 pb-3">
-        {summary.lineItems.map((lineItem, index) => (
-          <div className="flex justify-between" key={index}>
-            <div>
-              <div className="text-sm">{lineItem.label}</div>
-              {lineItem.subtext != null && lineItem.subtext !== '' && (
-                <div className="text-contrast-400 text-xs">{lineItem.subtext}</div>
-              )}
+    <div className="space-y-5">
+      <h3 className="text-xl @4xl:text-2xl @4xl:font-medium @4xl:tracking-[2.4px] @4xl:uppercase">
+        Order summary
+      </h3>
+      <div className="divide-contrast-100 divide-y">
+        <div className="space-y-2 pb-3">
+          {summary.lineItems.map((lineItem, index) => (
+            <div className="flex justify-between" key={index}>
+              <div>
+                <div className="text-sm">{lineItem.label}</div>
+                {lineItem.subtext != null && lineItem.subtext !== '' && (
+                  <div className="text-contrast-400 text-xs">{lineItem.subtext}</div>
+                )}
+              </div>
+              <span className="text-sm">{lineItem.value}</span>
             </div>
-
-            <span className="text-sm">{lineItem.value}</span>
-          </div>
-        ))}
-      </div>
-      <div className="border-contrast-200 flex justify-between border-t py-3 font-semibold">
-        <span>{totalLabel}</span>
-        <span>{summary.total}</span>
+          ))}
+        </div>
+        <div className="border-contrast-200 flex justify-between border-t py-3">
+          <span className="font-medium">{totalLabel}</span>
+          <span className="font-medium">{summary.total}</span>
+        </div>
       </div>
     </div>
   );
