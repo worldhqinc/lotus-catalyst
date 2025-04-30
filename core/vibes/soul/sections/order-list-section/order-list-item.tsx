@@ -32,7 +32,7 @@ export function OrderListItem({
   return (
     <div
       className={clsx(
-        'border-contrast-100 border-t pt-5 pb-6 last:border-b @lg:pt-6 @lg:pb-10',
+        'border-contrast-200 border-t pt-5 pb-6 last:border-b @lg:pt-6 @lg:pb-10',
         className,
       )}
     >

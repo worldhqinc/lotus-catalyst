@@ -50,7 +50,7 @@ export const WishlistList = ({
 
           return wishlists.map((wishlist) => (
             <WishlistListItem
-              className="border-b-contrast-100 border-b last:border-b-transparent"
+              className="border-b-contrast-200 border-b last:border-b-transparent"
               emptyStateText={emptyWishlistStateText}
               itemActions={itemActions}
               key={wishlist.id}

@@ -90,7 +90,7 @@ export function OrderDetailsSection({
 }: Props) {
   return (
     <div className="@container">
-      <div className="border-contrast-100 flex gap-4 border-b pb-8">
+      <div className="border-contrast-200 flex gap-4 border-b pb-8">
         <ButtonLink href={prevHref} shape="link" size="link" variant="link">
           <ArrowLeft />
         </ButtonLink>
@@ -103,7 +103,7 @@ export function OrderDetailsSection({
         </div>
       </div>
       <div className="grid @3xl:flex">
-        <div className="order-2 flex-1 @3xl:order-1 @3xl:pr-12">
+        <div className="divide-contrast-200 order-2 flex-1 divide-y @3xl:order-1 @3xl:pr-12">
           {order.destinations.map((destination) => (
             <Shipment
               addressLabel={shipmentAddressLabel}
@@ -131,7 +131,7 @@ function Shipment({
   methodLabel?: string;
 }) {
   return (
-    <div className="border-contrast-100 border-b py-8">
+    <div className="py-8">
       <div className="space-y-6">
         <h3 className="text-xl @4xl:text-2xl @4xl:font-medium @4xl:tracking-[2.4px] @4xl:uppercase">
           {destination.title}
@@ -297,7 +297,7 @@ function Summary({ summary, totalLabel = 'Total' }: { summary: Summary; totalLab
       <h3 className="text-xl @4xl:text-2xl @4xl:font-medium @4xl:tracking-[2.4px] @4xl:uppercase">
         Order summary
       </h3>
-      <div className="divide-contrast-100 divide-y">
+      <div className="divide-contrast-200 divide-y">
         <div className="space-y-2 pb-3">
           {summary.lineItems.map((lineItem, index) => (
             <div className="flex justify-between" key={index}>
@@ -311,7 +311,7 @@ function Summary({ summary, totalLabel = 'Total' }: { summary: Summary; totalLab
             </div>
           ))}
         </div>
-        <div className="border-contrast-200 flex justify-between border-t py-3">
+        <div className="flex justify-between py-3">
           <span className="font-medium">{totalLabel}</span>
           <span className="font-medium">{summary.total}</span>
         </div>

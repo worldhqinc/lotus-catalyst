@@ -35,7 +35,7 @@ export function AccountSettingsSection({
               submitLabel={updateAccountSubmitLabel}
             />
           </div>
-          <div className="border-contrast-100 border-t pt-12">
+          <div className="border-contrast-200 border-t pt-12">
             <h1 className="mb-8 text-4xl leading-[120%] @2xl:block">{changePasswordTitle}</h1>
             <ChangePasswordForm
               action={changePasswordAction}
