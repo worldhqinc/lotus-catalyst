@@ -1,4 +1,4 @@
-import { CircleSlash2, Microwave, Package, RefreshCw } from 'lucide-react';
+import { Package, RefreshCw } from 'lucide-react';
 import { ReactNode } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
@@ -7,9 +7,15 @@ import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price, PriceLabel } from '@/vibes/soul/primitives/price-label';
 import { Rating } from '@/vibes/soul/primitives/rating';
 import * as Skeleton from '@/vibes/soul/primitives/skeleton';
-import { Breadcrumbs, type Breadcrumb } from '@/vibes/soul/sections/breadcrumbs';
+import { type Breadcrumb, Breadcrumbs } from '@/vibes/soul/sections/breadcrumbs';
 import { ProductGallery } from '@/vibes/soul/sections/product-detail/product-gallery';
-import { productFinishedGoods } from '~/contentful/schema';
+import { FeatureCallout } from '~/components/contentful/feature-callout';
+import { FeatureTiles } from '~/components/contentful/feature-tiles';
+import {
+  featureCalloutSchema,
+  featureTilesSchema,
+  productFinishedGoods,
+} from '~/contentful/schema';
 import { ensureImageUrl } from '~/lib/utils';
 
 import { ProductDetailForm, ProductDetailFormAction } from './product-detail-form';
@@ -87,28 +93,9 @@ export function ProductDetail<F extends Field>({
                       alt: image.fields.title ?? '',
                     }))}
                   />
-                  <div className="bg-contrast-100 relative mt-4 hidden grid-cols-2 gap-2 rounded-xl px-4 py-10 @2xl:grid">
-                    {[
-                      {
-                        icon: CircleSlash2,
-                        label: 'BPA-, PFOA-, and PFAS-free nonstick interior',
-                      },
-                      {
-                        icon: Microwave,
-                        label: '7 cooking modes for cooking flexibly',
-                      },
-                    ].map(({ icon: Icon, label }, index) => (
-                      <div className="flex flex-col items-center justify-center gap-4" key={index}>
-                        <Icon className="h-6 w-6" strokeWidth={1.5} />
-                        <span className="text-contrast-400 max-w-52 text-center text-balance">
-                          {label}
-                        </span>
-                      </div>
-                    ))}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="bg-contrast-200 h-20 w-[1px]" />
-                    </div>
-                  </div>
+                  {contentful?.fields.featureTiles && (
+                    <FeatureTiles {...featureTilesSchema.parse(contentful.fields.featureTiles)} />
+                  )}
                 </div>
                 <div className="px-4 py-8 @xl:px-0 @xl:py-0">
                   <div className="mb-8 flex items-start justify-between gap-4">
@@ -117,49 +104,11 @@ export function ProductDetail<F extends Field>({
                         <Badge key={index}>{line}</Badge>
                       ))}
                     </div>
-                    <div className="text-contrast-400 flex items-center gap-2 text-sm">
-                      Featured on{' '}
-                      <svg
-                        fill="none"
-                        height="28"
-                        viewBox="0 0 37 28"
-                        width="37"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M18.5015 6.34296C15.2637 6.34432 12.1565 7.65449 9.85132 9.99031C7.54614 12.3261 6.22813 15.5 6.18213 18.8261H10.9104C10.9475 16.7823 11.7633 14.835 13.1827 13.4025C14.6021 11.97 16.5118 11.1667 18.5015 11.1651C20.4915 11.1661 22.4018 11.9692 23.8217 13.4017C25.2415 14.8343 26.0577 16.7819 26.0948 18.8261H30.8184C30.7724 15.5005 29.4547 12.3269 27.1501 9.99119C24.8454 7.65544 21.7388 6.34498 18.5015 6.34296Z"
-                          fill="#8A8A8A"
-                        />
-                        <path
-                          d="M18.5013 0C13.6261 0.00147864 8.94862 1.97992 5.48559 5.50523C2.02257 9.03054 0.0539905 13.8177 0.0078125 18.8261H4.825C4.87104 15.13 6.33194 11.6013 8.89152 9.00367C11.4511 6.40601 14.9034 4.9484 18.5013 4.94633C22.0996 4.94768 25.5526 6.40497 28.1127 9.0027C30.6729 11.6004 32.1342 15.1296 32.1802 18.8261H36.9923C36.9461 13.8181 34.9779 9.03135 31.5154 5.50611C28.0529 1.98088 23.376 0.00213988 18.5013 0Z"
-                          fill="#8A8A8A"
-                        />
-                        <path
-                          d="M18.5015 12.6112C16.8851 12.6127 15.3333 13.2637 14.1779 14.425C13.0224 15.5863 12.3548 17.1658 12.3179 18.8261H24.6873C24.6503 17.1654 23.9825 15.5856 22.8265 14.4242C21.6706 13.2628 20.1183 12.6121 18.5015 12.6112Z"
-                          fill="#8A8A8A"
-                        />
-                        <path
-                          d="M0 20.5031V22.2249H2.00192V27.8526H3.95638V22.2249H5.9583V20.5031H0Z"
-                          fill="#8A8A8A"
-                        />
-                        <path
-                          d="M25.2555 20.5027L22.5146 27.8255H24.6704L25.0121 26.8147H27.855L28.1967 27.8255H30.3524L27.6115 20.5027C26.8262 20.5027 26.0408 20.5027 25.2555 20.5027ZM26.4335 22.6094L27.2869 25.1341H25.5801L26.4335 22.6094Z"
-                          fill="#8A8A8A"
-                        />
-                        <path
-                          d="M29.5576 20.5028L32.3475 24.9054V27.8255H34.2237V24.9054L37 20.5028H34.8593L33.2883 23.172L31.7173 20.5028L29.5576 20.5028Z"
-                          fill="#8A8A8A"
-                        />
-                        <path
-                          d="M15.3696 20.5202V27.8336H18.5975C23.3547 27.907 23.9651 20.5999 18.5975 20.5202H15.3696ZM17.3146 22.2149H18.7188C21.1097 22.2149 20.8206 26.158 18.7188 26.158H17.3146V22.2149Z"
-                          fill="#8A8A8A"
-                        />
-                        <path
-                          d="M10.3296 20.4031C7.82345 20.4031 6.44434 22.092 6.44434 24.1753C6.44434 26.2586 7.97509 28 10.3675 28C12.7409 28 14.2148 26.2586 14.2148 24.1753C14.2148 22.092 12.7409 20.4031 10.3296 20.4031ZM10.3564 22.1221C11.5625 22.1221 12.2998 23.0466 12.2998 24.1872C12.2998 25.3277 11.5625 26.281 10.3754 26.281C9.17876 26.281 8.41312 25.3277 8.41312 24.1872C8.41312 23.0466 9.10287 22.1221 10.3564 22.1221Z"
-                          fill="#8A8A8A"
-                        />
-                      </svg>
-                    </div>
+                    {contentful?.fields.featureCallout && (
+                      <FeatureCallout
+                        {...featureCalloutSchema.parse(contentful.fields.featureCallout)}
+                      />
+                    )}
                   </div>
                   {/* Product Details */}
                   <div className="flex flex-col gap-8">
