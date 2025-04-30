@@ -287,7 +287,7 @@ function Title({ children }: { children: React.ReactNode }) {
   const { pending } = useFormStatus();
 
   return (
-    <h1 className="text-2xl @4xl:text-4xl">
+    <h1 className="text-2xl leading-[120%] @2xl:text-4xl">
       {children}
       {pending && (
         <span className="ml-2">

@@ -76,7 +76,7 @@ function SubmitButton({ children }: { children: React.ReactNode }) {
   const { pending } = useFormStatus();
 
   return (
-    <Button loading={pending} size="small" type="submit" variant="secondary">
+    <Button loading={pending} size="medium" type="submit">
       {children}
     </Button>
   );
