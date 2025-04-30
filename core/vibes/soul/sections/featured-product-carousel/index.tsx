@@ -17,7 +17,6 @@ import {
   ProductsCarouselSkeleton,
 } from '@/vibes/soul/sections/product-carousel';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
-import { Link } from '~/components/link';
 
 function NavHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   const { scrollPrev, scrollNext, canScrollPrev, canScrollNext } = useCarousel();

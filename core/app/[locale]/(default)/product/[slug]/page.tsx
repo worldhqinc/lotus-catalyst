@@ -5,13 +5,11 @@ import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/serve
 import { SearchParams } from 'nuqs/server';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
-import { FeaturedProductCarousel } from '@/vibes/soul/sections/featured-product-carousel';
 import { ProductDetail } from '@/vibes/soul/sections/product-detail';
 import { getSessionCustomerAccessToken } from '~/auth';
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { supportDocumentSchema } from '~/contentful/schema';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
-import { productCardTransformer } from '~/data-transformers/product-card-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
 import { getPreferredCurrencyCode } from '~/lib/currency';
 
@@ -274,18 +272,6 @@ export default async function Product(props: Props) {
     ];
   });
 
-  const streameableRelatedProducts = Streamable.from(async () => {
-    const product = await streamableProductPricingAndRelatedProducts;
-
-    if (!product) {
-      return [];
-    }
-
-    const relatedProducts = removeEdgesAndNodes(product.relatedProducts);
-
-    return productCardTransformer(relatedProducts, format);
-  });
-
   const streamableContentful = Streamable.from(async () => {
     const product = await streamableProduct;
 
@@ -324,15 +310,6 @@ export default async function Product(props: Props) {
           return <PageContentEntries pageContent={pageContentEntries} />;
         }}
       </Stream>
-
-      <FeaturedProductCarousel
-        emptyStateSubtitle={t('RelatedProducts.browseCatalog')}
-        emptyStateTitle={t('RelatedProducts.noRelatedProducts')}
-        products={streameableRelatedProducts}
-        scrollbarLabel={t('RelatedProducts.scrollbar')}
-        subtitle={t('RelatedProducts.subtitle')}
-        title={t('RelatedProducts.title')}
-      />
 
       <Stream
         fallback={null}
