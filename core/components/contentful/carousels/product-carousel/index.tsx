@@ -14,7 +14,6 @@ import { ProductCard } from '@/vibes/soul/primitives/product-card';
 import type { CarouselProduct } from '@/vibes/soul/sections/product-carousel';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import {
-  Asset,
   carouselProduct,
   productFinishedGoodsSchema,
   productPartsAndAccessoriesSchema,
@@ -54,14 +53,6 @@ function NavHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   );
 }
 
-function parseProductImage(imageAsset: Asset | undefined) {
-  if (!imageAsset) return undefined;
-
-  const { file } = imageAsset.fields;
-
-  return { src: ensureImageUrl(file.url), alt: '' };
-}
-
 function parseProduct(
   entry: carouselProduct['fields']['products'][number],
 ): CarouselProduct | undefined {
@@ -70,9 +61,13 @@ function parseProduct(
   if (entryObject.sys.contentType.sys.id === 'productPartsAndAccessories') {
     const product = productPartsAndAccessoriesSchema.parse(entry);
     const { fields } = product;
-    const image = parseProductImage(fields.featuredImage);
+    const { featuredImage } = fields;
+    const { file } = featuredImage.fields;
 
-    if (image) image.alt = fields.productName;
+    const image = {
+      src: ensureImageUrl(file.url),
+      alt: featuredImage.fields.description ?? fields.productName,
+    };
 
     const price: Price = fields.salePrice
       ? {
@@ -94,9 +89,14 @@ function parseProduct(
   } else if (entryObject.sys.contentType.sys.id === 'productFinishedGoods') {
     const product = productFinishedGoodsSchema.parse(entry);
     const { fields } = product;
-    const image = parseProductImage(fields.featuredImage);
+    const { featuredImage } = fields;
+    const { file } = featuredImage?.fields ?? {};
 
-    if (image) image.alt = fields.productName;
+    const image = featuredImage &&
+      file && {
+        src: ensureImageUrl(file.url),
+        alt: featuredImage.fields.description ?? fields.productName,
+      };
 
     const price: Price = fields.salePrice
       ? {
