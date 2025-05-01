@@ -7,6 +7,7 @@ import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
 import { Link } from '~/components/link';
 
 import { LogoLotus } from '../../primitives/logo-lotus';
+
 import { CookiePreferencesLink } from './_components/cookie-preferences-link';
 
 type Action<State, Payload> = (state: Awaited<State>, payload: Payload) => State | Promise<State>;
