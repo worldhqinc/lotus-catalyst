@@ -385,7 +385,12 @@ export const withRoutes: MiddlewareFactory = () => {
           '/login',
           '/logout',
           '/register',
+          '/change-password',
+          '/maintenance',
+          '/search',
+          '/wishlist',
         ];
+
         const isContentfulPath = !nonContentfulPaths.some((path) => {
           return cleanPathName.startsWith(path);
         });
