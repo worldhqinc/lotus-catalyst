@@ -2,13 +2,7 @@
 
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { useState } from 'react';
-import {
-  Configure,
-  InstantSearch,
-  RefinementList,
-  useInfiniteHits,
-  useInstantSearch,
-} from 'react-instantsearch';
+import { Configure, InstantSearch, useInfiniteHits, useInstantSearch } from 'react-instantsearch';
 
 import { Select } from '@/vibes/soul/form/select';
 import { Button } from '@/vibes/soul/primitives/button';
@@ -165,15 +159,12 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
           </div>
           <ResultCount />
         </div>
-        <RefinementList
-          attribute={type}
-          classNames={{
-            list: 'flex flex-wrap gap-2',
-            item: 'px-2 py-1 border rounded text-sm',
-          }}
-        />
         <Configure
-          filters="sys.contentType.sys.id:productFinishedGoods OR sys.contentType.sys.id:productPartsAndAccessories"
+          filters={
+            type === 'accessories'
+              ? 'sys.contentType.sys.id:productPartsAndAccessories'
+              : 'sys.contentType.sys.id:productFinishedGoods OR sys.contentType.sys.id:productPartsAndAccessories'
+          }
           hitsPerPage={20}
         />
         <InfiniteHits />
