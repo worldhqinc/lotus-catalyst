@@ -99,7 +99,7 @@ export function OrderDetailsSection({
             <h1 className="text-4xl leading-[120%]">{title}</h1>
             <Badge>{order.status}</Badge>
           </div>
-          <p>{order.date}</p>
+          <p>{formatDate(order.date)}</p>
         </div>
       </div>
       <div className="grid @3xl:flex">
@@ -121,6 +121,16 @@ export function OrderDetailsSection({
   );
 }
 
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
 function Shipment({
   destination,
   addressLabel = 'Shipping address',
@@ -136,7 +146,7 @@ function Shipment({
         <h3 className="text-xl @4xl:text-2xl @4xl:font-medium @4xl:tracking-[2.4px] @4xl:uppercase">
           {destination.title}
         </h3>
-        <div className="grid gap-8 @xl:flex @xl:gap-20">
+        <div className="grid grid-cols-2 gap-8 @xl:flex @xl:gap-20">
           <div className="space-y-2">
             <h4 className="text-sm font-medium">{addressLabel}</h4>
             <div className="text-contrast-400">
@@ -150,11 +160,11 @@ function Shipment({
             </div>
           </div>
           {destination.shipments.map((shipment) => (
-            <div key={shipment.name}>
+            <div className="space-y-2" key={shipment.name}>
               <h4 className="text-sm font-medium">{methodLabel}</h4>
-              <div>
-                <p>{shipment.name}</p>
-                <p>{shipment.status}</p>
+              <div className="text-contrast-400">
+                <p className="break-words">{shipment.name}</p>
+                <p>Shipped on {formatDate(shipment.status)}</p>
                 <ShipmentTracking tracking={shipment.tracking} />
               </div>
             </div>
@@ -180,7 +190,7 @@ function ShipmentTracking({
   if ('url' in tracking && 'number' in tracking) {
     return (
       <p>
-        <Link href={tracking.url} target="_blank">
+        <Link className="link text-primary" href={tracking.url} target="_blank">
           {tracking.number}
         </Link>
       </p>
@@ -190,7 +200,7 @@ function ShipmentTracking({
   if ('url' in tracking) {
     return (
       <p>
-        <Link href={tracking.url} target="_blank">
+        <Link className="link text-primary" href={tracking.url} target="_blank">
           {tracking.url}
         </Link>
       </p>
