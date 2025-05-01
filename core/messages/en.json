@@ -54,12 +54,12 @@
       "somethingWentWrong": "Something went wrong. Please try again later.",
       "CreateAccount": {
         "title": "New customer?",
-        "accountBenefits": "Create an account with us and you'll be able to:",
+        "accountBenefits": "Create an account",
         "fastCheckout": "Check out faster",
         "multipleAddresses": "Save multiple shipping addresses",
         "ordersHistory": "Access your order history",
-        "ordersTracking": "Track new orders",
-        "wishlists": "Save items to your Wishlist",
+        "ordersTracking": "Track orders",
+        "wishlists": "Save items to wishlist",
         "cta": "Create account"
       },
       "ForgotPassword": {

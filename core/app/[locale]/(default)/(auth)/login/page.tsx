@@ -51,7 +51,7 @@ export default async function Login({ params, searchParams }: Props) {
           <h3 className="text-2xl leading-[120%] @5xl:text-4xl">{t('CreateAccount.title')}</h3>
           <div>
             <p className="text-xl font-medium">{t('CreateAccount.accountBenefits')}</p>
-            <ul className="text-contrast-400 mt-2 flex list-disc flex-col gap-y-2 ps-4">
+            <ul className="text-contrast-400 mt-2 flex list-disc flex-col gap-y-1 ps-4">
               <li>{t('CreateAccount.fastCheckout')}</li>
               <li>{t('CreateAccount.multipleAddresses')}</li>
               <li>{t('CreateAccount.ordersHistory')}</li>
@@ -59,7 +59,7 @@ export default async function Login({ params, searchParams }: Props) {
               <li>{t('CreateAccount.wishlists')}</li>
             </ul>
           </div>
-          <ButtonLink href="/register" size="medium" variant="primary">
+          <ButtonLink className="@2xl:self-start" href="/register" size="medium" variant="primary">
             {t('CreateAccount.cta')}
           </ButtonLink>
         </div>

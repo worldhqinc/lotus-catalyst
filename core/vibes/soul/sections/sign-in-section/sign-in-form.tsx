@@ -71,7 +71,7 @@ function SubmitButton({ children }: { children: React.ReactNode }) {
 
   return (
     <Button
-      className="mt-auto w-full"
+      className="mt-auto @2xl:self-start"
       loading={pending}
       size="medium"
       type="submit"
