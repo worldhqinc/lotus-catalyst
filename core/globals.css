@@ -19,6 +19,23 @@
   a:not([class]), .link {
     @apply text-inherit relative inline-block after:absolute after:top-full after:left-0 after:w-full after:h-px after:bg-current after:scale-x-0 after:origin-left after:transition-transform after:duration-200 after:ease-quad hover:after:scale-x-100;
   }
+
+  ul.list-disc li {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -0.75rem;
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+  }
 }
 
 @layer utilities {
@@ -155,7 +172,7 @@
   --color-surface-secondary: hsl(var(--surface-secondary));
   --color-surface-image: hsl(var(--surface-image));
   --color-surface-foreground: hsl(var(--surface-foreground));
-  
+
   --text-xs: var(--font-size-xs, 0.75rem);
   --text-sm: var(--font-size-sm, 0.875rem);
   --text-base: var(--font-size-base, 1rem);
