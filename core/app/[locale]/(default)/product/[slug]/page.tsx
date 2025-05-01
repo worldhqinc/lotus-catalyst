@@ -142,10 +142,12 @@ export default async function Product(props: Props) {
   const streamableImages = Streamable.from(async () => {
     const product = await streamableProduct;
 
-    const images = removeEdgesAndNodes(product.images).map((image) => ({
-      src: image.url,
-      alt: image.altText,
-    }));
+    const images = removeEdgesAndNodes(product.images)
+      .filter((image) => image.url !== product.defaultImage?.url)
+      .map((image) => ({
+        src: image.url,
+        alt: image.altText,
+      }));
 
     return product.defaultImage
       ? [{ src: product.defaultImage.url, alt: product.defaultImage.altText }, ...images]
