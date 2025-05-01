@@ -39,7 +39,7 @@ export default async function Cart({ params }: Props) {
   if (!cartId) {
     return (
       <CartEmptyState
-        cta={{ label: t('Empty.cta'), href: '/shop-all' }}
+        cta={{ label: t('Empty.cta'), href: '/shop/all' }}
         subtitle={t('Empty.subtitle')}
         title={t('Empty.title')}
       />
@@ -54,7 +54,7 @@ export default async function Cart({ params }: Props) {
   if (!cart) {
     return (
       <CartEmptyState
-        cta={{ label: t('Empty.cta'), href: '/shop-all' }}
+        cta={{ label: t('Empty.cta'), href: '/shop/all' }}
         subtitle={t('Empty.subtitle')}
         title={t('Empty.title')}
       />
@@ -184,7 +184,7 @@ export default async function Cart({ params }: Props) {
         emptyState={{
           title: t('Empty.title'),
           subtitle: t('Empty.subtitle'),
-          cta: { label: t('Empty.cta'), href: '/shop-all' },
+          cta: { label: t('Empty.cta'), href: '/shop/all' },
         }}
         incrementLineItemLabel={t('increment')}
         key={`${cart.entityId}-${cart.version}`}
