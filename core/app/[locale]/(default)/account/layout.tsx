@@ -27,8 +27,8 @@ export default async function Layout({ children, params }: Props) {
       sidebar={
         <SidebarMenu
           links={[
-            { href: '/account/settings', label: t('settings') },
             { href: '/account/orders', label: t('orders') },
+            { href: '/account/settings', label: t('settings') },
             { href: '/account/addresses', label: t('addresses') },
             { href: '/account/wishlists', label: t('wishlists') },
             { href: '/logout', label: t('logout'), prefetch: 'none' },
