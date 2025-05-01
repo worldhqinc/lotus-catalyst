@@ -22,9 +22,7 @@ export function OrderListSection({
 }: Props) {
   return (
     <div className="@container">
-      <h1 className="mb-8 hidden text-4xl leading-tight font-medium tracking-tight @2xl:block">
-        {title}
-      </h1>
+      <h1 className="mb-8 hidden text-4xl leading-[120%] @2xl:block">{title}</h1>
       <OrderList
         orderNumberLabel={orderNumberLabel}
         orders={orders}

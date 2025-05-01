@@ -51,16 +51,14 @@ export const WishlistListItem = ({
             <div className="flex flex-1 flex-col justify-between @sm:flex-row @sm:items-center">
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-semibold">{name}</span>
-                  <Badge variant={visibility.isPublic ? 'primary' : 'info'}>
-                    {visibility.label}
-                  </Badge>
+                  <span className="text-lg font-medium">{name}</span>
+                  <Badge>{visibility.label}</Badge>
                 </div>
                 <div className="text-contrast-500 text-sm">{totalItems.label}</div>
               </div>
               <div className="my-4 flex gap-2 whitespace-nowrap @sm:my-0 @sm:ml-2 @sm:items-center">
                 {actionsPosition === 'left' && actionsComponent?.(wishlist)}
-                <ButtonLink className="flex-1" href={href} size="small" variant="primary">
+                <ButtonLink className="flex-1" href={href} size="medium" variant="primary">
                   {viewWishlistLabel}
                 </ButtonLink>
                 {actionsPosition === 'right' && actionsComponent?.(wishlist)}

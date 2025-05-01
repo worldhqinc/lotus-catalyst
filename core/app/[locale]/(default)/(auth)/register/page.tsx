@@ -52,6 +52,16 @@ export default async function Register({ params }: Props) {
   return (
     <DynamicFormSection
       action={registerCustomer}
+      benefits={{
+        title: t('AccountBenefits.title'),
+        items: [
+          t('AccountBenefits.fastCheckout'),
+          t('AccountBenefits.multipleAddresses'),
+          t('AccountBenefits.ordersHistory'),
+          t('AccountBenefits.ordersTracking'),
+          t('AccountBenefits.wishlists'),
+        ],
+      }}
       fields={[
         addressFields
           .filter((field) => FULL_NAME_FIELDS.includes(field.entityId))
@@ -62,6 +72,7 @@ export default async function Register({ params }: Props) {
           .map(formFieldTransformer)
           .filter(exists),
       ]}
+      isRegisterForm
       submitLabel={t('cta')}
       title={t('heading')}
     />

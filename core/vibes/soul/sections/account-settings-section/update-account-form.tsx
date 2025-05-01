@@ -121,14 +121,7 @@ export function UpdateAccountForm({
         key={fields.company.id}
         label={companyLabel}
       />
-      <Button
-        loading={pending}
-        name="intent"
-        size="small"
-        type="submit"
-        value="update"
-        variant="secondary"
-      >
+      <Button loading={pending} name="intent" size="medium" type="submit" value="update">
         {submitLabel}
       </Button>
     </form>

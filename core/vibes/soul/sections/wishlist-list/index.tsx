@@ -50,7 +50,7 @@ export const WishlistList = ({
 
           return wishlists.map((wishlist) => (
             <WishlistListItem
-              className="border-b-contrast-100 border-b last:border-b-transparent"
+              className="border-b-contrast-200 border-b last:border-b-transparent"
               emptyStateText={emptyWishlistStateText}
               itemActions={itemActions}
               key={wishlist.id}
@@ -79,7 +79,7 @@ function WishlistListEmptyState({
       </div>
       <div className="absolute inset-0 mx-auto px-3 py-24 pb-3 @4xl:px-10 @4xl:pt-16 @4xl:pb-10">
         <div className="mx-auto max-w-xl space-y-2 text-center @4xl:space-y-3">
-          <h3 className="@4x:leading-none font-heading text-foreground text-2xl leading-tight @4xl:text-4xl">
+          <h3 className="font-heading text-foreground text-2xl leading-tight @4xl:text-4xl @4xl:leading-none">
             {emptyStateTitle}
           </h3>
           <p className="text-contrast-500 text-sm @4xl:text-lg">{emptyStateSubtitle}</p>

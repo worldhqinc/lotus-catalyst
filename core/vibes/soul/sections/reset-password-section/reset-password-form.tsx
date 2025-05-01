@@ -44,21 +44,28 @@ export function ResetPasswordForm({
   });
 
   return (
-    <form {...getFormProps(form)} action={formAction} className="space-y-5">
-      <Input
-        {...getInputProps(fields.password, { type: 'password' })}
-        errors={fields.password.errors}
-        key={fields.password.id}
-        label={newPasswordLabel}
-      />
-      <Input
-        {...getInputProps(fields.confirmPassword, { type: 'password' })}
-        className="mb-6"
-        errors={fields.confirmPassword.errors}
-        key={fields.confirmPassword.id}
-        label={confirmPasswordLabel}
-      />
-      <Button loading={isPending} size="small" type="submit" variant="secondary">
+    <form {...getFormProps(form)} action={formAction} className="flex grow flex-col gap-8">
+      <div className="space-y-4">
+        <Input
+          {...getInputProps(fields.password, { type: 'password' })}
+          errors={fields.password.errors}
+          key={fields.password.id}
+          label={newPasswordLabel}
+        />
+        <Input
+          {...getInputProps(fields.confirmPassword, { type: 'password' })}
+          errors={fields.confirmPassword.errors}
+          key={fields.confirmPassword.id}
+          label={confirmPasswordLabel}
+        />
+      </div>
+      <Button
+        className="@2xl:self-start"
+        loading={isPending}
+        size="medium"
+        type="submit"
+        variant="primary"
+      >
         {submitLabel}
       </Button>
       {form.errors?.map((error, index) => (

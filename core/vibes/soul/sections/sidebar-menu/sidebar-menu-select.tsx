@@ -7,6 +7,8 @@ export function SidebarMenuSelect({ links }: { links: Array<{ href: string; labe
   const pathname = usePathname();
   const router = useRouter();
 
+  const matchingLink = links.find((link) => pathname.includes(link.href))?.href ?? '';
+
   return (
     <Select
       name="sidebar-layout-link-select"
@@ -14,7 +16,7 @@ export function SidebarMenuSelect({ links }: { links: Array<{ href: string; labe
         router.push(value);
       }}
       options={links.map((link) => ({ value: link.href, label: link.label }))}
-      value={pathname}
+      value={matchingLink}
     />
   );
 }

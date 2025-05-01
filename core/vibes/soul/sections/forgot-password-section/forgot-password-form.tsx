@@ -27,7 +27,7 @@ interface Props {
 export function ForgotPasswordForm({
   action,
   emailLabel = 'Email',
-  submitLabel = 'Reset password',
+  submitLabel = 'Submit',
 }: Props) {
   const [{ lastResult, successMessage }, formAction] = useActionState(action, { lastResult: null });
   const [form, fields] = useForm({
@@ -41,7 +41,7 @@ export function ForgotPasswordForm({
   });
 
   return (
-    <form {...getFormProps(form)} action={formAction} className="flex grow flex-col gap-5">
+    <form {...getFormProps(form)} action={formAction} className="flex grow flex-col gap-8">
       <Input
         {...getInputProps(fields.email, { type: 'text' })}
         errors={fields.email.errors}
@@ -65,7 +65,13 @@ function SubmitButton({ children }: { children: React.ReactNode }) {
   const { pending } = useFormStatus();
 
   return (
-    <Button className="mt-auto w-full" loading={pending} type="submit" variant="secondary">
+    <Button
+      className="mt-auto w-full @4xl:max-w-max"
+      loading={pending}
+      size="medium"
+      type="submit"
+      variant="primary"
+    >
       {children}
     </Button>
   );
