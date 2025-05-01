@@ -7,7 +7,7 @@ import { Configure, InstantSearch, useInfiniteHits, useInstantSearch } from 'rea
 import { Select } from '@/vibes/soul/form/select';
 import { Button } from '@/vibes/soul/primitives/button';
 import { Price } from '@/vibes/soul/primitives/price-label';
-import { ProductCard } from '@/vibes/soul/primitives/product-card';
+import { ProductCard, ProductCardSkeleton } from '@/vibes/soul/primitives/product-card';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { ensureImageUrl } from '~/lib/utils';
 
@@ -42,9 +42,20 @@ interface ProductGridHit {
 
 function InfiniteHits() {
   const { items, showMore, isLastPage, results } = useInfiniteHits<ProductGridHit>();
+  const { status } = useInstantSearch();
   const hasMore = !isLastPage;
   const totalCount = results?.nbHits ?? 0;
   const progressPercent = totalCount > 0 ? (items.length / totalCount) * 100 : 0;
+
+  if (status === 'loading' || status === 'stalled') {
+    return (
+      <div className="mt-8 grid w-full gap-8 md:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 8 }).map((_, index) => (
+          <ProductCardSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <>
@@ -113,12 +124,12 @@ function ResultCount() {
   return <span className="text-contrast-400">{hitCount} items</span>;
 }
 
+const baseIndex = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? '';
+
 export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
   const [sortOption, setSortOption] = useState('relevance');
 
   const getSortBy = () => {
-    const baseIndex = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? '';
-
     switch (sortOption) {
       case 'price_asc':
         return `${baseIndex}_price_asc`;
