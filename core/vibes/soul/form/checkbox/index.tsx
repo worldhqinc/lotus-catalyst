@@ -92,7 +92,7 @@ export function Checkbox({
             className={clsx(
               'cursor-pointer text-sm',
               {
-                light: 'text-[var(--checkbox-light-label,hsl(var(--primary)))]',
+                light: 'text-current',
                 dark: 'text-[var(--checkbox-dark-label,hsl(var(--background)))]',
               }[colorScheme],
             )}

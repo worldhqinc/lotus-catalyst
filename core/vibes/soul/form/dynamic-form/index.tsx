@@ -251,7 +251,7 @@ function DynamicFormField({
         <Checkbox
           errors={formField.errors}
           key={field.name}
-          label={field.label}
+          label={null}
           name={formField.name}
           onBlur={controls.blur}
           onCheckedChange={(value) => controls.change(String(value))}
@@ -266,7 +266,7 @@ function DynamicFormField({
         <CheckboxGroup
           errors={formField.errors}
           key={field.name}
-          label={field.label}
+          label={undefined}
           name={formField.name}
           onValueChange={controls.change}
           options={field.options}
