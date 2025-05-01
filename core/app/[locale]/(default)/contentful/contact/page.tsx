@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { revalidate } from '~/client/revalidate-target';
+import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 
 import { ChatWidgetButton } from './_components/chat-widget-button';
 import { ContactForm } from './_components/contact-form';
@@ -197,6 +198,7 @@ export default async function ContactPage() {
             </div>
             <div className="my-8">
               <ContactForm fields={fields} />
+              <CookiePreferencesNotice />
             </div>
             <p className="text-contrast-400 text-xs leading-[20px]">
               Fill out this form and one of our customer service reps will be in touch within 48

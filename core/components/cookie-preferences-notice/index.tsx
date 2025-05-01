@@ -14,5 +14,11 @@ export default async function CookiePreferencesNotice() {
     ? documentToHtmlString(subtitleRichTextDocument)
     : '';
 
-  return <div id="msg-to-opt-out-users" dangerouslySetInnerHTML={{ __html: subtitleHtml }} />;
+  return (
+    <div
+      dangerouslySetInnerHTML={{ __html: subtitleHtml }}
+      id="msg-to-opt-out-users"
+      style={{ display: 'none' }}
+    />
+  );
 }

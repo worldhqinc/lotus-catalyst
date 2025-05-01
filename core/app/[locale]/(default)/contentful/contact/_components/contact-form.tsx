@@ -7,6 +7,7 @@ import { Label } from '@/vibes/soul/form/label';
 import { Select } from '@/vibes/soul/form/select';
 import { Button } from '@/vibes/soul/primitives/button';
 import { Modal } from '@/vibes/soul/primitives/modal';
+import { toast } from '@/vibes/soul/primitives/toaster';
 
 import { submitForm } from '../_actions/submit-form';
 import { TicketField } from '../page';
@@ -16,13 +17,22 @@ export interface FormState {
   success: boolean;
 }
 
+// Safely extract error strings or return undefined
+const getErrorsOrUndefined = (
+  errors: Record<string, string[]> | null,
+  fieldName: string,
+): string[] | undefined => {
+  return errors?.[fieldName] || undefined;
+};
+
 export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
   const initialState: FormState = {
     errors: null,
     success: false,
   };
 
-  const [state, formAction] = useActionState(submitForm, initialState);
+  const handleSubmitWithParam = submitForm.bind(null, fields);
+  const [state, formAction] = useActionState(handleSubmitWithParam, initialState);
   const [isOpen, setIsOpen] = useState(false);
   const [formFields, setFormFields] = useState<TicketField[]>(fields);
 
@@ -55,7 +65,12 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
   };
 
   if (state.success) {
-    return <div>Success</div>;
+    setIsOpen(false);
+    toast.success(
+      '<strong>Thank you!</strong> One of our customer service reps will be in touch within 48 hours.',
+    );
+
+    return;
   }
 
   return (
@@ -75,7 +90,8 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
             Email Address
           </Label>
           <Input
-            errors={state.errors?.email || undefined}
+            defaultValue={state.email}
+            errors={getErrorsOrUndefined(state.errors, 'email')}
             id="email"
             name="email"
             required
@@ -97,7 +113,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
                 ) : null}
                 {field.custom_field_options ? (
                   <Select
-                    errors={state.errors?.[field.id.toString()] || undefined}
+                    errors={getErrorsOrUndefined(state.errors, field.id.toString())}
                     id={field.id.toString()}
                     name={field.id.toString()}
                     onValueChange={(value) => handleSelectChange(field, value)}
@@ -109,7 +125,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
                   />
                 ) : (
                   <Input
-                    errors={state.errors?.[field.id.toString()] || undefined}
+                    errors={getErrorsOrUndefined(state.errors, field.id.toString())}
                     id={field.id.toString()}
                     name={field.id.toString()}
                     required={field.required}
