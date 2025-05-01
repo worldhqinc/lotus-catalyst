@@ -7,6 +7,7 @@ import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
 import { Link } from '~/components/link';
 
 import { LogoLotus } from '../../primitives/logo-lotus';
+import { CookiePreferencesLink } from './_components/cookie-preferences-link';
 
 type Action<State, Payload> = (state: Awaited<State>, payload: Payload) => State | Promise<State>;
 
@@ -366,12 +367,7 @@ export const Footer = forwardRef(function Footer(
             >
               Terms of Service
             </Link>
-            <Link
-              className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
-              href="/#"
-            >
-              Cookie Preferences
-            </Link>
+            <CookiePreferencesLink />
           </div>
 
           {/* Social Media Links */}
