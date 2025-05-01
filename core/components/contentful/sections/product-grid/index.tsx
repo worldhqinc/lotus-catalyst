@@ -120,7 +120,7 @@ function ResultCount() {
 }
 
 export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
-  const [sortOption, setSortOption] = useState('inventory');
+  const [sortOption, setSortOption] = useState('relevance');
 
   const getSortBy = () => {
     const baseIndex = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? '';
@@ -132,14 +132,14 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
       case 'price_desc':
         return `${baseIndex}_price_desc`;
 
-      case 'inventory':
+      case 'relevance':
       default:
         return baseIndex;
     }
   };
 
   const sortOptions = [
-    { label: 'Inventory', value: 'inventory' },
+    { label: 'Relevance', value: 'relevance' },
     { label: 'Price: Low to High', value: 'price_asc' },
     { label: 'Price: High to Low', value: 'price_desc' },
   ];
