@@ -95,7 +95,7 @@ export function OrderDetailsSection({
           <ArrowLeft />
         </ButtonLink>
         <div className="space-y-1">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-4xl leading-[120%]">{title}</h1>
             <Badge>{order.status}</Badge>
           </div>
@@ -203,11 +203,11 @@ function ShipmentTracking({
 function ShipmentLineItem({ lineItem }: { lineItem: ShipmentLineItem }) {
   return lineItem.href ? (
     <Link
-      className="group ring-primary flex shrink-0 cursor-pointer items-start gap-8 rounded-xl ring-offset-4 focus-visible:ring-2 focus-visible:outline-0 @sm:flex @sm:rounded-2xl"
+      className="group ring-primary flex shrink-0 cursor-pointer items-start gap-8 rounded-xl ring-offset-4 focus-visible:ring-2 focus-visible:outline-0 @sm:rounded-2xl"
       href={lineItem.href}
       id={lineItem.id}
     >
-      <figure className="border-contrast-100 bg-contrast-200 aspect-square h-auto w-36 overflow-hidden rounded-lg border">
+      <figure className="border-contrast-100 bg-contrast-200 relative aspect-square h-auto w-36 shrink-0 overflow-hidden rounded-lg border">
         {lineItem.image?.src != null ? (
           <Image
             alt={lineItem.image.alt}
@@ -247,10 +247,10 @@ function ShipmentLineItem({ lineItem }: { lineItem: ShipmentLineItem }) {
     </Link>
   ) : (
     <div
-      className="group flex shrink-0 items-start gap-8 rounded-xl @sm:flex @sm:rounded-2xl"
+      className="group flex shrink-0 items-start gap-8 rounded-xl @sm:rounded-2xl"
       id={lineItem.id}
     >
-      <figure className="border-contrast-100 bg-contrast-200 aspect-square h-auto w-36 overflow-hidden rounded-lg border">
+      <figure className="border-contrast-100 bg-contrast-200 relative aspect-square h-auto w-36 shrink-0 overflow-hidden rounded-lg border">
         {lineItem.image?.src != null ? (
           <Image
             alt={lineItem.image.alt}

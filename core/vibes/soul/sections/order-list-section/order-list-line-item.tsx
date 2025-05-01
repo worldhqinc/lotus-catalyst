@@ -30,7 +30,7 @@ export function OrderListLineItem({ className, lineItem }: Props) {
     >
       <div>
         {lineItem.image?.src != null ? (
-          <figure className="bg-contrast-100 aspect-square h-auto w-36 overflow-hidden rounded-lg">
+          <figure className="bg-contrast-100 relative aspect-square h-auto w-36 overflow-hidden rounded-lg">
             <Image
               alt={lineItem.image.alt}
               className="bg-contrast-100 w-full scale-100 object-cover transition-transform duration-500 ease-out select-none group-hover:scale-110"
@@ -47,7 +47,7 @@ export function OrderListLineItem({ className, lineItem }: Props) {
       </div>
 
       <div className="mt-2 px-1 text-sm leading-snug @xs:mt-3">
-        <span className="block font-medium">{lineItem.title}</span>
+        <span className="block w-full max-w-36 font-medium break-words">{lineItem.title}</span>
 
         {lineItem.subtitle != null && lineItem.subtitle !== '' && (
           <span className="text-contrast-400 block font-normal">{lineItem.subtitle}</span>
@@ -62,7 +62,7 @@ export function OrderListLineItem({ className, lineItem }: Props) {
     >
       <div>
         {lineItem.image?.src != null ? (
-          <figure className="bg-contrast-100 aspect-square h-auto w-36 overflow-hidden rounded-lg">
+          <figure className="bg-contrast-100 relative aspect-square h-auto w-36 overflow-hidden rounded-lg">
             <Image
               alt={lineItem.image.alt}
               className="bg-contrast-100 w-full scale-100 object-cover transition-transform duration-500 ease-out select-none group-hover:scale-110"

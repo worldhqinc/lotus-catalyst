@@ -37,7 +37,7 @@ export function OrderListItem({
       )}
     >
       <div className="flex flex-col justify-between gap-x-10 gap-y-4 @lg:flex-row">
-        <div className="flex items-center gap-x-12">
+        <div className="flex flex-wrap items-center gap-x-12 gap-y-2">
           <div>
             <span className="text-contrast-500 text-xs leading-[20px] tracking-[1.44px] uppercase">
               {orderNumberLabel}
