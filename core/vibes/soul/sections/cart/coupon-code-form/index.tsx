@@ -88,9 +88,11 @@ export function CouponCodeForm({
   });
 
   return (
-    <div className="space-y-2 border-t border-[var(--cart-border,hsl(var(--contrast-100)))] pt-4 pb-5">
+    <div className="space-y-2 border-t border-[var(--cart-border,hsl(var(--contrast-100)))] py-5">
       <form {...getFormProps(form)} action={formAction} className="space-y-2">
-        <label htmlFor={fields.couponCode.id}>{label}</label>
+        <label className="text-sm" htmlFor={fields.couponCode.id}>
+          {label}
+        </label>
         <div className="mt-2 flex gap-1.5">
           <Input
             {...getInputProps(fields.couponCode, {
@@ -135,14 +137,14 @@ function SubmitButton({ disabled, ...props }: React.ComponentPropsWithoutRef<typ
   return (
     <Button
       {...props}
-      className="shrink-0"
+      className="max-h-[46px] shrink-0"
       disabled={disabled ?? pending}
       loading={pending}
       name="intent"
-      size="small"
+      size="medium"
       type="submit"
       value="apply"
-      variant="secondary"
+      variant="tertiary"
     />
   );
 }

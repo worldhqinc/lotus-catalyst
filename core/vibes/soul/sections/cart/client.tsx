@@ -235,11 +235,13 @@ export function CartClient<LineItem extends CartLineItem>({
       className="font-[family-name:var(--cart-font-family,var(--font-family-body))] text-[var(--cart-text,hsl(var(--foreground)))]"
       sidebar={
         <div>
-          <h2 className="mb-10 text-4xl leading-none font-medium @xl:text-5xl">{summaryTitle}</h2>
+          <h2 className="text-lg leading-none font-medium tracking-[1.8px] uppercase @xl:text-2xl">
+            {summaryTitle}
+          </h2>
           <dl aria-label="Receipt Summary" className="w-full">
-            <div className="divide-y divide-[var(--cart-border,hsl(var(--contrast-100)))]">
+            <div className="space-y-3 py-5">
               {cart.summaryItems.map((summaryItem, index) => (
-                <div className="flex justify-between py-4" key={index}>
+                <div className="flex justify-between text-sm leading-6" key={index}>
                   <dt>{summaryItem.label}</dt>
                   <dd>{summaryItem.value}</dd>
                 </div>
@@ -258,7 +260,7 @@ export function CartClient<LineItem extends CartLineItem>({
                 removeLabel={couponCode.removeLabel}
               />
             )}
-            <div className="flex justify-between border-t border-[var(--cart-border,hsl(var(--contrast-100)))] py-6 text-xl font-bold">
+            <div className="flex justify-between border-t border-[var(--cart-border,hsl(var(--contrast-100)))] py-5 font-medium">
               <dt>{cart.totalLabel ?? 'Total'}</dt>
               <dl>{cart.total}</dl>
             </div>
@@ -273,19 +275,14 @@ export function CartClient<LineItem extends CartLineItem>({
       sidebarSize="1/3"
     >
       <div className="w-full">
-        <h1 className="mb-10 text-4xl leading-none @xl:text-5xl">
+        <h1 className="mb-10 text-2xl leading-none @xl:text-4xl">
           {title}
-          <span className="ml-4 text-contrast-400">
-            ({optimisticQuantity})
-          </span>
+          <span className="text-contrast-400 ml-4">({optimisticQuantity})</span>
         </h1>
         {/* Cart Items */}
         <ul className="flex flex-col gap-5">
           {optimisticLineItems.map((lineItem) => (
-            <li
-              className="@container flex items-start gap-x-5 gap-y-4"
-              key={lineItem.id}
-            >
+            <li className="@container flex items-start gap-x-5 gap-y-4" key={lineItem.id}>
               <div className="relative aspect-square w-full max-w-24 overflow-hidden rounded-xl bg-[var(--cart-image-background,hsl(var(--contrast-100)))] focus-visible:ring-2 focus-visible:ring-[var(--cart-focus,hsl(var(--primary)))] focus-visible:ring-offset-4 focus-visible:outline-hidden">
                 <Image
                   alt={lineItem.image.alt}
@@ -297,7 +294,7 @@ export function CartClient<LineItem extends CartLineItem>({
               </div>
               <div className="flex grow flex-col flex-wrap justify-between gap-y-2 @xl:flex-row">
                 <div className="flex w-full flex-1 flex-col @xl:w-1/2 @xl:pr-4">
-                  <span className="font-medium leading-6">{lineItem.title}</span>
+                  <span className="leading-6 font-medium">{lineItem.title}</span>
                   <span className="text-contrast-400 text-sm leading-6">{lineItem.subtitle}</span>
                 </div>
                 <CounterForm
@@ -355,7 +352,9 @@ function CounterForm({
     <form {...getFormProps(form)} action={action}>
       <input {...getInputProps(fields.id, { type: 'hidden' })} key={fields.id.id} />
       <div className="cart-action-buttons flex w-full flex-wrap items-center justify-between gap-x-5 gap-y-2 @xl:justify-start">
-        <span className="font-medium flex-[0_0_100%] @xl:flex-none @xl:ml-auto">{lineItem.price}</span>
+        <span className="flex-[0_0_100%] font-medium @xl:ml-auto @xl:flex-none">
+          {lineItem.price}
+        </span>
 
         {/* Counter */}
         <div className="flex items-center rounded-lg border border-[var(--cart-counter-border,hsl(var(--contrast-100)))]">
@@ -410,7 +409,7 @@ function CounterForm({
           value="delete"
         >
           <Trash
-            className="text-foreground transition-colors duration-300 ease-quad hover:text-primary"
+            className="text-foreground ease-quad hover:text-primary transition-colors duration-300"
             size={20}
             strokeWidth={1}
           />
@@ -448,5 +447,5 @@ function CheckoutButton({
 function SubmitButton(props: ComponentPropsWithoutRef<typeof Button>) {
   const { pending } = useFormStatus();
 
-  return <Button {...props} disabled={pending} loading={pending} type="submit" />;
+  return <Button {...props} disabled={pending} loading={pending} size="medium" type="submit" />;
 }

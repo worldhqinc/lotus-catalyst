@@ -46,9 +46,7 @@ export function CartSkeleton({
       className="group/cart text-[var(--cart-text,hsl(var(--foreground)))]"
       sidebar={
         <div>
-          <h2 className="mb-10 text-4xl leading-none font-medium @xl:text-5xl">
-            {summaryTitle}
-          </h2>
+          <h2 className="mb-10 text-4xl leading-none font-medium @xl:text-5xl">{summaryTitle}</h2>
           <div className="group-has-[[data-pending]]/cart:animate-pulse">
             <div className="w-full" data-pending>
               <div className="divide-y divide-[var(--skeleton,hsl(var(--contrast-300)/15%))]">
@@ -78,9 +76,7 @@ export function CartSkeleton({
       sidebarSize="1/3"
     >
       <div>
-        <h1 className="mb-10 text-4xl leading-none font-medium @xl:text-5xl">
-          {title}
-        </h1>
+        <h1 className="mb-10 text-4xl leading-none font-medium @xl:text-5xl">{title}</h1>
         {/* Cart Line Items */}
         <div className="group-has-[[data-pending]]/cart:animate-pulse">
           <ul className="flex flex-col gap-5" data-pending>

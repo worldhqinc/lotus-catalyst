@@ -227,9 +227,9 @@ export function ShippingForm({
   const stateControl = useInputControl(addressFields.state);
 
   return (
-    <div className="py-4">
+    <div>
       <div>
-        <div className="flex justify-between">
+        <div className="flex justify-between text-sm leading-6">
           <span>{shippingLabel}</span>
           {state.shippingOption ? (
             <span>{state.shippingOption.price}</span>
