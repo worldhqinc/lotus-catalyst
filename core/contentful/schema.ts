@@ -117,7 +117,9 @@ export const productFinishedGoodsFieldsSchema = z.object({
   pageSlug: z.string().optional(),
   shortDescription: z.string().optional(),
   defaultPrice: z.string(),
+  defaultPriceFloat: z.number().optional(),
   salePrice: z.string().optional(),
+  salePriceFloat: z.number().optional(),
   couponCodesalesDates: z.string().optional(),
   details: z
     .object({
@@ -1607,8 +1609,10 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
   outOfBoxWeightUom: z.string().optional(),
   archived: z.boolean().optional(),
   price: z.string().optional(),
+  priceFloat: z.number().optional(),
   couponCodesalesDates: z.string().optional(),
   salePrice: z.string().optional(),
+  salePriceFloat: z.number().optional(),
   productBadge: z.string().optional(),
   isShipsFree: z.boolean().optional(),
   inventoryQuantity: z.number().int().optional(),
@@ -4218,6 +4222,29 @@ export const featureTileSchema = z.object({
 
 export type featureTile = z.infer<typeof featureTileSchema>;
 
+// Schema for productGrid
+export const productGridFieldsSchema = z.object({
+  title: z.string(),
+  subtitle: z.string().optional(),
+  type: z.string(),
+});
+
+export const productGridSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('productGrid'),
+      }),
+    }),
+  }),
+  fields: productGridFieldsSchema,
+});
+
+export type productGrid = z.infer<typeof productGridSchema>;
+
 // ========================================
 // Union Schema and Helper Object
 // ========================================
@@ -4269,6 +4296,7 @@ export const contentfulEntrySchemaUnion = z.union([
   featureCalloutSchema,
   featureTilesSchema,
   featureTileSchema,
+  productGridSchema,
 ]);
 export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
 
@@ -4327,4 +4355,5 @@ export const contentfulSchemas = {
   featureCallout: featureCalloutSchema,
   featureTiles: featureTilesSchema,
   featureTile: featureTileSchema,
+  productGrid: productGridSchema,
 };
