@@ -46,7 +46,7 @@ export function CartSkeleton({
       className="group/cart text-[var(--cart-text,hsl(var(--foreground)))]"
       sidebar={
         <div>
-          <h2 className="mb-10 font-[family-name:var(--cart-title-font-family,var(--font-family-heading))] text-4xl leading-none font-medium @xl:text-5xl">
+          <h2 className="mb-10 text-4xl leading-none font-medium @xl:text-5xl">
             {summaryTitle}
           </h2>
           <div className="group-has-[[data-pending]]/cart:animate-pulse">
@@ -78,7 +78,7 @@ export function CartSkeleton({
       sidebarSize="1/3"
     >
       <div>
-        <h1 className="mb-10 font-[family-name:var(--cart-title-font-family,var(--font-family-heading))] text-4xl leading-none font-medium @xl:text-5xl">
+        <h1 className="mb-10 text-4xl leading-none font-medium @xl:text-5xl">
           {title}
         </h1>
         {/* Cart Line Items */}
@@ -131,7 +131,7 @@ export interface CartEmptyState {
 export function CartEmptyState({ title, subtitle, cta }: CartEmptyState) {
   return (
     <SectionLayout className="text-center font-[family-name:var(--cart-font-family,var(--font-family-body))]">
-      <h1 className="mb-3 text-center font-[family-name:var(--cart-title-font-family,var(--font-family-heading))] text-3xl leading-none text-[var(--cart-title,hsl(var(--foreground)))] @xl:text-4xl">
+      <h1 className="mb-3 text-center text-3xl leading-none text-[var(--cart-title,hsl(var(--foreground)))] @xl:text-4xl">
         {title}
       </h1>
       <p className="leading-normaltext-[var(--cart-subtitle,hsl(var(--contrast-500)))] mb-6 text-center @3xl:text-lg">

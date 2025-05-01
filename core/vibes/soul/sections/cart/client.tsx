@@ -3,7 +3,7 @@
 import { getFormProps, getInputProps, SubmissionResult, useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { clsx } from 'clsx';
-import { ArrowRight, Minus, Plus, Trash2 } from 'lucide-react';
+import { ArrowRight, Minus, Plus, Trash } from 'lucide-react';
 import {
   ComponentPropsWithoutRef,
   startTransition,
@@ -235,9 +235,7 @@ export function CartClient<LineItem extends CartLineItem>({
       className="font-[family-name:var(--cart-font-family,var(--font-family-body))] text-[var(--cart-text,hsl(var(--foreground)))]"
       sidebar={
         <div>
-          <h2 className="mb-10 font-[family-name:var(--cart-title-font-family,var(--font-family-heading))] text-4xl leading-none font-medium @xl:text-5xl">
-            {summaryTitle}
-          </h2>
+          <h2 className="mb-10 text-4xl leading-none font-medium @xl:text-5xl">{summaryTitle}</h2>
           <dl aria-label="Receipt Summary" className="w-full">
             <div className="divide-y divide-[var(--cart-border,hsl(var(--contrast-100)))]">
               {cart.summaryItems.map((summaryItem, index) => (
@@ -275,17 +273,17 @@ export function CartClient<LineItem extends CartLineItem>({
       sidebarSize="1/3"
     >
       <div className="w-full">
-        <h1 className="mb-10 font-[family-name:var(--cart-title-font-family,var(--font-family-heading))] text-4xl leading-none font-medium @xl:text-5xl">
+        <h1 className="mb-10 text-4xl leading-none @xl:text-5xl">
           {title}
-          <span className="ml-4 text-[var(--cart-subtext-text,hsl(var(--contrast-300)))] contrast-more:text-[var(--cart-subtitle-text,hsl(var(--contrast-500)))]">
-            {optimisticQuantity}
+          <span className="ml-4 text-contrast-400">
+            ({optimisticQuantity})
           </span>
         </h1>
         {/* Cart Items */}
         <ul className="flex flex-col gap-5">
           {optimisticLineItems.map((lineItem) => (
             <li
-              className="@container flex flex-col items-start gap-x-5 gap-y-4 @sm:flex-row"
+              className="@container flex items-start gap-x-5 gap-y-4"
               key={lineItem.id}
             >
               <div className="relative aspect-square w-full max-w-24 overflow-hidden rounded-xl bg-[var(--cart-image-background,hsl(var(--contrast-100)))] focus-visible:ring-2 focus-visible:ring-[var(--cart-focus,hsl(var(--primary)))] focus-visible:ring-offset-4 focus-visible:outline-hidden">
@@ -299,10 +297,8 @@ export function CartClient<LineItem extends CartLineItem>({
               </div>
               <div className="flex grow flex-col flex-wrap justify-between gap-y-2 @xl:flex-row">
                 <div className="flex w-full flex-1 flex-col @xl:w-1/2 @xl:pr-4">
-                  <span className="font-medium">{lineItem.title}</span>
-                  <span className="text-[var(--cart-subtext-text,hsl(var(--contrast-300)))] contrast-more:text-[var(--cart-subtitle-text,hsl(var(--contrast-500)))]">
-                    {lineItem.subtitle}
-                  </span>
+                  <span className="font-medium leading-6">{lineItem.title}</span>
+                  <span className="text-contrast-400 text-sm leading-6">{lineItem.subtitle}</span>
                 </div>
                 <CounterForm
                   action={formAction}
@@ -358,8 +354,8 @@ function CounterForm({
   return (
     <form {...getFormProps(form)} action={action}>
       <input {...getInputProps(fields.id, { type: 'hidden' })} key={fields.id.id} />
-      <div className="cart-action-buttons flex w-full flex-wrap items-center gap-x-5 gap-y-2">
-        <span className="font-medium @xl:ml-auto">{lineItem.price}</span>
+      <div className="cart-action-buttons flex w-full flex-wrap items-center justify-between gap-x-5 gap-y-2 @xl:justify-start">
+        <span className="font-medium flex-[0_0_100%] @xl:flex-none @xl:ml-auto">{lineItem.price}</span>
 
         {/* Counter */}
         <div className="flex items-center rounded-lg border border-[var(--cart-counter-border,hsl(var(--contrast-100)))]">
@@ -408,13 +404,13 @@ function CounterForm({
 
         <button
           aria-label={deleteLabel}
-          className="group -ml-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-300 hover:bg-[var(--cart-button-background,hsl(var(--contrast-100)))] focus-visible:ring-2 focus-visible:ring-[var(--cart-focus,hsl(var(--primary)))] focus-visible:ring-offset-4 focus-visible:outline-hidden"
+          className="inline-flex"
           name="intent"
           type="submit"
           value="delete"
         >
-          <Trash2
-            className="text-[var(--cart-icon,hsl(var(--contrast-300)))] group-hover:text-[var(--cart-icon-hover,hsl(var(--foreground)))]"
+          <Trash
+            className="text-foreground transition-colors duration-300 ease-quad hover:text-primary"
             size={20}
             strokeWidth={1}
           />
