@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-04-30T19:49:46.994Z",
+        "updatedAt": "2025-05-01T19:53:41.879Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 149,
-        "publishedAt": "2025-04-30T19:49:46.994Z",
+        "publishedVersion": 153,
+        "publishedAt": "2025-05-01T19:53:41.879Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -37,8 +37,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 75,
-        "version": 150,
+        "publishedCounter": 77,
+        "version": 154,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -121,9 +121,31 @@
           "omitted": false
         },
         {
+          "id": "defaultPriceFloat",
+          "name": "Default Price Float",
+          "type": "Number",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
           "id": "salePrice",
           "name": "Sale Price",
           "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "salePriceFloat",
+          "name": "Sale Price Float",
+          "type": "Number",
           "localized": false,
           "required": false,
           "validations": [
@@ -1856,7 +1878,7 @@
         "id": "productPartsAndAccessories",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:03.151Z",
-        "updatedAt": "2025-04-21T17:49:19.790Z",
+        "updatedAt": "2025-05-01T19:53:22.225Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1864,8 +1886,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 47,
-        "publishedAt": "2025-04-21T17:49:19.790Z",
+        "publishedVersion": 51,
+        "publishedAt": "2025-05-01T19:53:22.225Z",
         "firstPublishedAt": "2025-03-07T21:04:14.874Z",
         "createdBy": {
           "sys": {
@@ -1878,16 +1900,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 24,
-        "version": 48,
+        "publishedCounter": 26,
+        "version": 52,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productPartsAndAccessories"
@@ -2343,6 +2365,17 @@
           "omitted": false
         },
         {
+          "id": "priceFloat",
+          "name": "Price Float",
+          "type": "Number",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
           "id": "couponCodesalesDates",
           "name": "Sale Message",
           "type": "Symbol",
@@ -2357,6 +2390,17 @@
           "id": "salePrice",
           "name": "Sale Price",
           "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "salePriceFloat",
+          "name": "Sale Price Float",
+          "type": "Number",
           "localized": false,
           "required": false,
           "validations": [
@@ -6488,6 +6532,102 @@
           "required": true,
           "validations": [
           ],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "productGrid",
+        "type": "ContentType",
+        "createdAt": "2025-04-30T23:08:10.675Z",
+        "updatedAt": "2025-04-30T23:08:41.790Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 3,
+        "publishedAt": "2025-04-30T23:08:41.790Z",
+        "firstPublishedAt": "2025-04-30T23:08:11.108Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "publishedCounter": 2,
+        "version": 4,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productGrid"
+      },
+      "displayField": "title",
+      "name": "Product Grid",
+      "description": "",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "subtitle",
+          "name": "Subtitle",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "type",
+          "name": "Type",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [
+            {
+              "in": [
+                "all",
+                "accessories"
+              ]
+            }
+          ],
+          "defaultValue": {
+            "en-US": "all"
+          },
           "disabled": false,
           "omitted": false
         }
