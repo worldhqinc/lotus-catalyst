@@ -44,6 +44,7 @@ interface Props<A extends Address, F extends Field> {
   showAddFormLabel?: string;
   setDefaultLabel?: string;
   cancelLabel?: string;
+  countries: Array<{ code: string; name: string }>;
 }
 
 export function AddressListSection<A extends Address, F extends Field>({
@@ -60,6 +61,7 @@ export function AddressListSection<A extends Address, F extends Field>({
   cancelLabel = 'Cancel',
   showAddFormLabel = 'Add address',
   setDefaultLabel = 'Set as default',
+  countries,
 }: Props<A, F>) {
   const [state, formAction] = useActionState(addressAction, {
     addresses,
@@ -224,6 +226,7 @@ export function AddressListSection<A extends Address, F extends Field>({
                 <div className="space-y-4">
                   <AddressPreview
                     address={address}
+                    countries={countries}
                     isDefault={
                       optimisticState.defaultAddress
                         ? optimisticState.defaultAddress.id === address.id
@@ -298,7 +301,18 @@ function Title({ children }: { children: React.ReactNode }) {
   );
 }
 
-function AddressPreview({ address, isDefault = false }: { address: Address; isDefault?: boolean }) {
+function AddressPreview({
+  address,
+  isDefault = false,
+  countries = [],
+}: {
+  address: Address;
+  isDefault?: boolean;
+  countries: Array<{ code: string; name: string }>;
+}) {
+  const countryName =
+    countries.find((country) => country.code === address.countryCode)?.name || address.countryCode;
+
   return (
     <div className="flex gap-10">
       <div className="text-sm">
@@ -311,7 +325,7 @@ function AddressPreview({ address, isDefault = false }: { address: Address; isDe
         <p>
           {address.city}, {address.stateOrProvince} {address.postalCode}
         </p>
-        <p className="mb-3">{address.countryCode}</p>
+        <p>{countryName}</p>
         <p>{address.phone}</p>
       </div>
       <div>{isDefault && <Badge>Default</Badge>}</div>
