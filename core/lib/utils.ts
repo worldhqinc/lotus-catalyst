@@ -4,6 +4,10 @@ export function exists<T>(value: T | null | undefined): value is T {
   return value != null;
 }
 
+export function isString(value: unknown): value is string {
+  return typeof value === 'string';
+}
+
 export function ensureImageUrl(url: string) {
   if (!url) return '';
 

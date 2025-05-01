@@ -5,4 +5,9 @@ interface Window {
     on: (event: string, callback: () => void) => void;
     getCurrentLang: () => string;
   };
+  truste: {
+    eu: {
+      clickListener: () => void;
+    };
+  };
 }
