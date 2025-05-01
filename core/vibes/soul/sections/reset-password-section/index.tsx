@@ -19,10 +19,12 @@ export function ResetPasswordSection({
 }: Props) {
   return (
     <div className="@container">
-      <div className="flex flex-col justify-center gap-y-24 px-3 py-10 @xl:flex-row @xl:px-6 @4xl:py-20 @5xl:px-20">
-        <div className="flex w-full flex-col @xl:max-w-md @xl:pr-10 @4xl:pr-20">
-          <h1 className="mb-5 text-4xl leading-none font-medium @xl:text-5xl">{title}</h1>
-          <p className="mb-10 text-base leading-none font-light @xl:text-lg">{subtitle}</p>
+      <div className="flex flex-col justify-center gap-y-4 px-3 py-10 @xl:flex-row @xl:gap-x-4 @xl:px-6 @4xl:gap-x-8 @4xl:py-16 @5xl:px-16">
+        <div className="border-contrast-200 flex w-full flex-col gap-8 rounded-lg border p-4 @xl:max-w-2xl @xl:p-8">
+          <div>
+            <h1 className="mb-2 text-2xl leading-[120%] @xl:text-4xl">{title}</h1>
+            <p className="text-contrast-400 leading-8 @4xl:text-xl">{subtitle}</p>
+          </div>
           <ResetPasswordForm
             action={action}
             confirmPasswordLabel={confirmPasswordLabel}

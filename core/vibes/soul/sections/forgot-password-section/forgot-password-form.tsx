@@ -27,7 +27,7 @@ interface Props {
 export function ForgotPasswordForm({
   action,
   emailLabel = 'Email',
-  submitLabel = 'Reset password',
+  submitLabel = 'Submit',
 }: Props) {
   const [{ lastResult, successMessage }, formAction] = useActionState(action, { lastResult: null });
   const [form, fields] = useForm({

@@ -65,7 +65,7 @@
       "ForgotPassword": {
         "title": "Forgot password",
         "subtitle": "Enter the email associated with your account below. We'll send you instructions to reset your password.",
-        "confirmResetPassword": "If the email address {email} is linked to an account in our store, we have sent you a password reset email. Please check your inbox and spam folder if you don't see it.",
+        "confirmResetPassword": "A password reset email has been sent to {email}. Please check your inbox (and spam folder) for next steps.",
         "somethingWentWrong": "Something went wrong. Please try again later."
       }
     },
@@ -143,7 +143,7 @@
   },
   "Account": {
     "Layout": {
-      "addresses": "Addresses",
+      "addresses": "Address Book",
       "logout": "Logout",
       "orders": "Orders",
       "settings": "Account",
@@ -167,7 +167,7 @@
       }
     },
     "Addresses": {
-      "title": "Addresses",
+      "title": "Address Book",
       "cta": "Add address",
       "edit": "Edit",
       "delete": "Delete",
