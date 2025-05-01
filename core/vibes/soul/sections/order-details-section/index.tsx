@@ -114,7 +114,11 @@ export function OrderDetailsSection({
           ))}
         </div>
         <div className="order-1 pt-8 @3xl:order-2 @3xl:basis-72">
-          <Summary summary={order.summary} totalLabel={summaryTotalLabel} />
+          <Summary
+            shippingMethod={order.destinations[0]?.shipments[0]?.name}
+            summary={order.summary}
+            totalLabel={summaryTotalLabel}
+          />
         </div>
       </div>
     </div>
@@ -301,7 +305,15 @@ function ShipmentLineItem({ lineItem }: { lineItem: ShipmentLineItem }) {
   );
 }
 
-function Summary({ summary, totalLabel = 'Total' }: { summary: Summary; totalLabel?: string }) {
+function Summary({
+  shippingMethod,
+  summary,
+  totalLabel = 'Total',
+}: {
+  shippingMethod?: string;
+  summary: Summary;
+  totalLabel?: string;
+}) {
   return (
     <div className="space-y-5">
       <h3 className="text-xl @4xl:text-2xl @4xl:font-medium @4xl:tracking-[2.4px] @4xl:uppercase">
@@ -310,9 +322,12 @@ function Summary({ summary, totalLabel = 'Total' }: { summary: Summary; totalLab
       <div className="divide-contrast-200 divide-y">
         <div className="space-y-2 pb-3">
           {summary.lineItems.map((lineItem, index) => (
-            <div className="flex justify-between" key={index}>
+            <div className="flex justify-between gap-2" key={index}>
               <div>
                 <div className="text-sm">{lineItem.label}</div>
+                {lineItem.label === 'Shipping' && shippingMethod ? (
+                  <div className="text-contrast-400 text-xs">{shippingMethod}</div>
+                ) : null}
                 {lineItem.subtext != null && lineItem.subtext !== '' && (
                   <div className="text-contrast-400 text-xs">{lineItem.subtext}</div>
                 )}
