@@ -235,6 +235,7 @@ export async function registerCustomer<F extends Field>(
       );
 
       if (!klaviyoResponse.ok) {
+        // eslint-disable-next-line no-console
         console.error('Failed to subscribe to newsletter', klaviyoResponse);
       }
     }
