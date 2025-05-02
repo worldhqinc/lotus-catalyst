@@ -157,7 +157,13 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
         </h1>
         {subtitle ? <p className="text-contrast-400 max-w-3xl text-center">{subtitle}</p> : null}
       </div>
-      <InstantSearch indexName={getSortBy()} searchClient={searchClient}>
+      <InstantSearch
+        future={{
+          preserveSharedStateOnUnmount: true,
+        }}
+        indexName={getSortBy()}
+        searchClient={searchClient}
+      >
         <div className="flex w-full items-center justify-between gap-4 pt-12">
           <div>
             <Select

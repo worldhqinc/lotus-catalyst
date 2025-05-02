@@ -149,6 +149,9 @@ export function PostGrid({ title, subtitle, type }: PostGridProps) {
           </div>
         </div>
         <InstantSearch
+          future={{
+            preserveSharedStateOnUnmount: true,
+          }}
           indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? ''}
           searchClient={searchClient}
         >
