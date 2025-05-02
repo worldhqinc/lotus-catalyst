@@ -4245,6 +4245,27 @@ export const productGridSchema = z.object({
 
 export type productGrid = z.infer<typeof productGridSchema>;
 
+// Schema for pageHeaderSupport
+export const pageHeaderSupportFieldsSchema = z.object({
+  title: z.string(),
+  lead: z.string(),
+});
+
+export const pageHeaderSupportSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('pageHeaderSupport'),
+      }),
+    }),
+  }),
+  fields: pageHeaderSupportFieldsSchema,
+});
+
+export type pageHeaderSupport = z.infer<typeof pageHeaderSupportSchema>;
 // ========================================
 // Union Schema and Helper Object
 // ========================================
@@ -4297,6 +4318,7 @@ export const contentfulEntrySchemaUnion = z.union([
   featureTilesSchema,
   featureTileSchema,
   productGridSchema,
+  pageHeaderSupportSchema,
 ]);
 export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
 
@@ -4356,4 +4378,5 @@ export const contentfulSchemas = {
   featureTiles: featureTilesSchema,
   featureTile: featureTileSchema,
   productGrid: productGridSchema,
+  pageHeaderSupport: pageHeaderSupportSchema,
 };

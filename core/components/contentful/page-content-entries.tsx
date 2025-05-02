@@ -22,6 +22,7 @@ import {
   inspirationCardSchema,
   introSectionSchema,
   newsletterFormSchema,
+  pageHeaderSupportSchema,
   pageStandard,
   postGridSchema,
   productBentoSchema,
@@ -46,6 +47,7 @@ import { Highlights } from './sections/highlights';
 import { InspirationBento } from './sections/inspiration-bento';
 import { IntroSection } from './sections/intro-section';
 import { NewsletterForm } from './sections/newsletter-form';
+import { PageHeaderSupport } from './sections/page-header';
 import { PostGrid } from './sections/post-grid';
 import { ProductBento } from './sections/product-bento';
 import { ProductGrid } from './sections/product-grid';
@@ -178,6 +180,11 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
     const data = productGridSchema.parse(contentEntry);
 
     return <ProductGrid {...data.fields} />;
+  },
+  pageHeaderSupport: ({ contentEntry }) => {
+    const data = pageHeaderSupportSchema.parse(contentEntry);
+
+    return <PageHeaderSupport {...data.fields} />;
   },
 };
 
