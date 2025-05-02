@@ -4,6 +4,7 @@ import { clsx } from 'clsx';
 import { PersonStandingIcon } from 'lucide-react';
 import { ForwardedRef, forwardRef, ReactNode } from 'react';
 
+import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Link } from '~/components/link';
 
 import { LocaleSwitcher } from '../navigation';
@@ -34,12 +35,12 @@ export const Banner = forwardRef(
   (
     {
       activeLocaleId = '',
-      children,
+      children: streamableChildren,
       className,
       locales = [],
     }: {
       activeLocaleId?: string;
-      children: ReactNode;
+      children: Streamable<ReactNode>;
       className?: string;
       locales?: Locale[];
     },
@@ -48,7 +49,14 @@ export const Banner = forwardRef(
     return (
       <div className={clsx('bg-primary py-4 text-white', className)} ref={ref}>
         <div className="@container container flex flex-row items-center justify-between">
-          {children || null}
+          <div>
+            <Stream
+              fallback={<p className="bg-contrast-100 block h-4 w-20 animate-pulse rounded-md" />}
+              value={streamableChildren}
+            >
+              {(children) => children}
+            </Stream>
+          </div>
           <div>
             <ul className="flex flex-row items-center justify-between gap-6">
               <li className="hidden @4xl:block">
