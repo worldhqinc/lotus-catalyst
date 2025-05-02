@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 
 import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
@@ -64,14 +64,14 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
     });
   };
 
-  if (state.success) {
-    setIsOpen(false);
-    toast.success(
-      '<strong>Thank you!</strong> One of our customer service reps will be in touch within 48 hours.',
-    );
-
-    return;
-  }
+  useEffect(() => {
+    if (state.success) {
+      setIsOpen(false);
+      toast.success(
+        '<strong>Thank you!</strong> One of our customer service reps will be in touch within 48 hours.',
+      );
+    }
+  }, [state.success]);
 
   return (
     <Modal
