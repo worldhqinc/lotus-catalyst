@@ -141,20 +141,6 @@ export function CartEmptyState({ title, subtitle, cta }: CartEmptyState) {
         <p className="text-contrast-400 mb-16 text-center leading-normal">{subtitle}</p>
         <ButtonLink href={cta.href}>{cta.label}</ButtonLink>
       </div>
-      <div className="mt-16 py-16">
-        <h2 className="text-2xl font-medium tracking-[1.8px] uppercase">Tools for all tastes</h2>
-        <p className="text-contrast-400 mt-2 max-w-[437px]">
-          From powerhouse blenders to premium countertop ovens, fuel your culinary creativity with
-          the finest kitchen tools.
-        </p>
-        {/* TODO: add dynamic products */}
-        <div className="mt-16 grid grid-cols-1 gap-8 @2xl:grid-cols-4">
-          <div className="bg-contrast-100 aspect-square w-full rounded-xl" />
-          <div className="bg-contrast-100 aspect-square w-full rounded-xl" />
-          <div className="bg-contrast-100 aspect-square w-full rounded-xl" />
-          <div className="bg-contrast-100 aspect-square w-full rounded-xl" />
-        </div>
-      </div>
     </SectionLayout>
   );
 }
