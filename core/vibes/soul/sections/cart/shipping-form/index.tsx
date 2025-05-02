@@ -236,7 +236,7 @@ export function ShippingForm({
           ) : (
             !showForms && (
               <button
-                className="font-semibold focus-visible:ring-2 focus-visible:ring-[var(--button-focus,hsl(var(--primary)))] focus-visible:ring-offset-2 focus-visible:outline-hidden"
+                className="link text-primary font-medium"
                 onClick={() => setShowForms(!showForms)}
               >
                 {addLabel}
@@ -249,10 +249,7 @@ export function ShippingForm({
           <div className="flex gap-1.5 text-xs">
             <span className="text-contrast-400 font-medium">{state.shippingOption.label}</span>
             {!showForms && (
-              <button
-                className="font-semibold focus-visible:ring-2 focus-visible:ring-[var(--button-focus,hsl(var(--primary)))] focus-visible:ring-offset-2 focus-visible:outline-hidden"
-                onClick={() => setShowForms(true)}
-              >
+              <button className="link text-primary font-medium" onClick={() => setShowForms(true)}>
                 {changeLabel}
               </button>
             )}
