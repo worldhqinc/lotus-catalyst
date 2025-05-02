@@ -21,7 +21,7 @@ export function FieldError({
     <div
       {...rest}
       className={clsx(
-        'flex items-center gap-1 text-xs text-[var(--field-error,hsl(var(--error)))]',
+        'text-error-shadow flex items-center gap-1 rounded-xl bg-[var(--form-status-light-background-error,color-mix(in_oklab,hsl(var(--error)),white_75%))] px-4 py-3 text-xs',
         className,
       )}
     >

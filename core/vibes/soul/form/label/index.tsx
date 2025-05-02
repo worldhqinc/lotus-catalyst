@@ -23,7 +23,7 @@ export function Label({
     <LabelPrimitive.Root
       {...rest}
       className={clsx(
-        'block font-mono text-xs uppercase',
+        'font-body block',
         {
           light: 'text-[var(--label-light-text,hsl(var(--contrast-500)))]',
           dark: 'text-[var(--label-dark-text,hsl(var(--contrast-100)))]',

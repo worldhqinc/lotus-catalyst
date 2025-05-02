@@ -16,6 +16,8 @@ export interface ModalProps extends React.PropsWithChildren {
   required?: boolean;
   /** Hides the header / top of the modal. */
   hideHeader?: boolean;
+  /** Description for screen reader support. */
+  description?: string;
 }
 
 // eslint-disable-next-line valid-jsdoc
@@ -39,6 +41,7 @@ export const Modal = ({
   children,
   required = false,
   hideHeader = false,
+  description,
 }: ModalProps) => {
   return (
     <Dialog.Root onOpenChange={setOpen} open={isOpen}>
@@ -46,6 +49,7 @@ export const Modal = ({
       <Dialog.Portal>
         <Dialog.Overlay className="@container fixed inset-0 z-30 flex items-center justify-center bg-[var(--modal-overlay-background,hsl(var(--foreground)/50%))]">
           <Dialog.Content
+            aria-describedby={description || undefined}
             className={clsx(
               'mx-3 my-10 max-h-[90%] max-w-3xl overflow-y-auto rounded-2xl bg-[var(--modal-background,hsl(var(--background)))]',
               'transition ease-out',
@@ -60,7 +64,7 @@ export const Modal = ({
             <div className="flex flex-col">
               <div
                 className={clsx(
-                  'border-b-contrast-200 mb-5 flex min-h-10 flex-row items-center border-b py-3 pl-5',
+                  'flex min-h-10 flex-row items-center pt-6 pl-5',
                   hideHeader ? 'sr-only' : '',
                 )}
               >
@@ -77,7 +81,7 @@ export const Modal = ({
                   </div>
                 )}
               </div>
-              <div className={clsx('mb-5 flex-1 px-5', hideHeader ? 'mt-5' : '')}>{children}</div>
+              <div className="my-6 flex-1 px-6">{children}</div>
             </div>
           </Dialog.Content>
         </Dialog.Overlay>

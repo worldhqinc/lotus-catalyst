@@ -1,7 +1,10 @@
 import { z } from 'zod';
 
+import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { revalidate } from '~/client/revalidate-target';
+import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 
+import { ChatWidgetButton } from './_components/chat-widget-button';
 import { ContactForm } from './_components/contact-form';
 
 const TicketFormSchema = z.object({
@@ -21,7 +24,12 @@ const TicketFormSchema = z.object({
         parent_field_id: z.number(),
         parent_field_type: z.string(),
         value: z.string(),
-        child_fields: z.array(z.any()),
+        child_fields: z.array(
+          z.object({
+            id: z.number(),
+            is_required: z.boolean(),
+          }),
+        ),
       }),
     ),
     agent_conditions: z.array(z.any()),
@@ -71,6 +79,7 @@ const TicketFieldSchema = z.object({
       )
       .nullable()
       .optional(),
+    hidden: z.boolean().optional(),
     conditions: z
       .array(
         z.object({
@@ -128,6 +137,14 @@ export default async function ContactPage() {
           const ticketField: TicketField = ticketFieldData.ticket_field;
 
           if (ticketField.visible_in_portal) {
+            const conditions = ticketForm.end_user_conditions.filter((condition) =>
+              condition.child_fields.some((childField) => childField.id === ticketField.id),
+            );
+
+            if (conditions.length > 0) {
+              ticketField.hidden = true;
+            }
+
             return ticketField;
           }
         }
@@ -149,9 +166,67 @@ export default async function ContactPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-      <h1>Contact</h1>
-      <ContactForm fields={fields} />
-    </div>
+    <>
+      <div className="bg-primary py-8 text-center text-white md:py-16">
+        <div className="container max-w-[300px] md:max-w-lg lg:max-w-2xl">
+          <h1 className="font-heading text-4xl uppercase md:text-6xl">Contact Lotus</h1>
+          <p className="mt-4">Have a question? Need a hand? Our team is ready to help.</p>
+        </div>
+      </div>
+      <div className="container my-8 md:my-16 lg:max-w-[1142px]">
+        <div className="border-contrast-200 divide-contrast-200 divide-y rounded-lg border lg:grid lg:grid-cols-[repeat(auto-fit,minmax(0,1fr))] lg:divide-x lg:divide-y-0">
+          <div className="flex flex-col p-4 lg:p-8">
+            <div>
+              <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
+                Chat
+              </h2>
+              <div className="mt-4 flex items-center gap-2 lg:pb-6">
+                <span className="rounded-full bg-green-500 p-[9px]" />
+                <p className="lg:leading-[24px]">Representatives are available.</p>
+              </div>
+            </div>
+            <div className="my-8">
+              <ChatWidgetButton />
+            </div>
+          </div>
+          {fields.length > 0 && (
+            <div className="flex flex-col p-4 lg:p-8">
+              <div>
+                <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
+                  Email
+                </h2>
+                <p className="mt-4 lg:pb-6 lg:leading-[24px]">Don't have time to chat today?</p>
+              </div>
+              <div className="my-8">
+                <ContactForm fields={fields} />
+                <CookiePreferencesNotice />
+              </div>
+              <p className="text-contrast-400 text-xs leading-[20px]">
+                Fill out this form and one of our customer service reps will be in touch within 48
+                hours.
+              </p>
+            </div>
+          )}
+          <div className="flex flex-col p-4 lg:p-8">
+            <div>
+              <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
+                Call
+              </h2>
+              <p className="mt-4 lg:leading-[24px]">
+                Available Monday through Friday 9:00 am - 4:30 pm ET
+              </p>
+            </div>
+            <div className="my-8">
+              <ButtonLink className="w-full md:w-auto" href="tel:18885688761" size="medium">
+                1-888-568-8761
+              </ButtonLink>
+            </div>
+            <p className="text-contrast-400 text-xs leading-[20px]">
+              Note: we are closed on major US holidays
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
