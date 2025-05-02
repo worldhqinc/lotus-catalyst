@@ -207,6 +207,9 @@ export default function AlgoliaSearch({ closeSearch }: SearchComponentProps) {
   return (
     <div className="container overflow-y-auto py-8">
       <InstantSearch
+        future={{
+          preserveSharedStateOnUnmount: true,
+        }}
         indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
         searchClient={searchClient}
       >
