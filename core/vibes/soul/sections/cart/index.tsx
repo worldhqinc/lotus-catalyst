@@ -133,14 +133,28 @@ export interface CartEmptyState {
 
 export function CartEmptyState({ title, subtitle, cta }: CartEmptyState) {
   return (
-    <SectionLayout className="text-center font-[family-name:var(--cart-font-family,var(--font-family-body))]">
-      <h1 className="mb-3 text-center text-3xl leading-none text-[var(--cart-title,hsl(var(--foreground)))] @xl:text-4xl">
-        {title}
-      </h1>
-      <p className="leading-normaltext-[var(--cart-subtitle,hsl(var(--contrast-500)))] mb-6 text-center @3xl:text-lg">
-        {subtitle}
-      </p>
-      <ButtonLink href={cta.href}>{cta.label}</ButtonLink>
+    <SectionLayout>
+      <div className="mx-auto max-w-2xl text-center">
+        <h1 className="font-heading mb-6 text-center text-4xl leading-none uppercase @xl:text-6xl">
+          {title}
+        </h1>
+        <p className="text-contrast-400 mb-16 text-center leading-normal">{subtitle}</p>
+        <ButtonLink href={cta.href}>{cta.label}</ButtonLink>
+      </div>
+      <div className="mt-16 py-16">
+        <h2 className="text-2xl font-medium tracking-[1.8px] uppercase">Tools for all tastes</h2>
+        <p className="text-contrast-400 mt-2 max-w-[437px]">
+          From powerhouse blenders to premium countertop ovens, fuel your culinary creativity with
+          the finest kitchen tools.
+        </p>
+        {/* TODO: add dynamic products */}
+        <div className="mt-16 grid grid-cols-1 gap-8 @2xl:grid-cols-4">
+          <div className="bg-contrast-100 aspect-square w-full rounded-xl" />
+          <div className="bg-contrast-100 aspect-square w-full rounded-xl" />
+          <div className="bg-contrast-100 aspect-square w-full rounded-xl" />
+          <div className="bg-contrast-100 aspect-square w-full rounded-xl" />
+        </div>
+      </div>
     </SectionLayout>
   );
 }

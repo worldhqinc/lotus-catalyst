@@ -262,7 +262,7 @@
     }
   },
   "Cart": {
-    "title": "Cart",
+    "title": "Your cart",
     "heading": "Your cart",
     "proceedToCheckout": "Proceed to checkout",
     "increment": "Increase quantity",
@@ -303,9 +303,9 @@
       }
     },
     "Empty": {
-      "title": "Your cart is empty.",
-      "subtitle": "Add some products to get started.",
-      "cta": "Continue shopping"
+      "title": "An elevated kitchen awaits",
+      "subtitle": "Looks like you haven't added anything to your cart yet. Explore our chef-inspired, taste-tested designs, and you'll be cooking with calm confidence in no time.",
+      "cta": "Shop Lotus"
     },
     "Errors": {
       "cartNotFound": "No cartId cookie found.",

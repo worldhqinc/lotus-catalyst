@@ -19,6 +19,7 @@ import { StickySidebarLayout } from '@/vibes/soul/sections/sticky-sidebar-layout
 import { Image } from '~/components/image';
 
 import { CouponCodeForm, CouponCodeFormState } from './coupon-code-form';
+import { HelpfulLinks } from './helpful-links';
 import { cartLineItemActionFormDataSchema } from './schema';
 import { ShippingForm, ShippingFormState } from './shipping-form';
 
@@ -275,6 +276,9 @@ export function CartClient<LineItem extends CartLineItem>({
             <CheckoutButton action={checkoutAction} className="mt-4 w-full">
               {checkoutLabel}
             </CheckoutButton>
+            <div className="mt-12">
+              <HelpfulLinks />
+            </div>
           </div>
         }
         sidebarPosition="after"
