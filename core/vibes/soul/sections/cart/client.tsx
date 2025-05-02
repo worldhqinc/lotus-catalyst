@@ -34,6 +34,7 @@ export interface CartLineItem {
   subtitle: string;
   quantity: number;
   price: string;
+  basePrice?: string;
 }
 
 export interface CartSummaryItem {
@@ -359,9 +360,12 @@ function CounterForm({
     <form {...getFormProps(form)} action={action}>
       <input {...getInputProps(fields.id, { type: 'hidden' })} key={fields.id.id} />
       <div className="cart-action-buttons flex w-full flex-wrap items-center justify-between gap-x-5 gap-y-2 @xl:justify-start">
-        <span className="flex-[0_0_100%] font-medium @xl:ml-auto @xl:flex-none">
-          {lineItem.price}
-        </span>
+        <div className="flex flex-[0_0_100%] items-end gap-1 @xl:ml-auto @xl:flex-none">
+          <span className="font-medium">{lineItem.price}</span>
+          {lineItem.basePrice ? (
+            <span className="text-contrast-400 line-through">{lineItem.basePrice}</span>
+          ) : null}
+        </div>
 
         {/* Counter */}
         <div className="flex items-center rounded-lg border border-[var(--cart-counter-border,hsl(var(--contrast-100)))]">
