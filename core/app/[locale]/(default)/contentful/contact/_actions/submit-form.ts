@@ -19,7 +19,10 @@ export async function submitForm(fields: TicketField[], _prevState: FormState, f
     }
   });
 
-  const email = isString(formData.get('email')) ? formData.get('email') : null;
+  const emailValue = formData.get('email');
+  const email = isString(emailValue) ? emailValue : null;
+
+  values.email = email;
 
   if (!email) {
     errors.email = ['This field is required'];
@@ -29,10 +32,18 @@ export async function submitForm(fields: TicketField[], _prevState: FormState, f
     return {
       errors,
       success: false,
+      formData: values,
     };
   }
 
   try {
+    const customFieldValues = Object.entries(values).map(([key, value]) => {
+      return {
+        id: key,
+        value,
+      };
+    });
+
     const response = await fetch(
       `https://${process.env.ZENDESK_SUBDOMAIN}.zendesk.com/api/v2/requests.json`,
       {
@@ -50,56 +61,7 @@ export async function submitForm(fields: TicketField[], _prevState: FormState, f
             },
             subject: values['19286594698395'],
             comment: { body: values['19286587899803'] },
-            custom_fields: [
-              {
-                id: 36454171980187,
-                value: values['36454171980187'],
-              },
-              {
-                id: 19286594698395,
-                value: values['19286594698395'],
-              },
-              {
-                id: 19286587899803,
-                value: values['19286587899803'],
-              },
-              {
-                id: 19286622537499,
-                value: values['19286622537499'],
-              },
-              {
-                id: 19286636932123,
-                value: values['19286636932123'],
-              },
-              {
-                id: 19286636612123,
-                value: values['19286636612123'],
-              },
-              {
-                id: 19286636656539,
-                value: values['19286636656539'],
-              },
-              {
-                id: 19286622380315,
-                value: values['19286622380315'],
-              },
-              {
-                id: 19286636991003,
-                value: values['19286636991003'],
-              },
-              {
-                id: 19286762770075,
-                value: values['19286762770075'],
-              },
-              {
-                id: 19286761835035,
-                value: values['19286761835035'],
-              },
-              {
-                id: 19286716398235,
-                value: values['19286716398235'],
-              },
-            ],
+            custom_fields: customFieldValues,
           },
         }),
       },
@@ -109,12 +71,14 @@ export async function submitForm(fields: TicketField[], _prevState: FormState, f
       return {
         errors: { general: ['Something went wrong, please try again later.'] },
         success: false,
+        formData: values,
       };
     }
 
     return {
       errors: null,
       success: true,
+      formData: values,
     };
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -123,6 +87,7 @@ export async function submitForm(fields: TicketField[], _prevState: FormState, f
     return {
       errors: { general: ['Something went wrong, please try again later.'] },
       success: false,
+      formData: values,
     };
   }
 }
