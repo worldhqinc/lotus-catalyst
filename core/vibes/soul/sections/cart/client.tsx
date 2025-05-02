@@ -3,7 +3,7 @@
 import { getFormProps, getInputProps, SubmissionResult, useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { clsx } from 'clsx';
-import { ArrowRight, Minus, Plus, Trash } from 'lucide-react';
+import { Minus, Plus, Trash } from 'lucide-react';
 import {
   ComponentPropsWithoutRef,
   startTransition,
@@ -231,91 +231,94 @@ export function CartClient<LineItem extends CartLineItem>({
   }
 
   return (
-    <StickySidebarLayout
-      className="font-[family-name:var(--cart-font-family,var(--font-family-body))] text-[var(--cart-text,hsl(var(--foreground)))]"
-      sidebar={
-        <div>
-          <h2 className="text-lg leading-none font-medium tracking-[1.8px] uppercase @xl:text-2xl">
-            {summaryTitle}
-          </h2>
-          <dl aria-label="Receipt Summary" className="w-full">
-            <div className="space-y-3 py-5">
-              {cart.summaryItems.map((summaryItem, index) => (
-                <div className="flex justify-between text-sm leading-6" key={index}>
-                  <dt>{summaryItem.label}</dt>
-                  <dd>{summaryItem.value}</dd>
-                </div>
-              ))}
-
-              {shipping && <ShippingForm {...shipping} />}
-            </div>
-            {couponCode && (
-              <CouponCodeForm
-                action={couponCode.action}
-                couponCodes={couponCode.couponCodes}
-                ctaLabel={couponCode.ctaLabel}
-                disabled={couponCode.disabled}
-                label={couponCode.label}
-                placeholder={couponCode.placeholder}
-                removeLabel={couponCode.removeLabel}
-              />
-            )}
-            <div className="flex justify-between border-t border-[var(--cart-border,hsl(var(--contrast-100)))] py-5 font-medium">
-              <dt>{cart.totalLabel ?? 'Total'}</dt>
-              <dl>{cart.total}</dl>
-            </div>
-          </dl>
-          <CheckoutButton action={checkoutAction} className="mt-4 w-full">
-            {checkoutLabel}
-            <ArrowRight size={20} strokeWidth={1} />
-          </CheckoutButton>
-        </div>
-      }
-      sidebarPosition="after"
-      sidebarSize="1/3"
-    >
-      <div className="w-full">
-        <h1 className="mb-10 text-2xl leading-none @xl:text-4xl">
+    <>
+      <div className="@container container pt-8 md:pt-16">
+        <h1 className="text-2xl leading-none @xl:text-4xl">
           {title}
           <span className="text-contrast-400 ml-4">({optimisticQuantity})</span>
         </h1>
-        {/* Cart Items */}
-        <ul className="flex flex-col gap-5">
-          {optimisticLineItems.map((lineItem) => (
-            <li className="@container flex items-start gap-x-5 gap-y-4" key={lineItem.id}>
-              <div className="relative aspect-square w-full max-w-24 overflow-hidden rounded-xl bg-[var(--cart-image-background,hsl(var(--contrast-100)))] focus-visible:ring-2 focus-visible:ring-[var(--cart-focus,hsl(var(--primary)))] focus-visible:ring-offset-4 focus-visible:outline-hidden">
-                <Image
-                  alt={lineItem.image.alt}
-                  className="object-cover"
-                  fill
-                  sizes="(min-width: 28rem) 9rem, (min-width: 24rem) 6rem, 100vw"
-                  src={lineItem.image.src}
-                />
-              </div>
-              <div className="flex grow flex-col flex-wrap justify-between gap-y-2 @xl:flex-row">
-                <div className="flex w-full flex-1 flex-col @xl:w-1/2 @xl:pr-4">
-                  <span className="leading-6 font-medium">{lineItem.title}</span>
-                  <span className="text-contrast-400 text-sm leading-6">{lineItem.subtitle}</span>
-                </div>
-                <CounterForm
-                  action={formAction}
-                  decrementLabel={decrementLineItemLabel}
-                  deleteLabel={deleteLineItemLabel}
-                  incrementLabel={incrementLineItemLabel}
-                  lineItem={lineItem}
-                  onSubmit={(formData) => {
-                    startTransition(() => {
-                      formAction(formData);
-                      setOptimisticLineItems(formData);
-                    });
-                  }}
-                />
-              </div>
-            </li>
-          ))}
-        </ul>
       </div>
-    </StickySidebarLayout>
+      <StickySidebarLayout
+        className="font-[family-name:var(--cart-font-family,var(--font-family-body))] text-[var(--cart-text,hsl(var(--foreground)))]"
+        gapXSize="gap-x-20"
+        sidebar={
+          <div>
+            <h2 className="text-lg leading-none font-medium tracking-[1.8px] uppercase @xl:text-2xl">
+              {summaryTitle}
+            </h2>
+            <dl aria-label="Receipt Summary" className="w-full">
+              <div className="space-y-3 py-5">
+                {cart.summaryItems.map((summaryItem, index) => (
+                  <div className="flex justify-between text-sm leading-6" key={index}>
+                    <dt>{summaryItem.label}</dt>
+                    <dd>{summaryItem.value}</dd>
+                  </div>
+                ))}
+                {shipping && <ShippingForm {...shipping} />}
+              </div>
+              {couponCode && (
+                <CouponCodeForm
+                  action={couponCode.action}
+                  couponCodes={couponCode.couponCodes}
+                  ctaLabel={couponCode.ctaLabel}
+                  disabled={couponCode.disabled}
+                  label={couponCode.label}
+                  placeholder={couponCode.placeholder}
+                  removeLabel={couponCode.removeLabel}
+                />
+              )}
+              <div className="flex justify-between border-t border-[var(--cart-border,hsl(var(--contrast-100)))] py-5 font-medium">
+                <dt>{cart.totalLabel ?? 'Total'}</dt>
+                <dl>{cart.total}</dl>
+              </div>
+            </dl>
+            <CheckoutButton action={checkoutAction} className="mt-4 w-full">
+              {checkoutLabel}
+            </CheckoutButton>
+          </div>
+        }
+        sidebarPosition="after"
+        sidebarSize="1/3"
+      >
+        <div className="w-full">
+          {/* Cart Items */}
+          <ul className="flex flex-col gap-5">
+            {optimisticLineItems.map((lineItem) => (
+              <li className="@container flex items-start gap-x-5 gap-y-4" key={lineItem.id}>
+                <div className="relative aspect-square w-full max-w-24 overflow-hidden rounded-xl bg-[var(--cart-image-background,hsl(var(--contrast-100)))] focus-visible:ring-2 focus-visible:ring-[var(--cart-focus,hsl(var(--primary)))] focus-visible:ring-offset-4 focus-visible:outline-hidden">
+                  <Image
+                    alt={lineItem.image.alt}
+                    className="object-cover"
+                    fill
+                    sizes="(min-width: 28rem) 9rem, (min-width: 24rem) 6rem, 100vw"
+                    src={lineItem.image.src}
+                  />
+                </div>
+                <div className="flex grow flex-col flex-wrap justify-between gap-y-2 @xl:flex-row">
+                  <div className="flex w-full flex-1 flex-col @xl:w-1/2 @xl:pr-4">
+                    <span className="leading-6 font-medium">{lineItem.title}</span>
+                    <span className="text-contrast-400 text-sm leading-6">{lineItem.subtitle}</span>
+                  </div>
+                  <CounterForm
+                    action={formAction}
+                    decrementLabel={decrementLineItemLabel}
+                    deleteLabel={deleteLineItemLabel}
+                    incrementLabel={incrementLineItemLabel}
+                    lineItem={lineItem}
+                    onSubmit={(formData) => {
+                      startTransition(() => {
+                        formAction(formData);
+                        setOptimisticLineItems(formData);
+                      });
+                    }}
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </StickySidebarLayout>
+    </>
   );
 }
 
