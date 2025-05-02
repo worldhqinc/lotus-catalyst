@@ -174,7 +174,7 @@ export default async function ContactPage() {
         </div>
       </div>
       <div className="container my-8 md:my-16 lg:max-w-[1142px]">
-        <div className="border-contrast-200 divide-contrast-200 divide-y rounded-lg border lg:grid lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+        <div className="border-contrast-200 divide-contrast-200 divide-y rounded-lg border lg:grid lg:grid-cols-[repeat(auto-fit,minmax(0,1fr))] lg:divide-x lg:divide-y-0">
           <div className="flex flex-col p-4 lg:p-8">
             <div>
               <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
@@ -189,22 +189,24 @@ export default async function ContactPage() {
               <ChatWidgetButton />
             </div>
           </div>
-          <div className="flex flex-col p-4 lg:p-8">
-            <div>
-              <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
-                Email
-              </h2>
-              <p className="mt-4 lg:pb-6 lg:leading-[24px]">Don't have time to chat today?</p>
+          {fields.length > 0 && (
+            <div className="flex flex-col p-4 lg:p-8">
+              <div>
+                <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
+                  Email
+                </h2>
+                <p className="mt-4 lg:pb-6 lg:leading-[24px]">Don't have time to chat today?</p>
+              </div>
+              <div className="my-8">
+                <ContactForm fields={fields} />
+                <CookiePreferencesNotice />
+              </div>
+              <p className="text-contrast-400 text-xs leading-[20px]">
+                Fill out this form and one of our customer service reps will be in touch within 48
+                hours.
+              </p>
             </div>
-            <div className="my-8">
-              <ContactForm fields={fields} />
-              <CookiePreferencesNotice />
-            </div>
-            <p className="text-contrast-400 text-xs leading-[20px]">
-              Fill out this form and one of our customer service reps will be in touch within 48
-              hours.
-            </p>
-          </div>
+          )}
           <div className="flex flex-col p-4 lg:p-8">
             <div>
               <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
