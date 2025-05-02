@@ -47,6 +47,7 @@ export interface ProductDetailFormProps<F extends Field> {
   emptySelectPlaceholder?: string;
   ctaDisabled?: boolean;
   prefetch?: boolean;
+  additionalActions?: ReactNode;
 }
 
 export function ProductDetailForm<F extends Field>({
@@ -57,6 +58,7 @@ export function ProductDetailForm<F extends Field>({
   emptySelectPlaceholder = 'Select an option',
   ctaDisabled = false,
   prefetch = false,
+  additionalActions,
 }: ProductDetailFormProps<F>) {
   const router = useRouter();
   const pathname = usePathname();
@@ -153,6 +155,7 @@ export function ProductDetailForm<F extends Field>({
             /> */}
             <input name={formFields.quantity.name} type="hidden" value="1" />
             <SubmitButton disabled={ctaDisabled}>{ctaLabel}</SubmitButton>
+            {additionalActions}
           </div>
         </div>
       </form>
@@ -183,16 +186,19 @@ function FormField({
 }) {
   const controls = useInputControl(formField);
 
-  const [, setParams] = useQueryStates(
+  const [params, setParams] = useQueryStates(
     field.persist === true ? { [field.name]: parseAsString.withOptions({ shallow: false }) } : {},
   );
 
   const handleChange = useCallback(
     (value: string) => {
-      void setParams({ [field.name]: value });
-      controls.change(value);
+      // Ensure that if page is reached without a full reload, we are still setting the selection properly based on query params.
+      const fieldValue = value || String(params[field.name]);
+
+      void setParams({ [field.name]: fieldValue });
+      controls.change(fieldValue);
     },
-    [setParams, field, controls],
+    [setParams, field, controls, params],
   );
 
   const handleOnOptionMouseEnter = (value: string) => {

@@ -49,6 +49,7 @@ export interface ProductDetailProps<F extends Field> {
   ctaDisabled?: Streamable<boolean | null>;
   prefetch?: boolean;
   additionalInformationTitle?: string;
+  additionalActions?: ReactNode;
 }
 
 export function ProductDetail<F extends Field>({
@@ -62,6 +63,7 @@ export function ProductDetail<F extends Field>({
   ctaDisabled: streamableCtaDisabled,
   prefetch,
   additionalInformationTitle = 'Additional information',
+  additionalActions,
 }: ProductDetailProps<F>) {
   return (
     <section className="@container">
@@ -179,6 +181,7 @@ export function ProductDetail<F extends Field>({
                         {([fields, ctaLabel, ctaDisabled]) => (
                           <ProductDetailForm
                             action={action}
+                            additionalActions={additionalActions}
                             ctaDisabled={ctaDisabled ?? undefined}
                             ctaLabel={ctaLabel ?? undefined}
                             emptySelectPlaceholder={emptySelectPlaceholder}
