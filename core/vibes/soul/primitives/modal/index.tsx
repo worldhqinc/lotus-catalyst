@@ -16,6 +16,8 @@ export interface ModalProps extends React.PropsWithChildren {
   required?: boolean;
   /** Hides the header / top of the modal. */
   hideHeader?: boolean;
+  /** Description for screen reader support. */
+  description?: string;
 }
 
 // eslint-disable-next-line valid-jsdoc
@@ -39,6 +41,7 @@ export const Modal = ({
   children,
   required = false,
   hideHeader = false,
+  description,
 }: ModalProps) => {
   return (
     <Dialog.Root onOpenChange={setOpen} open={isOpen}>
@@ -56,6 +59,7 @@ export const Modal = ({
             onEscapeKeyDown={required ? (event) => event.preventDefault() : undefined}
             onInteractOutside={required ? (event) => event.preventDefault() : undefined}
             onPointerDownOutside={required ? (event) => event.preventDefault() : undefined}
+            aria-describedby={description ? description : undefined}
           >
             <div className="flex flex-col">
               <div
