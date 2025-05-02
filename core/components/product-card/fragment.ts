@@ -19,6 +19,7 @@ export const ProductCardFragment = graphql(
         numberOfReviews
         averageRating
       }
+      sku
       ...PricingFragment
     }
   `,

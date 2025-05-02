@@ -1,10 +1,16 @@
+'use client';
+
 import { clsx } from 'clsx';
+import { useFormStatus } from 'react-dom';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price, PriceLabel } from '@/vibes/soul/primitives/price-label';
 import * as Skeleton from '@/vibes/soul/primitives/skeleton';
+import { addToCartBySkuForm } from '~/app/[locale]/(default)/cart/_actions/add-to-cart-by-sku-form';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
+
+import { Button } from '../button';
 
 import { Compare } from './compare';
 
@@ -17,6 +23,7 @@ export interface Product {
   subtitle?: string;
   badge?: string;
   rating?: number;
+  sku?: string;
 }
 
 export interface ProductCardProps {
@@ -54,7 +61,7 @@ export interface ProductCardProps {
  * ```
  */
 export function ProductCard({
-  product: { id, title, subtitle, badge, price, image, href },
+  product: { id, title, subtitle, badge, price, image, href, sku },
   colorScheme = 'light',
   className,
   showCompare = false,
@@ -124,6 +131,12 @@ export function ProductCard({
             <Badge className="absolute top-3 left-3" shape="rounded">
               {badge}
             </Badge>
+          )}
+          {/* Add to Bag Button on Hover */}
+          {!!sku && (
+            <form action={addToCartBySkuForm} className="pointer-events-none absolute inset-0 z-10">
+              <AddToBagForm sku={sku} />
+            </form>
           )}
         </div>
 
@@ -218,6 +231,30 @@ export function ProductCardSkeleton({
           <Skeleton.Text characterCount={6} className="rounded-sm" />
         </div>
       </div>
+    </div>
+  );
+}
+
+function AddToBagForm({ sku }: { sku: string }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <div
+      className={clsx(
+        'flex size-full items-end justify-center p-4 transition-opacity duration-500 group-hover:opacity-100',
+        pending ? 'opacity-100' : 'opacity-0',
+      )}
+    >
+      <input name="sku" type="hidden" value={sku} />
+      <Button
+        className="pointer-events-auto w-full"
+        disabled={!sku || pending}
+        loading={pending}
+        size="small"
+        type="submit"
+      >
+        Add to bag
+      </Button>
     </div>
   );
 }

@@ -1,39 +1,12 @@
 'use client';
 
-import type { Price } from '@/vibes/soul/primitives/price-label';
 import { ProductCard } from '@/vibes/soul/primitives/product-card';
-import { CarouselProduct } from '@/vibes/soul/sections/product-carousel';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
-import { assetSchema, productBento, productFinishedGoodsSchema } from '~/contentful/schema';
+import { productBento } from '~/contentful/schema';
+import { contentfulProductCardTransformer } from '~/data-transformers/product-card-transformer';
 
 export function ProductBento(props: productBento['fields']) {
-  const items: CarouselProduct[] =
-    props.products?.map((entry) => {
-      const parsedProduct = productFinishedGoodsSchema.parse(entry);
-      const { id } = parsedProduct.sys;
-      const fields = parsedProduct.fields;
-      const imageAsset = fields.featuredImage;
-      const file = imageAsset ? assetSchema.parse(imageAsset).fields.file : null;
-      const image = file ? { src: `https:${file.url}`, alt: fields.productName } : undefined;
-
-      const price: Price = fields.salePrice
-        ? {
-            type: 'sale',
-            previousValue: fields.defaultPrice,
-            currentValue: fields.salePrice,
-          }
-        : fields.defaultPrice;
-
-      return {
-        id,
-        title: fields.productName,
-        subtitle: fields.shortDescription ?? undefined,
-        href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
-        image,
-        price,
-        badge: fields.productBadge ?? undefined,
-      };
-    }) ?? [];
+  const items = props.products?.map(contentfulProductCardTransformer) ?? [];
 
   const getColSpan = (index: number): string => {
     const patternIndex = index % 8;

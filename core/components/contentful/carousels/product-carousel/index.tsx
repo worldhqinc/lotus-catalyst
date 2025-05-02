@@ -9,16 +9,10 @@ import {
   CarouselScrollbar,
   useCarousel,
 } from '@/vibes/soul/primitives/carousel';
-import type { Price } from '@/vibes/soul/primitives/price-label';
 import { ProductCard } from '@/vibes/soul/primitives/product-card';
-import type { CarouselProduct } from '@/vibes/soul/sections/product-carousel';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
-import {
-  carouselProduct,
-  productFinishedGoodsSchema,
-  productPartsAndAccessoriesSchema,
-} from '~/contentful/schema';
-import { ensureImageUrl } from '~/lib/utils';
+import { carouselProduct } from '~/contentful/schema';
+import { contentfulProductCardTransformer } from '~/data-transformers/product-card-transformer';
 
 interface Props {
   carousel: carouselProduct;
@@ -53,77 +47,10 @@ function NavHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   );
 }
 
-function parseProduct(
-  entry: carouselProduct['fields']['products'][number],
-): CarouselProduct | undefined {
-  const entryObject = entry;
-
-  if (entryObject.sys.contentType.sys.id === 'productPartsAndAccessories') {
-    const product = productPartsAndAccessoriesSchema.parse(entry);
-    const { fields } = product;
-    const { featuredImage } = fields;
-    const { file } = featuredImage.fields;
-
-    const image = {
-      src: ensureImageUrl(file.url),
-      alt: featuredImage.fields.description ?? fields.productName,
-    };
-
-    const price: Price = fields.salePrice
-      ? {
-          type: 'sale',
-          previousValue: fields.price ?? '0.00',
-          currentValue: fields.salePrice,
-        }
-      : (fields.price ?? '0.00');
-
-    return {
-      id: product.sys.id,
-      title: fields.productName,
-      subtitle: 'Lorem ipsum dolor sit amet',
-      href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
-      image,
-      price,
-      badge: fields.productBadge ?? undefined,
-    };
-  } else if (entryObject.sys.contentType.sys.id === 'productFinishedGoods') {
-    const product = productFinishedGoodsSchema.parse(entry);
-    const { fields } = product;
-    const { featuredImage } = fields;
-    const { file } = featuredImage?.fields ?? {};
-
-    const image = featuredImage &&
-      file && {
-        src: ensureImageUrl(file.url),
-        alt: featuredImage.fields.description ?? fields.productName,
-      };
-
-    const price: Price = fields.salePrice
-      ? {
-          type: 'sale',
-          previousValue: fields.defaultPrice,
-          currentValue: fields.salePrice,
-        }
-      : fields.defaultPrice;
-
-    return {
-      id: product.sys.id,
-      title: fields.productName,
-      subtitle: fields.shortDescription ?? undefined,
-      href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
-      image,
-      price,
-      badge: fields.productBadge ?? undefined,
-    };
-  }
-}
-
 export function ProductCarousel({ carousel }: Props) {
   const { carouselTitle, subtitle, products: productEntries } = carousel.fields;
 
-  const items = productEntries
-    .map(parseProduct)
-    .filter((p): p is CarouselProduct => p !== undefined);
+  const items = productEntries.map(contentfulProductCardTransformer);
 
   return (
     <SectionLayout containerSize="2xl">
