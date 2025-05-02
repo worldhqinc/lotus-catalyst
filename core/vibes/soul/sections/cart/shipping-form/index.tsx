@@ -343,7 +343,7 @@ export function ShippingForm({
                   ? setShowAddressForm(false)
                   : setShowForms(false)
               }
-              size="small"
+              size="medium"
               type="button"
               variant="tertiary"
             >
@@ -356,7 +356,7 @@ export function ShippingForm({
           {formattedAddress}
           <Button
             onClick={() => setShowAddressForm(true)}
-            size="small"
+            size="medium"
             type="button"
             variant="tertiary"
           >
@@ -411,7 +411,7 @@ export function ShippingForm({
                 setShowForms(false);
                 setShowAddressForm(false);
               }}
-              size="small"
+              size="medium"
               type="button"
               variant="tertiary"
             >
@@ -436,5 +436,5 @@ export function ShippingForm({
 function SubmitButton(props: React.ComponentPropsWithoutRef<typeof Button>) {
   const { pending } = useFormStatus();
 
-  return <Button {...props} loading={pending} size="small" type="submit" variant="secondary" />;
+  return <Button {...props} loading={pending} size="medium" type="submit" variant="primary" />;
 }
