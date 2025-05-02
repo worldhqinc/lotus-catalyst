@@ -2,7 +2,7 @@
 
 import { getFormProps, getInputProps, SubmissionResult, useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
-import { startTransition, useActionState, useOptimistic } from 'react';
+import { startTransition, useActionState, useOptimistic, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 
 import { FieldError } from '@/vibes/soul/form/field-error';
@@ -87,44 +87,59 @@ export function CouponCodeForm({
     },
   });
 
+  const [showCouponForm, setShowCouponForm] = useState(false);
+
   return (
-    <div className="space-y-2 border-t border-[var(--cart-border,hsl(var(--contrast-100)))] pt-4 pb-5">
-      <form {...getFormProps(form)} action={formAction} className="space-y-2">
-        <label htmlFor={fields.couponCode.id}>{label}</label>
-        <div className="mt-2 flex gap-1.5">
-          <Input
-            {...getInputProps(fields.couponCode, {
-              required: true,
-              type: 'text',
-            })}
-            disabled={disabled}
-            errors={fields.couponCode.errors}
-            id={fields.couponCode.id}
-            key={fields.couponCode.id}
-            placeholder={placeholder}
-          />
-          <SubmitButton disabled={disabled}>{ctaLabel}</SubmitButton>
-        </div>
-      </form>
-      {optimisticCouponCodes.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
-          {optimisticCouponCodes.map((couponCode) => (
-            <CouponChip
-              action={formAction}
-              couponCode={couponCode}
-              key={couponCode}
-              onSubmit={(formData) => {
-                startTransition(() => {
-                  formAction(formData);
-                  setOptimisticCouponCodes(formData);
-                });
-              }}
-              removeLabel={removeLabel}
-            />
-          ))}
-        </div>
+    <div className="space-y-2 border-t border-[var(--cart-border,hsl(var(--contrast-100)))] py-5">
+      <button
+        className="link text-primary text-sm"
+        onClick={() => setShowCouponForm((show) => !show)}
+        type="button"
+      >
+        Coupon/Gift Certificate
+      </button>
+      {showCouponForm && (
+        <>
+          <form {...getFormProps(form)} action={formAction} className="mt-2 space-y-2">
+            <label className="text-sm" htmlFor={fields.couponCode.id}>
+              {label}
+            </label>
+            <div className="mt-2 flex gap-1.5">
+              <Input
+                {...getInputProps(fields.couponCode, {
+                  required: true,
+                  type: 'text',
+                })}
+                disabled={disabled}
+                errors={fields.couponCode.errors}
+                id={fields.couponCode.id}
+                key={fields.couponCode.id}
+                placeholder={placeholder}
+              />
+              <SubmitButton disabled={disabled}>{ctaLabel}</SubmitButton>
+            </div>
+          </form>
+          {optimisticCouponCodes.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {optimisticCouponCodes.map((couponCode) => (
+                <CouponChip
+                  action={formAction}
+                  couponCode={couponCode}
+                  key={couponCode}
+                  onSubmit={(formData) => {
+                    startTransition(() => {
+                      formAction(formData);
+                      setOptimisticCouponCodes(formData);
+                    });
+                  }}
+                  removeLabel={removeLabel}
+                />
+              ))}
+            </div>
+          )}
+          {form.errors?.map((error, index) => <FieldError key={index}>{error}</FieldError>)}
+        </>
       )}
-      {form.errors?.map((error, index) => <FieldError key={index}>{error}</FieldError>)}
     </div>
   );
 }
@@ -135,14 +150,14 @@ function SubmitButton({ disabled, ...props }: React.ComponentPropsWithoutRef<typ
   return (
     <Button
       {...props}
-      className="shrink-0"
+      className="max-h-[46px] shrink-0"
       disabled={disabled ?? pending}
       loading={pending}
       name="intent"
-      size="small"
+      size="medium"
       type="submit"
       value="apply"
-      variant="secondary"
+      variant="tertiary"
     />
   );
 }

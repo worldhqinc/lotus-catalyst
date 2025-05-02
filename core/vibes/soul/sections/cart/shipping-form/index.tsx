@@ -227,16 +227,16 @@ export function ShippingForm({
   const stateControl = useInputControl(addressFields.state);
 
   return (
-    <div className="py-4">
+    <div>
       <div>
-        <div className="flex justify-between">
+        <div className="flex justify-between text-sm leading-6">
           <span>{shippingLabel}</span>
           {state.shippingOption ? (
             <span>{state.shippingOption.price}</span>
           ) : (
             !showForms && (
               <button
-                className="font-semibold focus-visible:ring-2 focus-visible:ring-[var(--button-focus,hsl(var(--primary)))] focus-visible:ring-offset-2 focus-visible:outline-hidden"
+                className="link text-primary font-medium"
                 onClick={() => setShowForms(!showForms)}
               >
                 {addLabel}
@@ -249,10 +249,7 @@ export function ShippingForm({
           <div className="flex gap-1.5 text-xs">
             <span className="text-contrast-400 font-medium">{state.shippingOption.label}</span>
             {!showForms && (
-              <button
-                className="font-semibold focus-visible:ring-2 focus-visible:ring-[var(--button-focus,hsl(var(--primary)))] focus-visible:ring-offset-2 focus-visible:outline-hidden"
-                onClick={() => setShowForms(true)}
-              >
+              <button className="link text-primary font-medium" onClick={() => setShowForms(true)}>
                 {changeLabel}
               </button>
             )}
@@ -343,7 +340,7 @@ export function ShippingForm({
                   ? setShowAddressForm(false)
                   : setShowForms(false)
               }
-              size="small"
+              size="medium"
               type="button"
               variant="tertiary"
             >
@@ -356,7 +353,7 @@ export function ShippingForm({
           {formattedAddress}
           <Button
             onClick={() => setShowAddressForm(true)}
-            size="small"
+            size="medium"
             type="button"
             variant="tertiary"
           >
@@ -411,7 +408,7 @@ export function ShippingForm({
                 setShowForms(false);
                 setShowAddressForm(false);
               }}
-              size="small"
+              size="medium"
               type="button"
               variant="tertiary"
             >
@@ -436,5 +433,5 @@ export function ShippingForm({
 function SubmitButton(props: React.ComponentPropsWithoutRef<typeof Button>) {
   const { pending } = useFormStatus();
 
-  return <Button {...props} loading={pending} size="small" type="submit" variant="secondary" />;
+  return <Button {...props} loading={pending} size="medium" type="submit" variant="primary" />;
 }

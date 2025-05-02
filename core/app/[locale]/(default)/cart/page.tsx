@@ -2,7 +2,10 @@ import { Metadata } from 'next';
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { Cart as CartComponent, CartEmptyState } from '@/vibes/soul/sections/cart';
+import { client } from '~/client';
+import { graphql } from '~/client/graphql';
 import { getCartId } from '~/lib/cart';
+import { getPreferredCurrencyCode } from '~/lib/currency';
 import { exists } from '~/lib/utils';
 
 import { redirectToCheckout } from './_actions/redirect-to-checkout';
@@ -11,6 +14,25 @@ import { updateLineItem } from './_actions/update-line-item';
 import { updateShippingInfo } from './_actions/update-shipping-info';
 import { CartViewed } from './_components/cart-viewed';
 import { getCart, getShippingCountries } from './page-data';
+
+const GetProductPricingQuery = graphql(`
+  query GetProductPricing($entityId: Int!, $currencyCode: currencyCode) {
+    site {
+      product(entityId: $entityId) {
+        prices(currencyCode: $currencyCode) {
+          price {
+            value
+            currencyCode
+          }
+          basePrice {
+            value
+            currencyCode
+          }
+        }
+      }
+    }
+  }
+`);
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -35,6 +57,7 @@ export default async function Cart({ params }: Props) {
   const t = await getTranslations('Cart');
   const format = await getFormatter();
   const cartId = await getCartId();
+  const currencyCode = await getPreferredCurrencyCode();
 
   if (!cartId) {
     return (
@@ -63,42 +86,77 @@ export default async function Cart({ params }: Props) {
 
   const lineItems = [...cart.lineItems.physicalItems, ...cart.lineItems.digitalItems];
 
-  const formattedLineItems = lineItems.map((item) => ({
-    id: item.entityId,
-    quantity: item.quantity,
-    price: format.number(item.listPrice.value, {
-      style: 'currency',
-      currency: item.listPrice.currencyCode,
+  // Fetch pricing data for each product
+  const pricingData = await Promise.all(
+    lineItems.map(async (item) => {
+      const pricingResponse = await client.fetch({
+        document: GetProductPricingQuery,
+        variables: {
+          entityId: item.productEntityId,
+          currencyCode,
+        },
+      });
+
+      return {
+        productEntityId: item.productEntityId,
+        prices: pricingResponse.data.site.product?.prices,
+      };
     }),
-    subtitle: item.selectedOptions
-      .map((option) => {
-        switch (option.__typename) {
-          case 'CartSelectedMultipleChoiceOption':
-          case 'CartSelectedCheckboxOption':
-            return `${option.name}: ${option.value}`;
+  );
 
-          case 'CartSelectedNumberFieldOption':
-            return `${option.name}: ${option.number}`;
+  const productPricingMap = new Map(
+    pricingData.map((pricing) => [pricing.productEntityId, pricing.prices]),
+  );
 
-          case 'CartSelectedMultiLineTextFieldOption':
-          case 'CartSelectedTextFieldOption':
-            return `${option.name}: ${option.text}`;
+  const formattedLineItems = lineItems.map((item) => {
+    const prices = productPricingMap.get(item.productEntityId);
+    const basePrice = prices?.basePrice?.value;
+    const currentPrice = prices?.price.value;
 
-          case 'CartSelectedDateFieldOption':
-            return `${option.name}: ${format.dateTime(new Date(option.date.utc))}`;
+    return {
+      id: item.entityId,
+      quantity: item.quantity,
+      price: format.number(item.extendedSalePrice.value, {
+        style: 'currency',
+        currency: item.extendedSalePrice.currencyCode,
+      }),
+      basePrice:
+        basePrice && currentPrice && basePrice !== currentPrice
+          ? format.number(basePrice, {
+              style: 'currency',
+              currency: prices.basePrice?.currencyCode,
+            })
+          : undefined,
+      subtitle: item.selectedOptions
+        .map((option) => {
+          switch (option.__typename) {
+            case 'CartSelectedMultipleChoiceOption':
+            case 'CartSelectedCheckboxOption':
+              return `${option.name}: ${option.value}`;
 
-          default:
-            return '';
-        }
-      })
-      .join(', '),
-    title: item.name,
-    image: { src: item.image?.url || '', alt: item.name },
-    href: new URL(item.url).pathname,
-    selectedOptions: item.selectedOptions,
-    productEntityId: item.productEntityId,
-    variantEntityId: item.variantEntityId,
-  }));
+            case 'CartSelectedNumberFieldOption':
+              return `${option.name}: ${option.number}`;
+
+            case 'CartSelectedMultiLineTextFieldOption':
+            case 'CartSelectedTextFieldOption':
+              return `${option.name}: ${option.text}`;
+
+            case 'CartSelectedDateFieldOption':
+              return `${option.name}: ${format.dateTime(new Date(option.date.utc))}`;
+
+            default:
+              return '';
+          }
+        })
+        .join(', '),
+      title: item.name,
+      image: { src: item.image?.url || '', alt: item.name },
+      href: new URL(item.url).pathname,
+      selectedOptions: item.selectedOptions,
+      productEntityId: item.productEntityId,
+      variantEntityId: item.variantEntityId,
+    };
+  });
 
   const totalCouponDiscount =
     checkout?.coupons.reduce((sum, coupon) => sum + coupon.discountedAmount.value, 0) ?? 0;
