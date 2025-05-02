@@ -87,15 +87,29 @@ export function CouponCodeForm({
     },
   });
 
-  const [showCouponForm, setShowCouponForm] = useState(false);
+  const [showCouponForm, setShowCouponForm] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('showCouponForm') === 'true';
+    }
+
+    return false;
+  });
+
+  const toggleCouponForm = () => {
+    setShowCouponForm((show) => {
+      const newState = !show;
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('showCouponForm', String(newState));
+      }
+
+      return newState;
+    });
+  };
 
   return (
     <div className="space-y-2 border-t border-[var(--cart-border,hsl(var(--contrast-100)))] py-5">
-      <button
-        className="link text-primary text-sm"
-        onClick={() => setShowCouponForm((show) => !show)}
-        type="button"
-      >
+      <button className="link text-primary text-sm" onClick={toggleCouponForm} type="button">
         Coupon/Gift Certificate
       </button>
       {showCouponForm && (

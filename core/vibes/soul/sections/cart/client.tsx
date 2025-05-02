@@ -3,7 +3,7 @@
 import { getFormProps, getInputProps, SubmissionResult, useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { clsx } from 'clsx';
-import { Minus, Plus, Trash } from 'lucide-react';
+import { ArrowLeft, Minus, Plus, Trash } from 'lucide-react';
 import {
   ComponentPropsWithoutRef,
   startTransition,
@@ -17,6 +17,7 @@ import { Button } from '@/vibes/soul/primitives/button';
 import { toast } from '@/vibes/soul/primitives/toaster';
 import { StickySidebarLayout } from '@/vibes/soul/sections/sticky-sidebar-layout';
 import { Image } from '~/components/image';
+import { Link } from '~/components/link';
 
 import { CouponCodeForm, CouponCodeFormState } from './coupon-code-form';
 import { HelpfulLinks } from './helpful-links';
@@ -234,11 +235,15 @@ export function CartClient<LineItem extends CartLineItem>({
 
   return (
     <>
-      <div className="@container container pt-8 md:pt-16">
+      <div className="@container container flex items-center justify-between pt-8 md:pt-16">
         <h1 className="text-2xl leading-none @xl:text-4xl">
           {title}
           <span className="text-contrast-400 ml-4">({optimisticQuantity})</span>
         </h1>
+        <Link className="link hover:text-primary flex items-center gap-x-2" href="/shop/all">
+          <ArrowLeft size={16} />
+          Continue Shopping
+        </Link>
       </div>
       <StickySidebarLayout
         className="font-[family-name:var(--cart-font-family,var(--font-family-body))] text-[var(--cart-text,hsl(var(--foreground)))]"

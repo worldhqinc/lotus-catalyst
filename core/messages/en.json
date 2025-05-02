@@ -278,9 +278,9 @@
       "total": "Total",
       "CouponCode": {
         "apply": "Apply",
-        "couponCode": "Coupon code",
-        "removeCouponCode": "Remove coupon code",
-        "invalidCouponCode": "Please enter a valid coupon code",
+        "couponCode": "Promo code",
+        "removeCouponCode": "Remove promo code",
+        "invalidCouponCode": "Please enter a valid promo code",
         "cartNotFound": "No cartId cookie found."
       },
       "Shipping": {
