@@ -5,6 +5,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { getTranslations } from 'next-intl/server';
 
 import { schema } from '@/vibes/soul/primitives/inline-email-form/schema';
+import { klaviyoNewsletterSignup } from '~/lib/klaviyo';
 
 export const subscribe = async (
   _lastResult: {
@@ -22,50 +23,12 @@ export const subscribe = async (
     return { lastResult: submission.reply() };
   }
 
-  const response = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs', {
-    method: 'POST',
-    headers: {
-      accept: 'application/vnd.api+json',
-      revision: '2025-04-15',
-      'Content-Type': 'application/vnd.api+json',
-      Authorization: `Klaviyo-API-Key ${process.env.KLAVIYO_PRIVATE_API_KEY}`,
-    },
-    body: JSON.stringify({
-      data: {
-        type: 'profile-subscription-bulk-create-job',
-        attributes: {
-          custom_source: 'lotuscooking.com Newsletter Signup',
-          profiles: {
-            data: [
-              {
-                type: 'profile',
-                attributes: {
-                  email: submission.value.email,
-                  subscriptions: {
-                    email: {
-                      marketing: {
-                        consent: 'SUBSCRIBED',
-                      },
-                    },
-                  },
-                },
-              },
-            ],
-          },
-        },
-        relationships: {
-          list: {
-            data: {
-              type: 'list',
-              id: process.env.KLAVIYO_NEWSLETTER_LIST_ID,
-            },
-          },
-        },
-      },
-    }),
-  });
+  const klaviyoResponse = await klaviyoNewsletterSignup(
+    submission.value.email,
+    'lotuscooking.com Footer Newsletter Signup',
+  );
 
-  if (!response.ok) {
+  if (!klaviyoResponse.ok) {
     return { lastResult: submission.reply(), successMessage: null, errorMessage: t('error') };
   }
 

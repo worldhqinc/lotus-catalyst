@@ -13,6 +13,7 @@ import { graphql, VariablesOf } from '~/client/graphql';
 import { FieldNameToFieldId } from '~/data-transformers/form-field-transformer/utils';
 import { redirect } from '~/i18n/routing';
 import { getCartId } from '~/lib/cart';
+import { klaviyoNewsletterSignup } from '~/lib/klaviyo';
 
 const RegisterCustomerMutation = graphql(`
   mutation RegisterCustomerMutation(
@@ -219,6 +220,23 @@ export async function registerCustomer<F extends Field>(
         }),
         fields: prevState.fields,
       };
+    }
+
+    const shouldSubscribe = input.formFields?.checkboxes?.some(
+      (checkbox) =>
+        checkbox.fieldEntityId === FieldNameToFieldId.newsletter &&
+        checkbox.fieldValueEntityIds.length,
+    );
+
+    if (shouldSubscribe) {
+      const klaviyoResponse = await klaviyoNewsletterSignup(
+        input.email,
+        'lotuscooking.com User Registration Newsletter Signup',
+      );
+
+      if (!klaviyoResponse.ok) {
+        console.error('Failed to subscribe to newsletter', klaviyoResponse);
+      }
     }
 
     await signIn('password', {

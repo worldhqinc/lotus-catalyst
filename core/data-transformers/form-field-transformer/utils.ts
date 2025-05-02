@@ -21,6 +21,7 @@ export enum FieldNameToFieldId {
   postalCode,
   currentPassword = 24,
   exclusiveOffers = 25,
+  newsletter = 27,
 }
 
 export enum FieldTypeToFieldInput {
@@ -33,7 +34,10 @@ export enum FieldTypeToFieldInput {
   'MultilineTextFormField' = 'multilineTexts',
 }
 
-export const CUSTOMER_FIELDS_TO_EXCLUDE = [FieldNameToFieldId.currentPassword];
+export const CUSTOMER_FIELDS_TO_EXCLUDE = [
+  FieldNameToFieldId.currentPassword,
+  FieldNameToFieldId.exclusiveOffers,
+];
 
 export const BOTH_CUSTOMER_ADDRESS_FIELDS = [
   FieldNameToFieldId.firstName,
