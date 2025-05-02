@@ -90,7 +90,6 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
             Email Address
           </Label>
           <Input
-            defaultValue={state.email}
             errors={getErrorsOrUndefined(state.errors, 'email')}
             id="email"
             name="email"

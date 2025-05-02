@@ -49,6 +49,7 @@ export const Modal = ({
       <Dialog.Portal>
         <Dialog.Overlay className="@container fixed inset-0 z-30 flex items-center justify-center bg-[var(--modal-overlay-background,hsl(var(--foreground)/50%))]">
           <Dialog.Content
+            aria-describedby={description || undefined}
             className={clsx(
               'mx-3 my-10 max-h-[90%] max-w-3xl overflow-y-auto rounded-2xl bg-[var(--modal-background,hsl(var(--background)))]',
               'transition ease-out',
@@ -59,7 +60,6 @@ export const Modal = ({
             onEscapeKeyDown={required ? (event) => event.preventDefault() : undefined}
             onInteractOutside={required ? (event) => event.preventDefault() : undefined}
             onPointerDownOutside={required ? (event) => event.preventDefault() : undefined}
-            aria-describedby={description ? description : undefined}
           >
             <div className="flex flex-col">
               <div
