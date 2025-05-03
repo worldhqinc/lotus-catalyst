@@ -35,7 +35,7 @@ function InfiniteHits() {
     return (
       <div className="mt-8 grid w-full gap-8 md:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 8 }).map((_, index) => (
-          <ProductCardSkeleton key={index} />
+          <ProductCardSkeleton aspectRatio="1:1" key={index} />
         ))}
       </div>
     );
@@ -46,6 +46,7 @@ function InfiniteHits() {
       <div className="mt-8 grid w-full gap-8 md:grid-cols-2 lg:grid-cols-4">
         {items.map((hit, index) => (
           <ProductCard
+            aspectRatio="1:1"
             key={`${hit.objectID}-${index}`}
             product={algoliaProductCardTransformer(hit)}
           />
