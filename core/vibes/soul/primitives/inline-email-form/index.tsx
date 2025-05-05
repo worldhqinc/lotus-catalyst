@@ -18,11 +18,13 @@ type Action<State, Payload> = (
 
 export function InlineEmailForm({
   className,
+  inputClassName,
   action,
   submitLabel = 'Submit',
-  placeholder = 'Newsletter address',
+  placeholder = 'Enter your email',
 }: {
   className?: string;
+  inputClassName?: string;
   placeholder?: string;
   submitLabel?: string;
   action: Action<
@@ -58,13 +60,16 @@ export function InlineEmailForm({
     <form {...getFormProps(form)} action={formAction} className={clsx('space-y-2', className)}>
       <div
         className={clsx(
-          'bg-background focus-within:border-primary relative border-b text-base transition-colors duration-200 focus:outline-hidden',
+          'focus-within:border-primary relative border-b text-base transition-colors duration-200 focus:outline-hidden',
           errors.length ? 'border-error' : 'border-contrast-200',
         )}
       >
         <input
           {...getInputProps(fields.email, { type: 'email' })}
-          className="placeholder-contrast-gray-500 text-foreground placeholder:font-heading h-14 w-full bg-transparent pr-16 placeholder:font-normal focus:outline-hidden @4xl:placeholder:text-xl"
+          className={clsx(
+            'placeholder-contrast-gray-500 text-foreground placeholder:font-heading h-14 w-full bg-transparent pr-16 placeholder:font-normal focus:outline-hidden @4xl:placeholder:text-xl',
+            inputClassName,
+          )}
           data-1p-ignore
           key={fields.email.id}
           placeholder={placeholder}
