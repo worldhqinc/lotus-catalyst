@@ -15,7 +15,7 @@ export async function submitForm(fields: TicketField[], _prevState: FormState, f
     values[field.id] = isString(fieldValue) ? fieldValue : null;
 
     if (field.required && !formData.get(field.id.toString())) {
-      errors[field.id] = ['This field is required'];
+      errors[field.id] = ['Required'];
     }
   });
 
@@ -25,7 +25,7 @@ export async function submitForm(fields: TicketField[], _prevState: FormState, f
   values.email = email;
 
   if (!email) {
-    errors.email = ['This field is required'];
+    errors.email = ['Required'];
   }
 
   if (Object.keys(errors).length > 0) {
