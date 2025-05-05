@@ -139,7 +139,7 @@ export function ProductDetailForm<F extends Field>({
             </FormStatus>
           ))}
           <div className="flex items-center gap-x-3">
-            <NumberInput
+            {/* <NumberInput
               aria-label="Quantity"
               decrementLabel="Decrement"
               incrementLabel="Increment"
@@ -150,7 +150,7 @@ export function ProductDetailForm<F extends Field>({
               onFocus={quantityControl.focus}
               required
               value={quantityControl.value}
-            />
+            /> */}
             <SubmitButton disabled={ctaDisabled}>{ctaLabel}</SubmitButton>
           </div>
         </div>
