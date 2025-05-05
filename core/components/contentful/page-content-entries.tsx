@@ -12,6 +12,7 @@ import {
   ctaSchema,
   ctaSectionSchema,
   culinaryPassionSectionSchema,
+  faqListSchema,
   featureGridSchema,
   guidingPrinciplesSectionSchema,
   heroBannerSchema,
@@ -39,6 +40,7 @@ import { CarouselSection } from './sections/carousel-section';
 import { CommunitySection } from './sections/community-section';
 import { CtaSection } from './sections/cta-section';
 import { CulinaryPassionSection } from './sections/culinary-passion-section';
+import { FaqList } from './sections/faq-list';
 import { FeatureGrid } from './sections/feature-grid';
 import { GuidingPrinciplesSection } from './sections/guiding-principles-section';
 import { HeroBanner } from './sections/hero-banner';
@@ -192,6 +194,11 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
     const data = productSupportLinkSchema.parse(contentEntry);
 
     return <ProductSupportLinks {...data.fields} />;
+  },
+  faqList: ({ contentEntry }) => {
+    const data = faqListSchema.parse(contentEntry);
+
+    return <FaqList {...data.fields} />;
   },
 };
 
