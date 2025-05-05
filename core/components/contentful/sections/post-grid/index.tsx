@@ -136,13 +136,7 @@ export function PostCard({
         <figure className="bg-surface-image aspect-square w-full rounded-lg" />
       )}
       <div className="flex flex-1 flex-col gap-2 py-4">
-        {slug ? (
-          <Link className="font-heading text-3xl" href={`/${slug}`}>
-            {title}
-          </Link>
-        ) : (
-          <h3 className="font-heading text-3xl">{title}</h3>
-        )}
+        <h3 className="font-heading text-3xl">{title}</h3>
         {subtitle ? <p className="text-contrast-400 text-sm">{subtitle}</p> : null}
       </div>
       <div className="flex flex-wrap gap-2 pb-2">
@@ -150,6 +144,11 @@ export function PostCard({
           <Badge key={cat}>{cat}</Badge>
         ))}
       </div>
+      {!!slug && (
+        <Link aria-label={title} className="absolute inset-0" href={`/${slug}`}>
+          <span className="sr-only">View {title}</span>
+        </Link>
+      )}
     </article>
   );
 }
