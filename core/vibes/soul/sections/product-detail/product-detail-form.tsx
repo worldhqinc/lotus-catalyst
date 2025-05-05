@@ -112,7 +112,7 @@ export function ProductDetailForm<F extends Field>({
     shouldRevalidate: 'onInput',
   });
 
-  const quantityControl = useInputControl(formFields.quantity);
+  // const quantityControl = useInputControl(formFields.quantity);
 
   return (
     <FormProvider context={form.context}>
@@ -151,6 +151,7 @@ export function ProductDetailForm<F extends Field>({
               required
               value={quantityControl.value}
             /> */}
+            <input name={formFields.quantity.name} type="hidden" value="1" />
             <SubmitButton disabled={ctaDisabled}>{ctaLabel}</SubmitButton>
           </div>
         </div>
