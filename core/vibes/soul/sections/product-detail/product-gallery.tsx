@@ -22,7 +22,7 @@ export function ProductGallery({ featuredImage, images, className, badge }: Prod
         {featuredImage && (
           <div
             className={clsx(
-              'bg-surface-image relative col-span-2 aspect-[4/5] overflow-hidden rounded-xl',
+              'bg-surface-image relative col-span-2 aspect-square overflow-hidden rounded-xl',
             )}
           >
             <Image
