@@ -4266,6 +4266,78 @@ export const pageHeaderSupportSchema = z.object({
 });
 
 export type pageHeaderSupport = z.infer<typeof pageHeaderSupportSchema>;
+
+// Schema for Support Link
+export const supportLinkFieldsSchema = z.object({
+  title: z.string(),
+  supportType: z.string(),
+  supportPageLink: z.object({
+    metadata: metadataSchema,
+    sys: sysEntrySchema.extend({
+      contentType: z.object({
+        sys: z.object({
+          type: z.literal('Link'),
+          linkType: z.literal('ContentType'),
+          id: z.literal('pageStandard'),
+        }),
+      }),
+    }),
+    fields: z.object({
+      pageSlug: z.string(),
+    }),
+  }),
+});
+
+export const supportLinkSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('supportLink'),
+      }),
+    }),
+  }),
+  fields: supportLinkFieldsSchema,
+});
+
+// Schema for Product Support Link
+export const productSupportLinkFieldsSchema = z.object({
+  title: z.string().optional(),
+  links: z.array(
+    z.object({
+      metadata: metadataSchema,
+      sys: sysEntrySchema.extend({
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.literal('supportLink'),
+          }),
+        }),
+      }),
+      fields: supportLinkFieldsSchema,
+    }),
+  ),
+});
+
+export const productSupportLinkSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('productSupportLinks'),
+      }),
+    }),
+  }),
+  fields: productSupportLinkFieldsSchema,
+});
+
+export type ProductSupportLink = z.infer<typeof productSupportLinkFieldsSchema>;
+
 // ========================================
 // Union Schema and Helper Object
 // ========================================
@@ -4319,6 +4391,8 @@ export const contentfulEntrySchemaUnion = z.union([
   featureTileSchema,
   productGridSchema,
   pageHeaderSupportSchema,
+  supportLinkSchema,
+  productSupportLinkSchema,
 ]);
 export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
 
@@ -4379,4 +4453,6 @@ export const contentfulSchemas = {
   featureTile: featureTileSchema,
   productGrid: productGridSchema,
   pageHeaderSupport: pageHeaderSupportSchema,
+  supportLink: supportLinkSchema,
+  productSupportLink: productSupportLinkSchema,
 };

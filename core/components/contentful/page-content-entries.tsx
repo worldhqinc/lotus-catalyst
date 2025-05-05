@@ -27,6 +27,7 @@ import {
   postGridSchema,
   productBentoSchema,
   productGridSchema,
+  productSupportLinkSchema,
   testimonialsSchema,
 } from '~/contentful/schema';
 
@@ -51,6 +52,7 @@ import { PageHeaderSupport } from './sections/page-header';
 import { PostGrid } from './sections/post-grid';
 import { ProductBento } from './sections/product-bento';
 import { ProductGrid } from './sections/product-grid';
+import { ProductSupportLinks } from './sections/product-support-links';
 import { Testimonials } from './sections/testimonials';
 
 type PageContent = pageStandard['fields']['pageContent'];
@@ -185,6 +187,11 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
     const data = pageHeaderSupportSchema.parse(contentEntry);
 
     return <PageHeaderSupport {...data.fields} />;
+  },
+  productSupportLinks: ({ contentEntry }) => {
+    const data = productSupportLinkSchema.parse(contentEntry);
+
+    return <ProductSupportLinks {...data.fields} />;
   },
 };
 
