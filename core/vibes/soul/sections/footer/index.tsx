@@ -258,7 +258,7 @@ export const Footer = forwardRef(function Footer(
                     className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
                     href="/wishlist"
                   >
-                    Wishlist
+                    Wish Lists
                   </Link>
                 </li>
               </ul>
