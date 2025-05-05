@@ -4,6 +4,11 @@ import { getFormatter } from 'next-intl/server';
 import { Product } from '@/vibes/soul/primitives/product-card';
 import { ExistingResultType } from '~/client/util';
 import { ProductCardFragment } from '~/components/product-card/fragment';
+import {
+  type carouselProduct,
+  productFinishedGoodsSchema,
+  productPartsAndAccessoriesSchema,
+} from '~/contentful/schema';
 
 import { pricesTransformer } from './prices-transformer';
 
@@ -21,6 +26,7 @@ export const singleProductCardTransformer = (
     price: pricesTransformer(product.prices, format),
     subtitle: product.brand?.name ?? undefined,
     rating: product.reviewSummary.averageRating,
+    sku: product.sku,
   };
 };
 
@@ -30,3 +36,123 @@ export const productCardTransformer = (
 ): Product[] => {
   return products.map((product) => singleProductCardTransformer(product, format));
 };
+
+export function contentfulProductCardTransformer(
+  entry: carouselProduct['fields']['products'][number],
+): Product {
+  const sysType = entry.sys.contentType.sys.id;
+
+  if (sysType === 'productPartsAndAccessories') {
+    const product = productPartsAndAccessoriesSchema.parse(entry);
+    const fields = product.fields;
+    const featuredImage = fields.featuredImage;
+    const file = featuredImage.fields.file;
+    const image = {
+      src: file.url.startsWith('http') ? file.url : `https:${file.url}`,
+      alt: featuredImage.fields.description ?? fields.productName,
+    };
+    const price = fields.salePrice
+      ? {
+          type: 'sale' as const,
+          previousValue: fields.price ?? '0.00',
+          currentValue: fields.salePrice,
+        }
+      : (fields.price ?? '0.00');
+
+    return {
+      id: product.sys.id,
+      title: fields.productName,
+      href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
+      image,
+      price,
+      badge: fields.productBadge ?? undefined,
+      sku: fields.bcProductReference,
+    };
+  } else if (sysType === 'productFinishedGoods') {
+    const product = productFinishedGoodsSchema.parse(entry);
+    const fields = product.fields;
+    const featuredImage = fields.featuredImage;
+    const file = featuredImage?.fields.file;
+    const image = file
+      ? {
+          src: file.url.startsWith('http') ? file.url : `https:${file.url}`,
+          alt: featuredImage.fields.description ?? fields.productName,
+        }
+      : undefined;
+    const price = fields.salePrice
+      ? {
+          type: 'sale' as const,
+          previousValue: fields.defaultPrice,
+          currentValue: fields.salePrice,
+        }
+      : fields.defaultPrice;
+
+    return {
+      id: product.sys.id,
+      title: fields.productName,
+      subtitle: fields.shortDescription ?? undefined,
+      href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
+      image,
+      price,
+      badge: fields.productBadge ?? undefined,
+      sku: fields.bcProductReference,
+    };
+  }
+
+  return {
+    id: entry.sys.id,
+    title: '',
+    href: '',
+  };
+}
+
+type Localized<T> = Record<string, T>;
+
+export interface ProductGridHit {
+  objectID: string;
+  fields?: {
+    productName?: Localized<string>;
+    shortDescription?: Localized<string>;
+    pageSlug?: Localized<string>;
+    featuredImage?: Localized<{ fields?: { file?: { url: string } } }>;
+    price?: Localized<string>;
+    defaultPrice?: Localized<string>;
+    salePrice?: Localized<string>;
+    badge?: Localized<string>;
+    rating?: Localized<number>;
+    productLine?: Localized<string[]>;
+    bcProductReference?: Localized<string>;
+  };
+}
+
+export function algoliaProductCardTransformer(hit: ProductGridHit): Product {
+  const f = hit.fields ?? {};
+  const title = f.productName?.['en-US'] || '';
+  const description = f.shortDescription?.['en-US'] || '';
+  const slug = f.pageSlug?.['en-US'] || '';
+  const imgField = f.featuredImage?.['en-US']?.fields?.file?.url || null;
+  const imgUrl = imgField && (imgField.startsWith('http') ? imgField : `https:${imgField}`);
+  const defaultPrice = f.defaultPrice?.['en-US'] ?? f.price?.['en-US'] ?? '';
+  const price = f.salePrice?.['en-US']
+    ? {
+        type: 'sale' as const,
+        previousValue: `$${f.salePrice['en-US']}`,
+        currentValue: `$${defaultPrice}`,
+      }
+    : `$${defaultPrice}`;
+  const badge = f.badge?.['en-US'];
+  const rating = f.rating?.['en-US'];
+  const sku = f.bcProductReference?.['en-US'];
+
+  return {
+    id: hit.objectID,
+    title,
+    subtitle: description,
+    href: `/${slug}`,
+    image: imgUrl ? { src: imgUrl, alt: title } : undefined,
+    price,
+    badge,
+    rating,
+    sku,
+  };
+}
