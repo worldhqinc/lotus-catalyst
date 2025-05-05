@@ -1,11 +1,11 @@
 'use client';
 
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
-import { clsx } from 'clsx';
-import { Configure, InstantSearch, RefinementList, useInfiniteHits } from 'react-instantsearch';
+import { Configure, InstantSearch, useInfiniteHits, useRefinementList } from 'react-instantsearch';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Button } from '@/vibes/soul/primitives/button';
+import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { ensureImageUrl } from '~/lib/utils';
@@ -26,65 +26,112 @@ type Localized<T> = Record<string, T>;
 interface PostGridHit {
   objectID: string;
   fields?: {
-    productName?: Localized<string>;
-    pageName?: Localized<string>;
+    // Feature fields
+    featuredImage?: Localized<{
+      sys?: {
+        type?: string;
+        linkType?: string;
+        id?: string;
+      };
+      fields?: {
+        file?: {
+          url: string;
+        };
+      };
+    }>;
+    categories?: Localized<string[]>;
+    title?: Localized<string>;
+    subtitle?: Localized<string>;
+    story?: Localized<{
+      data?: unknown;
+      content?: unknown[];
+      nodeType?: string;
+    }>;
+    productCarousel?: Localized<{
+      sys?: {
+        type?: string;
+        linkType?: string;
+        id?: string;
+      };
+    }>;
+    // Recipe fields
     recipeName?: Localized<string>;
-    shortDescription?: Localized<string>;
+    metaTitle?: Localized<string>;
+    metaDescription?: Localized<string>;
     pageSlug?: Localized<string>;
-    featuredImage?: Localized<{ fields?: { file?: { url: string } } }>;
-    pageImage?: Localized<string>;
     mealTypeCategory?: Localized<string[]>;
+    // Common fields
+    pageName?: Localized<string>;
+    shortDescription?: Localized<string>;
+    pageImage?: Localized<string>;
     productLine?: Localized<string[]>;
     parentCategory?: Localized<string[]>;
   };
 }
 
-function InfiniteHits() {
+function transformFeatureHit(hit: PostGridHit) {
+  const f = hit.fields ?? {};
+
+  return {
+    image: f.featuredImage?.['en-US']?.fields?.file?.url
+      ? ensureImageUrl(f.featuredImage['en-US'].fields.file.url)
+      : null,
+    title: f.title?.['en-US'] || '',
+    subtitle: f.subtitle?.['en-US'] || '',
+    categories: f.categories?.['en-US'] || [],
+    slug: f.pageSlug?.['en-US'] || '',
+  };
+}
+
+function transformRecipeHit(hit: PostGridHit) {
+  const f = hit.fields ?? {};
+
+  return {
+    image: f.featuredImage?.['en-US']?.fields?.file?.url
+      ? ensureImageUrl(f.featuredImage['en-US'].fields.file.url)
+      : null,
+    title: f.recipeName?.['en-US'] || '',
+    subtitle: f.metaDescription?.['en-US'] || '',
+    categories: f.mealTypeCategory?.['en-US'] || [],
+    slug: f.pageSlug?.['en-US'] || '',
+  };
+}
+
+function InfiniteHits({ type }: { type: string }) {
   const { items, showMore, isLastPage, results } = useInfiniteHits<PostGridHit>();
   const hasMore = !isLastPage;
   const totalCount = results?.nbHits ?? 0;
   const progressPercent = totalCount > 0 ? (items.length / totalCount) * 100 : 0;
 
+  const transformer = type === 'feature' ? transformFeatureHit : transformRecipeHit;
+
   return (
     <>
-      <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid w-full gap-8 md:grid-cols-2 lg:grid-cols-3">
         {items.map((hit: PostGridHit) => {
-          const f = hit.fields ?? {};
-          const title =
-            f.productName?.['en-US'] || f.pageName?.['en-US'] || f.recipeName?.['en-US'] || '';
-          const description = f.shortDescription?.['en-US'] || '';
-          const slug = f.pageSlug?.['en-US'] || '';
-          const imgField =
-            f.featuredImage?.['en-US']?.fields?.file?.url || f.pageImage?.['en-US'] || null;
-          const imgUrl = imgField ? ensureImageUrl(imgField) : null;
-
-          const categories =
-            f.mealTypeCategory?.['en-US'] ||
-            f.productLine?.['en-US'] ||
-            f.parentCategory?.['en-US'] ||
-            [];
+          const { image, title, subtitle, categories, slug } = transformer(hit);
 
           return (
-            <article className="group relative" key={hit.objectID}>
-              {imgUrl ? (
-                <figure className="bg-surface-image aspect-square w-full rounded-lg">
-                  <Image alt={title} className="object-cover" src={imgUrl} />
+            <article className="group relative flex flex-col" key={hit.objectID}>
+              {image ? (
+                <figure className="bg-surface-image aspect-square w-full overflow-hidden rounded-lg">
+                  <Image alt={title} className="h-full w-full object-cover" src={image} />
                 </figure>
               ) : (
                 <figure className="bg-surface-image aspect-square w-full rounded-lg" />
               )}
-              <div className="space-y-1 py-2">
+              <div className="flex flex-1 flex-col gap-2 py-4">
                 {slug ? (
-                  <Link className="font-body text-lg font-medium" href={`/${slug}`}>
-                    <h3>{title}</h3>
+                  <Link className="font-heading text-3xl" href={`/${slug}`}>
+                    {title}
                   </Link>
                 ) : (
-                  <h3 className="font-body text-lg font-medium">{title}</h3>
+                  <h3 className="font-heading text-3xl">{title}</h3>
                 )}
-                {description ? <p className="text-neutral-500">{description}</p> : null}
+                {subtitle ? <p className="text-contrast-400 text-sm">{subtitle}</p> : null}
               </div>
               {categories.length ? (
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 pb-2">
                   {categories.map((cat: string) => (
                     <Badge key={cat}>{cat}</Badge>
                   ))}
@@ -116,53 +163,53 @@ function InfiniteHits() {
   );
 }
 
-export function PostGrid({ title, subtitle, type }: PostGridProps) {
-  const categories = ['Category 1', 'Category 2', 'Category 3'];
+function getCategoryAttribute(type: string) {
+  if (type === 'feature') return 'fields.categories.en-US';
+  if (type === 'recipe') return 'fields.mealTypeCategory.en-US';
+
+  return '';
+}
+
+function CategoryFilter({ attribute }: { attribute: string }) {
+  const { items, refine } = useRefinementList({ attribute });
 
   return (
-    <section className="@container">
-      <div className="mx-auto flex flex-col items-start gap-4 px-4 py-10 @xl:px-6 @xl:py-14">
-        <div className="mx-auto flex w-full max-w-(--breakpoint-2xl) flex-col items-center px-4 py-12 text-balance @xl:px-6 @xl:pt-16 @xl:pb-20 @4xl:px-8 @4xl:pt-20">
-          <h1 className="m-0 max-w-xl text-center font-[family-name:var(--slideshow-title-font-family,var(--font-family-heading))] text-4xl leading-none font-medium uppercase @2xl:text-5xl @2xl:leading-[.9] @4xl:text-6xl">
-            {title}
-          </h1>
-          {subtitle ? (
-            <p className="mt-2 max-w-3xl text-center text-base leading-normal text-neutral-500 @xl:mt-3 @xl:text-lg">
-              {subtitle}
-            </p>
-          ) : null}
-          <div className="flex flex-wrap gap-2 pt-12">
-            {categories.length ? (
-              <div className="flex flex-wrap gap-2">
-                {categories.map((cat, index) => (
-                  <Button
-                    className={clsx('!font-normal uppercase', index > 0 && 'text-neutral-500')}
-                    key={cat}
-                    size="small"
-                    variant={index === 0 ? 'secondary' : 'tertiary'}
-                  >
-                    {cat}
-                  </Button>
-                ))}
-              </div>
-            ) : null}
-          </div>
-        </div>
-        <InstantSearch
-          future={{
-            preserveSharedStateOnUnmount: true,
-          }}
-          indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? ''}
-          searchClient={searchClient}
+    <div className="flex flex-wrap justify-center gap-2 py-12">
+      {items.map((item) => (
+        <Button
+          className="!font-normal uppercase"
+          key={item.value}
+          onClick={() => refine(item.value)}
+          size="small"
+          variant={item.isRefined ? 'secondary' : 'tertiary'}
         >
-          <RefinementList
-            attribute={type}
-            classNames={{ list: 'flex flex-wrap gap-2', item: 'px-2 py-1 border rounded text-sm' }}
-          />
-          <Configure hitsPerPage={9} />
-          <InfiniteHits />
-        </InstantSearch>
+          {item.label}
+        </Button>
+      ))}
+    </div>
+  );
+}
+
+export function PostGrid({ title, subtitle, type }: PostGridProps) {
+  return (
+    <SectionLayout containerSize="2xl">
+      <div className="flex flex-col items-center gap-4">
+        <h1 className="font-heading max-w-xl text-center text-4xl uppercase @2xl:text-5xl @4xl:text-6xl">
+          {title}
+        </h1>
+        {subtitle ? <p className="text-contrast-400 max-w-3xl text-center">{subtitle}</p> : null}
       </div>
-    </section>
+      <InstantSearch
+        future={{
+          preserveSharedStateOnUnmount: true,
+        }}
+        indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? ''}
+        searchClient={searchClient}
+      >
+        <CategoryFilter attribute={getCategoryAttribute(type)} />
+        <Configure filters={`sys.contentType.sys.id:${type}`} hitsPerPage={9} />
+        <InfiniteHits type={type} />
+      </InstantSearch>
+    </SectionLayout>
   );
 }
