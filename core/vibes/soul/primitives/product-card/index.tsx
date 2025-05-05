@@ -80,6 +80,7 @@ export function ProductCard({
   return (
     <article
       className={clsx(
+        'relative z-0',
         fillContainer
           ? 'group @container flex h-full w-full min-w-0 flex-col gap-2 font-[family-name:var(--card-font-family,var(--font-family-body))]'
           : 'group @container flex max-w-md min-w-0 flex-col gap-2 font-[family-name:var(--card-font-family,var(--font-family-body))]',

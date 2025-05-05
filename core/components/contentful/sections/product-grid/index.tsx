@@ -8,10 +8,7 @@ import { Select } from '@/vibes/soul/form/select';
 import { Button } from '@/vibes/soul/primitives/button';
 import { ProductCard, ProductCardSkeleton } from '@/vibes/soul/primitives/product-card';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
-import {
-  algoliaProductCardTransformer,
-  ProductGridHit,
-} from '~/data-transformers/product-card-transformer';
+import { ProductGridHit, transformProductHit } from '~/data-transformers/algolia-transformers';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? '',
@@ -48,7 +45,7 @@ function InfiniteHits() {
           <ProductCard
             aspectRatio="1:1"
             key={`${hit.objectID}-${index}`}
-            product={algoliaProductCardTransformer(hit)}
+            product={transformProductHit(hit)}
           />
         ))}
       </div>

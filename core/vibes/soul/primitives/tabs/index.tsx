@@ -65,17 +65,27 @@ const Tabs = ({
     }
   }, [defaultValue, combinedTriggers]);
 
+  const [currentValue, setCurrentValue] = React.useState(
+    defaultValue || combinedTriggers[0]?.value,
+  );
+
+  React.useEffect(() => {
+    if (currentValue) {
+      moveIndicator(currentValue);
+    }
+  }, [currentValue]);
+
   return (
     <TabsPrimitive.Root
       className={className}
       defaultValue={defaultValue || combinedTriggers[0]?.value}
+      onValueChange={setCurrentValue}
     >
       <TabsPrimitive.List className="tabs-list scrollbar-hidden border-border after:bg-foreground after:ease-quad relative flex shrink-0 overflow-x-auto border-b after:absolute after:bottom-0 after:left-[var(--trigger-left)] after:h-px after:w-[var(--trigger-width)] after:transition-[left,_width] after:duration-200">
         {combinedTriggers.map((trigger) => (
           <TabsPrimitive.Trigger
             className="ease-quad hover:text-foreground data-[state=active]:text-icon-primary text-icon-secondary flex items-center justify-center px-4 py-2 text-lg transition-colors duration-200 outline-none select-none data-[state=active]:font-medium"
             key={trigger.value}
-            onClick={() => moveIndicator(trigger.value)}
             ref={(element) => {
               if (element) {
                 triggerRefs.current.set(trigger.value, element);

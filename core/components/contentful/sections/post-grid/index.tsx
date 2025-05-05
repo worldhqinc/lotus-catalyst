@@ -8,7 +8,11 @@ import { Button } from '@/vibes/soul/primitives/button';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
-import { ensureImageUrl } from '~/lib/utils';
+import {
+  PostGridHit,
+  transformFeatureHit,
+  transformRecipeHit,
+} from '~/data-transformers/algolia-transformers';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? '',
@@ -19,82 +23,6 @@ interface PostGridProps {
   title: string;
   subtitle?: string | null;
   type: string;
-}
-
-type Localized<T> = Record<string, T>;
-
-interface PostGridHit {
-  objectID: string;
-  fields?: {
-    // Feature fields
-    featuredImage?: Localized<{
-      sys?: {
-        type?: string;
-        linkType?: string;
-        id?: string;
-      };
-      fields?: {
-        file?: {
-          url: string;
-        };
-      };
-    }>;
-    categories?: Localized<string[]>;
-    title?: Localized<string>;
-    subtitle?: Localized<string>;
-    story?: Localized<{
-      data?: unknown;
-      content?: unknown[];
-      nodeType?: string;
-    }>;
-    productCarousel?: Localized<{
-      sys?: {
-        type?: string;
-        linkType?: string;
-        id?: string;
-      };
-    }>;
-    // Recipe fields
-    recipeName?: Localized<string>;
-    metaTitle?: Localized<string>;
-    metaDescription?: Localized<string>;
-    pageSlug?: Localized<string>;
-    mealTypeCategory?: Localized<string[]>;
-    // Common fields
-    pageName?: Localized<string>;
-    shortDescription?: Localized<string>;
-    pageImage?: Localized<string>;
-    productLine?: Localized<string[]>;
-    parentCategory?: Localized<string[]>;
-  };
-}
-
-function transformFeatureHit(hit: PostGridHit) {
-  const f = hit.fields ?? {};
-
-  return {
-    image: f.featuredImage?.['en-US']?.fields?.file?.url
-      ? ensureImageUrl(f.featuredImage['en-US'].fields.file.url)
-      : null,
-    title: f.title?.['en-US'] || '',
-    subtitle: f.subtitle?.['en-US'] || '',
-    categories: f.categories?.['en-US'] || [],
-    slug: f.pageSlug?.['en-US'] || '',
-  };
-}
-
-function transformRecipeHit(hit: PostGridHit) {
-  const f = hit.fields ?? {};
-
-  return {
-    image: f.featuredImage?.['en-US']?.fields?.file?.url
-      ? ensureImageUrl(f.featuredImage['en-US'].fields.file.url)
-      : null,
-    title: f.recipeName?.['en-US'] || '',
-    subtitle: f.metaDescription?.['en-US'] || '',
-    categories: f.mealTypeCategory?.['en-US'] || [],
-    slug: f.pageSlug?.['en-US'] || '',
-  };
 }
 
 function InfiniteHits({ type }: { type: string }) {
@@ -108,38 +36,9 @@ function InfiniteHits({ type }: { type: string }) {
   return (
     <>
       <div className="mt-8 grid w-full gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {items.map((hit: PostGridHit) => {
-          const { image, title, subtitle, categories, slug } = transformer(hit);
-
-          return (
-            <article className="group relative flex flex-col" key={hit.objectID}>
-              {image ? (
-                <figure className="bg-surface-image aspect-square w-full overflow-hidden rounded-lg">
-                  <Image alt={title} className="h-full w-full object-cover" src={image} />
-                </figure>
-              ) : (
-                <figure className="bg-surface-image aspect-square w-full rounded-lg" />
-              )}
-              <div className="flex flex-1 flex-col gap-2 py-4">
-                {slug ? (
-                  <Link className="font-heading text-3xl" href={`/${slug}`}>
-                    {title}
-                  </Link>
-                ) : (
-                  <h3 className="font-heading text-3xl">{title}</h3>
-                )}
-                {subtitle ? <p className="text-contrast-400 text-sm">{subtitle}</p> : null}
-              </div>
-              {categories.length ? (
-                <div className="flex flex-wrap gap-2 pb-2">
-                  {categories.map((cat: string) => (
-                    <Badge key={cat}>{cat}</Badge>
-                  ))}
-                </div>
-              ) : null}
-            </article>
-          );
-        })}
+        {items.map((hit: PostGridHit) => (
+          <PostCard key={hit.objectID} {...transformer(hit)} />
+        ))}
       </div>
       <div className="flex w-full flex-col items-center gap-8 py-12">
         <div className="w-full max-w-xs px-4">
@@ -211,5 +110,46 @@ export function PostGrid({ title, subtitle, type }: PostGridProps) {
         <InfiniteHits type={type} />
       </InstantSearch>
     </SectionLayout>
+  );
+}
+
+export function PostCard({
+  image,
+  title,
+  subtitle,
+  categories,
+  slug,
+}: {
+  image: string | null;
+  title: string;
+  subtitle: string | null;
+  categories: string[];
+  slug: string | null;
+}) {
+  return (
+    <article className="group relative flex flex-col">
+      {image ? (
+        <figure className="bg-surface-image aspect-square w-full overflow-hidden rounded-lg">
+          <Image alt={title} className="h-full w-full object-cover" src={image} />
+        </figure>
+      ) : (
+        <figure className="bg-surface-image aspect-square w-full rounded-lg" />
+      )}
+      <div className="flex flex-1 flex-col gap-2 py-4">
+        {slug ? (
+          <Link className="font-heading text-3xl" href={`/${slug}`}>
+            {title}
+          </Link>
+        ) : (
+          <h3 className="font-heading text-3xl">{title}</h3>
+        )}
+        {subtitle ? <p className="text-contrast-400 text-sm">{subtitle}</p> : null}
+      </div>
+      <div className="flex flex-wrap gap-2 pb-2">
+        {categories.map((cat) => (
+          <Badge key={cat}>{cat}</Badge>
+        ))}
+      </div>
+    </article>
   );
 }
