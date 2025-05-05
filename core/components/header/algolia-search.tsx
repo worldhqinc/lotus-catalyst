@@ -1,181 +1,127 @@
 'use client';
 
-import { Hit } from 'algoliasearch';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { clsx } from 'clsx';
 import { ArrowRight, Search, X } from 'lucide-react';
-import { Hits, InstantSearch, SearchBox, useSearchBox } from 'react-instantsearch';
+import { Configure, Hits, Index, InstantSearch, SearchBox, useHits } from 'react-instantsearch';
 
 import { Button } from '@/vibes/soul/primitives/button';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
+import { ProductCard } from '@/vibes/soul/primitives/product-card';
 import Tabs from '@/vibes/soul/primitives/tabs';
-import { Image } from '~/components/image';
-import { Link } from '~/components/link';
+import { SectionLayout } from '@/vibes/soul/sections/section-layout';
+
+import {
+  PostGridHit,
+  ProductGridHit,
+  transformPostHit,
+  transformProductHit,
+} from '../../data-transformers/algolia-transformers';
+import { PostCard as PostGridPostCard } from '../contentful/sections/post-grid';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? '',
   process.env.NEXT_PUBLIC_ALGOLIA_API_KEY ?? '',
 );
 
-interface HitFields {
-  fields: {
-    pageImage: { 'en-US': string } | null;
-    pageName: { 'en-US': string } | null;
-    productName: { 'en-US': string } | null;
-    recipeName: { 'en-US': string } | null;
-    pageSlug: { 'en-US': string } | null;
-    pageDescription: { 'en-US': string } | null;
-    shortDescription: { 'en-US': string } | null;
-  };
-}
-
-const Groups = [
-  {
-    name: 'Products',
-    slug: 'search_tag:Products',
-  },
-  {
-    name: 'Inspirations',
-    slug: 'search_tag:Inspirations',
-  },
-  {
-    name: 'Support',
-    slug: 'search_tag:Support',
-  },
-  {
-    name: 'Recipes',
-    slug: 'search_tag:Recipes',
-  },
-];
-
-function Result({ hit }: { hit: Hit<HitFields> }) {
-  const fields = hit.fields;
-
-  const pageImage = fields.pageImage ? fields.pageImage['en-US'] : null;
-  const pageName = fields.pageName ? fields.pageName['en-US'] : null;
-  const productName = fields.productName ? fields.productName['en-US'] : null;
-  const recipeName = fields.recipeName ? fields.recipeName['en-US'] : null;
-  const pageSlug = fields.pageSlug ? fields.pageSlug['en-US'] : null;
-  const pageDescription = fields.pageDescription ? fields.pageDescription['en-US'] : null;
-  const shortDescription = fields.shortDescription ? fields.shortDescription['en-US'] : null;
-
-  const hitHeadingStyles =
-    'font-body text-lg font-medium transition-colors duration-200 ease-quad lg:text-xl group-hover:text-primary after:absolute after:inset-0';
-
-  return (
-    <article className="group relative">
-      {pageImage ? (
-        <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg">
-          <Image
-            alt={pageName ? `Image for ${pageName}` : 'Search result image'}
-            className="object-cover"
-            src={pageImage}
-          />
-        </figure>
-      ) : (
-        <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
-      )}
-      <div className="space-y-1 py-2">
-        {(() => {
-          if (pageName && pageSlug) {
-            return (
-              <Link className={hitHeadingStyles} href={`/${pageSlug}`} prefetch="hover">
-                <h3>{pageName}</h3>
-              </Link>
-            );
-          }
-
-          if (pageName) {
-            return <h3>{pageName}</h3>;
-          }
-
-          return null;
-        })()}
-        {(() => {
-          if (productName && pageSlug) {
-            return (
-              <Link className={hitHeadingStyles} href={`/${pageSlug}`} prefetch="hover">
-                <h3>{productName}</h3>
-              </Link>
-            );
-          }
-
-          if (productName) {
-            return <h3>{productName}</h3>;
-          }
-
-          return null;
-        })()}
-        {(() => {
-          if (recipeName && pageSlug) {
-            return (
-              <Link className={hitHeadingStyles} href={`/${pageSlug}`} prefetch="hover">
-                <h3>{recipeName}</h3>
-              </Link>
-            );
-          }
-
-          if (recipeName) {
-            return <h3>{recipeName}</h3>;
-          }
-
-          return null;
-        })()}
-        {pageDescription ? <p className="text-neutral-500">{pageDescription}</p> : null}
-        {shortDescription ? <p className="text-neutral-500">{shortDescription}</p> : null}
-      </div>
-    </article>
-  );
-}
-
-function GroupTabs() {
-  const triggers = Groups.map((group) => ({
-    value: group.slug,
-    label: group.name,
-  }));
-
-  const content = Groups.map((group) => ({
-    value: group.slug,
-    children: (
-      <div className="py-12 first:mt-8">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="text-icon-primary text-4xl">{group.name}</h2>
-          <ButtonLink href="#" shape="link" size="link" variant="link">
-            <span className="flex items-center gap-2 text-base font-normal">
-              View more <ArrowRight size={20} strokeWidth={1.5} />
-            </span>
-          </ButtonLink>
-        </div>
-        <div className="mt-8">
-          <Hits
-            classNames={{ list: 'grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8' }}
-            hitComponent={Result}
-          />
-        </div>
-      </div>
-    ),
-  }));
-
-  return (
-    <Tabs allLabel="All" className="mt-8" content={content} showAll={true} triggers={triggers} />
-  );
-}
-
 interface SearchComponentProps {
   closeSearch?: () => void;
 }
 
-function SearchComponent({ closeSearch }: SearchComponentProps) {
-  const { query } = useSearchBox();
+interface GroupConfig {
+  key: string;
+  label: string;
+  href: string;
+  filter: string;
+  card: (hit: ProductGridHit | PostGridHit) => JSX.Element;
+}
 
+const GROUP_CONFIG: GroupConfig[] = [
+  {
+    key: 'products',
+    label: 'Products',
+    href: '/shop/all',
+    filter: 'sys.contentType.sys.id:productFinishedGoods',
+    card: (hit: ProductGridHit) => (
+      <ProductCard aspectRatio="1:1" key={hit.objectID} product={transformProductHit(hit)} />
+    ),
+  },
+  {
+    key: 'accessories',
+    label: 'Accessories',
+    href: '/shop/accessories',
+    filter: 'sys.contentType.sys.id:productPartsAndAccessories',
+    card: (hit: ProductGridHit) => (
+      <ProductCard aspectRatio="1:1" key={hit.objectID} product={transformProductHit(hit)} />
+    ),
+  },
+  {
+    key: 'recipes',
+    label: 'Recipes',
+    href: '/recipes',
+    filter: 'sys.contentType.sys.id:recipe',
+    card: (hit: PostGridHit) => <PostGridPostCard key={hit.objectID} {...transformPostHit(hit)} />,
+  },
+  {
+    key: 'features',
+    label: 'Features',
+    href: '/features',
+    filter: 'sys.contentType.sys.id:feature',
+    card: (hit: PostGridHit) => <PostGridPostCard key={hit.objectID} {...transformPostHit(hit)} />,
+  },
+];
+
+function GroupTabContent({ group }: { group: GroupConfig }) {
+  const { items } = useHits();
+
+  if (items.length === 0) return null;
+
+  return (
+    <div className="py-12 first:mt-8">
+      <div className="mb-8 flex items-center justify-between gap-4">
+        <h2 className="text-surface-foreground text-4xl">{group.label}</h2>
+        <ButtonLink href={group.href} shape="link" size="link" variant="link">
+          <span className="flex items-center gap-2 text-base font-normal">
+            View more <ArrowRight size={20} strokeWidth={1.5} />
+          </span>
+        </ButtonLink>
+      </div>
+      <Hits
+        classNames={{ list: 'grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8' }}
+        hitComponent={({ hit }: { hit: ProductGridHit | PostGridHit }) => group.card(hit)}
+      />
+    </div>
+  );
+}
+
+function GroupTabs() {
+  const triggers: Array<{ value: string; label: string }> = [];
+  const content: Array<{ value: string; children: React.ReactNode }> = [];
+
+  GROUP_CONFIG.forEach((group) => {
+    content.push({
+      value: group.key,
+      children: (
+        <Index indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? ''} key={group.key}>
+          <Configure filters={group.filter} hitsPerPage={4} />
+          <GroupTabContent group={group} />
+        </Index>
+      ),
+    });
+    triggers.push({ value: group.key, label: group.label });
+  });
+
+  return <Tabs className="mt-8" content={content} showAll={true} triggers={triggers} />;
+}
+
+function SearchComponent({ closeSearch }: SearchComponentProps) {
   const formStyles =
     '[&_form]:flex [&_form]:gap-4 [&_form_button.ais-SearchBox-submit]:hidden [&_form_button.ais-SearchBox-reset]:hidden';
   const inputStyles =
     '[&_input]:flex-1 [&_input]:min-h-12 text-icon-primary text-lg [&_input]:focus-within:outline-0 [&_input::-webkit-search-cancel-button]:appearance-none';
-  const searchHitsStyles = 'grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8';
 
   return (
-    <>
+    <SectionLayout className="overflow-y-auto" containerClassName="!py-8" containerSize="2xl">
       <div className="flex items-center gap-3">
         <span className="text-icon-primary">
           <Search size={20} strokeWidth={1.5} />
@@ -194,27 +140,19 @@ function SearchComponent({ closeSearch }: SearchComponentProps) {
           <X size={20} strokeWidth={1.5} />
         </Button>
       </div>
-      {!query ? (
-        <GroupTabs />
-      ) : (
-        <Hits classNames={{ root: 'mt-16', list: clsx(searchHitsStyles) }} hitComponent={Result} />
-      )}
-    </>
+      <GroupTabs />
+    </SectionLayout>
   );
 }
 
 export default function AlgoliaSearch({ closeSearch }: SearchComponentProps) {
   return (
-    <div className="container overflow-y-auto py-8">
-      <InstantSearch
-        future={{
-          preserveSharedStateOnUnmount: true,
-        }}
-        indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
-        searchClient={searchClient}
-      >
-        <SearchComponent closeSearch={closeSearch} />
-      </InstantSearch>
-    </div>
+    <InstantSearch
+      future={{ preserveSharedStateOnUnmount: true }}
+      indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
+      searchClient={searchClient}
+    >
+      <SearchComponent closeSearch={closeSearch} />
+    </InstantSearch>
   );
 }

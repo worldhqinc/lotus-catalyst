@@ -595,9 +595,8 @@ export const Navigation = forwardRef(function Navigation(
             linksPosition === 'center' ? 'flex-1' : 'flex-1 @4xl:flex-none',
           )}
         >
-          <Popover.Root onOpenChange={setIsSearchOpen} open={isSearchOpen}>
-            <Popover.Anchor className="absolute top-full right-0 left-0" />
-            <Popover.Trigger asChild>
+          <Dialog.Root onOpenChange={setIsSearchOpen} open={isSearchOpen}>
+            <Dialog.Trigger asChild>
               <button
                 aria-label={openSearchPopupLabel}
                 className={navButtonClassName}
@@ -607,18 +606,15 @@ export const Navigation = forwardRef(function Navigation(
               >
                 <Search size={20} strokeWidth={1} />
               </button>
-            </Popover.Trigger>
-            <Popover.Portal>
-              <Popover.Content
-                className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @container h-screen w-[var(--radix-popper-anchor-width)]"
-                side="top"
-              >
-                <div className="flex h-[inherit] flex-col bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out @4xl:inset-x-0">
-                  <AlgoliaSearch closeSearch={handleCloseSearch} />
-                </div>
-              </Popover.Content>
-            </Popover.Portal>
-          </Popover.Root>
+            </Dialog.Trigger>
+            <Dialog.Portal>
+              <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50" />
+              <Dialog.Content className="fixed inset-0 z-50 flex h-screen w-screen flex-col bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out">
+                <Dialog.Title className="sr-only">Search</Dialog.Title>
+                <AlgoliaSearch closeSearch={handleCloseSearch} />
+              </Dialog.Content>
+            </Dialog.Portal>
+          </Dialog.Root>
           <Link
             aria-label={accountLabel}
             className={clsx(navButtonClassName, 'hidden @4xl:inline-block')}
