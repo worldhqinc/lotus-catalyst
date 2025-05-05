@@ -4,12 +4,12 @@ import { forwardRef, ReactNode, type Ref } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
+import { auth } from '~/auth';
 import { Link } from '~/components/link';
 
 import { LogoLotus } from '../../primitives/logo-lotus';
 
 import { CookiePreferencesLink } from './_components/cookie-preferences-link';
-import { auth } from '~/auth';
 
 type Action<State, Payload> = (state: Awaited<State>, payload: Payload) => State | Promise<State>;
 
