@@ -27,6 +27,7 @@ import AlgoliaSearch from '~/components/header/algolia-search';
 import { Link } from '~/components/link';
 import { Minicart } from '~/components/minicart';
 import { CartItem } from '~/components/minicart/_actions/minicart';
+import { useSearch } from '~/context/search-context';
 import { usePathname, useRouter } from '~/i18n/routing';
 
 import { LogoLotus } from '../logo-lotus';
@@ -371,9 +372,9 @@ export const Navigation = forwardRef(function Navigation(
   ref: Ref<HTMLDivElement>,
 ) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMinicartDrawerOpen, setIsMinicartDrawerOpen] = useState(false);
   const [value, setValue] = useState('');
+  const { isSearchOpen, setIsSearchOpen } = useSearch();
 
   const pathname = usePathname();
 
@@ -382,7 +383,7 @@ export const Navigation = forwardRef(function Navigation(
     setIsSearchOpen(false);
     setIsMinicartDrawerOpen(false);
     setValue('');
-  }, [pathname]);
+  }, [pathname, setIsSearchOpen]);
 
   useEffect(() => {
     if (isSearchOpen || isMobileMenuOpen || isMinicartDrawerOpen) {
@@ -406,7 +407,7 @@ export const Navigation = forwardRef(function Navigation(
     window.addEventListener('scroll', handleScroll);
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [setIsSearchOpen]);
 
   const handleCloseSearch = () => {
     setIsSearchOpen(false);
