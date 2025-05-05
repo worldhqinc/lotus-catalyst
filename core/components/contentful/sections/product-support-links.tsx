@@ -7,22 +7,22 @@ import { ProductSupportLink } from '~/contentful/schema';
 export function ProductSupportLinks({ title, links }: ProductSupportLink) {
   const iconMap = (link: (typeof links)[number]) => {
     switch (link.fields.supportType) {
-      case 'Register':
+      case 'register':
         return <SquarePen size={40} strokeWidth={1} />;
 
-      case 'Warranty':
+      case 'warranty':
         return <FileText size={40} strokeWidth={1} />;
 
-      case 'Support':
+      case 'faqs':
         return <CircleHelp size={40} strokeWidth={1} />;
 
-      case 'Track':
+      case 'track-order':
         return <Package2 size={40} strokeWidth={1} />;
 
-      case 'Return':
+      case 'returns':
         return <RefreshCw size={40} strokeWidth={1} />;
 
-      case 'Care':
+      case 'use-and-care':
         return <Heater size={40} strokeWidth={1} />;
 
       default:
@@ -47,7 +47,7 @@ export function ProductSupportLinks({ title, links }: ProductSupportLink) {
               >
                 {link.fields.title}
               </Link>
-              {link.fields.supportType === 'Track' && (
+              {link.fields.supportType === 'track-order' && (
                 <p className="text-contrast-400">
                   or{' '}
                   <Link className="link text-primary" href="#">
@@ -55,7 +55,7 @@ export function ProductSupportLinks({ title, links }: ProductSupportLink) {
                   </Link>
                 </p>
               )}
-              {link.fields.supportType === 'Return' && (
+              {link.fields.supportType === 'returns' && (
                 <p className="text-contrast-400">
                   View our{' '}
                   <Link className="link text-primary" href="/returns">
