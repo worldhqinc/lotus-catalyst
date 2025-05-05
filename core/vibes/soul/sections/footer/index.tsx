@@ -9,6 +9,7 @@ import { Link } from '~/components/link';
 import { LogoLotus } from '../../primitives/logo-lotus';
 
 import { CookiePreferencesLink } from './_components/cookie-preferences-link';
+import { auth } from '~/auth';
 
 type Action<State, Payload> = (state: Awaited<State>, payload: Payload) => State | Promise<State>;
 
@@ -80,7 +81,7 @@ interface Props {
  * }
  * ```
  */
-export const Footer = forwardRef(function Footer(
+export const Footer = forwardRef(async function Footer(
   {
     action,
     contactInformation: streamableContactInformation,
@@ -90,6 +91,8 @@ export const Footer = forwardRef(function Footer(
   }: Props,
   ref: Ref<HTMLDivElement>,
 ) {
+  const session = await auth();
+
   return (
     <footer
       className={clsx(
@@ -256,7 +259,11 @@ export const Footer = forwardRef(function Footer(
                 <li>
                   <Link
                     className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
-                    href="/wishlist"
+                    href={
+                      session?.user?.customerAccessToken
+                        ? '/account/wishlists'
+                        : '/login?redirectTo=/account/wishlists'
+                    }
                   >
                     Wish Lists
                   </Link>
