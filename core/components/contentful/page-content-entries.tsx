@@ -198,7 +198,7 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
   faqList: ({ contentEntry }) => {
     const data = faqListSchema.parse(contentEntry);
 
-    return <FaqList {...data.fields} />;
+    return <FaqList id={data.sys.id} {...data.fields} />;
   },
 };
 

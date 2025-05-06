@@ -1,4 +1,5 @@
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { clsx } from 'clsx';
 import { ArrowRight } from 'lucide-react';
 import { z } from 'zod';
 
@@ -7,14 +8,28 @@ import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Link } from '~/components/link';
 import { faqFieldsSchema, faqListFieldsSchema } from '~/contentful/schema';
 
+interface FaqListProps {
+  id?: string;
+}
+
 type FaqListFields = z.infer<typeof faqListFieldsSchema>;
 
-export function FaqList({ faqParentCategory, faqReference }: FaqListFields) {
+export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields & FaqListProps) {
   return (
-    <SectionLayout>
+    <SectionLayout
+      className={clsx(id !== 'gg5Z3yjOegetUdutuAXgr' ? '[&:not(:last-child)_>div]:pb-0' : '')}
+    >
       <div className="mx-auto max-w-2xl md:px-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-center text-2xl font-medium">{faqParentCategory}</h2>
+          <h2
+            className={clsx(
+              id !== 'gg5Z3yjOegetUdutuAXgr'
+                ? 'text-2xl md:text-4xl'
+                : 'text-center text-2xl font-medium',
+            )}
+          >
+            {faqParentCategory}
+          </h2>
           {faqParentCategory === 'Common questions' && (
             <Link className="link text-primary flex items-center gap-2" href="/faqs">
               View all FAQ's
@@ -22,7 +37,7 @@ export function FaqList({ faqParentCategory, faqReference }: FaqListFields) {
             </Link>
           )}
         </div>
-        <div className="mt-16">
+        <div className={clsx(id !== 'gg5Z3yjOegetUdutuAXgr' ? '' : 'mt-16')}>
           <Accordion
             className="divide-contrast-200 divide-y"
             collapsible
