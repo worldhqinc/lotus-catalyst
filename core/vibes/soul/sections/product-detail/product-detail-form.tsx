@@ -25,6 +25,7 @@ import { RadioGroup } from '@/vibes/soul/form/radio-group';
 import { Select } from '@/vibes/soul/form/select';
 import { SwatchRadioGroup } from '@/vibes/soul/form/swatch-radio-group';
 import { Button } from '@/vibes/soul/primitives/button';
+import NotifyBackInStock from '~/components/notify-back-in-stock';
 import { usePathname, useRouter } from '~/i18n/routing';
 
 import { Field, schema, SchemaRawShape } from './schema';
@@ -153,6 +154,7 @@ export function ProductDetailForm<F extends Field>({
               required
               value={quantityControl.value}
             /> */}
+            {ctaDisabled && <NotifyBackInStock productId={productId} />}
             <input name={formFields.quantity.name} type="hidden" value="1" />
             <SubmitButton disabled={ctaDisabled}>{ctaLabel}</SubmitButton>
             {additionalActions}
