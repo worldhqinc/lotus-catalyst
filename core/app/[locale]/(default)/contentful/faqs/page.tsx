@@ -1,6 +1,6 @@
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
-import { Metadata } from 'next';
 import { Search } from 'lucide-react';
+import { Metadata } from 'next';
 
 import { Input } from '@/vibes/soul/form/input';
 import { PageContentEntries } from '~/components/contentful/page-content-entries';

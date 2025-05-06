@@ -42,51 +42,99 @@
   .prose {
     :where(h1):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
       color: hsl(var(--foreground));
-      font-family: var(--font-family-heading);
+      font-family: var(--font-family-body);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
     }
 
     :where(h2):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
       color: hsl(var(--foreground));
-      font-family: var(--font-family-heading);
+      font-family: var(--font-family-body);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
     }
 
     :where(h3):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
       color: hsl(var(--foreground));
-      font-family: var(--font-family-heading);
+      font-family: var(--font-family-body);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
     }
 
     :where(h4):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
       color: hsl(var(--foreground));
-      font-family: var(--font-family-heading);
+      font-family: var(--font-family-body);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
     }
 
     :where(h5):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
       color: hsl(var(--foreground));
-      font-family: var(--font-family-heading);
+      font-family: var(--font-family-body);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
     }
 
     :where(h6):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
       color: hsl(var(--foreground));
-      font-family: var(--font-family-heading);
+      font-family: var(--font-family-body);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
     }
 
     :where(p):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
-      color: hsl(var(--foreground));
+      color: hsl(var(--contrast-400));
       font-family: var(--font-family-body);
     }
 
     :where(a):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
       color: color-mix(in oklab, hsl(var(--primary)), black 15%);
       text-decoration: none;
+      font-weight: 400;
 
       &:hover {
-        text-decoration: underline;
+        text-decoration: none;
       }
     }
 
     :where(ul):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
       color: hsl(var(--contrast-500));
       font-family: var(--font-family-body);
+    }
+
+    :where(ul) > li {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      margin: 0;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0.65rem;
+        left: -0.75rem;
+        display: block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background-color: hsl(var(--contrast-400));
+      }
+
+      p {
+        margin: 0;
+      }
     }
 
     :where(ol):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
