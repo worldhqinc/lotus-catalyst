@@ -22,15 +22,7 @@ export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields &
     >
       <div className={clsx(id !== 'gg5Z3yjOegetUdutuAXgr' ? '' : 'mx-auto max-w-2xl md:px-8')}>
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2
-            className={clsx(
-              id !== 'gg5Z3yjOegetUdutuAXgr'
-                ? 'text-2xl md:text-4xl'
-                : 'text-center text-2xl font-medium',
-            )}
-          >
-            {faqParentCategory}
-          </h2>
+          <h2 className="text-2xl md:text-4xl">{faqParentCategory}</h2>
           {faqParentCategory === 'Common questions' && (
             <Link className="link text-primary flex items-center gap-2" href="/faqs">
               View all FAQ's
@@ -38,7 +30,7 @@ export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields &
             </Link>
           )}
         </div>
-        <div className={clsx(id !== 'gg5Z3yjOegetUdutuAXgr' ? '' : 'mt-16')}>
+        <div>
           <Accordion
             className="divide-contrast-200 divide-y"
             collapsible
