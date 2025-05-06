@@ -202,7 +202,7 @@ export default async function ContactPage() {
                 <CookiePreferencesNotice />
               </div>
               <p className="text-contrast-400 text-xs leading-[20px]">
-                Fill out this form and one of our customer service reps will be in touch within 48
+                Fill out this form and one of our customer care reps will be in touch within 48
                 hours.
               </p>
             </div>
