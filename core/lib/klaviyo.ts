@@ -1,3 +1,8 @@
+import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
+
+import { client } from '~/client';
+import { graphql } from '~/client/graphql';
+
 export async function klaviyoNewsletterSignup(email: string, source: string) {
   return await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs', {
     method: 'POST',
@@ -41,4 +46,72 @@ export async function klaviyoNewsletterSignup(email: string, source: string) {
       },
     }),
   });
+}
+
+export async function klaviyoBackInStockSubscription(email: string, productId: string) {
+  const variantId = await getDefaultProductVariantId(Number(productId));
+
+  return await fetch('https://a.klaviyo.com/api/back-in-stock-subscriptions', {
+    method: 'POST',
+    headers: {
+      accept: 'application/vnd.api+json',
+      revision: '2025-04-15',
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: `Klaviyo-API-Key ${process.env.KLAVIYO_PRIVATE_API_KEY}`,
+    },
+    body: JSON.stringify({
+      data: {
+        type: 'back-in-stock-subscription',
+        attributes: {
+          profile: {
+            data: {
+              type: 'profile',
+              attributes: {
+                email,
+              },
+            },
+          },
+          channels: ['EMAIL'],
+        },
+        relationships: {
+          variant: {
+            data: {
+              type: 'catalog-variant',
+              id: `$bigcommerce:::$default:::${variantId}`,
+            },
+          },
+        },
+      },
+    }),
+  });
+}
+
+const GetDefaultProductVariantId = graphql(`
+  query GetDefaultProductVariantId($productId: Int!) {
+    site {
+      product(entityId: $productId) {
+        variants(first: 1) {
+          edges {
+            node {
+              entityId
+            }
+          }
+        }
+      }
+    }
+  }
+`);
+
+async function getDefaultProductVariantId(productId: number) {
+  const { data } = await client.fetch({
+    document: GetDefaultProductVariantId,
+    variables: { productId },
+    fetchOptions: { cache: 'no-store' },
+  });
+
+  if (!data.site.product?.variants) {
+    return undefined;
+  }
+
+  return removeEdgesAndNodes(data.site.product.variants)[0]?.entityId ?? undefined;
 }

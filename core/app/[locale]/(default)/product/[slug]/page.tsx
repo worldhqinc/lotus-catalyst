@@ -18,7 +18,6 @@ import { ProductSchema } from './_components/product-schema';
 import { ProductViewed } from './_components/product-viewed';
 import { WishlistButton } from './_components/wishlist-button';
 import { WishlistButtonForm } from './_components/wishlist-button/form';
-
 import {
   getContentfulProductData,
   getProduct,
