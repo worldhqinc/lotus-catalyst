@@ -17,9 +17,12 @@ type FaqListFields = z.infer<typeof faqListFieldsSchema>;
 export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields & FaqListProps) {
   return (
     <SectionLayout
-      className={clsx(id !== 'gg5Z3yjOegetUdutuAXgr' ? '[&:not(:last-child)_>div]:pb-0' : '')}
+      className={clsx(
+        id !== 'gg5Z3yjOegetUdutuAXgr' ? 'scroll-pt-32 [&:not(:last-child)_>div]:py-0' : '',
+      )}
+      id={id}
     >
-      <div className="mx-auto max-w-2xl md:px-8">
+      <div className={clsx(id !== 'gg5Z3yjOegetUdutuAXgr' ? '' : 'mx-auto max-w-2xl md:px-8')}>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2
             className={clsx(

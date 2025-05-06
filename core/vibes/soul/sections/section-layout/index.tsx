@@ -6,6 +6,7 @@ export interface SectionLayoutProps {
   children: ReactNode;
   containerSize?: 'md' | 'lg' | 'xl' | '2xl' | 'full';
   containerClassName?: string;
+  id?: string;
 }
 
 // eslint-disable-next-line valid-jsdoc
@@ -27,9 +28,10 @@ export function SectionLayout({
   children,
   containerSize = '2xl',
   containerClassName,
+  id,
 }: SectionLayoutProps) {
   return (
-    <section className={clsx('@container overflow-hidden', className)}>
+    <section className={clsx('@container overflow-hidden', className)} id={id}>
       <div
         className={clsx(
           'mx-auto px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20',
