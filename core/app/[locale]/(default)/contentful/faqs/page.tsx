@@ -1,13 +1,12 @@
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
-import { Search } from 'lucide-react';
 import { Metadata } from 'next';
 
-import { Input } from '@/vibes/soul/form/input';
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
-import { faqListSchema } from '~/contentful/schema';
+import { faqListSchema, faqSchema } from '~/contentful/schema';
 
 import { getPageBySlug } from '../[...rest]/page-data';
 
+import { FaqSearch } from './_components/faq-search';
 import { FaqSidebar } from './_components/faq-sidebar';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -19,8 +18,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function FaqsPage() {
+export default async function FaqsPage({ searchParams }: { searchParams: { search?: string } }) {
   const page = await getPageBySlug('pageStandard', ['faqs']);
+  const searchTerm = searchParams.search?.toLowerCase() || '';
 
   const faqCategories =
     page.fields.pageContent
@@ -33,6 +33,27 @@ export default async function FaqsPage() {
           id: data.sys.id,
         };
       }) || [];
+
+  // Filters the page content based on search term
+  const filteredPageContent = page.fields.pageContent?.filter((entry) => {
+    if (entry.sys.contentType.sys.id !== 'faqList') return true;
+
+    const data = faqListSchema.parse(entry);
+
+    if (!searchTerm) return true;
+
+    const categoryMatches = data.fields.faqParentCategory.toLowerCase().includes(searchTerm);
+
+    const faqMatches = data.fields.faqReference.some((faqRef) => {
+      const faqData = faqSchema.parse(faqRef);
+      const question = faqData.fields.question.toLowerCase() || '';
+      const answer = documentToHtmlString(faqData.fields.answer).toLowerCase();
+
+      return question.includes(searchTerm) || answer.includes(searchTerm);
+    });
+
+    return categoryMatches || faqMatches;
+  });
 
   return (
     <div>
@@ -54,17 +75,11 @@ export default async function FaqsPage() {
       <div className="container lg:mt-16">
         <div className="grid lg:grid-cols-12 lg:gap-8">
           <div className="sticky top-16 space-y-4 bg-white py-8 lg:top-32 lg:col-span-2 lg:max-h-max lg:space-y-8 lg:py-0">
-            {/* TODO: Add Algolia search */}
-            <Input
-              className="w-full"
-              placeholder="Search FAQs..."
-              prepend={<Search className="h-4 w-4" />}
-              type="search"
-            />
+            <FaqSearch />
             <FaqSidebar categories={faqCategories} />
           </div>
           <div className="lg:col-span-7 lg:col-start-5 [&_>div]:flex [&_>div]:flex-col [&_>div]:gap-12">
-            <PageContentEntries pageContent={page.fields.pageContent} />
+            <PageContentEntries pageContent={filteredPageContent} />
           </div>
         </div>
       </div>
