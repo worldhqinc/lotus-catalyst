@@ -19,12 +19,14 @@ type Action<State, Payload> = (
 export function InlineEmailForm({
   className,
   inputClassName,
+  inputContainerClassName,
   action,
   submitLabel = 'Submit',
   placeholder = 'Enter your email',
 }: {
   className?: string;
   inputClassName?: string;
+  inputContainerClassName?: string;
   placeholder?: string;
   submitLabel?: string;
   action: Action<
@@ -60,8 +62,9 @@ export function InlineEmailForm({
     <form {...getFormProps(form)} action={formAction} className={clsx('space-y-2', className)}>
       <div
         className={clsx(
-          'focus-within:border-primary relative border-b text-base transition-colors duration-200 focus:outline-hidden',
+          'bg-background focus-within:border-primary relative border-b text-base transition-colors duration-200 focus:outline-hidden',
           errors.length ? 'border-error' : 'border-contrast-200',
+          inputContainerClassName,
         )}
       >
         <input
