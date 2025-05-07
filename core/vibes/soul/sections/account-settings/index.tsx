@@ -41,8 +41,8 @@ export function AccountSettingsSection({
 }: AccountSettingsSectionProps) {
   return (
     <section className="@container w-full">
-      <header className="border-b-contrast-100 mb-4 border-b">
-        <div className="mb-4 flex min-h-[42px] items-center justify-between">
+      <header className="border-b-contrast-200 mb-4 border-b">
+        <div className="mb-6 flex min-h-[42px] items-center justify-between">
           <h1 className="text-2xl leading-[120%] @2xl:text-4xl">{title}</h1>
         </div>
       </header>

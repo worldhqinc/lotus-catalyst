@@ -153,8 +153,8 @@ export function AddressListSection<A extends Address, F extends Field>({
 
   return (
     <section className="w-full">
-      <header className="border-contrast-200 mb-4 border-b pb-6">
-        <div className="mb-4 flex items-center justify-between">
+      <header className="border-contrast-200 border-b pb-6">
+        <div className="flex items-center justify-between">
           <Title>{title}</Title>
           {!showNewAddressForm && (
             <Button onClick={() => setShowNewAddressForm(true)} size="medium" variant="tertiary">
