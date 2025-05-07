@@ -68,7 +68,7 @@ export function FaqSidebar({ categories }: FaqSidebarProps) {
       let headerOffset;
 
       if (window.innerWidth < 1024) {
-        headerOffset = 128;
+        headerOffset = 250;
       } else {
         headerOffset = 160;
       }
@@ -78,7 +78,7 @@ export function FaqSidebar({ categories }: FaqSidebarProps) {
 
       window.addEventListener('resize', () => {
         if (window.innerWidth < 1024) {
-          headerOffset = 128;
+          headerOffset = 250;
         } else {
           headerOffset = 160;
         }
