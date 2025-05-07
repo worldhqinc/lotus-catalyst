@@ -2,6 +2,7 @@ import { SubmissionResult } from '@conform-to/react';
 import { clsx } from 'clsx';
 
 import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
+import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { Image } from '~/components/image';
 
 type Action<State, Payload> = (
@@ -58,6 +59,7 @@ export function Subscribe({
               <p className="text-primary-highlight opacity-75">{description}</p>
             </div>
             <InlineEmailForm action={action} className="flex-1" placeholder={placeholder} />
+            <CookiePreferencesNotice />
           </div>
         </div>
       </div>

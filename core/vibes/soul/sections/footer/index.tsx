@@ -5,6 +5,7 @@ import { forwardRef, ReactNode, type Ref } from 'react';
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
 import { auth } from '~/auth';
+import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { Link } from '~/components/link';
 
 import { LogoLotus } from '../../primitives/logo-lotus';
@@ -134,6 +135,7 @@ export const Footer = forwardRef(async function Footer(
                       </p>
                       <div className="mt-8">
                         <InlineEmailForm action={action} />
+                        <CookiePreferencesNotice />
                       </div>
                     </div>
                   );

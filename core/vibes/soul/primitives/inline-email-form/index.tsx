@@ -66,6 +66,7 @@ export function InlineEmailForm({
           errors.length ? 'border-error' : 'border-contrast-200',
           inputContainerClassName,
         )}
+        id="inline-email-form"
       >
         <input
           {...getInputProps(fields.email, { type: 'email' })}

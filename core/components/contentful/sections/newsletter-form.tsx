@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
+import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { subscribe } from '~/components/subscribe/_actions/subscribe';
 import { newsletterFormSchema } from '~/contentful/schema';
 
@@ -21,6 +22,7 @@ export function NewsletterForm({
             inputContainerClassName="bg-transparent"
             placeholder={inputPlaceholder || 'Enter your email'}
           />
+          <CookiePreferencesNotice />
         </div>
       </div>
     </section>
