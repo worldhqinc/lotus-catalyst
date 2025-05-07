@@ -1,3 +1,4 @@
+import type { SearchParams } from 'nuqs/server';
 import { Fragment } from 'react';
 
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
@@ -27,8 +28,9 @@ import {
   pageStandard,
   postGridSchema,
   productBentoSchema,
+  productFormulationLookupSchema,
   productGridSchema,
-  productSupportLinkSchema,
+  productSupportLinksSchema,
   testimonialsSchema,
 } from '~/contentful/schema';
 
@@ -54,6 +56,7 @@ import { NewsletterForm } from './sections/newsletter-form';
 import { PageHeaderSupport } from './sections/page-header';
 import { PostGrid } from './sections/post-grid';
 import { ProductBento } from './sections/product-bento';
+import { ProductFormulationLookup } from './sections/product-formulation-lookup';
 import { ProductGrid } from './sections/product-grid';
 import { ProductSupportLinks } from './sections/product-support-links';
 import { Testimonials } from './sections/testimonials';
@@ -61,7 +64,10 @@ import { Testimonials } from './sections/testimonials';
 type PageContent = pageStandard['fields']['pageContent'];
 type ContentEntry = NonNullable<PageContent>[number];
 
-const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: ContentEntry }>> = {
+const ContentComponentMap: Record<
+  string,
+  React.ComponentType<{ contentEntry: ContentEntry; searchParams: SearchParams }>
+> = {
   heroCarousel: ({ contentEntry }) => {
     const data = heroCarouselSchema.parse(contentEntry);
 
@@ -197,7 +203,7 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
     return <PageHeaderSupport {...data.fields} />;
   },
   productSupportLinks: ({ contentEntry }) => {
-    const data = productSupportLinkSchema.parse(contentEntry);
+    const data = productSupportLinksSchema.parse(contentEntry);
 
     return <ProductSupportLinks {...data.fields} />;
   },
@@ -206,12 +212,26 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
 
     return <FaqList id={data.sys.id} {...data.fields} />;
   },
+  productFormulationLookup: ({ contentEntry, searchParams }) => {
+    const data = productFormulationLookupSchema.parse(contentEntry);
+
+    return (
+      <ProductFormulationLookup
+        {...data.fields}
+        selectedSku={
+          typeof searchParams.selectedSku === 'string' ? searchParams.selectedSku : undefined
+        }
+      />
+    );
+  },
 };
 
 export function PageContentEntries({
   pageContent,
+  searchParams,
 }: {
   pageContent: pageStandard['fields']['pageContent'];
+  searchParams: SearchParams;
 }) {
   return (
     <div>
@@ -232,7 +252,7 @@ export function PageContentEntries({
 
           return (
             <Fragment key={entryId}>
-              <Component contentEntry={entry} />
+              <Component contentEntry={entry} searchParams={searchParams} />
             </Fragment>
           );
         })}

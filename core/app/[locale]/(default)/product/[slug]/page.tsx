@@ -315,13 +315,15 @@ export default async function Product(props: Props) {
         }}
       />
 
-      <Stream fallback={null} value={streamableContentful}>
-        {(contentful) => {
+      <Stream fallback={null} value={Streamable.all([streamableContentful, props.searchParams])}>
+        {([contentful, searchParams]) => {
           const pageContentEntries = contentful?.fields.pageContentEntries ?? [];
 
           if (pageContentEntries.length === 0) return null;
 
-          return <PageContentEntries pageContent={pageContentEntries} />;
+          return (
+            <PageContentEntries pageContent={pageContentEntries} searchParams={searchParams} />
+          );
         }}
       </Stream>
 

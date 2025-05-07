@@ -18,7 +18,7 @@ interface Props {
   carousel: carouselProduct;
 }
 
-function NavHeader({ title, subtitle }: { title: string; subtitle?: string }) {
+function NavHeader({ title, subtitle }: { title: string; subtitle?: string | null }) {
   const { scrollPrev, scrollNext, canScrollPrev, canScrollNext } = useCarousel();
 
   return (

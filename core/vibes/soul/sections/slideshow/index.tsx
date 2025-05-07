@@ -15,7 +15,7 @@ type ButtonLinkProps = ComponentPropsWithoutRef<typeof ButtonLink>;
 
 interface Slide {
   title: string;
-  description?: string;
+  description?: string | null;
   showDescription?: boolean;
   image?: { alt: string; blurDataUrl?: string; src: string };
   cta?: {
@@ -33,7 +33,7 @@ interface Props {
   playOnInit?: boolean;
   interval?: number;
   className?: string;
-  vertical?: boolean;
+  vertical?: boolean | null;
 }
 
 interface UseProgressButtonType {

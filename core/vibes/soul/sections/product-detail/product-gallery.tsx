@@ -7,8 +7,8 @@ import { Badge } from '~/vibes/soul/primitives/badge';
 import { Slideshow } from '~/vibes/soul/sections/slideshow';
 
 export interface ProductGalleryProps {
-  badge?: string;
-  featuredImage?: { alt: string; src: string };
+  badge?: string | null;
+  featuredImage?: { alt: string; src: string } | null;
   images: Array<{ alt: string; src: string }>;
   className?: string;
 }

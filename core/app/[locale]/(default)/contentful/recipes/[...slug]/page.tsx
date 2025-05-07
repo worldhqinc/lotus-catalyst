@@ -62,7 +62,7 @@ const renderIngredientsList = (lists: IngredientsListEntry[] = []) => {
 
 const renderMetaInfo = (
   authorEntry: { fields: { authorName: string } } | null,
-  cookTime: string | undefined,
+  cookTime: string | null | undefined,
 ) => {
   return (
     <div className="text-icon-secondary mt-6 flex items-center gap-2 text-sm">

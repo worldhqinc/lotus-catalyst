@@ -30,8 +30,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ContentfulPage({ params }: Props) {
-  const { rest } = await params;
+export default async function ContentfulPage({ params, searchParams }: Props) {
+  const [{ rest }, queryParams] = await Promise.all([params, searchParams]);
   const page = await getPageBySlug('pageStandard', rest);
 
   return shouldShowSpecialLayout(rest) ? (
@@ -51,9 +51,9 @@ export default async function ContentfulPage({ params }: Props) {
           />
         )}
       </section>
-      <PageContentEntries pageContent={page.fields.pageContent} />
+      <PageContentEntries pageContent={page.fields.pageContent} searchParams={queryParams} />
     </div>
   ) : (
-    <PageContentEntries pageContent={page.fields.pageContent} />
+    <PageContentEntries pageContent={page.fields.pageContent} searchParams={queryParams} />
   );
 }

@@ -9,6 +9,7 @@ import {
   productFinishedGoodsSchema,
   productPartsAndAccessoriesSchema,
 } from '~/contentful/schema';
+import { ensureImageUrl } from '~/lib/utils';
 
 import { pricesTransformer } from './prices-transformer';
 
@@ -49,7 +50,7 @@ export function contentfulProductCardTransformer(
     const featuredImage = fields.featuredImage;
     const file = featuredImage.fields.file;
     const image = {
-      src: file.url.startsWith('http') ? file.url : `https:${file.url}`,
+      src: ensureImageUrl(file.url),
       alt: featuredImage.fields.description ?? fields.productName,
     };
     const price = fields.salePrice
@@ -77,7 +78,7 @@ export function contentfulProductCardTransformer(
     const file = featuredImage?.fields.file;
     const image = file
       ? {
-          src: file.url.startsWith('http') ? file.url : `https:${file.url}`,
+          src: ensureImageUrl(file.url),
           alt: featuredImage.fields.description ?? fields.productName,
         }
       : undefined;
