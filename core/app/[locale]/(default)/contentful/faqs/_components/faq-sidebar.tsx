@@ -27,7 +27,6 @@ export function FaqSidebar({ categories }: FaqSidebarProps) {
             const id = entry.target.id;
 
             setActiveCategory(id);
-            window.history.replaceState(null, '', `${pathname}#${id}`);
           }
         });
       },
@@ -53,7 +52,6 @@ export function FaqSidebar({ categories }: FaqSidebarProps) {
       const firstCategory = categories[0];
 
       setActiveCategory(firstCategory.id);
-      window.history.replaceState(null, '', `${pathname}#${firstCategory.id}`);
     }
 
     return () => {
