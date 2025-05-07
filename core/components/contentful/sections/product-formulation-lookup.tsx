@@ -4,10 +4,7 @@ import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { productFinishedGoodsFieldsSchema, productFormulationLookup } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
 
-import {
-  ProductFormulationInformation,
-  ProductFormulationLookupClient,
-} from './product-formulation-lookup-client';
+import { ProductFormulationLookupClient } from './product-formulation-lookup-client';
 
 export async function ProductFormulationLookup({
   title,
@@ -37,27 +34,25 @@ export async function ProductFormulationLookup({
     };
   });
 
-  let formulationInfo = null;
+  let selectedProductFields = null;
 
   if (selectedSku) {
     const res = await contentfulClient.getEntries({
       content_type: 'productFinishedGoods',
       'fields.bcProductReference': selectedSku,
-      select: ['fields.productFormulationInformation'],
       limit: 1,
     });
 
-    formulationInfo = res.items[0]?.fields.productFormulationInformation ?? null;
+    selectedProductFields = productFinishedGoodsFieldsSchema.parse(res.items[0]?.fields);
   }
 
   return (
     <ProductFormulationLookupClient
       disclaimerHtml={disclaimerHtml}
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      formulationInfo={formulationInfo as ProductFormulationInformation}
       productOptions={productOptions}
+      selectedProductFields={selectedProductFields}
       selectedSku={selectedSku}
-      title={title}
+      title={title ?? ''}
     />
   );
 }

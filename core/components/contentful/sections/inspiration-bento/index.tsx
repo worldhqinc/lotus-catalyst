@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import ContentfulCta from '~/components/contentful/cta';
 import {
-  assetSchema,
+  Asset,
   ctaSchema,
   featureSchema,
   inspirationCardSchema,
@@ -37,7 +37,7 @@ interface MappedCardData {
   id: string;
   type: 'recipe' | 'tutorial' | 'feature';
   categories: string[];
-  originalImage?: z.infer<typeof assetSchema> | null;
+  originalImage?: Asset | null;
   pageSlug: string;
   recipeName: string;
   shortDescription: string;

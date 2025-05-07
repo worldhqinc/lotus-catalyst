@@ -62,7 +62,7 @@ function zodToString(schema: any, indentationLevel = 0): string {
       const optionalTypeString = schema._def.innerType
         ? zodToString(schema._def.innerType, indentationLevel)
         : 'z.unknown()';
-      return `${optionalTypeString}.optional()`;
+      return `${optionalTypeString}.optional().nullable()`;
     }
     case 'ZodRecord': {
       const keyTypeString =
@@ -135,12 +135,12 @@ const sysBaseSchema = z.object({
     }),
   }),
   revision: z.number(),
-  locale: z.string().optional(),
+  locale: z.string().optional().nullable(),
 });
 
 const sysEntrySchema = sysBaseSchema.extend({
     type: z.literal('Entry'),
-    publishedVersion: z.number().optional(),
+    publishedVersion: z.number().optional().nullable(),
     contentType: z.object({
       sys: z.object({
         type: z.literal('Link'),
@@ -152,12 +152,12 @@ const sysEntrySchema = sysBaseSchema.extend({
 
 const sysAssetSchema = sysBaseSchema.extend({
     type: z.literal('Asset'),
-    publishedVersion: z.number().optional(),
+    publishedVersion: z.number().optional().nullable(),
 });
 
 const assetFieldsSchema = z.object({
-  title: z.string().optional(),
-  description: z.string().optional(),
+  title: z.string().optional().nullable(),
+  description: z.string().optional().nullable(),
   file: z.object({
     url: z.string(),
     details: z.object({
@@ -165,7 +165,7 @@ const assetFieldsSchema = z.object({
       image: z.object({
         width: z.number(),
         height: z.number(),
-      }).optional(),
+      }).optional().nullable(),
     }),
     fileName: z.string(),
     contentType: z.string(),
@@ -188,9 +188,9 @@ const ${RICH_TEXT_SCHEMA_NAME}: z.ZodType<any> = z.lazy(() => z.object({
   nodeType: z.string(),
   data: z.record(z.unknown()),
   // Leaf node approximation for the union, ensure it aligns with your actual leaf structure
-  content: z.array(z.union([${RICH_TEXT_SCHEMA_NAME}, z.object({ nodeType: z.literal('text'), data: z.record(z.unknown()), marks: z.array(z.any()), value: z.string() })])).optional(),
-  marks: z.array(z.any()).optional(), // Adjust marks as needed
-  value: z.string().optional()
+  content: z.array(z.union([${RICH_TEXT_SCHEMA_NAME}, z.object({ nodeType: z.literal('text'), data: z.record(z.unknown()), marks: z.array(z.any()), value: z.string() })])).optional().nullable(),
+  marks: z.array(z.any()).optional().nullable(), // Adjust marks as needed
+  value: z.string().optional().nullable()
 }));
 // Optional: Define a type alias for convenience
 export type RichTextNode = z.infer<typeof ${RICH_TEXT_SCHEMA_NAME}>;

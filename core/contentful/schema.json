@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-05T14:44:28.999Z",
+        "updatedAt": "2025-05-07T19:36:41.450Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 155,
-        "publishedAt": "2025-05-05T14:44:28.999Z",
+        "publishedVersion": 159,
+        "publishedAt": "2025-05-07T19:36:41.450Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -37,8 +37,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 78,
-        "version": 156,
+        "publishedCounter": 80,
+        "version": 160,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -681,6 +681,23 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Entry"
+        },
+        {
+          "id": "partsAccessories",
+          "name": "Parts + Accessories",
+          "type": "Array",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+            ],
+            "linkType": "Entry"
+          }
         }
       ],
       "metadata": {
