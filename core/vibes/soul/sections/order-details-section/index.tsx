@@ -119,31 +119,31 @@ export function OrderDetailsSection({
   prevHref = '/orders',
 }: OrderDetailsSectionProps) {
   return (
-    <div className="@container font-[family-name:var(--order-details-section-font-family,var(--font-family-body))] text-[var(--order-details-text-primary,hsl(var(--foreground)))]">
+    <div className="@container">
       <Stream
         fallback={<OrderDetailsSectionSkeleton prevHref={prevHref} />}
         value={streamableOrder}
       >
         {(order) => (
           <>
-            <div className="flex gap-4 border-b border-[var(--order-details-section-border,hsl(var(--contrast-100)))] pb-8">
+            <div className="flex gap-y-4 border-b border-[var(--order-details-section-border,hsl(var(--contrast-100)))] pb-8">
               {prevHref !== '' && (
-                <ButtonLink href={prevHref} shape="circle" size="small" variant="ghost">
+                <ButtonLink href={prevHref} shape="link" size="small" variant="link">
                   <ArrowLeft />
                 </ButtonLink>
               )}
               <div className="space-y-1">
-                <div className="flex items-center gap-3">
-                  <h1 className="font-[family-name:var(--order-details-section-title-font-family,var(--font-family-heading))] text-4xl">
+                <div className="flex flex-wrap items-center gap-3">
+                  <h1 className="text-2xl leading-[120%] @2xl:text-4xl">
                     {title ?? `Order #${order.id}`}
                   </h1>
-                  <Badge variant={order.statusColor}>{order.status}</Badge>
+                  <Badge>{order.status}</Badge>
                 </div>
-                <p className="text-base font-light">{formatDate(order.date)}</p>
+                <p>{formatDate(order.date)}</p>
               </div>
             </div>
             <div className="grid @3xl:flex">
-              <div className="order-2 flex-1 pr-12 @3xl:order-1">
+              <div className="divide-contrast-200 order-2 flex-1 divide-y @3xl:order-1 @3xl:pr-12">
                 {order.destinations.map((destination) => (
                   <Shipment
                     addressLabel={shipmentAddressLabel}
@@ -153,10 +153,8 @@ export function OrderDetailsSection({
                   />
                 ))}
               </div>
-              <div className="order-1 basis-72 pt-8 @3xl:order-2">
-                <div className="font-[family-name:var(--order-details-section-title-font-family,var(--font-family-heading))] text-2xl font-medium">
-                  {orderSummaryLabel}
-                </div>
+              <div className="order-1 pt-8 @3xl:order-2 @3xl:basis-72">
+                <div className="text-2xl font-medium">{orderSummaryLabel}</div>
                 <Summary
                   shippingMethod={order.destinations[0]?.shipments[0]?.name}
                   summary={order.summary}
@@ -191,15 +189,15 @@ function Shipment({
   methodLabel?: string;
 }) {
   return (
-    <div className="@container border-b border-[var(--order-details-section-border,hsl(var(--contrast-100)))] py-8">
+    <div className="@container py-8">
       <div className="space-y-6">
-        <div className="font-[family-name:var(--order-details-section-title-font-family,var(--font-family-heading))] text-2xl font-medium">
+        <h3 className="text-xl @4xl:text-2xl @4xl:font-medium @4xl:tracking-[2.4px] @4xl:uppercase">
           {destination.title}
-        </div>
-        <div className="grid gap-8 @xl:flex @xl:gap-20">
-          <div className="text-sm">
-            <h3 className="font-semibold">{addressLabel}</h3>
-            <div className="text-[var(--order-details-text-secondary,hsl(var(--contrast-500)))]">
+        </h3>
+        <div className="grid grid-cols-2 gap-8 @xl:flex @xl:gap-20">
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium">{addressLabel}</h3>
+            <div className="text-contrast-400">
               <p>{destination.address.name}</p>
               <p>{destination.address.street1}</p>
               <p>{destination.address.street2}</p>
@@ -210,9 +208,9 @@ function Shipment({
             </div>
           </div>
           {destination.shipments.map((shipment, index) => (
-            <div className="text-sm" key={`${shipment.name}-${index}`}>
-              <h3 className="font-semibold">{methodLabel}</h3>
-              <div className="text-[var(--order-details-text-secondary,hsl(var(--contrast-500)))]">
+            <div className="space-y-2" key={`${shipment.name}-${index}`}>
+              <h3 className="text-sm font-medium">{methodLabel}</h3>
+              <div className="text-contrast-400">
                 <p>{shipment.name}</p>
                 <p>{shipment.status}</p>
                 <ShipmentTracking tracking={shipment.tracking} />
@@ -237,7 +235,7 @@ function ShipmentSkeleton({
 }) {
   return (
     <div className="@container border-b border-[var(--order-details-section-border,hsl(var(--contrast-100)))] py-8">
-      <div className="space-y-6">
+      <div className="space-y-8">
         <Skeleton.Text characterCount={8} className="rounded-sm text-2xl" />
         <div className="grid gap-8 @xl:flex @xl:gap-20">
           <div className="text-sm">
@@ -305,7 +303,7 @@ function ShipmentLineItem({ lineItem }: { lineItem: ShipmentLineItem }) {
     if (lineItem.href) {
       return (
         <Link
-          className="group grid shrink-0 cursor-pointer gap-8 rounded-xl ring-[var(--order-details-section-focus,hsl(var(--primary)))] ring-offset-4 focus-visible:ring-2 focus-visible:outline-none @sm:flex @sm:rounded-2xl"
+          className="group ring-primary flex shrink-0 cursor-pointer items-start gap-8 rounded-xl ring-offset-4 focus-visible:ring-2 focus-visible:outline-0 @sm:rounded-2xl"
           href={lineItem.href}
           id={lineItem.id}
         >
@@ -316,7 +314,7 @@ function ShipmentLineItem({ lineItem }: { lineItem: ShipmentLineItem }) {
 
     return (
       <div
-        className="group grid shrink-0 gap-8 rounded-xl ring-[var(--order-details-section-focus,hsl(var(--primary)))] ring-offset-4 focus-visible:ring-2 focus-visible:outline-none @sm:flex @sm:rounded-2xl"
+        className="group ring-primary flex shrink-0 cursor-pointer items-start gap-8 rounded-xl ring-offset-4 focus-visible:ring-2 focus-visible:outline-0 @sm:rounded-2xl"
         id={lineItem.id}
       >
         {children}
@@ -326,7 +324,7 @@ function ShipmentLineItem({ lineItem }: { lineItem: ShipmentLineItem }) {
 
   return (
     <LineItemWrapper>
-      <div className="relative aspect-square basis-40 overflow-hidden rounded-[inherit] border border-[var(--order-details-section-border,hsl(var(--contrast-100)))] bg-[var(--order-details-section-image-background,hsl(var(--contrast-100)))]">
+      <div className="border-contrast-100 bg-contrast-200 relative aspect-square h-auto w-36 shrink-0 overflow-hidden rounded-lg border">
         {lineItem.image?.src != null ? (
           <Image
             alt={lineItem.image.alt}
@@ -344,20 +342,18 @@ function ShipmentLineItem({ lineItem }: { lineItem: ShipmentLineItem }) {
 
       <div className="space-y-3 text-sm">
         <div>
-          <div className="flex items-center gap-1 text-sm">
+          <div className="leading-[150%] font-medium">
             <span className="font-semibold">{lineItem.title}</span>
-            <span>×</span>
-            <span className="font-semibold">{lineItem.quantity}</span>
           </div>
           {lineItem.subtitle != null && lineItem.subtitle !== '' && (
-            <div className="font-normal text-[var(--order-details-section-line-item-subtitle,hsl(var(--contrast-500)))]">
-              {lineItem.subtitle}
-            </div>
+            <div className="text-contrast-400 font-normal">{lineItem.subtitle}</div>
           )}
         </div>
         <div className="flex gap-1 text-sm">
           <span className="font-semibold">{lineItem.totalPrice}</span>
           {lineItem.quantity > 1 && <span className="font-normal">({lineItem.price} each)</span>}
+          <span>×</span>
+          <span className="font-semibold">{lineItem.quantity}</span>
         </div>
         <div>
           {lineItem.metadata?.map((metadata, index) => (
@@ -416,22 +412,20 @@ function Summary({
         {summary.lineItems.map((lineItem, index) => (
           <div className="flex justify-between" key={index}>
             <div>
-              <div className="text-sm">{lineItem.label}</div>
+              <div className="text-sm leading-6">{lineItem.label}</div>
               {lineItem.label === 'Shipping' && shippingMethod ? (
-                <div className="text-contrast-400 text-xs">{shippingMethod}</div>
+                <div className="text-contrast-400 text-xs leading-5">{shippingMethod}</div>
               ) : null}
               {lineItem.subtext != null && lineItem.subtext !== '' && (
-                <div className="text-xs text-[var(--order-details-section-line-item-subtext,hsl(var(--contrast-400)))]">
-                  {lineItem.subtext}
-                </div>
+                <div className="text-contrast-400 text-xs leading-5">{lineItem.subtext}</div>
               )}
             </div>
 
-            <span className="text-sm">{lineItem.value}</span>
+            <span className="text-sm leading-6">{lineItem.value}</span>
           </div>
         ))}
       </div>
-      <div className="flex justify-between border-t border-[var(--order-details-section-border,hsl(var(--contrast-100)))] py-3 font-semibold">
+      <div className="border-contrast-200 flex justify-between border-t py-3 font-medium">
         <span>{totalLabel}</span>
         <span>{summary.total}</span>
       </div>
@@ -454,7 +448,7 @@ function SummarySkeleton({ placeholderCount = 2 }: { placeholderCount?: number }
           </div>
         ))}
       </div>
-      <div className="flex justify-between border-t border-[var(--order-details-section-border,hsl(var(--contrast-100)))] py-3">
+      <div className="border-contrast-200 flex justify-between border-t py-3">
         <Skeleton.Text characterCount={6} className="rounded-sm" />
         <Skeleton.Text characterCount={6} className="rounded-sm" />
       </div>

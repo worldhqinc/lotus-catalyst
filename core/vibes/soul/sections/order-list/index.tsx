@@ -68,11 +68,9 @@ export function OrderList({
 }: OrderListProps) {
   return (
     <section className="group/order-list @container w-full">
-      <header className="mb-4 border-b border-[var(--order-list-border,hsl(var(--contrast-100)))]">
-        <div className="mb-4 flex min-h-[42px] items-center justify-between">
-          <h1 className="hidden font-[family-name:var(--order-list-title-font-family,var(--font-family-heading))] text-4xl leading-none font-medium tracking-tight text-[var(--order-list-title,hsl(var(--foreground)))] @2xl:block">
-            {title}
-          </h1>
+      <header className="border-contrast-200 mb-4 border-b">
+        <div className="mb-6 flex min-h-[42px] items-center justify-between">
+          <h1 className="hidden text-2xl leading-[120%] @2xl:block @2xl:text-4xl">{title}</h1>
         </div>
       </header>
       <Stream fallback={<OrderListSkeleton />} value={streamableOrders}>
@@ -92,7 +90,7 @@ export function OrderList({
               {orders.map((order) => (
                 <div
                   className={clsx(
-                    'border-[var(--order-list-border,hsl(var(--contrast-100)))] pt-5 pb-6 last:border-b @lg:pt-6 @lg:pb-10',
+                    'border-contrast-200 pt-5 pb-6 last:border-b @lg:pt-6 @lg:pb-10',
                     className,
                   )}
                   key={order.id}
