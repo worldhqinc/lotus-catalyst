@@ -3,14 +3,14 @@ import NotifyBackInStockModal from './_components/modal';
 
 interface NotifyBackInStockProps {
   productId: string;
-  ctaLabel?: string;
+  buttonLabel?: string;
   buttonClassName?: string;
   buttonSize?: 'small' | 'medium';
 }
 
 export default function NotifyBackInStock({
   productId,
-  ctaLabel,
+  buttonLabel,
   buttonClassName,
   buttonSize = 'medium',
 }: NotifyBackInStockProps) {
@@ -18,8 +18,8 @@ export default function NotifyBackInStock({
     <NotifyBackInStockModal
       action={subscribe}
       buttonClassName={buttonClassName}
+      buttonLabel={buttonLabel}
       buttonSize={buttonSize}
-      ctaLabel={ctaLabel}
       productId={productId}
     />
   );
