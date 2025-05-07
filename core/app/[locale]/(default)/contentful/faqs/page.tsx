@@ -79,7 +79,7 @@ export default async function FaqsPage({ searchParams }: { searchParams: { searc
             <FaqSidebar categories={faqCategories} />
           </div>
           <div className="lg:col-span-7 lg:col-start-5 [&_>div]:flex [&_>div]:flex-col [&_>div]:gap-12">
-            <PageContentEntries pageContent={filteredPageContent} />
+            <PageContentEntries pageContent={filteredPageContent} searchParams={searchParams} />
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-01T19:53:41.879Z",
+        "updatedAt": "2025-05-05T14:44:28.999Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 153,
-        "publishedAt": "2025-05-01T19:53:41.879Z",
+        "publishedVersion": 155,
+        "publishedAt": "2025-05-05T14:44:28.999Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -34,16 +34,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 77,
-        "version": 154,
+        "publishedCounter": 78,
+        "version": 156,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productFinishedGoods"
@@ -1060,207 +1060,6 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Entry"
-        }
-      ]
-    },
-    {
-      "sys": {
-        "space": {
-          "sys": {
-            "type": "Link",
-            "linkType": "Space",
-            "id": "esj3sw7u4uve"
-          }
-        },
-        "id": "categoryProduct",
-        "type": "ContentType",
-        "createdAt": "2025-03-07T21:04:02.439Z",
-        "updatedAt": "2025-04-17T18:12:33.324Z",
-        "environment": {
-          "sys": {
-            "id": "master",
-            "type": "Link",
-            "linkType": "Environment"
-          }
-        },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-17T18:12:33.324Z",
-        "firstPublishedAt": "2025-03-07T21:04:14.171Z",
-        "createdBy": {
-          "sys": {
-            "type": "Link",
-            "linkType": "User",
-            "id": "3VXNwgijdMS8GV41CnauFy"
-          }
-        },
-        "updatedBy": {
-          "sys": {
-            "type": "Link",
-            "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
-          }
-        },
-        "publishedCounter": 2,
-        "version": 4,
-        "publishedBy": {
-          "sys": {
-            "type": "Link",
-            "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
-          }
-        },
-        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/categoryProduct"
-      },
-      "displayField": "productCategoryName",
-      "name": "Category - Product",
-      "description": "",
-      "fields": [
-        {
-          "id": "productCategoryName",
-          "name": "Product Category Name",
-          "type": "Symbol",
-          "localized": true,
-          "required": true,
-          "validations": [
-            {
-              "unique": true
-            }
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "productParentCategoryName",
-          "name": "Parent Product Category Name",
-          "type": "Link",
-          "localized": false,
-          "required": false,
-          "validations": [
-            {
-              "linkContentType": [
-                "categoryProduct"
-              ]
-            }
-          ],
-          "disabled": false,
-          "omitted": false,
-          "linkType": "Entry"
-        },
-        {
-          "id": "categoryDescription",
-          "name": "Category Description",
-          "type": "Text",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "categoryPencilBanner",
-          "name": "Category Pencil Banner",
-          "type": "Link",
-          "localized": false,
-          "required": false,
-          "validations": [
-            {
-              "linkMimetypeGroup": [
-                "image"
-              ]
-            },
-            {
-              "assetImageDimensions": {
-                "width": {
-                  "min": 1344,
-                  "max": null
-                },
-                "height": {
-                  "min": 400,
-                  "max": null
-                }
-              },
-              "message": "Pencil banners should be sized at 1344 x 400px"
-            }
-          ],
-          "disabled": false,
-          "omitted": false,
-          "linkType": "Asset"
-        },
-        {
-          "id": "categoryThumbnailImage",
-          "name": "Category Thumbnail Image",
-          "type": "Link",
-          "localized": false,
-          "required": true,
-          "validations": [
-            {
-              "linkMimetypeGroup": [
-                "image"
-              ]
-            },
-            {
-              "assetImageDimensions": {
-                "width": {
-                  "min": 270,
-                  "max": null
-                },
-                "height": {
-                  "min": 270,
-                  "max": null
-                }
-              },
-              "message": "Image should be 1:1 aspect ratio"
-            }
-          ],
-          "disabled": false,
-          "omitted": false,
-          "linkType": "Asset"
-        },
-        {
-          "id": "categoryLifestyleImage",
-          "name": "Category Lifestyle Image",
-          "type": "Link",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "linkType": "Asset"
-        },
-        {
-          "id": "categoryLink",
-          "name": "Category Link",
-          "type": "Symbol",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "categoryCallToActionLabel",
-          "name": "Category Call to Action Label",
-          "type": "Symbol",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "mainProduct",
-          "name": "Main product",
-          "type": "Symbol",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
         }
       ]
     },
@@ -3078,109 +2877,6 @@
             "id": "esj3sw7u4uve"
           }
         },
-        "id": "carouselProductSimple",
-        "type": "ContentType",
-        "createdAt": "2025-03-07T21:04:05.136Z",
-        "updatedAt": "2025-04-17T18:12:36.432Z",
-        "environment": {
-          "sys": {
-            "id": "master",
-            "type": "Link",
-            "linkType": "Environment"
-          }
-        },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-17T18:12:36.432Z",
-        "firstPublishedAt": "2025-03-07T21:04:25.421Z",
-        "createdBy": {
-          "sys": {
-            "type": "Link",
-            "linkType": "User",
-            "id": "3VXNwgijdMS8GV41CnauFy"
-          }
-        },
-        "updatedBy": {
-          "sys": {
-            "type": "Link",
-            "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
-          }
-        },
-        "publishedCounter": 2,
-        "version": 4,
-        "publishedBy": {
-          "sys": {
-            "type": "Link",
-            "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
-          }
-        },
-        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/carouselProductSimple"
-      },
-      "displayField": "internalName",
-      "name": "Carousel - Product Simple",
-      "description": "",
-      "fields": [
-        {
-          "id": "internalName",
-          "name": "Internal Name",
-          "type": "Symbol",
-          "localized": false,
-          "required": true,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "carouselTitle",
-          "name": "Carousel Title",
-          "type": "Symbol",
-          "localized": true,
-          "required": true,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "productReference",
-          "name": "Product Reference",
-          "type": "Array",
-          "localized": false,
-          "required": true,
-          "validations": [
-            {
-              "size": {
-                "min": 4
-              }
-            }
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Link",
-            "validations": [
-              {
-                "linkContentType": [
-                  "productFinishedGoods"
-                ]
-              }
-            ],
-            "linkType": "Entry"
-          }
-        }
-      ]
-    },
-    {
-      "sys": {
-        "space": {
-          "sys": {
-            "type": "Link",
-            "linkType": "Space",
-            "id": "esj3sw7u4uve"
-          }
-        },
         "id": "faqList",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:06.051Z",
@@ -4044,132 +3740,6 @@
             "id": "esj3sw7u4uve"
           }
         },
-        "id": "featureVideoBanner",
-        "type": "ContentType",
-        "createdAt": "2025-04-11T17:20:17.124Z",
-        "updatedAt": "2025-04-17T18:12:39.474Z",
-        "environment": {
-          "sys": {
-            "id": "master",
-            "type": "Link",
-            "linkType": "Environment"
-          }
-        },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-17T18:12:39.474Z",
-        "firstPublishedAt": "2025-04-11T17:20:17.506Z",
-        "createdBy": {
-          "sys": {
-            "type": "Link",
-            "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
-          }
-        },
-        "updatedBy": {
-          "sys": {
-            "type": "Link",
-            "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
-          }
-        },
-        "publishedCounter": 2,
-        "version": 4,
-        "publishedBy": {
-          "sys": {
-            "type": "Link",
-            "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
-          }
-        },
-        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/featureVideoBanner"
-      },
-      "displayField": "internalName",
-      "name": "Feature Video Banner",
-      "description": "",
-      "fields": [
-        {
-          "id": "internalName",
-          "name": "Internal Name",
-          "type": "Symbol",
-          "localized": true,
-          "required": true,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "sectionTitle",
-          "name": "Section Title",
-          "type": "Symbol",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "subTitle",
-          "name": "Sub Title",
-          "type": "Symbol",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "descriptiveBodyCopy",
-          "name": "Descriptive Body Copy",
-          "type": "Text",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "video",
-          "name": "Video",
-          "type": "Link",
-          "localized": false,
-          "required": true,
-          "validations": [
-            {
-              "linkMimetypeGroup": [
-                "video"
-              ]
-            }
-          ],
-          "disabled": false,
-          "omitted": false,
-          "linkType": "Asset"
-        },
-        {
-          "id": "registrationCookieMessage",
-          "name": "Registration Cookie Message",
-          "type": "Symbol",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        }
-      ]
-    },
-    {
-      "sys": {
-        "space": {
-          "sys": {
-            "type": "Link",
-            "linkType": "Space",
-            "id": "esj3sw7u4uve"
-          }
-        },
         "id": "newsletterForm",
         "type": "ContentType",
         "createdAt": "2025-04-13T19:15:35.558Z",
@@ -4260,7 +3830,7 @@
         "id": "postGrid",
         "type": "ContentType",
         "createdAt": "2025-04-17T18:27:38.014Z",
-        "updatedAt": "2025-04-19T20:13:23.258Z",
+        "updatedAt": "2025-05-07T17:30:37.435Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4268,8 +3838,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-19T20:13:23.258Z",
+        "publishedVersion": 5,
+        "publishedAt": "2025-05-07T17:30:37.435Z",
         "firstPublishedAt": "2025-04-17T18:27:38.322Z",
         "createdBy": {
           "sys": {
@@ -4285,8 +3855,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 2,
-        "version": 4,
+        "publishedCounter": 3,
+        "version": 6,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -4332,7 +3902,8 @@
             {
               "in": [
                 "recipe",
-                "feature"
+                "feature",
+                "formulation"
               ]
             }
           ],
@@ -4527,7 +4098,7 @@
         "id": "heroSection",
         "type": "ContentType",
         "createdAt": "2025-04-21T14:33:30.959Z",
-        "updatedAt": "2025-04-21T14:35:44.484Z",
+        "updatedAt": "2025-05-07T17:14:06.076Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4535,8 +4106,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 2,
-        "publishedAt": "2025-04-21T14:35:44.484Z",
+        "publishedVersion": 6,
+        "publishedAt": "2025-05-07T17:14:06.076Z",
         "firstPublishedAt": "2025-04-21T14:35:44.484Z",
         "createdBy": {
           "sys": {
@@ -4552,8 +4123,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 1,
-        "version": 3,
+        "publishedCounter": 3,
+        "version": 7,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -4585,6 +4156,22 @@
           "localized": true,
           "required": true,
           "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "type",
+          "name": "Hero Type",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "in": [
+                "basic"
+              ]
+            }
           ],
           "disabled": false,
           "omitted": false
@@ -5535,7 +5122,7 @@
         "id": "featureGrid",
         "type": "ContentType",
         "createdAt": "2025-04-21T23:44:18.893Z",
-        "updatedAt": "2025-04-21T23:45:07.990Z",
+        "updatedAt": "2025-05-07T14:06:01.505Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -5543,8 +5130,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 2,
-        "publishedAt": "2025-04-21T23:45:07.990Z",
+        "publishedVersion": 4,
+        "publishedAt": "2025-05-07T14:06:01.505Z",
         "firstPublishedAt": "2025-04-21T23:45:07.990Z",
         "createdBy": {
           "sys": {
@@ -5557,16 +5144,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 1,
-        "version": 3,
+        "publishedCounter": 2,
+        "version": 5,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/featureGrid"
@@ -5580,7 +5167,7 @@
           "name": "Title",
           "type": "Symbol",
           "localized": true,
-          "required": true,
+          "required": false,
           "validations": [
           ],
           "disabled": false,
@@ -6628,6 +6215,348 @@
           "defaultValue": {
             "en-US": "all"
           },
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "pageHeaderSupport",
+        "type": "ContentType",
+        "createdAt": "2025-05-02T19:21:31.309Z",
+        "updatedAt": "2025-05-02T19:21:31.600Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 1,
+        "publishedAt": "2025-05-02T19:21:31.600Z",
+        "firstPublishedAt": "2025-05-02T19:21:31.600Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 2,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/pageHeaderSupport"
+      },
+      "displayField": "title",
+      "name": "Page Header - Support",
+      "description": "",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "lead",
+          "name": "Lead",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "productSupportLinks",
+        "type": "ContentType",
+        "createdAt": "2025-05-02T19:48:49.232Z",
+        "updatedAt": "2025-05-02T20:46:14.713Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 23,
+        "publishedAt": "2025-05-02T20:46:14.713Z",
+        "firstPublishedAt": "2025-05-02T19:48:49.710Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+          }
+        },
+        "publishedCounter": 12,
+        "version": 24,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productSupportLinks"
+      },
+      "displayField": "title",
+      "name": "Product Support Links",
+      "description": "",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "links",
+          "name": "Links",
+          "type": "Array",
+          "localized": false,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkContentType": [
+                  "supportLink"
+                ]
+              }
+            ],
+            "linkType": "Entry"
+          }
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "supportLink",
+        "type": "ContentType",
+        "createdAt": "2025-05-02T19:54:47.724Z",
+        "updatedAt": "2025-05-05T19:10:16.124Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 13,
+        "publishedAt": "2025-05-05T19:10:16.124Z",
+        "firstPublishedAt": "2025-05-02T19:54:47.962Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+          }
+        },
+        "publishedCounter": 7,
+        "version": 14,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/supportLink"
+      },
+      "displayField": "title",
+      "name": "Support Link",
+      "description": "",
+      "fields": [
+        {
+          "id": "supportType",
+          "name": "Support Type",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "in": [
+                "faqs",
+                "register-product",
+                "returns",
+                "track-order",
+                "use-and-care",
+                "warranty"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "supportPageLink",
+          "name": "Support Page Link",
+          "type": "Link",
+          "localized": false,
+          "required": true,
+          "validations": [
+            {
+              "linkContentType": [
+                "pageStandard"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Entry"
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "productFormulationLookup",
+        "type": "ContentType",
+        "createdAt": "2025-05-07T17:52:08.409Z",
+        "updatedAt": "2025-05-07T17:52:08.750Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 1,
+        "publishedAt": "2025-05-07T17:52:08.750Z",
+        "firstPublishedAt": "2025-05-07T17:52:08.750Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 2,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productFormulationLookup"
+      },
+      "displayField": "title",
+      "name": "Product Formulation Lookup",
+      "description": "",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "disclaimer",
+          "name": "Disclaimer",
+          "type": "Text",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
           "disabled": false,
           "omitted": false
         }
