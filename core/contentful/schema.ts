@@ -3571,7 +3571,7 @@ export type carouselSection = z.infer<typeof carouselSectionSchema>;
 
 // Schema for featureGrid
 export const featureGridFieldsSchema = z.object({
-  title: z.string(),
+  title: z.string().optional(),
   subheading: z.string().optional(),
   items: z
     .array(

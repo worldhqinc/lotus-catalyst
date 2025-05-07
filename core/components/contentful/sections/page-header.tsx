@@ -1,6 +1,3 @@
-import { Search } from 'lucide-react';
-
-import { Input } from '@/vibes/soul/form/input';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { pageHeaderSupport } from '~/contentful/schema';
 
@@ -14,14 +11,6 @@ export function PageHeaderSupport({ title, lead }: pageHeaderSupport['fields']) 
         <p className="mt-4 text-lg tracking-[1.8px] uppercase md:text-2xl md:tracking-[2.4px]">
           {lead}
         </p>
-        <div className="mt-8">
-          {/* TODO: Add search bar */}
-          <Input
-            className="w-full"
-            placeholder="Search for answers..."
-            prepend={<Search className="text-foreground h-4 w-4" />}
-          />
-        </div>
       </div>
     </SectionLayout>
   );

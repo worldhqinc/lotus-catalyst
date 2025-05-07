@@ -7,11 +7,13 @@ export function FeatureGrid({ title, subheading, items }: featureGrid['fields'])
   const parsedItems = items?.map((item) => featureItemSchema.parse(item)) ?? [];
 
   return (
-    <SectionLayout containerClassName="bg-white py-24" containerSize="full">
-      <div className="mb-17 flex flex-col items-center">
-        <h2 className="font-heading text-icon-primary max-w-4xl text-center text-4xl uppercase md:text-6xl">
-          {title}
-        </h2>
+    <SectionLayout containerClassName="bg-white py-24 space-y-16" containerSize="full">
+      <div className="flex flex-col items-center empty:hidden">
+        {title ? (
+          <h2 className="font-heading text-icon-primary max-w-4xl text-center text-4xl uppercase md:text-6xl">
+            {title}
+          </h2>
+        ) : null}
         {subheading ? (
           <p className="text-icon-secondary mt-8 max-w-xl text-center">{subheading}</p>
         ) : null}
