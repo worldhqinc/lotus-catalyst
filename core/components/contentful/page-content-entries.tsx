@@ -38,6 +38,7 @@ import { BlockProductFeaturesAccordion } from './sections/block-product-features
 import { CardSection } from './sections/card-section';
 import { CarouselSection } from './sections/carousel-section';
 import { CommunitySection } from './sections/community-section';
+import { Cta } from './sections/cta';
 import { CtaSection } from './sections/cta-section';
 import { CulinaryPassionSection } from './sections/culinary-passion-section';
 import { FaqList } from './sections/faq-list';
@@ -134,6 +135,11 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
     const sectionData = ctaSectionSchema.parse(contentEntry);
 
     return <CtaSection {...sectionData.fields} />;
+  },
+  cta: ({ contentEntry }) => {
+    const data = ctaSchema.parse(contentEntry);
+
+    return <Cta {...data.fields} />;
   },
   heroBanner: ({ contentEntry }) => {
     const data = heroBannerSchema.parse(contentEntry);

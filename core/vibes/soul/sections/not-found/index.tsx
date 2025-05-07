@@ -42,7 +42,7 @@ export function NotFound({
           {title}
         </h1>
         <p className="text-contrast-400 mt-4 leading-[150%]">{subtitle}</p>
-        <Button onClick={handleOpenSearch} className="mt-8">
+        <Button className="mt-8" onClick={handleOpenSearch}>
           Search
         </Button>
       </header>
