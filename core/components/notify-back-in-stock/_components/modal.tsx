@@ -21,6 +21,7 @@ type Action<State, Payload> = (
 export default function NotifyBackInStockModal({
   action,
   productId,
+  ctaLabel = 'Coming soon, notify me',
 }: {
   action: Action<
     {
@@ -31,6 +32,7 @@ export default function NotifyBackInStockModal({
     FormData
   >;
   productId: string;
+  ctaLabel?: string;
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [{ lastResult, successMessage, errorMessage }, formAction, isPending] = useActionState(
@@ -64,8 +66,14 @@ export default function NotifyBackInStockModal({
 
   return (
     <>
-      <Button className="w-full" onClick={() => setModalOpen(true)} size="medium" type="button">
-        Notify me when available
+      <Button
+        className="w-full"
+        onClick={() => setModalOpen(true)}
+        size="medium"
+        type="button"
+        variant="secondary"
+      >
+        {ctaLabel}
       </Button>
       <Modal
         className="w-[90%] @lg:w-120"

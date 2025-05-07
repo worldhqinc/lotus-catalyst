@@ -154,9 +154,14 @@ export function ProductDetailForm<F extends Field>({
               required
               value={quantityControl.value}
             /> */}
-            {ctaDisabled && <NotifyBackInStock productId={productId} />}
-            <input name={formFields.quantity.name} type="hidden" value="1" />
-            <SubmitButton disabled={ctaDisabled}>{ctaLabel}</SubmitButton>
+            {ctaDisabled ? (
+              <NotifyBackInStock productId={productId} />
+            ) : (
+              <>
+                <input name={formFields.quantity.name} type="hidden" value="1" />
+                <SubmitButton disabled={ctaDisabled}>{ctaLabel}</SubmitButton>
+              </>
+            )}
             {additionalActions}
           </div>
         </div>
