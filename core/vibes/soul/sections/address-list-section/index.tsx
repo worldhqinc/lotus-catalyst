@@ -2,7 +2,15 @@
 
 import { getFormProps, getInputProps, SubmissionResult, useForm } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
-import { startTransition, useActionState, useEffect, useOptimistic, useState } from 'react';
+import {
+  ComponentProps,
+  ReactNode,
+  startTransition,
+  useActionState,
+  useEffect,
+  useOptimistic,
+  useState,
+} from 'react';
 import { useFormStatus } from 'react-dom';
 import { z } from 'zod';
 
@@ -30,7 +38,7 @@ interface State<A extends Address, F extends Field> {
   fields: Array<F | FieldGroup<F>>;
 }
 
-interface Props<A extends Address, F extends Field> {
+export interface AddressListSectionProps<A extends Address, F extends Field> {
   title?: string;
   addresses: A[];
   fields: Array<F | FieldGroup<F>>;
@@ -47,6 +55,22 @@ interface Props<A extends Address, F extends Field> {
   countries: Array<{ code: string; name: string }>;
 }
 
+// eslint-disable-next-line valid-jsdoc
+/**
+ * This component supports various CSS variables for theming. Here's a comprehensive list, along
+ * with their default values:
+ *
+ * ```css
+ * :root {
+ *   --address-list-section-border: hsl(var(--contrast-100));
+ *   --address-list-section-title-font-family: var(--font-family-heading);
+ *   --address-list-section-content-font-family: var(--font-family-body);
+ *   --address-list-section-title: hsl(var(--foreground));
+ *   --address-list-section-name: hsl(var(--foreground));
+ *   --address-list-section-info: hsl(var(--contrast-500));
+ * }
+ * ```
+ */
 export function AddressListSection<A extends Address, F extends Field>({
   title = 'Addresses',
   addresses,
@@ -62,7 +86,7 @@ export function AddressListSection<A extends Address, F extends Field>({
   showAddFormLabel = 'Add address',
   setDefaultLabel = 'Set as default',
   countries,
-}: Props<A, F>) {
+}: AddressListSectionProps<A, F>) {
   const [state, formAction] = useActionState(addressAction, {
     addresses,
     defaultAddress,
@@ -128,18 +152,20 @@ export function AddressListSection<A extends Address, F extends Field>({
   }, [form.errors]);
 
   return (
-    <div>
-      <div className="border-contrast-200 flex items-center justify-between border-b pb-6">
-        <Title>{title}</Title>
-        {!showNewAddressForm && (
-          <Button onClick={() => setShowNewAddressForm(true)} size="medium" variant="tertiary">
-            {showAddFormLabel}
-          </Button>
-        )}
-      </div>
+    <section className="w-full">
+      <header className="border-contrast-200 mb-4 border-b border-[var(--address-list-section-border,hsl(var(--contrast-100)))] pb-6">
+        <div className="mb-4 flex items-center justify-between">
+          <Title>{title}</Title>
+          {!showNewAddressForm && (
+            <Button onClick={() => setShowNewAddressForm(true)} size="medium" variant="tertiary">
+              {showAddFormLabel}
+            </Button>
+          )}
+        </div>
+      </header>
       <div className="grid">
         {showNewAddressForm && (
-          <div className="border-contrast-200 border-b py-6">
+          <div className="border-contrast-200 border-b border-[var(--address-list-section-border,hsl(var(--contrast-100)))] py-6">
             <div className="max-w-[480px] space-y-4">
               <DynamicForm
                 action={(_prevState, formData) => {
@@ -194,7 +220,10 @@ export function AddressListSection<A extends Address, F extends Field>({
           });
 
           return (
-            <div className="border-contrast-200 border-b py-6" key={address.id}>
+            <div
+              className="border-contrast-200 border-b border-[var(--address-list-section-border,hsl(var(--contrast-100)))] py-6"
+              key={address.id}
+            >
               {activeAddressIds.includes(address.id) ? (
                 <div className="max-w-[480px] space-y-4">
                   <DynamicForm
@@ -282,15 +311,15 @@ export function AddressListSection<A extends Address, F extends Field>({
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }
 
-function Title({ children }: { children: React.ReactNode }) {
+function Title({ children }: { children: ReactNode }) {
   const { pending } = useFormStatus();
 
   return (
-    <h1 className="text-2xl leading-[120%] @2xl:text-4xl">
+    <h1 className="font-[family-name:var(--address-list-section-title-font-family,var(--font-family-heading))] text-4xl text-[var(--address-list-section-title,hsl(var(--foreground)))]">
       {children}
       {pending && (
         <span className="ml-2">
@@ -314,9 +343,9 @@ function AddressPreview({
     countries.find((country) => country.code === address.countryCode)?.name || address.countryCode;
 
   return (
-    <div className="flex gap-10">
-      <div className="text-sm">
-        <p className="font-bold">
+    <div className="flex gap-10 font-[family-name:var(--address-list-section-content-font-family,var(--font-family-body))]">
+      <div className="text-sm text-[var(--address-list-section-info,hsl(var(--contrast-500)))]">
+        <p className="font-bold text-[var(--address-list-section-name,hsl(var(--foreground)))]">
           {address.firstName} {address.lastName}
         </p>
         <p>{address.company}</p>
@@ -344,7 +373,7 @@ function AddressActionButton({
   intent: string;
   action: (formData: FormData) => void;
   onSubmit: (formData: FormData) => void;
-} & Omit<React.ComponentProps<'button'>, 'onSubmit'>) {
+} & Omit<ComponentProps<'button'>, 'onSubmit'>) {
   const [form, fields] = useForm({
     // @ts-expect-error The form requires index signature values to be of
     // type 'string', 'null', or 'undefined' but the zod .passthrough() method
