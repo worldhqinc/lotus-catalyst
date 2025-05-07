@@ -2,6 +2,7 @@
 
 import { getFormProps, SubmissionResult, useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
+import clsx from 'clsx';
 import { useActionState, useEffect, useState } from 'react';
 
 import { FormStatus } from '@/vibes/soul/form/form-status';
@@ -21,7 +22,9 @@ type Action<State, Payload> = (
 export default function NotifyBackInStockModal({
   action,
   productId,
-  ctaLabel = 'Coming soon, notify me',
+  buttonLabel = 'Coming soon, notify me',
+  buttonClassName,
+  buttonSize = 'medium',
 }: {
   action: Action<
     {
@@ -32,7 +35,9 @@ export default function NotifyBackInStockModal({
     FormData
   >;
   productId: string;
-  ctaLabel?: string;
+  buttonLabel?: string;
+  buttonClassName?: string;
+  buttonSize?: 'small' | 'medium';
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [{ lastResult, successMessage, errorMessage }, formAction, isPending] = useActionState(
@@ -67,17 +72,18 @@ export default function NotifyBackInStockModal({
   return (
     <>
       <Button
-        className="w-full"
+        className={clsx(buttonClassName, 'w-full')}
         onClick={() => setModalOpen(true)}
-        size="medium"
+        size={buttonSize}
         type="button"
         variant="secondary"
       >
-        {ctaLabel}
+        {buttonLabel}
       </Button>
       <Modal
         className="w-[90%] @lg:w-120"
         isOpen={modalOpen}
+        key={`notify-back-in-stock-modal-${productId}`}
         setOpen={setModalOpen}
         title="Notify me when available"
       >

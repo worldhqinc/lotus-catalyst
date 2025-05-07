@@ -16,6 +16,7 @@ export interface ProductGridHit {
     rating?: Localized<number>;
     productLine?: Localized<string[]>;
     bcProductReference?: Localized<string>;
+    inventoryQuantity?: Localized<number>;
   };
 }
 
@@ -83,6 +84,7 @@ export function transformProductHit(hit: ProductGridHit) {
     : `$${defaultPrice}`;
   const badge = f.badge?.['en-US'];
   const rating = f.rating?.['en-US'];
+  const inStock = Boolean(f.inventoryQuantity?.['en-US'] ?? 0);
 
   return {
     id: hit.objectID,
@@ -94,6 +96,7 @@ export function transformProductHit(hit: ProductGridHit) {
     price,
     badge,
     rating,
+    inStock,
   };
 }
 

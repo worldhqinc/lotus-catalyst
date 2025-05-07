@@ -9,6 +9,7 @@ import * as Skeleton from '@/vibes/soul/primitives/skeleton';
 import { addToCartBySkuForm } from '~/app/[locale]/(default)/cart/_actions/add-to-cart-by-sku-form';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
+import NotifyBackInStock from '~/components/notify-back-in-stock';
 
 import { Button } from '../button';
 
@@ -24,6 +25,7 @@ export interface Product {
   badge?: string;
   rating?: number;
   sku?: string;
+  inStock?: boolean;
 }
 
 export interface ProductCardProps {
@@ -61,7 +63,7 @@ export interface ProductCardProps {
  * ```
  */
 export function ProductCard({
-  product: { id, title, subtitle, badge, price, image, href, sku },
+  product: { id, title, subtitle, badge, price, image, href, sku, inStock = true },
   colorScheme = 'light',
   className,
   showCompare = false,
@@ -133,10 +135,9 @@ export function ProductCard({
               {badge}
             </Badge>
           )}
-          {/* Add to Bag Button on Hover */}
           {!!sku && (
             <form action={addToCartBySkuForm} className="pointer-events-none absolute inset-0 z-10">
-              <AddToBagForm sku={sku} />
+              <AddToBagForm inStock={inStock} productId={id} sku={sku} />
             </form>
           )}
         </div>
@@ -238,7 +239,15 @@ export function ProductCardSkeleton({
   );
 }
 
-function AddToBagForm({ sku }: { sku: string }) {
+function AddToBagForm({
+  sku,
+  inStock,
+  productId,
+}: {
+  sku: string;
+  inStock: boolean;
+  productId: string;
+}) {
   const { pending } = useFormStatus();
 
   return (
@@ -249,15 +258,23 @@ function AddToBagForm({ sku }: { sku: string }) {
       )}
     >
       <input name="sku" type="hidden" value={sku} />
-      <Button
-        className="pointer-events-auto w-full"
-        disabled={!sku || pending}
-        loading={pending}
-        size="small"
-        type="submit"
-      >
-        Add to bag
-      </Button>
+      {inStock ? (
+        <Button
+          className="pointer-events-auto w-full"
+          disabled={!sku || pending}
+          loading={pending}
+          size="small"
+          type="submit"
+        >
+          Add to bag
+        </Button>
+      ) : (
+        <NotifyBackInStock
+          buttonClassName="pointer-events-auto w-full"
+          buttonSize="small"
+          productId={productId}
+        />
+      )}
     </div>
   );
 }
