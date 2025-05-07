@@ -105,7 +105,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
       setOpen={setIsOpen}
       title="Send an email"
       trigger={
-        <Button className="w-full md:w-auto" size="medium">
+        <Button className="w-full md:w-auto" id="contact-form-button" size="medium">
           Send an email
         </Button>
       }

@@ -2,7 +2,7 @@
 
 import { getFormProps, SubmissionResult, useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { useActionState, useEffect, useState } from 'react';
 
 import { FormStatus } from '@/vibes/soul/form/form-status';
