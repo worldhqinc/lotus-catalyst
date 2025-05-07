@@ -37,7 +37,6 @@ export default function ProductRegistration() {
                 <Input id="email" name="email" type="email" />
               </div>
             </div>
-
             <div>
               <h2 className="mb-6 text-lg font-medium tracking-[1.8px] uppercase">Your product</h2>
               <div className="flex flex-col gap-4 md:flex-row">
@@ -51,7 +50,6 @@ export default function ProductRegistration() {
                 </div>
               </div>
             </div>
-
             {/* <div>
               <h2 className="mb-6 text-lg font-medium tracking-[1.8px] uppercase">
                 Sweepstakes eligibility
@@ -61,7 +59,6 @@ export default function ProductRegistration() {
                 <Input id="birthday" name="birthday" type="date" />
               </div>
             </div> */}
-
             <div>
               <div className="flex gap-4">
                 <Checkbox id="email-opt-in" name="email-opt-in" />

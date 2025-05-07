@@ -1,6 +1,6 @@
 'use client';
 
-import { getFormProps, SubmissionResult, useForm } from '@conform-to/react';
+import { getFormProps, getInputProps, SubmissionResult, useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
 import { clsx } from 'clsx';
 import { useActionState, useEffect, useState } from 'react';
@@ -49,7 +49,7 @@ export default function NotifyBackInStockModal({
     },
   );
 
-  const [form] = useForm({
+  const [form, fields] = useForm({
     lastResult,
     onValidate({ formData }) {
       return parseWithZod(formData, { schema });
@@ -59,6 +59,7 @@ export default function NotifyBackInStockModal({
   });
 
   const handleModalClose = () => {
+    form.reset();
     setModalOpen(false);
   };
 
@@ -93,7 +94,11 @@ export default function NotifyBackInStockModal({
         <form {...getFormProps(form)} action={formAction} className="space-y-4">
           <input name="productId" type="hidden" value={productId} />
           <Label htmlFor="email">Email</Label>
-          <Input defaultValue={form.value?.email} id="email" name="email" required type="email" />
+          <Input
+            {...getInputProps(fields.email, { type: 'email' })}
+            key={fields.email.id}
+            required
+          />
           <div className="flex justify-end gap-4">
             <Button
               disabled={isPending}

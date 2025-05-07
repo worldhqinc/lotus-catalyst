@@ -27,6 +27,9 @@ export const subscribe = async (
   );
 
   if (!klaviyoResponse.ok) {
+    // eslint-disable-next-line no-console
+    console.error(klaviyoResponse);
+
     return {
       lastResult: submission.reply(),
       successMessage: null,
