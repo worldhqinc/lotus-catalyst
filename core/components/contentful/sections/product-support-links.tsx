@@ -1,10 +1,11 @@
 import { CircleHelp, FileText, Heater, Package2, RefreshCw, SquarePen } from 'lucide-react';
 
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
+import { auth } from '~/auth';
 import { Link } from '~/components/link';
 import { ProductSupportLink } from '~/contentful/schema';
 
-export function ProductSupportLinks({ title, links }: ProductSupportLink) {
+export async function ProductSupportLinks({ title, links }: ProductSupportLink) {
   const iconMap = (link: (typeof links)[number]) => {
     switch (link.fields.supportType) {
       case 'register':
@@ -30,6 +31,8 @@ export function ProductSupportLinks({ title, links }: ProductSupportLink) {
     }
   };
 
+  const session = await auth();
+
   return (
     <SectionLayout>
       <h2 className="text-center text-4xl leading-[120%]">{title}</h2>
@@ -50,7 +53,14 @@ export function ProductSupportLinks({ title, links }: ProductSupportLink) {
               {link.fields.supportType === 'track-order' && (
                 <p className="text-contrast-400">
                   or{' '}
-                  <Link className="link text-primary" href="#">
+                  <Link
+                    className="link text-primary"
+                    href={
+                      session?.user?.customerAccessToken
+                        ? '/account/orders'
+                        : '/login?redirectTo=/account/orders'
+                    }
+                  >
                     look up an order
                   </Link>
                 </p>
