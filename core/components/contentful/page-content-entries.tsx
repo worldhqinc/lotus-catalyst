@@ -12,6 +12,7 @@ import {
   ctaSchema,
   ctaSectionSchema,
   culinaryPassionSectionSchema,
+  faqListSchema,
   featureGridSchema,
   guidingPrinciplesSectionSchema,
   heroBannerSchema,
@@ -22,10 +23,12 @@ import {
   inspirationCardSchema,
   introSectionSchema,
   newsletterFormSchema,
+  pageHeaderSupportSchema,
   pageStandard,
   postGridSchema,
   productBentoSchema,
   productGridSchema,
+  productSupportLinkSchema,
   testimonialsSchema,
 } from '~/contentful/schema';
 
@@ -35,8 +38,10 @@ import { BlockProductFeaturesAccordion } from './sections/block-product-features
 import { CardSection } from './sections/card-section';
 import { CarouselSection } from './sections/carousel-section';
 import { CommunitySection } from './sections/community-section';
+import { Cta } from './sections/cta';
 import { CtaSection } from './sections/cta-section';
 import { CulinaryPassionSection } from './sections/culinary-passion-section';
+import { FaqList } from './sections/faq-list';
 import { FeatureGrid } from './sections/feature-grid';
 import { GuidingPrinciplesSection } from './sections/guiding-principles-section';
 import { HeroBanner } from './sections/hero-banner';
@@ -46,9 +51,11 @@ import { Highlights } from './sections/highlights';
 import { InspirationBento } from './sections/inspiration-bento';
 import { IntroSection } from './sections/intro-section';
 import { NewsletterForm } from './sections/newsletter-form';
+import { PageHeaderSupport } from './sections/page-header';
 import { PostGrid } from './sections/post-grid';
 import { ProductBento } from './sections/product-bento';
 import { ProductGrid } from './sections/product-grid';
+import { ProductSupportLinks } from './sections/product-support-links';
 import { Testimonials } from './sections/testimonials';
 
 type PageContent = pageStandard['fields']['pageContent'];
@@ -129,6 +136,11 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
 
     return <CtaSection {...sectionData.fields} />;
   },
+  cta: ({ contentEntry }) => {
+    const data = ctaSchema.parse(contentEntry);
+
+    return <Cta {...data.fields} />;
+  },
   heroBanner: ({ contentEntry }) => {
     const data = heroBannerSchema.parse(contentEntry);
 
@@ -178,6 +190,21 @@ const ContentComponentMap: Record<string, React.ComponentType<{ contentEntry: Co
     const data = productGridSchema.parse(contentEntry);
 
     return <ProductGrid {...data.fields} />;
+  },
+  pageHeaderSupport: ({ contentEntry }) => {
+    const data = pageHeaderSupportSchema.parse(contentEntry);
+
+    return <PageHeaderSupport {...data.fields} />;
+  },
+  productSupportLinks: ({ contentEntry }) => {
+    const data = productSupportLinkSchema.parse(contentEntry);
+
+    return <ProductSupportLinks {...data.fields} />;
+  },
+  faqList: ({ contentEntry }) => {
+    const data = faqListSchema.parse(contentEntry);
+
+    return <FaqList id={data.sys.id} {...data.fields} />;
   },
 };
 

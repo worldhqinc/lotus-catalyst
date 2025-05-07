@@ -3571,7 +3571,7 @@ export type carouselSection = z.infer<typeof carouselSectionSchema>;
 
 // Schema for featureGrid
 export const featureGridFieldsSchema = z.object({
-  title: z.string(),
+  title: z.string().optional(),
   subheading: z.string().optional(),
   items: z
     .array(
@@ -4245,6 +4245,99 @@ export const productGridSchema = z.object({
 
 export type productGrid = z.infer<typeof productGridSchema>;
 
+// Schema for pageHeaderSupport
+export const pageHeaderSupportFieldsSchema = z.object({
+  title: z.string(),
+  lead: z.string(),
+});
+
+export const pageHeaderSupportSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('pageHeaderSupport'),
+      }),
+    }),
+  }),
+  fields: pageHeaderSupportFieldsSchema,
+});
+
+export type pageHeaderSupport = z.infer<typeof pageHeaderSupportSchema>;
+
+// Schema for Support Link
+export const supportLinkFieldsSchema = z.object({
+  title: z.string(),
+  supportType: z.string(),
+  supportPageLink: z.object({
+    metadata: metadataSchema,
+    sys: sysEntrySchema.extend({
+      contentType: z.object({
+        sys: z.object({
+          type: z.literal('Link'),
+          linkType: z.literal('ContentType'),
+          id: z.literal('pageStandard'),
+        }),
+      }),
+    }),
+    fields: z.object({
+      pageSlug: z.string(),
+    }),
+  }),
+});
+
+export const supportLinkSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('supportLink'),
+      }),
+    }),
+  }),
+  fields: supportLinkFieldsSchema,
+});
+
+// Schema for Product Support Link
+export const productSupportLinkFieldsSchema = z.object({
+  title: z.string().optional(),
+  links: z.array(
+    z.object({
+      metadata: metadataSchema,
+      sys: sysEntrySchema.extend({
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.literal('supportLink'),
+          }),
+        }),
+      }),
+      fields: supportLinkFieldsSchema,
+    }),
+  ),
+});
+
+export const productSupportLinkSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('productSupportLinks'),
+      }),
+    }),
+  }),
+  fields: productSupportLinkFieldsSchema,
+});
+
+export type ProductSupportLink = z.infer<typeof productSupportLinkFieldsSchema>;
+
 // ========================================
 // Union Schema and Helper Object
 // ========================================
@@ -4297,6 +4390,9 @@ export const contentfulEntrySchemaUnion = z.union([
   featureTilesSchema,
   featureTileSchema,
   productGridSchema,
+  pageHeaderSupportSchema,
+  supportLinkSchema,
+  productSupportLinkSchema,
 ]);
 export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
 
@@ -4356,4 +4452,7 @@ export const contentfulSchemas = {
   featureTiles: featureTilesSchema,
   featureTile: featureTileSchema,
   productGrid: productGridSchema,
+  pageHeaderSupport: pageHeaderSupportSchema,
+  supportLink: supportLinkSchema,
+  productSupportLink: productSupportLinkSchema,
 };

@@ -37,14 +37,14 @@ export function NotFound({
 
   return (
     <SectionLayout className={className} containerSize="2xl">
-      <header className="font-[family-name:var(--not-found-font-family,var(--font-family-body))]">
-        <h1 className="mb-3 font-[family-name:var(--not-found-title-font-family,var(--font-family-heading))] text-3xl leading-none font-medium text-[var(--not-found-title,hsl(var(--foreground)))] @xl:text-4xl @4xl:text-5xl">
+      <header className="mx-auto max-w-2xl text-center">
+        <h1 className="font-heading text-4xl leading-[100%] tracking-[-0.8px] uppercase @4xl:text-6xl @4xl:leading-[100%] @4xl:tracking-[-1.2px]">
           {title}
         </h1>
-        <p className="mb-4 text-lg text-[var(--not-found-subtitle,hsl(var(--contrast-500)))]">
-          {subtitle}
-        </p>
-        <Button onClick={handleOpenSearch}>Search</Button>
+        <p className="text-contrast-400 mt-4 leading-[150%]">{subtitle}</p>
+        <Button className="mt-8" onClick={handleOpenSearch}>
+          Search
+        </Button>
       </header>
     </SectionLayout>
   );

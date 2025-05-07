@@ -108,7 +108,7 @@ export function Select({
               light:
                 errors && errors.length > 0
                   ? 'border-[var(--select-light-trigger-border-error,hsl(var(--error)))]'
-                  : 'border-[var(--select-light-trigger-border,hsl(var(--contrast-100)))]',
+                  : 'border-[var(--select-light-trigger-border,hsl(var(--contrast-200)))]',
               dark:
                 errors && errors.length > 0
                   ? 'border-[var(--select-dark-trigger-border-error,hsl(var(--error)))]'

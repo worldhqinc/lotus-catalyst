@@ -6,6 +6,7 @@ import { ComponentPropsWithoutRef, useEffect, useState } from 'react';
 
 export interface AccordionProps extends ComponentPropsWithoutRef<typeof AccordionPrimitive.Item> {
   colorScheme?: 'light' | 'dark';
+  textTransform?: 'uppercase' | 'lowercase' | 'capitalize' | 'none';
 }
 
 // eslint-disable-next-line valid-jsdoc
@@ -37,6 +38,7 @@ function AccordionItem({
   title,
   children,
   colorScheme = 'light',
+  textTransform = 'uppercase',
   className,
   ...props
 }: AccordionProps) {
@@ -59,14 +61,20 @@ function AccordionItem({
       )}
     >
       <AccordionPrimitive.Header>
-        <AccordionPrimitive.Trigger className="group flex w-full cursor-pointer items-start gap-8 border-none py-3 text-start focus:outline-hidden @md:py-4">
+        <AccordionPrimitive.Trigger className="group flex w-full cursor-pointer items-start gap-8 border-none py-3 text-start text-xl font-medium focus:outline-hidden @md:py-4">
           <div
             className={clsx(
-              'flex-1 uppercase select-none',
+              'flex-1 select-none',
               {
                 light: 'text-surface-foreground',
                 dark: 'text-contrast-200',
               }[colorScheme],
+              {
+                uppercase: 'uppercase',
+                lowercase: 'lowercase',
+                capitalize: 'capitalize',
+                none: '',
+              }[textTransform],
             )}
           >
             {title}
@@ -92,9 +100,9 @@ function AccordionItem({
       >
         <div
           className={clsx(
-            'py-3 font-[family-name:var(--accordion-content-font-family,var(--font-family-body))] text-base leading-normal font-light',
+            'py-3 text-base leading-normal',
             {
-              light: 'text-[var(--accordion-light-content-text,hsl(var(--foreground)))]',
+              light: 'text-contrast-400',
               dark: 'text-[var(--accordion-dark-content-text,hsl(var(--background)))]',
             }[colorScheme],
           )}

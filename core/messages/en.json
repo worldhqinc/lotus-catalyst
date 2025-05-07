@@ -420,8 +420,8 @@
     "cta": "Try again"
   },
   "NotFound": {
-    "title": "We couldn't find that page!",
-    "subtitle": "Try searching for something else or go back to the home page.",
+    "title": "Well that’s unexpected",
+    "subtitle": "It looks like the page you’re searching for has moved or no longer exists.",
     "featuredProducts": "Featured products"
   },
   "Components": {
