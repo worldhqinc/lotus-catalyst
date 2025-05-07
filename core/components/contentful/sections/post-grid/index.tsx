@@ -26,7 +26,7 @@ interface PostGridProps {
 }
 
 function InfiniteHits({ type }: { type: string }) {
-  const { items, showMore, isLastPage, results } = useInfiniteHits<PostGridHit>();
+  const { items, showMore, isLastPage, results, sendEvent } = useInfiniteHits<PostGridHit>();
   const hasMore = !isLastPage;
   const totalCount = results?.nbHits ?? 0;
   const progressPercent = totalCount > 0 ? (items.length / totalCount) * 100 : 0;
@@ -36,8 +36,12 @@ function InfiniteHits({ type }: { type: string }) {
   return (
     <>
       <div className="mt-8 grid w-full gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {items.map((hit: PostGridHit) => (
-          <PostCard key={hit.objectID} {...transformer(hit)} />
+        {items.map((hit) => (
+          <PostCard
+            key={hit.objectID}
+            {...transformer(hit)}
+            onClick={() => sendEvent('click', hit, 'Post Clicked')}
+          />
         ))}
       </div>
       <div className="flex w-full flex-col items-center gap-8 py-12">
@@ -119,12 +123,14 @@ export function PostCard({
   subtitle,
   categories,
   slug,
+  onClick,
 }: {
   image: string | null;
   title: string;
   subtitle: string | null;
   categories: string[];
   slug: string | null;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }) {
   return (
     <article className="group relative flex flex-col">
@@ -145,7 +151,7 @@ export function PostCard({
         ))}
       </div>
       {!!slug && (
-        <Link aria-label={title} className="absolute inset-0" href={`/${slug}`}>
+        <Link aria-label={title} className="absolute inset-0" href={`/${slug}`} onClick={onClick}>
           <span className="sr-only">View {title}</span>
         </Link>
       )}

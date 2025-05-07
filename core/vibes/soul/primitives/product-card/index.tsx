@@ -40,6 +40,7 @@ export interface ProductCardProps {
   fillContainer?: boolean;
   ratioOverride?: string;
   product: Product;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 // eslint-disable-next-line valid-jsdoc
@@ -74,6 +75,7 @@ export function ProductCard({
   imageSizes = '(min-width: 80rem) 20vw, (min-width: 64rem) 25vw, (min-width: 42rem) 33vw, (min-width: 24rem) 50vw, 100vw',
   fillContainer = false,
   ratioOverride,
+  onClick,
 }: ProductCardProps) {
   // determine aspect ratio class: only apply when not fillContainer or when specifically overridden
   const ratioMapping = { '5:6': 'aspect-5/6', '3:4': 'aspect-3/4', '1:1': 'aspect-square' };
@@ -190,6 +192,7 @@ export function ProductCard({
             )}
             href={href}
             id={id}
+            onClick={onClick}
           >
             <span className="sr-only">View product</span>
           </Link>

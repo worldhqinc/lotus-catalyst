@@ -22,7 +22,7 @@ interface ProductGridProps {
 }
 
 function InfiniteHits() {
-  const { items, showMore, isLastPage, results } = useInfiniteHits<ProductGridHit>();
+  const { items, showMore, isLastPage, results, sendEvent } = useInfiniteHits<ProductGridHit>();
   const { status } = useInstantSearch();
   const hasMore = !isLastPage;
   const totalCount = results?.nbHits ?? 0;
@@ -46,6 +46,7 @@ function InfiniteHits() {
             aspectRatio="1:1"
             key={`${hit.objectID}-${index}`}
             product={transformProductHit(hit)}
+            onClick={() => sendEvent('click', hit, 'Product Clicked')}
           />
         ))}
       </div>
