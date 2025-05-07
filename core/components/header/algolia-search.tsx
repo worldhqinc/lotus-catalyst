@@ -33,7 +33,13 @@ interface GroupConfig {
   label: string;
   href: string;
   filter: string;
-  card: (hit: ProductGridHit | PostGridHit) => JSX.Element;
+  card: ({
+    hit,
+    sendEvent,
+  }: {
+    hit: ProductGridHit | PostGridHit;
+    sendEvent: (eventType: string, hit: ProductGridHit | PostGridHit, eventName: string) => void;
+  }) => JSX.Element;
 }
 
 const GROUP_CONFIG: GroupConfig[] = [
@@ -42,8 +48,13 @@ const GROUP_CONFIG: GroupConfig[] = [
     label: 'Products',
     href: '/shop/all',
     filter: 'sys.contentType.sys.id:productFinishedGoods',
-    card: (hit: ProductGridHit) => (
-      <ProductCard aspectRatio="1:1" key={hit.objectID} product={transformProductHit(hit)} />
+    card: ({ hit, sendEvent }) => (
+      <ProductCard
+        aspectRatio="1:1"
+        key={hit.objectID}
+        product={transformProductHit(hit)}
+        onClick={() => sendEvent('click', hit, 'Product Clicked')}
+      />
     ),
   },
   {
@@ -51,8 +62,13 @@ const GROUP_CONFIG: GroupConfig[] = [
     label: 'Accessories',
     href: '/shop/accessories',
     filter: 'sys.contentType.sys.id:productPartsAndAccessories',
-    card: (hit: ProductGridHit) => (
-      <ProductCard aspectRatio="1:1" key={hit.objectID} product={transformProductHit(hit)} />
+    card: ({ hit, sendEvent }) => (
+      <ProductCard
+        aspectRatio="1:1"
+        key={hit.objectID}
+        product={transformProductHit(hit)}
+        onClick={() => sendEvent('click', hit, 'Accessory Clicked')}
+      />
     ),
   },
   {
@@ -60,14 +76,26 @@ const GROUP_CONFIG: GroupConfig[] = [
     label: 'Recipes',
     href: '/recipes',
     filter: 'sys.contentType.sys.id:recipe',
-    card: (hit: PostGridHit) => <PostGridPostCard key={hit.objectID} {...transformPostHit(hit)} />,
+    card: ({ hit, sendEvent }) => (
+      <PostGridPostCard
+        key={hit.objectID}
+        {...transformPostHit(hit)}
+        onClick={() => sendEvent('click', hit, 'Recipe Clicked')}
+      />
+    ),
   },
   {
     key: 'features',
     label: 'Features',
     href: '/features',
     filter: 'sys.contentType.sys.id:feature',
-    card: (hit: PostGridHit) => <PostGridPostCard key={hit.objectID} {...transformPostHit(hit)} />,
+    card: ({ hit, sendEvent }) => (
+      <PostGridPostCard
+        key={hit.objectID}
+        {...transformPostHit(hit)}
+        onClick={() => sendEvent('click', hit, 'Feature Clicked')}
+      />
+    ),
   },
 ];
 
@@ -88,7 +116,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
       </div>
       <Hits
         classNames={{ list: 'grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8' }}
-        hitComponent={({ hit }: { hit: ProductGridHit | PostGridHit }) => group.card(hit)}
+        hitComponent={(props) => group.card(props)}
       />
     </div>
   );
