@@ -8,7 +8,7 @@ import { ProductSupportLink } from '~/contentful/schema';
 export async function ProductSupportLinks({ title, links }: ProductSupportLink) {
   const iconMap = (link: (typeof links)[number]) => {
     switch (link.fields.supportType) {
-      case 'register':
+      case 'register-product':
         return <SquarePen size={40} strokeWidth={1} />;
 
       case 'warranty':
