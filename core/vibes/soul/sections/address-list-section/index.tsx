@@ -153,7 +153,7 @@ export function AddressListSection<A extends Address, F extends Field>({
 
   return (
     <section className="w-full">
-      <header className="border-contrast-200 mb-4 border-b border-[var(--address-list-section-border,hsl(var(--contrast-100)))] pb-6">
+      <header className="border-contrast-200 mb-4 border-b pb-6">
         <div className="mb-4 flex items-center justify-between">
           <Title>{title}</Title>
           {!showNewAddressForm && (
@@ -165,7 +165,7 @@ export function AddressListSection<A extends Address, F extends Field>({
       </header>
       <div className="grid">
         {showNewAddressForm && (
-          <div className="border-contrast-200 border-b border-[var(--address-list-section-border,hsl(var(--contrast-100)))] py-6">
+          <div className="border-contrast-200 border-b py-6">
             <div className="max-w-[480px] space-y-4">
               <DynamicForm
                 action={(_prevState, formData) => {
@@ -220,10 +220,7 @@ export function AddressListSection<A extends Address, F extends Field>({
           });
 
           return (
-            <div
-              className="border-contrast-200 border-b border-[var(--address-list-section-border,hsl(var(--contrast-100)))] py-6"
-              key={address.id}
-            >
+            <div className="border-contrast-200 border-b py-6" key={address.id}>
               {activeAddressIds.includes(address.id) ? (
                 <div className="max-w-[480px] space-y-4">
                   <DynamicForm
@@ -319,7 +316,7 @@ function Title({ children }: { children: ReactNode }) {
   const { pending } = useFormStatus();
 
   return (
-    <h1 className="font-[family-name:var(--address-list-section-title-font-family,var(--font-family-heading))] text-4xl text-[var(--address-list-section-title,hsl(var(--foreground)))]">
+    <h1 className="text-2xl leading-[120%] @2xl:text-4xl">
       {children}
       {pending && (
         <span className="ml-2">
@@ -344,18 +341,20 @@ function AddressPreview({
 
   return (
     <div className="flex gap-10 font-[family-name:var(--address-list-section-content-font-family,var(--font-family-body))]">
-      <div className="text-sm text-[var(--address-list-section-info,hsl(var(--contrast-500)))]">
-        <p className="font-bold text-[var(--address-list-section-name,hsl(var(--foreground)))]">
+      <div>
+        <p className="font-medium">
           {address.firstName} {address.lastName}
         </p>
-        <p>{address.company}</p>
-        <p>{address.address1}</p>
-        <p>{address.address2}</p>
-        <p>
-          {address.city}, {address.stateOrProvince} {address.postalCode}
-        </p>
-        <p>{countryName}</p>
-        <p>{address.phone}</p>
+        <div className="text-contrast-400 mt-2">
+          <p>{address.company}</p>
+          <p>{address.address1}</p>
+          <p>{address.address2}</p>
+          <p>
+            {address.city}, {address.stateOrProvince} {address.postalCode}
+          </p>
+          <p>{countryName}</p>
+          <p>{address.phone}</p>
+        </div>
       </div>
       <div>{isDefault && <Badge>Default</Badge>}</div>
     </div>
