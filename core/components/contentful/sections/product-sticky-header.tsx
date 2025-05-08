@@ -79,10 +79,8 @@ export const ProductStickyHeader = forwardRef<HTMLDivElement, ProductStickyHeade
     return (
       <header
         className={clsx(
-          'bg-contrast-100 hidden w-full items-center justify-between px-6 py-3 sm:flex @xl:px-12',
-          showStickyHeader
-            ? 'sticky top-[var(--site-header-height,0px)] left-0 z-10 shadow-md'
-            : 'relative z-0',
+          'bg-contrast-100 fixed top-[var(--site-header-height,0px)] left-0 z-10 hidden w-full items-center justify-between px-6 py-3 shadow-md transition-opacity sm:flex @xl:px-12',
+          showStickyHeader ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
         ref={ref}
       >
@@ -110,13 +108,13 @@ export const ProductStickyHeader = forwardRef<HTMLDivElement, ProductStickyHeade
           >
             Features
           </a>
-          <a
+          {/* <a
             className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
             href="#reviews"
             style={{ scrollBehavior: 'smooth' }}
           >
             Reviews
-          </a>
+          </a> */}
         </nav>
         <div className="flex items-center">
           <Stream
