@@ -477,5 +477,14 @@
       "nextProducts": "Next products",
       "previousProducts": "Previous products"
     }
+  },
+  "Policies": {
+    "Layout": {
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "cookiePolicy": "Cookie Policy",
+      "accessibility": "Accessibility",
+      "title": "Policies"
+    }
   }
 }

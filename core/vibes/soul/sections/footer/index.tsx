@@ -361,7 +361,7 @@ export const Footer = forwardRef(async function Footer(
           <div className="flex flex-col items-start gap-4 @4xl:flex-row @4xl:items-center @4xl:gap-8">
             <Link
               className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
-              href="/privacy-policy"
+              href="/policies/privacy-policy"
             >
               Privacy Policy
             </Link>
