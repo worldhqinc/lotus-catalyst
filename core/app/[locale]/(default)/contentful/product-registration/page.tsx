@@ -2,6 +2,7 @@ import { Checkbox } from '@/vibes/soul/form/checkbox';
 import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
 import { Button } from '@/vibes/soul/primitives/button';
+import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { Link } from '~/components/link';
 
 export default function ProductRegistration() {
@@ -12,6 +13,7 @@ export default function ProductRegistration() {
           <h1 className="font-heading text-4xl uppercase md:text-6xl">Product Registration</h1>
         </div>
       </div>
+
       <div className="bg-contrast-100 px-4 py-8 md:py-16">
         <div className="mx-auto max-w-2xl rounded bg-white p-4 md:p-8">
           <p>
@@ -90,6 +92,7 @@ export default function ProductRegistration() {
               </p>
             </div>
           </form>
+          <CookiePreferencesNotice />
         </div>
       </div>
     </div>

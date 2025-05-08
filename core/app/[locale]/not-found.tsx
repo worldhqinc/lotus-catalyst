@@ -1,10 +1,11 @@
 import { getTranslations } from 'next-intl/server';
+import type { SearchParams } from 'nuqs/server';
 
 import { NotFound as NotFoundSection } from '@/vibes/soul/sections/not-found';
-import type { SearchParams } from 'nuqs/server';
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { Footer } from '~/components/footer';
 import { Header } from '~/components/header';
+
 import { getPageBySlug } from './(default)/contentful/[...rest]/page-data';
 
 export default async function NotFound({ searchParams }: { searchParams: SearchParams }) {
@@ -12,6 +13,7 @@ export default async function NotFound({ searchParams }: { searchParams: SearchP
 
   try {
     const page = await getPageBySlug('pageStandard', ['not-found']);
+
     return (
       <>
         <Header />

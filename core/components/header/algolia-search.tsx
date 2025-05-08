@@ -52,8 +52,8 @@ const GROUP_CONFIG: GroupConfig[] = [
       <ProductCard
         aspectRatio="1:1"
         key={hit.objectID}
-        product={transformProductHit(hit)}
         onClick={() => sendEvent('click', hit, 'Product Clicked')}
+        product={transformProductHit(hit)}
       />
     ),
   },
@@ -66,8 +66,8 @@ const GROUP_CONFIG: GroupConfig[] = [
       <ProductCard
         aspectRatio="1:1"
         key={hit.objectID}
-        product={transformProductHit(hit)}
         onClick={() => sendEvent('click', hit, 'Accessory Clicked')}
+        product={transformProductHit(hit)}
       />
     ),
   },

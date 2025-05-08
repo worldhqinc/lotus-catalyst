@@ -45,8 +45,8 @@ function InfiniteHits() {
           <ProductCard
             aspectRatio="1:1"
             key={`${hit.objectID}-${index}`}
-            product={transformProductHit(hit)}
             onClick={() => sendEvent('click', hit, 'Product Clicked')}
+            product={transformProductHit(hit)}
           />
         ))}
       </div>
