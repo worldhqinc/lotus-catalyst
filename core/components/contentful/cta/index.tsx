@@ -17,7 +17,7 @@ export default function ContentfulCta({ cta }: ContentfulCtaProps) {
 
   const { text } = cta.fields;
 
-  const linkHref = getLinkHref(cta);
+  const linkHref = getLinkHref(cta.fields);
 
   return (
     <ButtonLink

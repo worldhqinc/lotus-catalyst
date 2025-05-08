@@ -4,21 +4,7 @@ import { cta } from '~/contentful/schema';
 import { getLinkHref } from '~/lib/utils';
 
 export function Cta(fields: cta['fields']) {
-  const href = getLinkHref({
-    fields,
-    sys: {
-      type: 'Entry',
-      space: { sys: { type: 'Link', linkType: 'Space', id: '' } },
-      id: '',
-      createdAt: '',
-      updatedAt: '',
-      environment: { sys: { type: 'Link', linkType: 'Environment', id: '' } },
-      revision: 1,
-      contentType: { sys: { type: 'Link', linkType: 'ContentType', id: 'cta' } },
-      locale: 'en-US',
-    },
-    metadata: { tags: [], concepts: [] },
-  });
+  const href = getLinkHref(fields);
 
   if (!href) return null;
 

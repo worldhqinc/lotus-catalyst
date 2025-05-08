@@ -24,7 +24,7 @@ import { HelpfulLinks } from './helpful-links';
 import { cartLineItemActionFormDataSchema } from './schema';
 import { ShippingForm, ShippingFormState } from './shipping-form';
 
-import { CartEmptyState } from '.';
+import { CartSkeleton } from '.';
 
 type Action<State, Payload> = (state: Awaited<State>, payload: Payload) => State | Promise<State>;
 
@@ -119,7 +119,6 @@ interface Shipping {
 export interface CartProps<LineItem extends CartLineItem> {
   title?: string;
   summaryTitle?: string;
-  emptyState?: CartEmptyState;
   lineItemAction: Action<CartState<LineItem>, FormData>;
   checkoutAction: Action<SubmissionResult | null, FormData>;
   checkoutLabel?: string;
@@ -130,12 +129,6 @@ export interface CartProps<LineItem extends CartLineItem> {
   couponCode?: CouponCode;
   shipping?: Shipping;
 }
-
-const defaultEmptyState = {
-  title: 'Your cart is empty',
-  subtitle: 'Add some products to get started.',
-  cta: { label: 'Continue shopping', href: '#' },
-};
 
 // eslint-disable-next-line valid-jsdoc
 /**
@@ -172,7 +165,6 @@ export function CartClient<LineItem extends CartLineItem>({
   lineItemAction,
   checkoutAction,
   checkoutLabel = 'Checkout',
-  emptyState = defaultEmptyState,
   summaryTitle,
   shipping,
 }: CartProps<LineItem>) {
@@ -230,7 +222,7 @@ export function CartClient<LineItem extends CartLineItem>({
   const optimisticQuantity = optimisticLineItems.reduce((total, item) => total + item.quantity, 0);
 
   if (optimisticQuantity === 0) {
-    return <CartEmptyState {...emptyState} />;
+    return <CartSkeleton title={title} summaryTitle={summaryTitle} />;
   }
 
   return (
@@ -296,13 +288,15 @@ export function CartClient<LineItem extends CartLineItem>({
             {optimisticLineItems.map((lineItem) => (
               <li className="@container flex items-start gap-x-5 gap-y-4" key={lineItem.id}>
                 <div className="relative aspect-square w-full max-w-24 overflow-hidden rounded-xl bg-[var(--cart-image-background,hsl(var(--contrast-100)))] focus-visible:ring-2 focus-visible:ring-[var(--cart-focus,hsl(var(--primary)))] focus-visible:ring-offset-4 focus-visible:outline-hidden">
-                  <Image
-                    alt={lineItem.image.alt}
-                    className="object-cover"
-                    fill
-                    sizes="(min-width: 28rem) 9rem, (min-width: 24rem) 6rem, 100vw"
-                    src={lineItem.image.src}
-                  />
+                  {lineItem.image.src ? (
+                    <Image
+                      alt={lineItem.image.alt}
+                      className="object-cover"
+                      fill
+                      sizes="(min-width: 28rem) 9rem, (min-width: 24rem) 6rem, 100vw"
+                      src={lineItem.image.src}
+                    />
+                  ) : null}
                 </div>
                 <div className="flex grow flex-col flex-wrap justify-between gap-y-2 @xl:flex-row">
                   <div className="flex w-full flex-1 flex-col @xl:w-1/2 @xl:pr-4">

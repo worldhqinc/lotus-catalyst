@@ -4115,7 +4115,7 @@
         "id": "heroSection",
         "type": "ContentType",
         "createdAt": "2025-04-21T14:33:30.959Z",
-        "updatedAt": "2025-05-07T17:14:06.076Z",
+        "updatedAt": "2025-05-08T01:28:52.247Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4123,8 +4123,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 6,
-        "publishedAt": "2025-05-07T17:14:06.076Z",
+        "publishedVersion": 8,
+        "publishedAt": "2025-05-08T01:28:52.247Z",
         "firstPublishedAt": "2025-04-21T14:35:44.484Z",
         "createdBy": {
           "sys": {
@@ -4140,8 +4140,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 3,
-        "version": 7,
+        "publishedCounter": 4,
+        "version": 9,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -4192,6 +4192,23 @@
           ],
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "cta",
+          "name": "CTA",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "linkContentType": [
+                "cta"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Entry"
         }
       ]
     },

@@ -2686,6 +2686,46 @@ export const heroSectionFieldsSchema = z.object({
   heroTitle: z.string(),
   heroTagline: z.string(),
   type: z.string().optional().nullable(),
+  cta: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional()
+    .nullable(),
 });
 
 export const heroSectionSchema = z.object({

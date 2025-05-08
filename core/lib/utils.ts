@@ -18,7 +18,7 @@ export function ensureImageUrl(url: string) {
   return url;
 }
 
-export function getLinkHref({ fields }: cta) {
+export function getLinkHref(fields: cta['fields']) {
   let linkHref = '#';
 
   const { internalReference, externalLink } = fields;
