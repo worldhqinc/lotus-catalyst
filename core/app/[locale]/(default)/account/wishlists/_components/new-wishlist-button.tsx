@@ -41,7 +41,7 @@ export const NewWishlistButton = ({ modal, variant = 'primary', label }: Props) 
       isOpen={isOpen}
       setOpen={setOpen}
       trigger={
-        <Button size="small" variant={variant}>
+        <Button size="medium" variant={variant}>
           {label}
         </Button>
       }

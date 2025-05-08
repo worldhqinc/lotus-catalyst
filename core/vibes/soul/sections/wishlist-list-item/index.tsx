@@ -47,7 +47,7 @@ export const WishlistListItem = ({
         const { name, visibility, items, totalItems, href } = wishlist;
 
         return (
-          <div className={clsx('@container my-4 flex flex-col', className)}>
+          <div className={clsx('@container flex flex-col py-6', className)}>
             <div className="flex flex-1 flex-col justify-between @sm:flex-row @sm:items-center">
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
@@ -101,7 +101,7 @@ function WishlistListItemItems({
         }
 
         return (
-          <div className="my-8 flex flex-1 gap-4 overflow-hidden [mask-image:linear-gradient(to_right,_black_70%,_transparent_100%)]">
+          <div className="mt-6 flex flex-1 gap-4 overflow-hidden [mask-image:linear-gradient(to_right,_black_70%,_transparent_100%)]">
             {items.map(({ product }) => (
               <div className="min-w-36" key={product.id}>
                 <ProductCard aspectRatio="1:1" product={product} />
@@ -143,7 +143,7 @@ function WishlistListItemItemsSkeleton({
   placeholderCount?: number;
 }) {
   return (
-    <div className="my-8 flex flex-1 gap-4 overflow-hidden [mask-image:linear-gradient(to_right,_black_70%,_transparent_100%)]">
+    <div className="mt-6 flex flex-1 gap-4 overflow-hidden [mask-image:linear-gradient(to_right,_black_70%,_transparent_100%)]">
       {Array.from({ length: placeholderCount }).map((_, index) => (
         <div className={clsx('min-w-36', className)} key={index}>
           <ProductCardSkeleton aspectRatio="1:1" />

@@ -41,13 +41,13 @@ export function AccountSettingsSection({
 }: AccountSettingsSectionProps) {
   return (
     <section className="@container w-full">
-      <header className="border-b-contrast-200 mb-4 border-b">
+      <header className="border-b-contrast-200 mb-6 border-b">
         <div className="mb-6 flex min-h-[42px] items-center justify-between">
           <h1 className="text-2xl leading-[120%] @2xl:text-4xl">{title}</h1>
         </div>
       </header>
       <div className="flex flex-col gap-y-24 @xl:flex-row">
-        <div className="my-4 flex w-full flex-col @xl:max-w-lg">
+        <div className="flex w-full flex-col @xl:max-w-lg">
           <div className="pb-12">
             <UpdateAccountForm
               account={account}
