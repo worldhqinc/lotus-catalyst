@@ -93,7 +93,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
   return (
     <form
       action={formAction}
-      className="flex max-w-lg flex-col gap-6 md:gap-4"
+      className="flex flex-col gap-6 md:gap-4"
       id="contact-form"
       noValidate
       ref={formRef}
