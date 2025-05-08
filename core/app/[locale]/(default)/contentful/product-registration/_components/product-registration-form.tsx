@@ -20,11 +20,10 @@ interface FormState {
 }
 
 interface Props {
-  productTypeOptions: Array<{ label: string; value: string }>;
-  modelNumberOptions: Array<{ label: string; value: string }>;
+  productOptions: Array<{ label: string; value: string }>;
 }
 
-export function ProductRegistrationForm({ productTypeOptions, modelNumberOptions }: Props) {
+export function ProductRegistrationForm({ productOptions }: Props) {
   const initialState: FormState = {
     errors: null,
     success: false,
@@ -54,7 +53,7 @@ export function ProductRegistrationForm({ productTypeOptions, modelNumberOptions
             </div>
             <div className="flex flex-col gap-4 md:flex-row">
               <div className="flex flex-1 flex-col gap-1">
-                <Label htmlFor="firstName">First Name *</Label>
+                <Label htmlFor="firstName">First name *</Label>
                 <Input
                   defaultValue={formState.formData?.firstName ?? ''}
                   errors={formState.errors?.firstName}
@@ -64,7 +63,7 @@ export function ProductRegistrationForm({ productTypeOptions, modelNumberOptions
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1">
-                <Label htmlFor="lastName">Last Name *</Label>
+                <Label htmlFor="lastName">Last name *</Label>
                 <Input
                   defaultValue={formState.formData?.lastName ?? ''}
                   errors={formState.errors?.lastName}
@@ -75,7 +74,7 @@ export function ProductRegistrationForm({ productTypeOptions, modelNumberOptions
               </div>
             </div>
             <div className="mt-4 flex flex-col gap-1">
-              <Label htmlFor="email">Email Address *</Label>
+              <Label htmlFor="email">Email address *</Label>
               <Input
                 defaultValue={formState.formData?.email ?? ''}
                 errors={formState.errors?.email}
@@ -87,31 +86,17 @@ export function ProductRegistrationForm({ productTypeOptions, modelNumberOptions
           </div>
           <div>
             <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">Your Product</h2>
-            <div className="flex flex-col gap-4 md:flex-row">
-              <div className="flex flex-1 flex-col gap-1">
-                <Label htmlFor="productType">Product Type *</Label>
-                <Select
-                  aria-label="Select a Product Type"
-                  className="flex-1"
-                  defaultValue={formState.formData?.productType ?? ''}
-                  errors={formState.errors?.productType}
-                  key="productTypeSelect"
-                  name="productType"
-                  options={productTypeOptions}
-                />
-              </div>
-              <div className="flex flex-1 flex-col gap-1">
-                <Label htmlFor="modelNumber">Model Number *</Label>
-                <Select
-                  aria-label="Select a Model Number"
-                  className="flex-1"
-                  defaultValue={formState.formData?.modelNumber ?? ''}
-                  errors={formState.errors?.modelNumber}
-                  key="modelNumberSelect"
-                  name="modelNumber"
-                  options={modelNumberOptions}
-                />
-              </div>
+            <div className="flex flex-1 flex-col gap-1">
+              <Select
+                aria-label="Select a product"
+                className="flex-1"
+                defaultValue={formState.formData?.product ?? ''}
+                errors={formState.errors?.product}
+                key="productSelect"
+                name="product"
+                options={productOptions}
+                placeholder="Select a product"
+              />
             </div>
           </div>
           <div>

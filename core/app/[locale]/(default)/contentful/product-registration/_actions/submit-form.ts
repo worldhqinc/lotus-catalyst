@@ -5,11 +5,10 @@ import { z } from 'zod';
 import { klaviyoNewsletterSignup, klaviyoProductRegistrationSubmission } from '~/lib/klaviyo';
 
 const schema = z.object({
-  firstName: z.string().min(1, 'First Name is required'),
-  lastName: z.string().min(1, 'Last Name is required'),
-  email: z.string().email('Please enter a valid Email Address'),
-  productType: z.string().refine((val) => val !== 'null', 'Please select a Product Type'),
-  modelNumber: z.string().refine((val) => val !== 'null', 'Please select a Model Number'),
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  email: z.string().email('Please enter a valid Email address'),
+  product: z.string().refine((val) => val !== 'null', 'Please select a Product'),
   subscribe: z.string().optional(),
 });
 
@@ -24,8 +23,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     firstName: formData.get('firstName'),
     lastName: formData.get('lastName'),
     email: formData.get('email'),
-    productType: formData.get('productType'),
-    modelNumber: formData.get('modelNumber'),
+    product: formData.get('productType'),
     subscribe: formData.get('subscribe'),
   });
 
