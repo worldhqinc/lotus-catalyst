@@ -3399,7 +3399,7 @@
         "id": "inspirationCard",
         "type": "ContentType",
         "createdAt": "2025-04-03T18:16:56.554Z",
-        "updatedAt": "2025-04-21T02:55:51.778Z",
+        "updatedAt": "2025-05-08T23:03:26.936Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3407,8 +3407,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 21,
-        "publishedAt": "2025-04-21T02:55:51.778Z",
+        "publishedVersion": 31,
+        "publishedAt": "2025-05-08T23:03:26.936Z",
         "firstPublishedAt": "2025-04-03T18:16:56.910Z",
         "createdBy": {
           "sys": {
@@ -3424,8 +3424,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 11,
-        "version": 22,
+        "publishedCounter": 16,
+        "version": 32,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3451,17 +3451,45 @@
           "omitted": false
         },
         {
+          "id": "subtitle",
+          "name": "Subtitle",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
           "id": "contentReference",
           "name": "Content Reference",
           "type": "Link",
           "localized": false,
-          "required": true,
+          "required": false,
           "validations": [
             {
               "linkContentType": [
                 "tutorial",
                 "recipe",
                 "feature"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Entry"
+        },
+        {
+          "id": "cta",
+          "name": "CTA",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "linkContentType": [
+                "cta"
               ]
             }
           ],
@@ -4843,7 +4871,7 @@
         "id": "heroBanner",
         "type": "ContentType",
         "createdAt": "2025-04-21T23:44:18.865Z",
-        "updatedAt": "2025-04-21T23:45:16.956Z",
+        "updatedAt": "2025-05-08T20:06:20.591Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4851,8 +4879,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 2,
-        "publishedAt": "2025-04-21T23:45:16.956Z",
+        "publishedVersion": 10,
+        "publishedAt": "2025-05-08T20:06:20.591Z",
         "firstPublishedAt": "2025-04-21T23:45:16.956Z",
         "createdBy": {
           "sys": {
@@ -4868,8 +4896,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 1,
-        "version": 3,
+        "publishedCounter": 5,
+        "version": 11,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -4944,7 +4972,7 @@
           "name": "Primary Call to Action",
           "type": "Link",
           "localized": false,
-          "required": true,
+          "required": false,
           "validations": [
             {
               "linkContentType": [
@@ -5000,6 +5028,44 @@
           "name": "Review Rating",
           "type": "Integer",
           "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "variant",
+          "name": "Variant",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "in": [
+                "left-aligned"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "secondaryTitle",
+          "name": "Secondary Title",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "secondaryDescription",
+          "name": "Secondary Description",
+          "type": "Symbol",
+          "localized": true,
           "required": false,
           "validations": [
           ],
@@ -5267,7 +5333,7 @@
         "id": "cardSection",
         "type": "ContentType",
         "createdAt": "2025-04-21T23:44:19.531Z",
-        "updatedAt": "2025-04-22T00:09:07.975Z",
+        "updatedAt": "2025-05-08T20:33:05.883Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -5275,8 +5341,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 4,
-        "publishedAt": "2025-04-22T00:09:07.975Z",
+        "publishedVersion": 8,
+        "publishedAt": "2025-05-08T20:33:05.883Z",
         "firstPublishedAt": "2025-04-21T23:45:02.719Z",
         "createdBy": {
           "sys": {
@@ -5292,8 +5358,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 2,
-        "version": 5,
+        "publishedCounter": 4,
+        "version": 9,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -5331,7 +5397,7 @@
         },
         {
           "id": "featuresCard",
-          "name": "Features Card",
+          "name": "1st Card",
           "type": "Link",
           "localized": false,
           "required": true,
@@ -5348,7 +5414,7 @@
         },
         {
           "id": "recipesCard",
-          "name": "Recipes Card",
+          "name": "2nd Card",
           "type": "Link",
           "localized": false,
           "required": true,
@@ -5362,6 +5428,22 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Entry"
+        },
+        {
+          "id": "variant",
+          "name": "Variant",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "in": [
+                "simple"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false
         }
       ],
       "metadata": {

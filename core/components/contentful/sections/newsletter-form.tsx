@@ -18,7 +18,7 @@ export function NewsletterForm({
         <div className="mx-auto max-w-md">
           <InlineEmailForm
             action={subscribe}
-            inputClassName="h-16 w-full bg-transparent pr-16 pl-6 text-white placeholder-white placeholder:font-normal focus:outline-none"
+            inputClassName="h-16 w-full bg-transparent pr-16 text-white placeholder-white placeholder:font-normal focus:outline-none"
             inputContainerClassName="bg-transparent"
             placeholder={inputPlaceholder || 'Enter your email'}
           />

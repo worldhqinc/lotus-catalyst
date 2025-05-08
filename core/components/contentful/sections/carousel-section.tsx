@@ -1,7 +1,6 @@
-import { Button } from '@/vibes/soul/primitives/button';
+import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
-import { ProductCarousel } from '~/components/contentful/carousels/alt-product-carousel';
-import { Link } from '~/components/link';
+import { AltProductCarousel } from '~/components/contentful/carousels/alt-product-carousel';
 import { carouselProductSchema, type carouselSection, ctaSchema } from '~/contentful/schema';
 
 export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSection['fields']) {
@@ -9,7 +8,7 @@ export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSe
   const validCarousel = carouselProductSchema.parse(carousel);
 
   return (
-    <SectionLayout containerClassName="bg-gray-50 py-16" containerSize="full">
+    <SectionLayout className="bg-contrast-100" containerClassName="py-16">
       <div className="mb-8 flex flex-col items-center">
         <h2 className="font-heading text-icon-primary max-w-4xl text-center text-4xl uppercase md:text-6xl">
           {heading}
@@ -18,14 +17,18 @@ export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSe
           <p className="text-icon-secondary mt-8 max-w-xl text-center">{subtitle}</p>
         ) : null}
       </div>
-      <ProductCarousel carousel={validCarousel} />
-      {validCta && (
-        <div className="mt-8 text-center">
-          <Link href={validCta.fields.externalLink || ''} passHref>
-            <Button>{validCta.fields.text}</Button>
-          </Link>
-        </div>
-      )}
+      <AltProductCarousel
+        carousel={validCarousel}
+        cta={
+          validCta && (
+            <div className="mt-8 text-center">
+              <ButtonLink href={validCta.fields.externalLink || ''}>
+                {validCta.fields.text}
+              </ButtonLink>
+            </div>
+          )
+        }
+      />
     </SectionLayout>
   );
 }

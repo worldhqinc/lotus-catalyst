@@ -2,7 +2,9 @@
 
 import { clsx } from 'clsx';
 import { ArrowRight } from 'lucide-react';
+import { ReactNode } from 'react';
 
+import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import {
   Carousel,
   CarouselContent,
@@ -41,7 +43,13 @@ function CarouselPagination({ className }: { className?: string }) {
   );
 }
 
-export function ProductCarousel({ carousel }: { carousel: carouselProduct }) {
+export function AltProductCarousel({
+  carousel,
+  cta,
+}: {
+  carousel: carouselProduct;
+  cta: ReactNode;
+}) {
   const productEntries = carousel.fields.products;
   const items = productEntries.map((entry) => {
     const parsed = productFinishedGoodsSchema.parse(entry);
@@ -69,7 +77,7 @@ export function ProductCarousel({ carousel }: { carousel: carouselProduct }) {
               >
                 <div className="flex flex-col items-start gap-3">
                   <Link aria-label={`View ${product.title}`} className="w-full" href={product.href}>
-                    <div className="relative aspect-square w-full overflow-hidden rounded-xl border-b border-gray-200 bg-gray-100">
+                    <div className="border-contrast-200 relative aspect-square w-full border-b">
                       {product.image && (
                         <Image
                           alt={product.image.alt}
@@ -80,15 +88,20 @@ export function ProductCarousel({ carousel }: { carousel: carouselProduct }) {
                       )}
                     </div>
                   </Link>
-                  <div className="flex w-full items-center justify-between">
+                  <div className="flex w-full items-center justify-between pt-2">
                     <span className="text-icon-primary truncate text-lg font-medium">
                       {product.title}
                     </span>
-                    <Link aria-label={`View ${product.title}`} href={product.href}>
-                      <div className="border-contrast-200 text-icon-primary rounded-full border p-3">
-                        <ArrowRight className="h-4 w-4" />
-                      </div>
-                    </Link>
+                    <ButtonLink
+                      aria-label={`View ${product.title}`}
+                      className="bg-transparent"
+                      href={product.href}
+                      shape="circle"
+                      size="medium"
+                      variant="tertiary"
+                    >
+                      <ArrowRight className="size-6" />
+                    </ButtonLink>
                   </div>
                   {product.subtitle !== undefined && (
                     <p className="text-icon-secondary w-full truncate text-sm">
@@ -100,7 +113,8 @@ export function ProductCarousel({ carousel }: { carousel: carouselProduct }) {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <div className="mt-8">
+          <div className="mt-8 flex justify-between gap-4">
+            {cta}
             <CarouselPagination />
           </div>
         </Carousel>

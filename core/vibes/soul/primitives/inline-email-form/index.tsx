@@ -85,13 +85,14 @@ export function InlineEmailForm({
         <div className="absolute top-1/2 right-0 -translate-y-1/2 pr-2">
           <Button
             aria-label={submitLabel}
+            className="bg-transparent"
             loading={isPending}
             shape="circle"
             size="small"
             type="submit"
             variant="tertiary"
           >
-            <ArrowRight size={20} strokeWidth={1.5} />
+            <ArrowRight className="text-white" size={20} strokeWidth={1.5} />
           </Button>
         </div>
       </div>
