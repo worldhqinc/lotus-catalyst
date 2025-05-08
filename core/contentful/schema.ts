@@ -4101,6 +4101,7 @@ export type productSupportLinks = z.infer<typeof productSupportLinksSchema>;
 // Schema for supportLink
 export const supportLinkFieldsSchema = z.object({
   supportType: z.string().optional().nullable(),
+  subHeading: z.string().optional().nullable(),
   title: z.string(),
   supportPageLink: z.object({
     metadata: z.object({

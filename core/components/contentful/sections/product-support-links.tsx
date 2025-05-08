@@ -1,7 +1,6 @@
 import { CircleHelp, FileText, Heater, Package2, RefreshCw, SquarePen } from 'lucide-react';
 
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
-import { auth } from '~/auth';
 import { Link } from '~/components/link';
 import {
   pageStandardFieldsSchema,
@@ -10,7 +9,7 @@ import {
   supportLinkSchema,
 } from '~/contentful/schema';
 
-export async function ProductSupportLinks({ title, links }: productSupportLinks['fields']) {
+export function ProductSupportLinks({ title, links }: productSupportLinks['fields']) {
   const iconMap = (link: (typeof links)[number]) => {
     switch (link.fields.supportType) {
       case 'register-product':
@@ -35,8 +34,6 @@ export async function ProductSupportLinks({ title, links }: productSupportLinks[
         return <CircleHelp size={40} strokeWidth={1} />;
     }
   };
-
-  const session = await auth();
 
   return (
     <SectionLayout>
@@ -63,9 +60,9 @@ export async function ProductSupportLinks({ title, links }: productSupportLinks[
                 >
                   {supportPageLinkFields.title}
                 </Link>
-                {supportPageLinkFields.supportType === 'track-order' && (
-                  <p className="text-contrast-400">Account holders only</p>
-                )}
+                {supportPageLinkFields.subHeading ? (
+                  <p className="text-contrast-400">{supportPageLinkFields.subHeading}</p>
+                ) : null}
               </div>
             </li>
           );
