@@ -15,8 +15,6 @@ import { useRouter } from '~/i18n/routing';
 
 import { Button } from '../button';
 
-import { startTransition } from 'react';
-import { useRouter } from '~/i18n/routing';
 import { Compare } from './compare';
 
 export interface Product {
