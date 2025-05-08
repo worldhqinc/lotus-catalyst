@@ -28,7 +28,7 @@ export const singleProductCardTransformer = (
     subtitle: product.brand?.name ?? undefined,
     rating: product.reviewSummary.averageRating,
     sku: product.sku,
-    inventoryQuantity: product.inventoryQuantity > 0,
+    inStock: product.inventory.isInStock,
   };
 };
 
@@ -69,7 +69,7 @@ export function contentfulProductCardTransformer(
       price,
       badge: fields.productBadge ?? undefined,
       sku: fields.bcProductReference,
-      inStock: fields.inventoryQuantity > 0,
+      inStock: fields.inventoryQuantity ? fields.inventoryQuantity > 0 : false,
     };
   } else if (sysType === 'productFinishedGoods') {
     const product = productFinishedGoodsSchema.parse(entry);
