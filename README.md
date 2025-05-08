@@ -92,6 +92,8 @@ Learn more about Catalyst at [catalyst.dev](https://catalyst.dev).
 
 ## Contentful Schema
 
+IMPORTANT! Do not manually edit `schema.ts`!
+
 To manage your Contentful content model, Catalyst provides a set of scripts in `core/package.json`:
 
 - Export your content model from Contentful:

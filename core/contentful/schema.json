@@ -5490,7 +5490,7 @@
         "id": "featureItem",
         "type": "ContentType",
         "createdAt": "2025-04-21T23:44:20.444Z",
-        "updatedAt": "2025-04-21T23:45:12.912Z",
+        "updatedAt": "2025-05-08T18:45:43.437Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -5498,8 +5498,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 2,
-        "publishedAt": "2025-04-21T23:45:12.912Z",
+        "publishedVersion": 14,
+        "publishedAt": "2025-05-08T18:45:43.437Z",
         "firstPublishedAt": "2025-04-21T23:45:12.912Z",
         "createdBy": {
           "sys": {
@@ -5512,16 +5512,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 1,
-        "version": 3,
+        "publishedCounter": 7,
+        "version": 15,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/featureItem"
@@ -5568,6 +5568,28 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Asset"
+        },
+        {
+          "id": "products",
+          "name": "Products",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkContentType": [
+                  "productFinishedGoods"
+                ]
+              }
+            ],
+            "linkType": "Entry"
+          }
         }
       ],
       "metadata": {
@@ -6429,7 +6451,7 @@
         "id": "supportLink",
         "type": "ContentType",
         "createdAt": "2025-05-02T19:54:47.724Z",
-        "updatedAt": "2025-05-05T19:10:16.124Z",
+        "updatedAt": "2025-05-08T01:55:11.824Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -6437,8 +6459,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 13,
-        "publishedAt": "2025-05-05T19:10:16.124Z",
+        "publishedVersion": 17,
+        "publishedAt": "2025-05-08T01:55:11.824Z",
         "firstPublishedAt": "2025-05-02T19:54:47.962Z",
         "createdBy": {
           "sys": {
@@ -6451,16 +6473,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 7,
-        "version": 14,
+        "publishedCounter": 9,
+        "version": 18,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/supportLink"
@@ -6517,6 +6539,17 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Entry"
+        },
+        {
+          "id": "subHeading",
+          "name": "Sub Heading",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
         }
       ]
     },
