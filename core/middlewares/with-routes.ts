@@ -271,6 +271,11 @@ export const withRoutes: MiddlewareFactory = () => {
   return async (request, event) => {
     const locale = request.headers.get('x-bc-locale') ?? '';
 
+    // Redirects /policies to /policies/privacy-policy
+    if (request.nextUrl.pathname === '/policies/') {
+      return NextResponse.redirect(new URL('/policies/privacy-policy', request.url), { status: 301 });
+    }
+
     const { route, status } = await getRouteInfo(request, event);
 
     if (status === 'MAINTENANCE') {
