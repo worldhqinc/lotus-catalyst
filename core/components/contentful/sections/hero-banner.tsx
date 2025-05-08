@@ -1,8 +1,7 @@
-import { StarIcon } from 'lucide-react';
-
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
+import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
-import { ctaSchema, type heroBanner } from '~/contentful/schema';
+import { cta, ctaSchema, type heroBanner } from '~/contentful/schema';
 
 export function HeroBanner({
   title,
@@ -11,12 +10,12 @@ export function HeroBanner({
   video,
   primaryCta,
   secondaryCta,
-  reviewQuote,
-  reviewSource,
-  reviewRating,
+  variant,
+  secondaryTitle,
+  secondaryDescription,
 }: heroBanner['fields']) {
   const mediaUrl = video?.fields.file.url || image?.fields.file.url;
-  const primary = ctaSchema.parse(primaryCta);
+  const primary = primaryCta ? ctaSchema.parse(primaryCta) : null;
   const secondary = secondaryCta ? ctaSchema.parse(secondaryCta) : null;
 
   let mediaElement: React.ReactNode = null;
@@ -42,43 +41,73 @@ export function HeroBanner({
     );
   }
 
+  if (variant === 'left-aligned') {
+    return (
+      <SectionLayout className="bg-surface-image relative">
+        {mediaElement}
+        <div className="flex w-full flex-col gap-8 py-20">
+          <h1 className="text-surface-foreground font-heading max-w-xl text-4xl uppercase md:text-6xl">
+            {title}
+          </h1>
+          {description ? <p className="text-contrast-400 max-w-lg text-xl">{description}</p> : null}
+          <HeroBannerCTAs primary={primary} secondary={secondary} />
+          <HeroBannerSecondary
+            secondaryDescription={secondaryDescription}
+            secondaryTitle={secondaryTitle}
+          />
+        </div>
+      </SectionLayout>
+    );
+  }
+
   return (
-    <div className="bg-surface-image relative flex items-end overflow-hidden p-8 text-white">
+    <SectionLayout className="bg-surface-image relative">
       {mediaElement}
-      <div className="absolute inset-x-0 top-1/2 bottom-0 h-full w-full bg-gradient-to-b from-black/0 to-black" />
-      <div className="relative flex w-full flex-col gap-8 pt-40 md:flex-row md:items-end md:justify-between">
-        <div className="max-w-3xl">
-          <h1 className="font-heading mb-4 max-w-xl text-6xl uppercase md:text-8xl">{title}</h1>
-          {description ? <p className="mb-8 text-lg">{description}</p> : null}
-          <div className="flex gap-4">
-            <ButtonLink className="w-full md:w-auto" href={primary.fields.externalLink ?? ''}>
-              {primary.fields.text}
-            </ButtonLink>
-            {secondary && (
-              <ButtonLink
-                className="w-full md:w-auto"
-                href={secondary.fields.externalLink ?? ''}
-                variant="tertiary"
-              >
-                {secondary.fields.text}
-              </ButtonLink>
-            )}
-          </div>
-        </div>
-        <div className="flex flex-col md:items-end">
-          <div className="mb-2 flex gap-2">
-            {reviewRating
-              ? Array.from({ length: reviewRating }).map((_, index) => (
-                  <StarIcon className="text-background h-4 w-4" fill="currentColor" key={index} />
-                ))
-              : null}
-          </div>
-          {reviewQuote ? (
-            <blockquote className="mb-2 italic md:text-right">“{reviewQuote}”</blockquote>
-          ) : null}
-          {reviewSource ? <cite className="mb-4 block text-sm">— {reviewSource}</cite> : null}
-        </div>
+      <div className="flex w-full flex-col items-center justify-center gap-8 py-20">
+        <h1 className="text-surface-foreground font-heading max-w-4xl text-center text-4xl uppercase md:text-6xl">
+          {title}
+        </h1>
+        {description ? (
+          <p className="text-contrast-400 max-w-lg text-center text-xl">{description}</p>
+        ) : null}
+        <HeroBannerCTAs primary={primary} secondary={secondary} />
       </div>
+    </SectionLayout>
+  );
+}
+
+function HeroBannerCTAs({ primary, secondary }: { primary: cta | null; secondary: cta | null }) {
+  if (!primary && !secondary) return null;
+
+  return (
+    <div className="mt-4 flex flex-col items-center gap-4 md:flex-row">
+      {primary && (
+        <ButtonLink href={primary.fields.externalLink ?? ''}>{primary.fields.text}</ButtonLink>
+      )}
+      {secondary && (
+        <ButtonLink href={secondary.fields.externalLink ?? ''} variant="tertiary">
+          {secondary.fields.text}
+        </ButtonLink>
+      )}
+    </div>
+  );
+}
+
+function HeroBannerSecondary({
+  secondaryTitle,
+  secondaryDescription,
+}: {
+  secondaryTitle?: string | null;
+  secondaryDescription?: string | null;
+}) {
+  if (!secondaryTitle && !secondaryDescription) return null;
+
+  return (
+    <div className="flex flex-col items-start gap-4 pt-20">
+      {!!secondaryTitle && (
+        <h2 className="text-surface-foreground text-xl font-medium">{secondaryTitle}</h2>
+      )}
+      {!!secondaryDescription && <p className="text-contrast-400">{secondaryDescription}</p>}
     </div>
   );
 }

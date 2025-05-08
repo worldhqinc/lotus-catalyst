@@ -2256,43 +2256,87 @@ export type inspirationBento = z.infer<typeof inspirationBentoSchema>;
 // Schema for inspirationCard
 export const inspirationCardFieldsSchema = z.object({
   title: z.string(),
-  contentReference: z.object({
-    metadata: z.object({
-      tags: z.array(z.unknown()),
-      concepts: z.array(z.unknown()),
-    }),
-    sys: z.object({
-      space: z.object({
-        sys: z.object({
-          type: z.literal('Link'),
-          linkType: z.literal('Space'),
-          id: z.string(),
+  subtitle: z.string().optional().nullable(),
+  contentReference: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
         }),
       }),
-      id: z.string(),
-      type: z.literal('Entry'),
-      createdAt: z.string().datetime(),
-      updatedAt: z.string().datetime(),
-      environment: z.object({
-        sys: z.object({
-          id: z.string(),
-          type: z.literal('Link'),
-          linkType: z.literal('Environment'),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional()
+    .nullable(),
+  cta: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
         }),
       }),
-      publishedVersion: z.number().optional().nullable(),
-      revision: z.number(),
-      locale: z.string().optional().nullable(),
-      contentType: z.object({
-        sys: z.object({
-          type: z.literal('Link'),
-          linkType: z.literal('ContentType'),
-          id: z.string(),
-        }),
-      }),
-    }),
-    fields: z.record(z.string(), z.unknown()),
-  }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional()
+    .nullable(),
 });
 
 export const inspirationCardSchema = z.object({
@@ -3174,43 +3218,46 @@ export const heroBannerFieldsSchema = z.object({
     })
     .optional()
     .nullable(),
-  primaryCta: z.object({
-    metadata: z.object({
-      tags: z.array(z.unknown()),
-      concepts: z.array(z.unknown()),
-    }),
-    sys: z.object({
-      space: z.object({
-        sys: z.object({
-          type: z.literal('Link'),
-          linkType: z.literal('Space'),
-          id: z.string(),
+  primaryCta: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
         }),
       }),
-      id: z.string(),
-      type: z.literal('Entry'),
-      createdAt: z.string().datetime(),
-      updatedAt: z.string().datetime(),
-      environment: z.object({
-        sys: z.object({
-          id: z.string(),
-          type: z.literal('Link'),
-          linkType: z.literal('Environment'),
-        }),
-      }),
-      publishedVersion: z.number().optional().nullable(),
-      revision: z.number(),
-      locale: z.string().optional().nullable(),
-      contentType: z.object({
-        sys: z.object({
-          type: z.literal('Link'),
-          linkType: z.literal('ContentType'),
-          id: z.string(),
-        }),
-      }),
-    }),
-    fields: z.record(z.string(), z.unknown()),
-  }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional()
+    .nullable(),
   secondaryCta: z
     .object({
       metadata: z.object({
@@ -3254,6 +3301,9 @@ export const heroBannerFieldsSchema = z.object({
   reviewQuote: z.string().optional().nullable(),
   reviewSource: z.string().optional().nullable(),
   reviewRating: z.number().int().optional().nullable(),
+  variant: z.string().optional().nullable(),
+  secondaryTitle: z.string().optional().nullable(),
+  secondaryDescription: z.string().optional().nullable(),
 });
 
 export const heroBannerSchema = z.object({
@@ -3513,6 +3563,7 @@ export const cardSectionFieldsSchema = z.object({
     }),
     fields: z.record(z.string(), z.unknown()),
   }),
+  variant: z.string().optional().nullable(),
 });
 
 export const cardSectionSchema = z.object({
