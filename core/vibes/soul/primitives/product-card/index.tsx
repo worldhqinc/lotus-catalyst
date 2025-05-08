@@ -1,6 +1,7 @@
 'use client';
 
 import { clsx } from 'clsx';
+import { startTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
@@ -10,11 +11,10 @@ import { addToCartBySkuForm } from '~/app/[locale]/(default)/cart/_actions/add-t
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import NotifyBackInStock from '~/components/notify-back-in-stock';
+import { useRouter } from '~/i18n/routing';
 
 import { Button } from '../button';
 
-import { startTransition } from 'react';
-import { useRouter } from '~/i18n/routing';
 import { Compare } from './compare';
 
 export interface Product {
@@ -146,8 +146,9 @@ export function ProductCard({
               action={() => {
                 startTransition(async () => {
                   const formData = new FormData();
+
                   formData.append('sku', sku);
-                  addToCartBySkuForm(formData);
+                  await addToCartBySkuForm(formData);
                   router.refresh();
                 });
               }}

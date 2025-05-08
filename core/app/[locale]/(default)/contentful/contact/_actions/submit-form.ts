@@ -3,7 +3,7 @@
 import { isString } from '~/lib/utils';
 
 import { FormState } from '../_components/contact-form';
-import { TicketField } from '../page';
+import { TicketField } from '../form/page';
 
 export async function submitForm(fields: TicketField[], _prevState: FormState, formData: FormData) {
   const values: Record<string, string | null> = {};

@@ -1,16 +1,17 @@
 import { Metadata } from 'next';
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
+import { SearchParams } from 'nuqs/server';
 
 import { Cart as CartComponent, CartEmptyState } from '@/vibes/soul/sections/cart';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
+import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { getCartId } from '~/lib/cart';
 import { getPreferredCurrencyCode } from '~/lib/currency';
 import { exists } from '~/lib/utils';
 
-import { SearchParams } from 'nuqs/server';
-import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { getPageBySlug } from '../contentful/[...rest]/page-data';
+
 import { redirectToCheckout } from './_actions/redirect-to-checkout';
 import { updateCouponCode } from './_actions/update-coupon-code';
 import { updateLineItem } from './_actions/update-line-item';
@@ -55,6 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // eslint-disable-next-line complexity
 export default async function Cart({ params, searchParams }: Props) {
   const { locale } = await params;
+
   setRequestLocale(locale);
 
   const t = await getTranslations('Cart');

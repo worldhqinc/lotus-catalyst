@@ -222,7 +222,7 @@ export function CartClient<LineItem extends CartLineItem>({
   const optimisticQuantity = optimisticLineItems.reduce((total, item) => total + item.quantity, 0);
 
   if (optimisticQuantity === 0) {
-    return <CartSkeleton title={title} summaryTitle={summaryTitle} />;
+    return <CartSkeleton summaryTitle={summaryTitle} title={title} />;
   }
 
   return (
