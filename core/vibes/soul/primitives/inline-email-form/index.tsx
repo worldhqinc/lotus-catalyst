@@ -59,14 +59,18 @@ export function InlineEmailForm({
   const { errors = [] } = fields.email;
 
   return (
-    <form {...getFormProps(form)} action={formAction} className={clsx('space-y-2', className)}>
+    <form
+      {...getFormProps(form)}
+      action={formAction}
+      className={clsx('space-y-2', className)}
+      id="inline-email-form"
+    >
       <div
         className={clsx(
           'bg-background focus-within:border-primary relative border-b text-base transition-colors duration-200 focus:outline-hidden',
           errors.length ? 'border-error' : 'border-contrast-200',
           inputContainerClassName,
         )}
-        id="inline-email-form"
       >
         <input
           {...getInputProps(fields.email, { type: 'email' })}
