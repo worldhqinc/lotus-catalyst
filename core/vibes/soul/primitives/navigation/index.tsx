@@ -427,6 +427,8 @@ export const Navigation = forwardRef(function Navigation(
         pathname.replace(/\/$/, '') !== cartHref.replace(/\/$/, '')
       ) {
         setIsMinicartDrawerOpen(true);
+      } else if (newCount === 0) {
+        setIsMinicartDrawerOpen(false);
       }
 
       prevCartCountRef.current = resolvedCartCount ?? 0;

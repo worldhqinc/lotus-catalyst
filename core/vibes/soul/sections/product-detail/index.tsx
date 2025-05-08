@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import { Package, RefreshCw } from 'lucide-react';
 import { ReactNode } from 'react';
 
@@ -6,10 +7,10 @@ import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price, PriceLabel } from '@/vibes/soul/primitives/price-label';
 import * as Skeleton from '@/vibes/soul/primitives/skeleton';
-import { type Breadcrumb, Breadcrumbs } from '@/vibes/soul/sections/breadcrumbs';
 import { ProductGallery } from '@/vibes/soul/sections/product-detail/product-gallery';
 import { FeatureCallout } from '~/components/contentful/feature-callout';
 import { FeatureTiles } from '~/components/contentful/feature-tiles';
+import { ProductStickyHeader } from '~/components/contentful/sections/product-sticky-header';
 import {
   featureCalloutSchema,
   featureTilesSchema,
@@ -36,10 +37,10 @@ interface ProductDetailProduct {
       content: ReactNode;
     }>
   >;
+  sku?: string;
 }
 
 export interface ProductDetailProps<F extends Field> {
-  breadcrumbs?: Streamable<Breadcrumb[]>;
   product: Streamable<ProductDetailProduct | null>;
   contentful: Streamable<productFinishedGoods | null | undefined>;
   action: ProductDetailFormAction<F>;
@@ -57,7 +58,6 @@ export function ProductDetail<F extends Field>({
   contentful: streamableContentful,
   action,
   fields: streamableFields,
-  breadcrumbs,
   emptySelectPlaceholder,
   ctaLabel: streamableCtaLabel,
   ctaDisabled: streamableCtaDisabled,
@@ -66,161 +66,170 @@ export function ProductDetail<F extends Field>({
   additionalActions,
 }: ProductDetailProps<F>) {
   return (
-    <section className="@container">
-      <div className="group/product-detail mx-auto w-full max-w-(--breakpoint-2xl) @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
-        {breadcrumbs && (
-          <div className="group/breadcrumbs mb-6">
-            <Breadcrumbs breadcrumbs={breadcrumbs} />
-          </div>
-        )}
-        <Stream
-          fallback={<ProductDetailSkeleton />}
-          value={Streamable.all([streamableProduct, streamableContentful])}
-        >
-          {([product, contentful]) =>
-            product && (
-              <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-8 @2xl:grid-cols-2 @5xl:gap-x-12">
-                <div className="group/product-gallery">
-                  <ProductGallery
-                    badge={contentful?.fields.productBadge}
-                    featuredImage={
-                      contentful?.fields.featuredImage && {
-                        src: ensureImageUrl(contentful.fields.featuredImage.fields.file.url),
-                        alt: contentful.fields.featuredImage.fields.title ?? '',
+    <Stream
+      fallback={<ProductDetailSkeleton />}
+      value={Streamable.all([streamableProduct, streamableContentful])}
+    >
+      {([product, contentful]) => {
+        if (!product) return null;
+
+        const hasStickyHeader = Boolean(contentful?.fields.productName);
+
+        return (
+          <>
+            <ProductStickyHeader contentful={contentful} product={product} />
+            <section className="@container">
+              <div
+                className={clsx(
+                  'group/product-detail mx-auto w-full max-w-(--breakpoint-2xl) @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20',
+                  hasStickyHeader && '!pt-12',
+                )}
+              >
+                <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-8 @2xl:grid-cols-2 @5xl:gap-x-12">
+                  <div className="group/product-gallery">
+                    <ProductGallery
+                      badge={contentful?.fields.productBadge}
+                      featuredImage={
+                        contentful?.fields.featuredImage && {
+                          src: ensureImageUrl(contentful.fields.featuredImage.fields.file.url),
+                          alt: contentful.fields.featuredImage.fields.title ?? '',
+                        }
                       }
-                    }
-                    images={(contentful?.fields.additionalImages ?? []).map((image) => ({
-                      src: ensureImageUrl(image.fields.file.url),
-                      alt: image.fields.title ?? '',
-                    }))}
-                  />
-                  {contentful?.fields.featureTiles && (
-                    <FeatureTiles {...featureTilesSchema.parse(contentful.fields.featureTiles)} />
-                  )}
-                </div>
-                <div className="px-4 py-8 @xl:px-0 @xl:py-0">
-                  <div className="mb-8 flex items-start justify-between gap-4">
-                    <div className="flex gap-2">
-                      {contentful?.fields.productLine?.map((line, index) => (
-                        <Badge key={index}>{line}</Badge>
-                      ))}
-                    </div>
-                    {contentful?.fields.featureCallout && (
-                      <FeatureCallout
-                        {...featureCalloutSchema.parse(contentful.fields.featureCallout)}
-                      />
+                      images={(contentful?.fields.additionalImages ?? []).map((image) => ({
+                        src: ensureImageUrl(image.fields.file.url),
+                        alt: image.fields.title ?? '',
+                      }))}
+                    />
+                    {contentful?.fields.featureTiles && (
+                      <FeatureTiles {...featureTilesSchema.parse(contentful.fields.featureTiles)} />
                     )}
                   </div>
-                  {/* Product Details */}
-                  <div className="flex flex-col gap-8">
-                    <div>
-                      <h1 className="text-surface-foreground text-2xl leading-none @xl:text-3xl @4xl:text-4xl">
-                        {contentful?.fields.productName}
-                      </h1>
-                      {Boolean(contentful?.fields.subCategory) && (
-                        <p className="text-surface-foreground mt-4">
-                          {[contentful?.fields.parentCategory, contentful?.fields.subCategory]
-                            .filter(Boolean)
-                            .join(' and ')}
-                        </p>
+                  <div className="px-4 py-8 @xl:px-0 @xl:py-0">
+                    <div className="mb-8 flex items-start justify-between gap-4">
+                      <div className="flex gap-2">
+                        {contentful?.fields.productLine?.map((line, index) => (
+                          <Badge key={index}>{line}</Badge>
+                        ))}
+                      </div>
+                      {contentful?.fields.featureCallout && (
+                        <FeatureCallout
+                          {...featureCalloutSchema.parse(contentful.fields.featureCallout)}
+                        />
                       )}
                     </div>
-                    {/* <div className="group/product-rating">
-                      <Stream fallback={<RatingSkeleton />} value={product.rating}>
-                        {(rating) => <Rating rating={rating ?? 0} />}
-                      </Stream>
-                    </div> */}
-                    <div className="group/product-price">
-                      <Stream fallback={<PriceLabelSkeleton />} value={product.price}>
-                        {(price) => (
-                          <PriceLabel className="text-xl @xl:text-2xl" price={price ?? ''} />
+                    {/* Product Details */}
+                    <div className="flex flex-col gap-8">
+                      <div>
+                        <h1 className="text-surface-foreground text-2xl leading-none @xl:text-3xl @4xl:text-4xl">
+                          {contentful?.fields.productName}
+                        </h1>
+                        {Boolean(contentful?.fields.subCategory) && (
+                          <p className="text-surface-foreground mt-4">
+                            {[contentful?.fields.parentCategory, contentful?.fields.subCategory]
+                              .filter(Boolean)
+                              .join(' and ')}
+                          </p>
                         )}
-                      </Stream>
-                    </div>
-                    <Stream fallback={null} value={product.price}>
-                      {(price) =>
-                        !!price &&
-                        typeof price === 'object' &&
-                        'type' in price &&
-                        price.type === 'sale' && (
-                          <div className="text-primary font-medium">Limited Time Offer</div>
-                        )
-                      }
-                    </Stream>
-                    {Boolean(contentful?.fields.shortDescription) && (
-                      <div className="text-contrast-400">{contentful?.fields.shortDescription}</div>
-                    )}
-                    <div className="grid gap-2 @xl:grid-cols-2">
-                      {[
-                        {
-                          icon: Package,
-                          label: 'Free shipping on all products',
-                        },
-                        {
-                          icon: RefreshCw,
-                          label: '60 Day Returns & Exchanges',
-                        },
-                      ].map(({ icon: Icon, label }, index) => (
-                        <div className="flex items-center gap-2" key={index}>
-                          <div className="bg-contrast-100 flex h-14 w-14 items-center justify-center rounded-lg">
-                            <Icon className="h-6 w-6" strokeWidth={1.5} />
-                          </div>
-                          <span className="text-contrast-400">{label}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="group/product-detail-form">
-                      <Stream
-                        fallback={<ProductDetailFormSkeleton />}
-                        value={Streamable.all([
-                          streamableFields,
-                          streamableCtaLabel,
-                          streamableCtaDisabled,
-                        ])}
-                      >
-                        {([fields, ctaLabel, ctaDisabled]) => (
-                          <ProductDetailForm
-                            action={action}
-                            additionalActions={additionalActions}
-                            ctaDisabled={ctaDisabled ?? undefined}
-                            ctaLabel={ctaLabel ?? undefined}
-                            emptySelectPlaceholder={emptySelectPlaceholder}
-                            fields={fields}
-                            prefetch={prefetch}
-                            productId={product.id}
-                          />
-                        )}
-                      </Stream>
-                    </div>
-                    <h2 className="sr-only">{additionalInformationTitle}</h2>
-                    <div className="group/product-accordion">
-                      <Stream fallback={<ProductAccordionsSkeleton />} value={product.accordions}>
-                        {(accordions) =>
-                          accordions && (
-                            <Accordion className="pt-4" type="multiple">
-                              {accordions.map((accordion, index) => (
-                                <AccordionItem
-                                  className="border-contrast-200 border-t py-4"
-                                  key={index}
-                                  title={accordion.title}
-                                  value={index.toString()}
-                                >
-                                  {accordion.content}
-                                </AccordionItem>
-                              ))}
-                            </Accordion>
+                      </div>
+                      {/* <div className="group/product-rating">
+                        <Stream fallback={<RatingSkeleton />} value={product.rating}>
+                          {(rating) => <Rating rating={rating ?? 0} />}
+                        </Stream>
+                      </div> */}
+                      <div className="group/product-price">
+                        <Stream fallback={<PriceLabelSkeleton />} value={product.price}>
+                          {(price) => (
+                            <PriceLabel className="text-xl @xl:text-2xl" price={price ?? ''} />
+                          )}
+                        </Stream>
+                      </div>
+                      <Stream fallback={null} value={product.price}>
+                        {(price) =>
+                          !!price &&
+                          typeof price === 'object' &&
+                          'type' in price &&
+                          price.type === 'sale' && (
+                            <div className="text-primary font-medium">Limited Time Offer</div>
                           )
                         }
                       </Stream>
+                      {Boolean(contentful?.fields.shortDescription) && (
+                        <div className="text-contrast-400">
+                          {contentful?.fields.shortDescription}
+                        </div>
+                      )}
+                      <div className="grid gap-2 @xl:grid-cols-2">
+                        {[
+                          {
+                            icon: Package,
+                            label: 'Free shipping on all products',
+                          },
+                          {
+                            icon: RefreshCw,
+                            label: '60 Day Returns & Exchanges',
+                          },
+                        ].map(({ icon: Icon, label }, index) => (
+                          <div className="flex items-center gap-2" key={index}>
+                            <div className="bg-contrast-100 flex h-14 w-14 items-center justify-center rounded-lg">
+                              <Icon className="h-6 w-6" strokeWidth={1.5} />
+                            </div>
+                            <span className="text-contrast-400">{label}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="group/product-detail-form">
+                        <Stream
+                          fallback={<ProductDetailFormSkeleton />}
+                          value={Streamable.all([
+                            streamableFields,
+                            streamableCtaLabel,
+                            streamableCtaDisabled,
+                          ])}
+                        >
+                          {([fields, ctaLabel, ctaDisabled]) => (
+                            <ProductDetailForm
+                              action={action}
+                              additionalActions={additionalActions}
+                              ctaDisabled={ctaDisabled ?? undefined}
+                              ctaLabel={ctaLabel ?? undefined}
+                              emptySelectPlaceholder={emptySelectPlaceholder}
+                              fields={fields}
+                              prefetch={prefetch}
+                              productId={product.id}
+                            />
+                          )}
+                        </Stream>
+                      </div>
+                      <h2 className="sr-only">{additionalInformationTitle}</h2>
+                      <div className="group/product-accordion">
+                        <Stream fallback={<ProductAccordionsSkeleton />} value={product.accordions}>
+                          {(accordions) =>
+                            accordions && (
+                              <Accordion className="pt-4" type="multiple">
+                                {accordions.map((accordion, index) => (
+                                  <AccordionItem
+                                    className="border-contrast-200 border-t py-4"
+                                    key={index}
+                                    title={accordion.title}
+                                    value={index.toString()}
+                                  >
+                                    {accordion.content}
+                                  </AccordionItem>
+                                ))}
+                              </Accordion>
+                            )
+                          }
+                        </Stream>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            )
-          }
-        </Stream>
-      </div>
-    </section>
+            </section>
+          </>
+        );
+      }}
+    </Stream>
   );
 }
 
@@ -319,32 +328,36 @@ function ProductAccordionsSkeleton() {
 
 function ProductDetailSkeleton() {
   return (
-    <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-8 @2xl:grid-cols-2 @5xl:gap-x-12">
-      <div className="group/product-gallery">
-        <ProductGallerySkeleton />
-      </div>
-      <div className="px-4 py-8 @xl:px-0 @xl:py-0">
-        <div className="mb-8 flex items-start justify-between gap-4">
-          <div className="flex gap-2">
-            <Skeleton.Box className="h-6 w-20 rounded" />
-            <Skeleton.Box className="h-6 w-20 rounded" />
+    <section className="@container">
+      <div className="group/product-detail mx-auto w-full max-w-(--breakpoint-2xl) @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
+        <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-8 @2xl:grid-cols-2 @5xl:gap-x-12">
+          <div className="group/product-gallery">
+            <ProductGallerySkeleton />
           </div>
-          <div className="flex items-center gap-2">
-            <Skeleton.Box className="h-4 w-20 rounded-md" />
-            <Skeleton.Box className="h-7 w-9 rounded-md" />
+          <div className="px-4 py-8 @xl:px-0 @xl:py-0">
+            <div className="mb-8 flex items-start justify-between gap-4">
+              <div className="flex gap-2">
+                <Skeleton.Box className="h-6 w-20 rounded" />
+                <Skeleton.Box className="h-6 w-20 rounded" />
+              </div>
+              <div className="flex items-center gap-2">
+                <Skeleton.Box className="h-4 w-20 rounded-md" />
+                <Skeleton.Box className="h-7 w-9 rounded-md" />
+              </div>
+            </div>
+            <div className="flex flex-col gap-8">
+              <div>
+                <Skeleton.Box className="h-8 w-96 rounded-md @xl:h-10" />
+                <Skeleton.Box className="mt-4 h-6 w-64 rounded-md" />
+              </div>
+              <RatingSkeleton />
+              <PriceLabelSkeleton />
+              <Skeleton.Box className="h-4 w-32 rounded-md" />
+              <Skeleton.Box className="h-16 w-full rounded-md" />
+            </div>
           </div>
         </div>
-        <div className="flex flex-col gap-8">
-          <div>
-            <Skeleton.Box className="h-8 w-96 rounded-md @xl:h-10" />
-            <Skeleton.Box className="mt-4 h-6 w-64 rounded-md" />
-          </div>
-          <RatingSkeleton />
-          <PriceLabelSkeleton />
-          <Skeleton.Box className="h-4 w-32 rounded-md" />
-          <Skeleton.Box className="h-16 w-full rounded-md" />
-        </div>
       </div>
-    </div>
+    </section>
   );
 }

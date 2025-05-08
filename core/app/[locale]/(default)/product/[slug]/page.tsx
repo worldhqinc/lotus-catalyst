@@ -305,6 +305,7 @@ export default async function Product(props: Props) {
         prefetch={true}
         product={{
           id: baseProduct.entityId.toString(),
+          sku: baseProduct.sku,
           title: baseProduct.name,
           href: baseProduct.path,
           images: streamableImages,
