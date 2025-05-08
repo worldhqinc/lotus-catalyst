@@ -4143,7 +4143,7 @@
         "id": "heroSection",
         "type": "ContentType",
         "createdAt": "2025-04-21T14:33:30.959Z",
-        "updatedAt": "2025-05-08T01:28:52.247Z",
+        "updatedAt": "2025-05-08T23:32:39.553Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4151,8 +4151,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 8,
-        "publishedAt": "2025-05-08T01:28:52.247Z",
+        "publishedVersion": 12,
+        "publishedAt": "2025-05-08T23:32:39.553Z",
         "firstPublishedAt": "2025-04-21T14:35:44.484Z",
         "createdBy": {
           "sys": {
@@ -4168,8 +4168,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 4,
-        "version": 9,
+        "publishedCounter": 6,
+        "version": 13,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -4181,7 +4181,7 @@
       },
       "displayField": "heroTitle",
       "name": "Hero Section",
-      "description": "Hero section with tagline for Our Story page.",
+      "description": "",
       "fields": [
         {
           "id": "heroTitle",
@@ -4214,7 +4214,8 @@
           "validations": [
             {
               "in": [
-                "basic"
+                "basic",
+                "white"
               ]
             }
           ],

@@ -49,6 +49,8 @@ export function InspirationBento({ heading, video, cta, inspirationCards }: Insp
       const { contentReference } = card.fields;
       const cardId = card.sys.id;
 
+      if (!contentReference) return null;
+
       const contentType = contentReference.sys.contentType.sys.id;
 
       if (contentType === 'recipe') {
