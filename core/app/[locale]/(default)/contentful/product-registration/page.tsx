@@ -1,11 +1,60 @@
 import { Checkbox } from '@/vibes/soul/form/checkbox';
 import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
+import { Select } from '@/vibes/soul/form/select';
 import { Button } from '@/vibes/soul/primitives/button';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { Link } from '~/components/link';
+import { productFinishedGoodsFieldsSchema } from '~/contentful/schema';
+import { contentfulClient } from '~/lib/contentful';
 
-export default function ProductRegistration() {
+export default async function ProductRegistration() {
+  const productsData = await contentfulClient.getEntries({
+    content_type: 'productFinishedGoods',
+    select: ['fields.bcProductReference', 'fields.parentCategory'],
+    limit: 1000,
+  });
+
+  // TODO extract this to a util and update usage throughout the app
+
+  let productTypeOptions: Array<{ label: string; value: string }> = productsData.items.map(
+    (item) => {
+      const fields = productFinishedGoodsFieldsSchema
+        .pick({
+          parentCategory: true,
+        })
+        .parse(item.fields);
+
+      return {
+        label: fields.parentCategory?.[0] ?? '',
+        value: fields.parentCategory?.[0] ?? '',
+      };
+    },
+  );
+
+  productTypeOptions = Array.from(
+    new Map(productTypeOptions.map((item) => [item.value, item])).values(),
+  ).filter((item) => item.value !== '');
+
+  let modelNumberOptions: Array<{ label: string; value: string }> = productsData.items.map(
+    (item) => {
+      const fields = productFinishedGoodsFieldsSchema
+        .pick({
+          bcProductReference: true,
+        })
+        .parse(item.fields);
+
+      return {
+        label: fields.bcProductReference,
+        value: fields.bcProductReference,
+      };
+    },
+  );
+
+  modelNumberOptions = Array.from(
+    new Map(modelNumberOptions.map((item) => [item.value, item])).values(),
+  ).filter((item) => item.value !== '');
+
   return (
     <div>
       <div className="py-8 md:py-16">
@@ -13,7 +62,6 @@ export default function ProductRegistration() {
           <h1 className="font-heading text-4xl uppercase md:text-6xl">Product Registration</h1>
         </div>
       </div>
-
       <div className="bg-contrast-100 px-4 py-8 md:py-16">
         <div className="mx-auto max-w-2xl rounded bg-white p-4 md:p-8">
           <p>
@@ -43,12 +91,24 @@ export default function ProductRegistration() {
               <h2 className="mb-6 text-lg font-medium tracking-[1.8px] uppercase">Your product</h2>
               <div className="flex flex-col gap-4 md:flex-row">
                 <div className="flex flex-1 flex-col gap-1">
-                  <Label htmlFor="product-type">Product type</Label>
-                  <Input id="product-type" name="product-type" type="text" />
+                  <Select
+                    aria-label="Select a Product Type"
+                    className="flex-1"
+                    key="productTypeSelect"
+                    name="productType"
+                    options={productTypeOptions}
+                    placeholder="Select a Product Type"
+                  />
                 </div>
                 <div className="flex flex-1 flex-col gap-1">
-                  <Label htmlFor="model-number">Model number</Label>
-                  <Input id="model-number" name="model-number" type="text" />
+                  <Select
+                    aria-label="Select a Model Number"
+                    className="flex-1"
+                    key="modelNumberSelect"
+                    name="modelNumber"
+                    options={modelNumberOptions}
+                    placeholder="Select a Model Number"
+                  />
                 </div>
               </div>
             </div>
