@@ -9,13 +9,15 @@ import { usePathname } from '~/i18n/routing';
 interface FaqCategory {
   category: string;
   id: string;
+  faqCategory?: string;
 }
 
 interface FaqSidebarProps {
   categories: FaqCategory[];
+  faqCategoryHeader: string;
 }
 
-export function FaqSidebar({ categories }: FaqSidebarProps) {
+export function FaqSidebar({ categories, faqCategoryHeader }: FaqSidebarProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(categories[0]?.id ?? null);
   const pathname = usePathname();
 
@@ -96,10 +98,15 @@ export function FaqSidebar({ categories }: FaqSidebarProps) {
   return (
     <>
       <div className="hidden lg:flex lg:flex-col lg:items-start lg:justify-start">
+        <div className="after:bg-primary relative py-2.5 pl-3 after:absolute after:top-0 after:left-0 after:h-full after:w-0.75">
+          <h3 className="leading-[150%] font-medium tracking-[0.64px] uppercase">
+            {faqCategoryHeader}
+          </h3>
+        </div>
         {categories.map(({ category, id }) => (
           <button
             className={clsx(
-              'py-2 text-sm transition-colors',
+              'py-2 pl-3 text-sm transition-colors',
               activeCategory === id
                 ? 'text-foreground font-medium'
                 : 'text-contrast-400 hover:text-foreground',
