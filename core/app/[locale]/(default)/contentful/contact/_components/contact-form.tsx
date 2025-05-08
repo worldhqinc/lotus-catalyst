@@ -79,6 +79,9 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
 
   useEffect(() => {
     if (formState.success) {
+      formRef.current?.reset();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
       toast.success(
         <div
           dangerouslySetInnerHTML={{
@@ -92,7 +95,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
     if (formState.errors) {
       formRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [formState.success, formState.errors]);
+  }, [formState.success, formState.errors, formRef]);
 
   return (
     <form
