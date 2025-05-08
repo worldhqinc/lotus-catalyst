@@ -11,46 +11,23 @@ export default async function ProductRegistration() {
     limit: 1000,
   });
 
-  let productTypeOptions: Array<{ label: string; value: string }> = productsData.items.map(
-    (item) => {
-      const fields = productFinishedGoodsFieldsSchema
-        .pick({
-          parentCategory: true,
-        })
-        .parse(item.fields);
+  let productOptions: Array<{ label: string; value: string }> = productsData.items.map((item) => {
+    const fields = productFinishedGoodsFieldsSchema
+      .pick({
+        bcProductReference: true,
+      })
+      .parse(item.fields);
 
-      return {
-        label: fields.parentCategory?.[0] ?? '',
-        value: fields.parentCategory?.[0] ?? '',
-      };
-    },
-  );
+    return {
+      label: fields.bcProductReference,
+      value: fields.bcProductReference,
+    };
+  });
 
-  productTypeOptions.unshift({ label: 'Select a Product Type', value: 'null' });
+  productOptions.unshift({ label: 'Select a Model Number', value: 'null' });
 
-  productTypeOptions = Array.from(
-    new Map(productTypeOptions.map((item) => [item.value, item])).values(),
-  ).filter((item) => item.value !== '');
-
-  let modelNumberOptions: Array<{ label: string; value: string }> = productsData.items.map(
-    (item) => {
-      const fields = productFinishedGoodsFieldsSchema
-        .pick({
-          bcProductReference: true,
-        })
-        .parse(item.fields);
-
-      return {
-        label: fields.bcProductReference,
-        value: fields.bcProductReference,
-      };
-    },
-  );
-
-  modelNumberOptions.unshift({ label: 'Select a Model Number', value: 'null' });
-
-  modelNumberOptions = Array.from(
-    new Map(modelNumberOptions.map((item) => [item.value, item])).values(),
+  productOptions = Array.from(
+    new Map(productOptions.map((item) => [item.value, item])).values(),
   ).filter((item) => item.value !== '');
 
   return (
@@ -60,10 +37,7 @@ export default async function ProductRegistration() {
           <h1 className="font-heading text-4xl uppercase md:text-6xl">Product Registration</h1>
         </div>
       </div>
-      <ProductRegistrationForm
-        modelNumberOptions={modelNumberOptions}
-        productTypeOptions={productTypeOptions}
-      />
+      <ProductRegistrationForm productOptions={productOptions} />
       <CookiePreferencesNotice />
     </div>
   );
