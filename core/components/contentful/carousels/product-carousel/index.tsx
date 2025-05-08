@@ -15,7 +15,7 @@ import { carouselProduct } from '~/contentful/schema';
 import { contentfulProductCardTransformer } from '~/data-transformers/product-card-transformer';
 
 interface Props {
-  carousel: carouselProduct;
+  carousel: Pick<carouselProduct, 'fields'>;
 }
 
 function NavHeader({ title, subtitle }: { title: string; subtitle?: string | null }) {

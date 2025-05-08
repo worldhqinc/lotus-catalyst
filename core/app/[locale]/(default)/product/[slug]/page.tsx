@@ -1,7 +1,7 @@
 import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
+import { notFound } from 'next/navigation';
 import { SearchParams } from 'nuqs/server';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
@@ -9,11 +9,12 @@ import { ProductDetail } from '@/vibes/soul/sections/product-detail';
 import { getSessionCustomerAccessToken } from '~/auth';
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { Link } from '~/components/link';
-import { supportDocumentSchema } from '~/contentful/schema';
+import { productPartsAndAccessoriesSchema, supportDocumentSchema } from '~/contentful/schema';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
 import { getPreferredCurrencyCode } from '~/lib/currency';
 
+import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import { addToCart } from './_actions/add-to-cart';
 import { ProductSchema } from './_components/product-schema';
 import { ProductViewed } from './_components/product-viewed';
@@ -324,10 +325,25 @@ export default async function Product(props: Props) {
         {([contentful, searchParams]) => {
           const pageContentEntries = contentful?.fields.pageContentEntries ?? [];
 
-          if (pageContentEntries.length === 0) return null;
-
+          const partsAccessories = contentful?.fields.partsAccessories?.map((part) =>
+            productPartsAndAccessoriesSchema.parse(part),
+          );
           return (
-            <PageContentEntries pageContent={pageContentEntries} searchParams={searchParams} />
+            <>
+              <PageContentEntries pageContent={pageContentEntries} searchParams={searchParams} />
+              {partsAccessories && (
+                <ProductCarousel
+                  carousel={{
+                    fields: {
+                      internalName: 'partsAccessories',
+                      carouselTitle: 'Oven Accessories',
+                      subtitle: 'Recommendations just for you',
+                      products: partsAccessories,
+                    },
+                  }}
+                />
+              )}
+            </>
           );
         }}
       </Stream>
