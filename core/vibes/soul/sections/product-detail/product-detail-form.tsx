@@ -185,8 +185,8 @@ export function ProductDetailForm<F extends Field>({
                 </SubmitButton>
               </>
             )}
-            {additionalActions}
           </div>
+          {additionalActions}
         </div>
       </form>
     </FormProvider>

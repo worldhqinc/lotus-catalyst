@@ -3,7 +3,8 @@ import { getTranslations } from 'next-intl/server';
 import { cache } from 'react';
 
 import { Streamable } from '@/vibes/soul/lib/streamable';
-import { Favorite } from '@/vibes/soul/primitives/favorite';
+import { Button } from '@/vibes/soul/primitives/button';
+import { Heart } from '@/vibes/soul/primitives/favorite/heart';
 import { getSessionCustomerAccessToken, isLoggedIn } from '~/auth';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
@@ -133,7 +134,7 @@ async function getWishlistButton(
 interface Props {
   productId: number;
   formId: string;
-  productSku?: Streamable<string>;
+  productSku: Streamable<string>;
 }
 
 export const WishlistButton = async ({ productId, productSku, formId }: Props) => {
@@ -147,7 +148,10 @@ export const WishlistButton = async ({ productId, productSku, formId }: Props) =
       newWishlistLabel={t('addToNewWishlist')}
       wishlists={wishlists}
     >
-      <Favorite checked={isProductInWishlist} />
+      <Button size="small" variant="link">
+        <Heart filled={isProductInWishlist} />
+        <span className="text-base">Wishlist</span>
+      </Button>
     </WishlistButtonDropdown>
   );
 };
