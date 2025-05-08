@@ -64,14 +64,9 @@ export default async function ProductRegistration() {
       </div>
       <div className="bg-contrast-100 px-4 py-8 md:py-16">
         <div className="mx-auto max-w-2xl rounded bg-white p-4 md:p-8">
-          <p>
-            Sweepstakes for United States customers only. Register for a monthly chance to win $100
-            to spend on lotuscooking.com. Receive information on products, discounts, recipes,
-            sweepstakes, and more!
-          </p>
-          <form className="mt-8 flex flex-col gap-8" id="product-registration-form">
+          <form className="flex flex-col gap-8" id="product-registration-form">
             <div>
-              <h2 className="mb-6 text-lg font-medium tracking-[1.8px] uppercase">About you</h2>
+              <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">About you</h2>
               <div className="flex flex-col gap-4 md:flex-row">
                 <div className="flex flex-1 flex-col gap-1">
                   <Label htmlFor="name">First name</Label>
@@ -88,7 +83,7 @@ export default async function ProductRegistration() {
               </div>
             </div>
             <div>
-              <h2 className="mb-6 text-lg font-medium tracking-[1.8px] uppercase">Your product</h2>
+              <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">Your product</h2>
               <div className="flex flex-col gap-4 md:flex-row">
                 <div className="flex flex-1 flex-col gap-1">
                   <Select
@@ -124,16 +119,7 @@ export default async function ProductRegistration() {
             <div>
               <div className="flex gap-4">
                 <Checkbox id="email-opt-in" name="email-opt-in" />
-                <Label htmlFor="email-opt-in">
-                  Yes! Please add me to your mailing list to be entered into your monthly
-                  sweepstakes
-                </Label>
-              </div>
-              <div className="mt-2 flex gap-4">
-                <Checkbox id="terms" name="terms" />
-                <Label htmlFor="terms">
-                  I agree to the Official Rules, Terms and Conditions and Privacy Policy
-                </Label>
+                <Label htmlFor="email-opt-in">Yes! Please add me to your mailing list.</Label>
               </div>
             </div>
             <Button className="md:self-start" size="medium" type="submit">
