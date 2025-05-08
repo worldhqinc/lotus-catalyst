@@ -76,15 +76,18 @@ export function ProductDetail<F extends Field>({
       {([product, contentful]) => {
         if (!product) return null;
 
+        const hasStickyHeader = Boolean(contentful?.fields.productName);
+
         return (
           <>
-            <ProductStickyHeader
-              addToBagButtonRef={addToBagButtonRef}
-              contentful={contentful}
-              product={product}
-            />
+            <ProductStickyHeader contentful={contentful} product={product} />
             <section className="@container">
-              <div className="group/product-detail mx-auto w-full max-w-(--breakpoint-2xl) @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
+              <div
+                className={clsx(
+                  'group/product-detail mx-auto w-full max-w-(--breakpoint-2xl) @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20',
+                  hasStickyHeader && '!pt-12',
+                )}
+              >
                 <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-8 @2xl:grid-cols-2 @5xl:gap-x-12">
                   <div className="group/product-gallery">
                     <ProductGallery
@@ -118,7 +121,7 @@ export function ProductDetail<F extends Field>({
                       )}
                     </div>
                     {/* Product Details */}
-                    <div className="flex flex-col gap-8" id="overview">
+                    <div className="flex flex-col gap-8">
                       <div>
                         <h1 className="text-surface-foreground text-2xl leading-none @xl:text-3xl @4xl:text-4xl">
                           {contentful?.fields.productName}
@@ -189,7 +192,6 @@ export function ProductDetail<F extends Field>({
                           {([fields, ctaLabel, ctaDisabled]) => (
                             <ProductDetailForm
                               action={action}
-                              addToBagButtonRef={addToBagButtonRef}
                               additionalActions={additionalActions}
                               ctaDisabled={ctaDisabled ?? undefined}
                               ctaLabel={ctaLabel ?? undefined}
@@ -202,7 +204,7 @@ export function ProductDetail<F extends Field>({
                         </Stream>
                       </div>
                       <h2 className="sr-only">{additionalInformationTitle}</h2>
-                      <div className="group/product-accordion" id="features">
+                      <div className="group/product-accordion">
                         <Stream fallback={<ProductAccordionsSkeleton />} value={product.accordions}>
                           {(accordions) =>
                             accordions && (
