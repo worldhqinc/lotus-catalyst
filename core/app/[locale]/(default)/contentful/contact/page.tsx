@@ -173,57 +173,51 @@ export default async function ContactPage() {
           <p className="mt-4">Have a question? Need a hand? Our team is ready to help.</p>
         </div>
       </div>
+      <p className="text-contrast-400 mx-auto flex flex-col items-center justify-center pt-16 text-center">
+        Our Customer Care team is available Monday through Friday 9:00 am - 4:30 pm ET.
+      </p>
+      <p className="text-contrast-400 mx-auto flex flex-col items-center justify-center pt-2 text-center">
+        Closed on major US holidays.
+      </p>
       <div className="container my-8 md:my-16 lg:max-w-[1142px]">
         <div className="border-contrast-200 divide-contrast-200 divide-y rounded-lg border lg:grid lg:grid-cols-[repeat(auto-fit,minmax(0,1fr))] lg:divide-x lg:divide-y-0">
-          <div className="flex flex-col p-4 lg:p-8">
+          <div className="flex flex-col items-center p-4 text-center lg:p-8">
             <div>
               <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
                 Chat
               </h2>
-              <div className="mt-4 flex items-center gap-2 lg:pb-6">
-                <span className="rounded-full bg-green-500 p-[9px]" />
-                <p className="lg:leading-[24px]">Representatives are available.</p>
-              </div>
+              <p className="text-contrast-400 mt-4">Message us directly.</p>
             </div>
-            <div className="my-8">
+            <div className="mt-8">
               <ChatWidgetButton />
             </div>
           </div>
           {fields.length > 0 && (
-            <div className="flex flex-col p-4 lg:p-8">
+            <div className="flex flex-col items-center p-4 text-center lg:p-8">
               <div>
                 <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
                   Email
                 </h2>
-                <p className="mt-4 lg:pb-6 lg:leading-[24px]">Don't have time to chat today?</p>
+                <p className="text-contrast-400 mt-4">Don't have time to chat today?</p>
               </div>
-              <div className="my-8">
+              <div className="mt-8">
                 <ContactForm fields={fields} />
                 <CookiePreferencesNotice />
               </div>
-              <p className="text-contrast-400 text-xs leading-[20px]">
-                Fill out this form and one of our customer care reps will be in touch within 48
-                hours.
-              </p>
             </div>
           )}
-          <div className="flex flex-col p-4 lg:p-8">
+          <div className="flex flex-col items-center p-4 text-center lg:p-8">
             <div>
               <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
                 Call
               </h2>
-              <p className="mt-4 lg:leading-[24px]">
-                Available Monday through Friday 9:00 am - 4:30 pm ET
-              </p>
+              <p className="text-contrast-400 mt-4">Talk to us live.</p>
             </div>
-            <div className="my-8">
+            <div className="mt-8">
               <ButtonLink className="w-full md:w-auto" href="tel:18885688761" size="medium">
                 1-888-568-8761
               </ButtonLink>
             </div>
-            <p className="text-contrast-400 text-xs leading-[20px]">
-              Note: we are closed on major US holidays
-            </p>
           </div>
         </div>
       </div>
