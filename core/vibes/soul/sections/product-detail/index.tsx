@@ -1,6 +1,8 @@
+'use client';
+
 import { clsx } from 'clsx';
 import { Package, RefreshCw } from 'lucide-react';
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
@@ -65,6 +67,8 @@ export function ProductDetail<F extends Field>({
   additionalInformationTitle = 'Additional information',
   additionalActions,
 }: ProductDetailProps<F>) {
+  const addToBagButtonRef = useRef<HTMLButtonElement | null>(null);
+
   return (
     <Stream
       fallback={<ProductDetailSkeleton />}
@@ -77,7 +81,11 @@ export function ProductDetail<F extends Field>({
 
         return (
           <>
-            <ProductStickyHeader contentful={contentful} product={product} />
+            <ProductStickyHeader
+              addToBagButtonRef={addToBagButtonRef}
+              contentful={contentful}
+              product={product}
+            />
             <section className="@container">
               <div
                 className={clsx(
@@ -118,7 +126,7 @@ export function ProductDetail<F extends Field>({
                       )}
                     </div>
                     {/* Product Details */}
-                    <div id="overview" className="flex flex-col gap-8">
+                    <div className="flex flex-col gap-8" id="overview">
                       <div>
                         <h1 className="text-surface-foreground text-2xl leading-none @xl:text-3xl @4xl:text-4xl">
                           {contentful?.fields.productName}
@@ -189,6 +197,7 @@ export function ProductDetail<F extends Field>({
                           {([fields, ctaLabel, ctaDisabled]) => (
                             <ProductDetailForm
                               action={action}
+                              addToBagButtonRef={addToBagButtonRef}
                               additionalActions={additionalActions}
                               ctaDisabled={ctaDisabled ?? undefined}
                               ctaLabel={ctaLabel ?? undefined}
@@ -201,7 +210,7 @@ export function ProductDetail<F extends Field>({
                         </Stream>
                       </div>
                       <h2 className="sr-only">{additionalInformationTitle}</h2>
-                      <div id="features" className="group/product-accordion">
+                      <div className="group/product-accordion" id="features">
                         <Stream fallback={<ProductAccordionsSkeleton />} value={product.accordions}>
                           {(accordions) =>
                             accordions && (

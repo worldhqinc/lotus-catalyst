@@ -1,6 +1,6 @@
 'use client';
 
-import { ComponentPropsWithoutRef, useEffect, useState } from 'react';
+import { ComponentPropsWithoutRef, useEffect, useRef, useState } from 'react';
 import Headroom from 'react-headroom';
 
 import { Banner } from '@/vibes/soul/primitives/banner';
@@ -15,6 +15,7 @@ export function HeaderSection({ navigation, banner }: HeaderProps) {
   const [bannerElement, setBannerElement] = useState<HTMLElement | null>(null);
   const [bannerHeight, setBannerHeight] = useState(0);
   const [isFloating, setIsFloating] = useState(false);
+  const headerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!bannerElement) return;
@@ -32,12 +33,28 @@ export function HeaderSection({ navigation, banner }: HeaderProps) {
     };
   }, [bannerElement]);
 
+  useEffect(() => {
+    function setHeaderHeightVar() {
+      if (headerRef.current) {
+        document.body.style.setProperty(
+          '--site-header-height',
+          `${headerRef.current.offsetHeight}px`,
+        );
+      }
+    }
+
+    setHeaderHeightVar();
+    window.addEventListener('resize', setHeaderHeightVar);
+
+    return () => window.removeEventListener('resize', setHeaderHeightVar);
+  }, []);
+
   return (
     <div>
       <Banner ref={setBannerElement} {...banner}>
         {banner?.children || null}
       </Banner>
-      <div className="bg-[var(--header-background,hsl(var(--background)))]">
+      <div className="bg-[var(--header-background,hsl(var(--background)))]" ref={headerRef}>
         <Headroom
           className="[&_.headroom--unpinned]:![transform:translate3d(0,0,0)]"
           onUnfix={() => setIsFloating(false)}

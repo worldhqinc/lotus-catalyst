@@ -1,6 +1,7 @@
 'use client';
 
-import { useTransition } from 'react';
+import { clsx } from 'clsx';
+import { forwardRef, RefObject, useEffect, useState, useTransition } from 'react';
 
 import { Stream, type Streamable } from '@/vibes/soul/lib/streamable';
 import { Button } from '@/vibes/soul/primitives/button';
@@ -17,6 +18,7 @@ interface ProductStickyHeaderProps {
     sku?: string;
   };
   contentful: productFinishedGoods | null | undefined;
+  addToBagButtonRef: RefObject<HTMLButtonElement | null>;
 }
 
 function AddToBagForm({ sku, price }: { sku?: string; price?: Price | null }) {
@@ -55,53 +57,80 @@ function AddToBagForm({ sku, price }: { sku?: string; price?: Price | null }) {
   );
 }
 
-export function ProductStickyHeader({ product, contentful }: ProductStickyHeaderProps) {
-  return (
-    <header className="bg-contrast-100 z-30 hidden w-full items-center justify-between px-6 py-3 sm:flex @xl:px-12">
-      <div className="flex min-w-0 items-center gap-4">
-        <LogoLotus height={32} type="icon" width={32} />
-      </div>
-      <nav className="ml-8 flex flex-1 items-center justify-center gap-8">
-        <span
-          className="text-surface-foreground max-w-xs truncate text-2xl font-medium tracking-widest uppercase @xl:max-w-md"
-          title={contentful?.fields.productName || ''}
-        >
-          {contentful?.fields.productName}
-        </span>
-        <a
-          className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
-          href="#overview"
-          style={{ scrollBehavior: 'smooth' }}
-        >
-          Overview
-        </a>
-        <a
-          className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
-          href="#features"
-          style={{ scrollBehavior: 'smooth' }}
-        >
-          Features
-        </a>
-        <a
-          className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
-          href="#reviews"
-          style={{ scrollBehavior: 'smooth' }}
-        >
-          Reviews
-        </a>
-      </nav>
-      <div className="flex items-center">
-        <Stream
-          fallback={
-            <Button loading size="small">
-              Add to bag
-            </Button>
-          }
-          value={product.price}
-        >
-          {(price) => <AddToBagForm price={price} sku={product.sku} />}
-        </Stream>
-      </div>
-    </header>
-  );
-}
+export const ProductStickyHeader = forwardRef<HTMLDivElement, ProductStickyHeaderProps>(
+  ({ product, contentful, addToBagButtonRef }, ref) => {
+    const [showStickyHeader, setShowStickyHeader] = useState(false);
+
+    useEffect(() => {
+      function onScroll() {
+        if (!addToBagButtonRef.current) return;
+
+        const rect = addToBagButtonRef.current.getBoundingClientRect();
+
+        setShowStickyHeader(rect.bottom < 0);
+      }
+
+      window.addEventListener('scroll', onScroll);
+      onScroll();
+
+      return () => window.removeEventListener('scroll', onScroll);
+    }, [addToBagButtonRef]);
+
+    return (
+      <header
+        className={clsx(
+          'bg-contrast-100 hidden w-full items-center justify-between px-6 py-3 sm:flex @xl:px-12',
+          showStickyHeader
+            ? 'sticky top-[var(--site-header-height,0px)] left-0 z-10 shadow-md'
+            : 'relative z-0',
+        )}
+        ref={ref}
+      >
+        <div className="flex min-w-0 items-center gap-4">
+          <LogoLotus height={32} type="icon" width={32} />
+        </div>
+        <nav className="ml-8 flex flex-1 items-center justify-center gap-8">
+          <span
+            className="text-surface-foreground max-w-xs truncate text-2xl font-medium tracking-widest uppercase @xl:max-w-md"
+            title={contentful?.fields.productName || ''}
+          >
+            {contentful?.fields.productName}
+          </span>
+          <a
+            className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
+            href="#overview"
+            style={{ scrollBehavior: 'smooth' }}
+          >
+            Overview
+          </a>
+          <a
+            className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
+            href="#features"
+            style={{ scrollBehavior: 'smooth' }}
+          >
+            Features
+          </a>
+          <a
+            className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
+            href="#reviews"
+            style={{ scrollBehavior: 'smooth' }}
+          >
+            Reviews
+          </a>
+        </nav>
+        <div className="flex items-center">
+          <Stream
+            fallback={
+              <Button loading size="small">
+                Add to bag
+              </Button>
+            }
+            value={product.price}
+          >
+            {(price) => <AddToBagForm price={price} sku={product.sku} />}
+          </Stream>
+        </div>
+      </header>
+    );
+  },
+);
