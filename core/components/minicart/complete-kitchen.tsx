@@ -20,7 +20,7 @@ interface Props {
 export function CompleteKitchen({
   items,
   title = 'Complete the kitchen',
-  subtitle = 'Add to cart',
+  subtitle = 'Add to bag',
   nextLabel = 'Next products',
   previousLabel = 'Previous products',
 }: Props) {
