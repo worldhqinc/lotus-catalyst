@@ -14,10 +14,12 @@ import { productPartsAndAccessoriesSchema, supportDocumentSchema } from '~/conte
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
 import { getPreferredCurrencyCode } from '~/lib/currency';
+import { isMobileUser } from '~/lib/user-agent';
 
 import { addToCart } from './_actions/add-to-cart';
 import { ProductSchema } from './_components/product-schema';
 import { ProductViewed } from './_components/product-viewed';
+import { ProductShareButton } from './_components/share-button';
 import { WishlistButton } from './_components/wishlist-button';
 import { WishlistButtonForm } from './_components/wishlist-button/form';
 import {
@@ -73,6 +75,7 @@ export default async function Product(props: Props) {
   setRequestLocale(locale);
 
   const t = await getTranslations('Product');
+  const wishlistT = await getTranslations('Wishlist');
   const format = await getFormatter();
 
   const productId = Number(slug);
@@ -295,11 +298,22 @@ export default async function Product(props: Props) {
       <ProductDetail
         action={addToCart}
         additionalActions={
-          <WishlistButton
-            formId={detachedWishlistFormId}
-            productId={productId}
-            productSku={streamableProductSku}
-          />
+          <div className="flex items-center gap-2">
+            <ProductShareButton
+              closeLabel={wishlistT('Modal.close')}
+              copiedMessage={wishlistT('shareCopied')}
+              isMobileUser={Streamable.from(isMobileUser)}
+              modalTitle={wishlistT('Modal.shareTitle', { name: baseProduct.name })}
+              productName={baseProduct.name}
+              productUrl={baseProduct.path}
+              successMessage={wishlistT('shareSuccess')}
+            />
+            <WishlistButton
+              formId={detachedWishlistFormId}
+              productId={productId}
+              productSku={streamableProductSku}
+            />
+          </div>
         }
         additionalInformationTitle={t('ProductDetails.additionalInformation')}
         contentful={streamableContentful}

@@ -41,7 +41,13 @@ export const WishlistItemCard = ({
       className="relative flex max-w-md basis-[calc(100%-1rem)] flex-col justify-between gap-3 @md:basis-[calc(50%-0.75rem)] @lg:basis-[calc(33%-0.5rem)] @2xl:basis-[calc(25%-0.25rem)]"
       key={product.id}
     >
-      <ProductCard aspectRatio="3:4" product={product} showCompare={false} {...props} />
+      <ProductCard
+        aspectRatio="3:4"
+        // remove sku to hide add to cart button
+        product={{ ...product, sku: undefined }}
+        showCompare={false}
+        {...props}
+      />
       {callToAction && (
         <WishlistItemAddToCart
           action={action}

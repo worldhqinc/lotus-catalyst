@@ -6,6 +6,7 @@ import { useFormStatus } from 'react-dom';
 
 import { Button } from '@/vibes/soul/primitives/button';
 import { toast } from '@/vibes/soul/primitives/toaster';
+import { useRouter } from '~/i18n/routing';
 
 import { WishlistItem } from '.';
 
@@ -29,6 +30,7 @@ export const WishlistItemAddToCart = ({
   variantId,
   action,
 }: Props) => {
+  const router = useRouter();
   const [{ lastResult, successMessage, errorMessage }, formAction] = useActionState(action, {
     lastResult: null,
   });
@@ -36,12 +38,13 @@ export const WishlistItemAddToCart = ({
   useEffect(() => {
     if (lastResult?.status === 'success' && successMessage) {
       toast.success(successMessage);
+      router.refresh();
     }
 
     if (lastResult?.status === 'error' && errorMessage) {
       toast.error(errorMessage);
     }
-  }, [lastResult, successMessage, errorMessage]);
+  }, [lastResult, successMessage, errorMessage, router]);
 
   return (
     <form action={formAction} className="flex">
