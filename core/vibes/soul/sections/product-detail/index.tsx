@@ -76,8 +76,6 @@ export function ProductDetail<F extends Field>({
       {([product, contentful]) => {
         if (!product) return null;
 
-        const hasStickyHeader = Boolean(contentful?.fields.productName);
-
         return (
           <>
             <ProductStickyHeader
@@ -86,12 +84,7 @@ export function ProductDetail<F extends Field>({
               product={product}
             />
             <section className="@container">
-              <div
-                className={clsx(
-                  'group/product-detail mx-auto w-full max-w-(--breakpoint-2xl) @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20',
-                  hasStickyHeader && '!pt-12',
-                )}
-              >
+              <div className="group/product-detail mx-auto w-full max-w-(--breakpoint-2xl) @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
                 <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-8 @2xl:grid-cols-2 @5xl:gap-x-12">
                   <div className="group/product-gallery">
                     <ProductGallery
