@@ -3,6 +3,7 @@ import { clsx } from 'clsx';
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
+import { Carousel, CarouselContent, CarouselItem } from '@/vibes/soul/primitives/carousel';
 import { CursorPagination, CursorPaginationInfo } from '@/vibes/soul/primitives/cursor-pagination';
 import {
   type Product,
@@ -68,9 +69,9 @@ export function OrderList({
 }: OrderListProps) {
   return (
     <section className="group/order-list @container w-full">
-      <header className="border-contrast-200 mb-4 border-b">
+      <header className="border-contrast-200 border-b">
         <div className="mb-6 flex min-h-[42px] items-center justify-between">
-          <h1 className="hidden text-2xl leading-[120%] @2xl:block @2xl:text-4xl">{title}</h1>
+          <h1 className="text-2xl leading-[120%] @2xl:block @2xl:text-4xl">{title}</h1>
         </div>
       </header>
       <Stream fallback={<OrderListSkeleton />} value={streamableOrders}>
@@ -86,30 +87,27 @@ export function OrderList({
           }
 
           return (
-            <div className="@container">
+            <div className="divide-contrast-200 @container divide-y">
               {orders.map((order) => (
                 <div
-                  className={clsx(
-                    'border-contrast-200 pt-5 pb-6 last:border-b @lg:pt-6 @lg:pb-10',
-                    className,
-                  )}
+                  className={clsx('border-contrast-200 py-6 @lg:pt-6 @lg:pb-10', className)}
                   key={order.id}
                 >
-                  <div className="flex flex-col justify-between gap-x-10 gap-y-4 @lg:flex-row">
-                    <div className="flex items-start gap-x-12 gap-y-4">
+                  <div className="flex flex-col justify-between gap-x-10 gap-y-4 @lg:flex-row @lg:items-center">
+                    <div className="flex flex-wrap items-center gap-x-12 gap-y-4">
                       <div>
-                        <span className="font-[family-name:var(--order-list-label-font-family,var(--font-family-mono))] text-xs leading-normal text-[var(--order-list-label,hsl(var(--contrast-500)))] uppercase">
+                        <span className="text-xs leading-5 tracking-[1.44px] text-[var(--order-list-label,hsl(var(--contrast-500)))] uppercase">
                           {orderNumberLabel}
                         </span>
-                        <span className="block text-lg leading-normal font-semibold text-[var(--order-list-info,hsl(var(--foreground)))]">
+                        <span className="block text-lg leading-normal font-medium text-[var(--order-list-info,hsl(var(--foreground)))]">
                           {order.id}
                         </span>
                       </div>
                       <div>
-                        <span className="font-[family-name:var(--order-list-label-font-family,var(--font-family-mono))] text-xs leading-normal text-[var(--order-list-label,hsl(var(--contrast-500)))] uppercase">
+                        <span className="text-xs leading-5 tracking-[1.44px] text-[var(--order-list-label,hsl(var(--contrast-500)))] uppercase">
                           {totalLabel}
                         </span>
-                        <span className="block text-lg leading-normal font-semibold text-[var(--order-list-info,hsl(var(--foreground)))]">
+                        <span className="block text-lg leading-normal font-medium text-[var(--order-list-info,hsl(var(--foreground)))]">
                           {order.totalPrice}
                         </span>
                       </div>
@@ -119,14 +117,19 @@ export function OrderList({
                       {viewDetailsLabel}
                     </ButtonLink>
                   </div>
-                  <div className="mt-6 flex gap-4 overflow-hidden [mask-image:linear-gradient(to_right,_black_0%,_black_80%,_transparent_98%)]">
-                    {order.lineItems.map((lineItem) => (
-                      <ProductCard
-                        className="shrink-0 basis-32 @lg:basis-40"
-                        key={lineItem.id}
-                        product={lineItem}
-                      />
-                    ))}
+                  <div className="mt-6 overflow-hidden [mask-image:linear-gradient(to_right,_black_0%,_black_80%,_transparent_98%)]">
+                    <Carousel>
+                      <CarouselContent className="-ml-5 flex @2xl:-ml-5">
+                        {order.lineItems.map((lineItem) => (
+                          <CarouselItem
+                            className="basis-2/5 pl-5 @2xl:basis-1/4 @2xl:pl-5 @5xl:basis-1/5"
+                            key={lineItem.id}
+                          >
+                            <ProductCard product={lineItem} />
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                    </Carousel>
                   </div>
                 </div>
               ))}
@@ -182,7 +185,7 @@ function OrderListEmptyState({
     <div className="@container">
       <div className="py-20">
         <header className="mx-auto flex max-w-2xl flex-col items-center gap-5">
-          <h2 className="text-center text-lg font-semibold text-[var(--order-list-empty-state-title,hsl(var(--foreground)))]">
+          <h2 className="text-center text-lg font-medium text-[var(--order-list-empty-state-title,hsl(var(--foreground)))]">
             {emptyStateTitle}
           </h2>
           <ButtonLink className="w-fit" href={emptyStateActionHref}>

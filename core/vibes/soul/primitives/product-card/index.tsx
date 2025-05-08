@@ -160,32 +160,33 @@ export function ProductCard({
         </div>
 
         <div className="mt-2 flex flex-wrap items-start gap-x-4 gap-y-3 px-1 @xs:mt-3">
-          <div className="flex-1 text-sm @[16rem]:text-base">
-            <span
-              className={clsx(
-                'block font-semibold',
-                {
-                  light: 'text-[var(--product-card-light-title,hsl(var(--foreground)))]',
-                  dark: 'text-[var(--product-card-dark-title,hsl(var(--background)))]',
-                }[colorScheme],
-              )}
-            >
-              {title}
-            </span>
-
-            {subtitle != null && subtitle !== '' && (
+          <div className="flex-1 space-y-2 text-sm @[16rem]:text-base">
+            <div>
               <span
                 className={clsx(
-                  'mb-2 block text-sm font-normal',
+                  'block max-w-full font-medium [word-break:break-word]',
                   {
-                    light: 'text-[var(--product-card-light-subtitle,hsl(var(--foreground)/75%))]',
-                    dark: 'text-[var(--product-card-dark-subtitle,hsl(var(--background)/75%))]',
+                    light: 'text-foreground',
+                    dark: 'text-[var(--product-card-dark-title,hsl(var(--background)))]',
                   }[colorScheme],
                 )}
               >
-                {subtitle}
+                {title}
               </span>
-            )}
+              {subtitle != null && subtitle !== '' && (
+                <span
+                  className={clsx(
+                    'mb-2 block text-sm leading-6 font-normal',
+                    {
+                      light: 'text-contrast-400',
+                      dark: 'text-[var(--product-card-dark-subtitle,hsl(var(--background)/75%))]',
+                    }[colorScheme],
+                  )}
+                >
+                  {subtitle}
+                </span>
+              )}
+            </div>
             {price != null && <PriceLabel colorScheme={colorScheme} price={price} />}
           </div>
           {/* {rating != null && (
