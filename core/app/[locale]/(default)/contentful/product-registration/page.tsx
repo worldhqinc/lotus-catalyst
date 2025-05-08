@@ -1,12 +1,8 @@
-import { Checkbox } from '@/vibes/soul/form/checkbox';
-import { Input } from '@/vibes/soul/form/input';
-import { Label } from '@/vibes/soul/form/label';
-import { Select } from '@/vibes/soul/form/select';
-import { Button } from '@/vibes/soul/primitives/button';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
-import { Link } from '~/components/link';
 import { productFinishedGoodsFieldsSchema } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
+
+import { ProductRegistrationForm } from './_components/product-registration-form';
 
 export default async function ProductRegistration() {
   const productsData = await contentfulClient.getEntries({
@@ -14,8 +10,6 @@ export default async function ProductRegistration() {
     select: ['fields.bcProductReference', 'fields.parentCategory'],
     limit: 1000,
   });
-
-  // TODO extract this to a util and update usage throughout the app
 
   let productTypeOptions: Array<{ label: string; value: string }> = productsData.items.map(
     (item) => {
@@ -31,6 +25,8 @@ export default async function ProductRegistration() {
       };
     },
   );
+
+  productTypeOptions.unshift({ label: 'Select a Product Type', value: 'null' });
 
   productTypeOptions = Array.from(
     new Map(productTypeOptions.map((item) => [item.value, item])).values(),
@@ -51,6 +47,8 @@ export default async function ProductRegistration() {
     },
   );
 
+  modelNumberOptions.unshift({ label: 'Select a Model Number', value: 'null' });
+
   modelNumberOptions = Array.from(
     new Map(modelNumberOptions.map((item) => [item.value, item])).values(),
   ).filter((item) => item.value !== '');
@@ -62,85 +60,11 @@ export default async function ProductRegistration() {
           <h1 className="font-heading text-4xl uppercase md:text-6xl">Product Registration</h1>
         </div>
       </div>
-      <div className="bg-contrast-100 px-4 py-8 md:py-16">
-        <div className="mx-auto max-w-2xl rounded bg-white p-4 md:p-8">
-          <form className="flex flex-col gap-8" id="product-registration-form">
-            <div>
-              <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">About you</h2>
-              <div className="flex flex-col gap-4 md:flex-row">
-                <div className="flex flex-1 flex-col gap-1">
-                  <Label htmlFor="name">First name</Label>
-                  <Input id="name" name="name" type="text" />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <Label htmlFor="last-name">Last name</Label>
-                  <Input id="last-name" name="last-name" type="text" />
-                </div>
-              </div>
-              <div className="mt-4 flex flex-col gap-1">
-                <Label htmlFor="email">Email Address</Label>
-                <Input id="email" name="email" type="email" />
-              </div>
-            </div>
-            <div>
-              <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">Your product</h2>
-              <div className="flex flex-col gap-4 md:flex-row">
-                <div className="flex flex-1 flex-col gap-1">
-                  <Select
-                    aria-label="Select a Product Type"
-                    className="flex-1"
-                    key="productTypeSelect"
-                    name="productType"
-                    options={productTypeOptions}
-                    placeholder="Select a Product Type"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <Select
-                    aria-label="Select a Model Number"
-                    className="flex-1"
-                    key="modelNumberSelect"
-                    name="modelNumber"
-                    options={modelNumberOptions}
-                    placeholder="Select a Model Number"
-                  />
-                </div>
-              </div>
-            </div>
-            {/* <div>
-              <h2 className="mb-6 text-lg font-medium tracking-[1.8px] uppercase">
-                Sweepstakes eligibility
-              </h2>
-              <div className="flex flex-col gap-4">
-                <Label htmlFor="birthday">Birthday (Are you old enough to win?)</Label>
-                <Input id="birthday" name="birthday" type="date" />
-              </div>
-            </div> */}
-            <div>
-              <div className="flex gap-4">
-                <Checkbox id="email-opt-in" name="email-opt-in" />
-                <Label htmlFor="email-opt-in">Yes! Please add me to your mailing list.</Label>
-              </div>
-            </div>
-            <Button className="md:self-start" size="medium" type="submit">
-              Register
-            </Button>
-            <div>
-              <p className="text-xs leading-[26px]">
-                Lotus Cooking needs the contact information you provide to us to contact you about
-                our products and services. You may unsubscribe from these communications at any
-                time. For information on how to unsubscribe, as well as our privacy practices and
-                commitment to protecting your privacy, please review our{' '}
-                <Link className="text-primary" href="/policies/privacy-policy">
-                  Privacy Policy
-                </Link>
-                .
-              </p>
-            </div>
-          </form>
-          <CookiePreferencesNotice />
-        </div>
-      </div>
+      <ProductRegistrationForm
+        modelNumberOptions={modelNumberOptions}
+        productTypeOptions={productTypeOptions}
+      />
+      <CookiePreferencesNotice />
     </div>
   );
 }
