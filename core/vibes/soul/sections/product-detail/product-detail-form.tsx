@@ -11,7 +11,7 @@ import {
 } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { createSerializer, parseAsString, useQueryStates } from 'nuqs';
-import { ReactNode, useActionState, useCallback, useEffect } from 'react';
+import { forwardRef, ReactNode, useActionState, useCallback, useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
 import { z } from 'zod';
 
@@ -29,6 +29,25 @@ import NotifyBackInStock from '~/components/notify-back-in-stock';
 import { usePathname, useRouter } from '~/i18n/routing';
 
 import { Field, schema, SchemaRawShape } from './schema';
+
+const SubmitButton = forwardRef<HTMLButtonElement, { children: ReactNode; disabled?: boolean }>(
+  ({ children, disabled }, ref) => {
+    const { pending } = useFormStatus();
+
+    return (
+      <Button
+        className="w-full"
+        disabled={disabled}
+        loading={pending}
+        ref={ref}
+        size="medium"
+        type="submit"
+      >
+        {children}
+      </Button>
+    );
+  },
+);
 
 type Action<S, P> = (state: Awaited<S>, payload: P) => S | Promise<S>;
 
@@ -49,6 +68,7 @@ export interface ProductDetailFormProps<F extends Field> {
   ctaDisabled?: boolean;
   prefetch?: boolean;
   additionalActions?: ReactNode;
+  addToBagButtonRef?: React.Ref<HTMLButtonElement>;
 }
 
 export function ProductDetailForm<F extends Field>({
@@ -60,6 +80,7 @@ export function ProductDetailForm<F extends Field>({
   ctaDisabled = false,
   prefetch = false,
   additionalActions,
+  addToBagButtonRef,
 }: ProductDetailFormProps<F>) {
   const router = useRouter();
   const pathname = usePathname();
@@ -159,7 +180,9 @@ export function ProductDetailForm<F extends Field>({
             ) : (
               <>
                 <input name={formFields.quantity.name} type="hidden" value="1" />
-                <SubmitButton disabled={ctaDisabled}>{ctaLabel}</SubmitButton>
+                <SubmitButton disabled={ctaDisabled} ref={addToBagButtonRef}>
+                  {ctaLabel}
+                </SubmitButton>
               </>
             )}
             {additionalActions}
@@ -167,16 +190,6 @@ export function ProductDetailForm<F extends Field>({
         </div>
       </form>
     </FormProvider>
-  );
-}
-
-function SubmitButton({ children, disabled }: { children: ReactNode; disabled?: boolean }) {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button className="w-full" disabled={disabled} loading={pending} size="medium" type="submit">
-      {children}
-    </Button>
   );
 }
 

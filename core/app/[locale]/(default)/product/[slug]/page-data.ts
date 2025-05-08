@@ -174,6 +174,7 @@ const ProductQuery = graphql(
       site {
         product(entityId: $entityId) {
           entityId
+          sku
           name
           description
           path

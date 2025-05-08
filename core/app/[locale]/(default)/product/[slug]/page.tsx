@@ -7,8 +7,10 @@ import { SearchParams } from 'nuqs/server';
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { ProductDetail } from '@/vibes/soul/sections/product-detail';
 import { getSessionCustomerAccessToken } from '~/auth';
+import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
-import { supportDocumentSchema } from '~/contentful/schema';
+import { Link } from '~/components/link';
+import { productPartsAndAccessoriesSchema, supportDocumentSchema } from '~/contentful/schema';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
 import { getPreferredCurrencyCode } from '~/lib/currency';
@@ -226,13 +228,14 @@ export default async function Product(props: Props) {
             {
               title: t('ProductDetails.Accordions.specifications'),
               content: (
-                <div className="prose @container">
+                <div className="@container">
                   <dl className="flex flex-col gap-4">
                     {specifications.map((field, index) => (
-                      <div className="grid grid-cols-1 gap-2 @lg:grid-cols-2" key={index}>
-                        <dt>
-                          <strong>{field.name}</strong>
-                        </dt>
+                      <div
+                        className="text-contrast-400 grid grid-cols-1 gap-2 @lg:grid-cols-2"
+                        key={index}
+                      >
+                        <dt className="uppercase">{field.name}</dt>
                         <dd>{field.value}</dd>
                       </div>
                     ))}
@@ -247,18 +250,20 @@ export default async function Product(props: Props) {
             {
               title: t('ProductDetails.Accordions.supportDocumentation'),
               content: (
-                <div className="flex flex-col gap-4">
-                  {contentful.fields.supportDocumentation.map((documentation) => {
-                    const { documentName, modelNumber, productImage, url } =
-                      supportDocumentSchema.parse(documentation).fields;
+                <div className="flex flex-col items-start gap-4">
+                  {contentful.fields.supportDocumentation.map((documentation, index) => {
+                    const { documentName, url } = supportDocumentSchema.parse(documentation).fields;
 
                     return (
-                      <div key={documentation.sys.id}>
+                      <Link
+                        className="underline"
+                        href={url}
+                        key={`${documentation.sys.id}-${index}`}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
                         <h3>{documentName}</h3>
-                        {!!modelNumber && <p>{modelNumber}</p>}
-                        {productImage && <p>{productImage.fields.file.url}</p>}
-                        <p>{url}</p>
-                      </div>
+                      </Link>
                     );
                   })}
                 </div>
@@ -305,6 +310,7 @@ export default async function Product(props: Props) {
         prefetch={true}
         product={{
           id: baseProduct.entityId.toString(),
+          sku: baseProduct.sku,
           title: baseProduct.name,
           href: baseProduct.path,
           images: streamableImages,
@@ -319,10 +325,26 @@ export default async function Product(props: Props) {
         {([contentful, searchParams]) => {
           const pageContentEntries = contentful?.fields.pageContentEntries ?? [];
 
-          if (pageContentEntries.length === 0) return null;
+          const partsAccessories = contentful?.fields.partsAccessories?.map((part) =>
+            productPartsAndAccessoriesSchema.parse(part),
+          );
 
           return (
-            <PageContentEntries pageContent={pageContentEntries} searchParams={searchParams} />
+            <>
+              <PageContentEntries pageContent={pageContentEntries} searchParams={searchParams} />
+              {partsAccessories && (
+                <ProductCarousel
+                  carousel={{
+                    fields: {
+                      internalName: 'partsAccessories',
+                      carouselTitle: 'Oven Accessories',
+                      subtitle: 'Recommendations just for you',
+                      products: partsAccessories,
+                    },
+                  }}
+                />
+              )}
+            </>
           );
         }}
       </Stream>
