@@ -799,8 +799,8 @@ export const Navigation = forwardRef(function Navigation(
                   </Stream>
                   <ul className="flex flex-col gap-4">
                     <li>
-                      <Link className="text-xl tracking-[1.28px]" href="shop-in-store">
-                        Shop in-store
+                      <Link className="text-xl tracking-[1.28px]" href="/where-to-buy">
+                        Where to buy
                       </Link>
                     </li>
                     <li>

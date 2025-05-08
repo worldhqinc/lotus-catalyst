@@ -60,7 +60,7 @@ export const Banner = forwardRef(
           <div>
             <ul className="flex flex-row items-center justify-between gap-6">
               <li className="hidden @4xl:block">
-                <Link href="/shop-in-store">Shop In-Store</Link>
+                <Link href="/where-to-buy">Where to buy</Link>
               </li>
               <li>
                 <div className="flex items-center gap-2">
