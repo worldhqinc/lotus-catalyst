@@ -56,6 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // eslint-disable-next-line complexity
 export default async function Cart({ params, searchParams }: Props) {
   const { locale } = await params;
+
   setRequestLocale(locale);
 
   const t = await getTranslations('Cart');
