@@ -118,7 +118,7 @@ export function ProductDetail<F extends Field>({
                       )}
                     </div>
                     {/* Product Details */}
-                    <div className="flex flex-col gap-8">
+                    <div id="overview" className="flex flex-col gap-8">
                       <div>
                         <h1 className="text-surface-foreground text-2xl leading-none @xl:text-3xl @4xl:text-4xl">
                           {contentful?.fields.productName}
@@ -201,7 +201,7 @@ export function ProductDetail<F extends Field>({
                         </Stream>
                       </div>
                       <h2 className="sr-only">{additionalInformationTitle}</h2>
-                      <div className="group/product-accordion">
+                      <div id="features" className="group/product-accordion">
                         <Stream fallback={<ProductAccordionsSkeleton />} value={product.accordions}>
                           {(accordions) =>
                             accordions && (

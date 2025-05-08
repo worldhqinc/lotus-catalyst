@@ -32,7 +32,7 @@ function AddToBagForm({ sku, price }: { sku?: string; price?: Price | null }) {
   if (!sku) {
     return (
       <Button disabled size="small">
-        Add to bag{priceDisplay ? ` | $${priceDisplay}` : ''}
+        Add to bag{priceDisplay ? ` | ${priceDisplay}` : ''}
       </Button>
     );
   }
