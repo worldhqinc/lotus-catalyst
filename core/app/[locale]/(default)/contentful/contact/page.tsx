@@ -12,12 +12,14 @@ export default function ContactPage() {
           <p className="mt-4">Have a question? Need a hand? Our team is ready to help.</p>
         </div>
       </div>
-      <p className="text-contrast-400 mx-auto flex flex-col items-center justify-center pt-16 text-center">
-        Our Customer Care team is available Monday through Friday 9:00 am - 4:30 pm ET.
-      </p>
-      <p className="text-contrast-400 mx-auto flex flex-col items-center justify-center pt-2 text-center">
-        Closed on major US holidays.
-      </p>
+      <div className="container mt-8 lg:mt-16">
+        <div className="text-center">
+          <p className="text-contrast-400 text-center">
+            Our Customer Care team is available Monday through Friday 9:00 am - 4:30 pm ET.
+          </p>
+          <p className="text-contrast-400 pt-2 text-center">Closed on major US holidays.</p>
+        </div>
+      </div>
       <div className="container my-8 md:my-16 lg:max-w-[1142px]">
         <div className="border-contrast-200 divide-contrast-200 divide-y rounded-lg border lg:grid lg:grid-cols-[repeat(auto-fit,minmax(0,1fr))] lg:divide-x lg:divide-y-0">
           <div className="flex flex-col items-center p-4 text-center lg:p-8">

@@ -173,11 +173,10 @@ export default async function ContactFormPage() {
       </div>
       <div className="container py-8 lg:py-16">
         <div className="text-center">
-          <p className="text-contrast-400">
+          <p className="text-contrast-400 text-center">
             Our Customer Care team is available Monday through Friday 9:00 am - 4:30 pm ET.
-            <br />
-            Closed on major US holidays.
           </p>
+          <p className="text-contrast-400 pt-2 text-center">Closed on major US holidays.</p>
         </div>
         <div className="border-contrast-200 mx-auto mt-8 max-w-2xl rounded-lg border p-4 lg:mt-16 lg:p-8">
           {fields.length > 0 && <ContactForm fields={fields} />}
