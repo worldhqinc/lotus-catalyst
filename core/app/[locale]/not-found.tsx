@@ -1,23 +1,37 @@
 import { getTranslations } from 'next-intl/server';
 
 import { NotFound as NotFoundSection } from '@/vibes/soul/sections/not-found';
+import type { SearchParams } from 'nuqs/server';
+import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { Footer } from '~/components/footer';
 import { Header } from '~/components/header';
+import { getPageBySlug } from './(default)/contentful/[...rest]/page-data';
 
-export default async function NotFound() {
+export default async function NotFound({ searchParams }: { searchParams: SearchParams }) {
   const t = await getTranslations('NotFound');
 
-  return (
-    <>
-      <Header />
+  try {
+    const page = await getPageBySlug('pageStandard', ['not-found']);
+    return (
+      <>
+        <Header />
+        <PageContentEntries pageContent={page.fields.pageContent} searchParams={searchParams} />
+        <Footer />
+      </>
+    );
+  } catch {
+    return (
+      <>
+        <Header />
 
-      <NotFoundSection
-        className="flex-1 place-content-center"
-        subtitle={t('subtitle')}
-        title={t('title')}
-      />
+        <NotFoundSection
+          className="flex-1 place-content-center"
+          subtitle={t('subtitle')}
+          title={t('title')}
+        />
 
-      <Footer />
-    </>
-  );
+        <Footer />
+      </>
+    );
+  }
 }
