@@ -21,7 +21,7 @@ export default function ProductRegistration() {
             to spend on lotuscooking.com. Receive information on products, discounts, recipes,
             sweepstakes, and more!
           </p>
-          <form className="mt-8 flex flex-col gap-8">
+          <form className="mt-8 flex flex-col gap-8" id="product-registration-form">
             <div>
               <h2 className="mb-6 text-lg font-medium tracking-[1.8px] uppercase">About you</h2>
               <div className="flex flex-col gap-4 md:flex-row">
