@@ -88,7 +88,11 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
         />,
       );
     }
-  }, [formState.success]);
+
+    if (formState.errors) {
+      formRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [formState.success, formState.errors]);
 
   return (
     <form
@@ -98,6 +102,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
       noValidate
       ref={formRef}
     >
+      <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">Email</h2>
       {formState.errors && (
         <FieldError className="mt-4 mb-4" key="form-errors-general">
           Form has errors, see below.
