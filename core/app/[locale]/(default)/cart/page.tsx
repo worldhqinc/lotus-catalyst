@@ -1,12 +1,16 @@
 import { Metadata } from 'next';
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
+import { SearchParams } from 'nuqs/server';
 
 import { Cart as CartComponent, CartEmptyState } from '@/vibes/soul/sections/cart';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
+import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { getCartId } from '~/lib/cart';
 import { getPreferredCurrencyCode } from '~/lib/currency';
 import { exists } from '~/lib/utils';
+
+import { getPageBySlug } from '../contentful/[...rest]/page-data';
 
 import { redirectToCheckout } from './_actions/redirect-to-checkout';
 import { updateCouponCode } from './_actions/update-coupon-code';
@@ -36,6 +40,7 @@ const GetProductPricingQuery = graphql(`
 
 interface Props {
   params: Promise<{ locale: string }>;
+  searchParams: SearchParams;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -49,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // eslint-disable-next-line complexity
-export default async function Cart({ params }: Props) {
+export default async function Cart({ params, searchParams }: Props) {
   const { locale } = await params;
 
   setRequestLocale(locale);
@@ -60,13 +65,21 @@ export default async function Cart({ params }: Props) {
   const currencyCode = await getPreferredCurrencyCode();
 
   if (!cartId) {
-    return (
-      <CartEmptyState
-        cta={{ label: t('Empty.cta'), href: '/shop/all' }}
-        subtitle={t('Empty.subtitle')}
-        title={t('Empty.title')}
-      />
-    );
+    try {
+      const page = await getPageBySlug('pageStandard', ['cart-empty']);
+
+      return (
+        <PageContentEntries pageContent={page.fields.pageContent} searchParams={searchParams} />
+      );
+    } catch {
+      return (
+        <CartEmptyState
+          cta={{ label: t('Empty.cta'), href: '/shop/all' }}
+          subtitle={t('Empty.subtitle')}
+          title={t('Empty.title')}
+        />
+      );
+    }
   }
 
   const data = await getCart({ cartId });
@@ -75,13 +88,21 @@ export default async function Cart({ params }: Props) {
   const checkout = data.site.checkout;
 
   if (!cart) {
-    return (
-      <CartEmptyState
-        cta={{ label: t('Empty.cta'), href: '/shop/all' }}
-        subtitle={t('Empty.subtitle')}
-        title={t('Empty.title')}
-      />
-    );
+    try {
+      const page = await getPageBySlug('pageStandard', ['cart-empty']);
+
+      return (
+        <PageContentEntries pageContent={page.fields.pageContent} searchParams={searchParams} />
+      );
+    } catch {
+      return (
+        <CartEmptyState
+          cta={{ label: t('Empty.cta'), href: '/shop/all' }}
+          subtitle={t('Empty.subtitle')}
+          title={t('Empty.title')}
+        />
+      );
+    }
   }
 
   const lineItems = [...cart.lineItems.physicalItems, ...cart.lineItems.digitalItems];
@@ -239,11 +260,6 @@ export default async function Cart({ params }: Props) {
         }}
         decrementLineItemLabel={t('decrement')}
         deleteLineItemLabel={t('removeItem')}
-        emptyState={{
-          title: t('Empty.title'),
-          subtitle: t('Empty.subtitle'),
-          cta: { label: t('Empty.cta'), href: '/shop/all' },
-        }}
         incrementLineItemLabel={t('increment')}
         key={`${cart.entityId}-${cart.version}`}
         lineItemAction={updateLineItem}

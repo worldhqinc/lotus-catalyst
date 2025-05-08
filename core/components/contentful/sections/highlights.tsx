@@ -13,7 +13,7 @@ export function Highlights({
   cta,
 }: highlights['fields']) {
   const validatedCta = cta ? ctaSchema.parse(cta) : null;
-  const linkHref = validatedCta ? getLinkHref(validatedCta) : '#';
+  const linkHref = validatedCta ? getLinkHref(validatedCta.fields) : '#';
   const text = validatedCta?.fields.text ?? null;
 
   return (

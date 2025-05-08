@@ -429,7 +429,7 @@ export const Navigation = forwardRef(function Navigation(
         setIsMinicartDrawerOpen(true);
       }
 
-      prevCartCountRef.current = resolvedCartCount ?? null;
+      prevCartCountRef.current = resolvedCartCount ?? 0;
     })();
   }, [streamableCartCount, pathname, cartHref]);
 

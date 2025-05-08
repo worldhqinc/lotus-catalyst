@@ -1,6 +1,7 @@
 'use client';
 
 import { clsx } from 'clsx';
+import { startTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
@@ -10,6 +11,7 @@ import { addToCartBySkuForm } from '~/app/[locale]/(default)/cart/_actions/add-t
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import NotifyBackInStock from '~/components/notify-back-in-stock';
+import { useRouter } from '~/i18n/routing';
 
 import { Button } from '../button';
 
@@ -77,6 +79,8 @@ export function ProductCard({
   ratioOverride,
   onClick,
 }: ProductCardProps) {
+  const router = useRouter();
+
   // determine aspect ratio class: only apply when not fillContainer or when specifically overridden
   const ratioMapping = { '5:6': 'aspect-5/6', '3:4': 'aspect-3/4', '1:1': 'aspect-square' };
   const ratioClass = ratioOverride || (!fillContainer ? ratioMapping[aspectRatio] : undefined);
@@ -138,7 +142,18 @@ export function ProductCard({
             </Badge>
           )}
           {!!sku && (
-            <form action={addToCartBySkuForm} className="pointer-events-none absolute inset-0 z-10">
+            <form
+              action={() => {
+                startTransition(async () => {
+                  const formData = new FormData();
+
+                  formData.append('sku', sku);
+                  await addToCartBySkuForm(formData);
+                  router.refresh();
+                });
+              }}
+              className="pointer-events-none absolute inset-0 z-10"
+            >
               <AddToBagForm inStock={inStock} productId={id} sku={sku} />
             </form>
           )}
