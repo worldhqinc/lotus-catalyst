@@ -64,27 +64,7 @@ export async function ProductSupportLinks({ title, links }: productSupportLinks[
                   {supportPageLinkFields.title}
                 </Link>
                 {supportPageLinkFields.supportType === 'track-order' && (
-                  <p className="text-contrast-400">
-                    or{' '}
-                    <Link
-                      className="link text-primary"
-                      href={
-                        session?.user?.customerAccessToken
-                          ? '/account/orders'
-                          : '/login?redirectTo=/account/orders'
-                      }
-                    >
-                      look up an order
-                    </Link>
-                  </p>
-                )}
-                {supportPageLinkFields.supportType === 'returns' && (
-                  <p className="text-contrast-400">
-                    View our{' '}
-                    <Link className="link text-primary" href="/returns">
-                      Return Policy
-                    </Link>
-                  </p>
+                  <p className="text-contrast-400">Account holders only</p>
                 )}
               </div>
             </li>
