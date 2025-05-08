@@ -1,7 +1,7 @@
 import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
 import { Metadata } from 'next';
-import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
 import { SearchParams } from 'nuqs/server';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
@@ -16,7 +16,6 @@ import { productOptionsTransformer } from '~/data-transformers/product-options-t
 import { getPreferredCurrencyCode } from '~/lib/currency';
 import { isMobileUser } from '~/lib/user-agent';
 
-import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import { addToCart } from './_actions/add-to-cart';
 import { ProductSchema } from './_components/product-schema';
 import { ProductViewed } from './_components/product-viewed';
@@ -350,6 +349,7 @@ export default async function Product(props: Props) {
           const partsAccessories = contentful?.fields.partsAccessories?.map((part) =>
             productPartsAndAccessoriesSchema.parse(part),
           );
+
           return (
             <>
               <PageContentEntries pageContent={pageContentEntries} searchParams={searchParams} />
