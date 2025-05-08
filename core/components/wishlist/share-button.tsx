@@ -72,7 +72,7 @@ export const WishlistShareButton = ({
             onClick={isMobileUser ? nativeShare : () => null}
             onTouchStart={() => (!isPublic && isMobileUser ? setTooltipOpen(!tooltipOpen) : null)}
             size={size}
-            variant="secondary"
+            variant="primary"
           >
             {label}
           </Button>

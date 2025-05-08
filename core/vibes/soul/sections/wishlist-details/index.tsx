@@ -68,7 +68,7 @@ export const WishlistDetails = ({
 
         return (
           <section className={clsx('@container w-full', className)}>
-            <header className="mb-4 flex flex-col gap-4 @lg:flex-row @lg:justify-between">
+            <header className="mb-6 flex flex-col gap-4 @lg:flex-row @lg:justify-between">
               <div className="flex flex-1 gap-2">
                 {prevHref != null && prevHref !== '' && (
                   <ButtonLink href={prevHref} shape="circle" size="small" variant="ghost">
@@ -76,9 +76,7 @@ export const WishlistDetails = ({
                   </ButtonLink>
                 )}
                 <div className="flex flex-1 flex-col gap-2">
-                  <h1 className="font-heading text-3xl leading-none font-medium @7xl:text-5xl">
-                    {name}
-                  </h1>
+                  <h1 className="text-2xl leading-[120%] @2xl:text-4xl">{name}</h1>
                   <div className="text-contrast-500 text-sm @7xl:text-base">{totalItems.label}</div>
                 </div>
               </div>
