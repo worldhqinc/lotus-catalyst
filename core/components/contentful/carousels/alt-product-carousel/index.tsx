@@ -56,13 +56,20 @@ export function AltProductCarousel({
     const { id } = parsed.sys;
     const fields = parsed.fields;
     const file = fields.featuredImage ? assetSchema.parse(fields.featuredImage).fields.file : null;
-    const image = file ? { src: ensureImageUrl(file.url), alt: fields.productName } : undefined;
+    const image = file ? { src: ensureImageUrl(file.url), alt: fields.webProductName } : undefined;
     const href = fields.pageSlug ? `/${fields.pageSlug}` : '#';
     const priceValue = fields.salePrice ?? fields.defaultPrice;
     const priceNumber = parseFloat(priceValue);
     const price = `$${priceNumber.toFixed(2)}`;
 
-    return { id, image, href, title: fields.productName, subtitle: fields.shortDescription, price };
+    return {
+      id,
+      image,
+      href,
+      title: fields.webProductName,
+      subtitle: fields.shortDescription,
+      price,
+    };
   });
 
   return (

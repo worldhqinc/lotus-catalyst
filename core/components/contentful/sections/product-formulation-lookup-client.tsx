@@ -174,7 +174,7 @@ export function ProductFormulationLookupClient({
       <div className="bg-contrast-200 mr-4 h-16 w-16 overflow-hidden rounded">
         {selectedProductFields.featuredImage?.fields.file.url ? (
           <Image
-            alt={selectedProductFields.productName}
+            alt={selectedProductFields.webProductName}
             className="size-full object-cover"
             height={selectedProductFields.featuredImage.fields.file.details.image?.height ?? 64}
             src={ensureImageUrl(selectedProductFields.featuredImage.fields.file.url)}
@@ -186,10 +186,10 @@ export function ProductFormulationLookupClient({
         <div className="text-surface-foreground font-medium">
           {selectedProductFields.pageSlug ? (
             <Link href={`/${selectedProductFields.pageSlug}`}>
-              {selectedProductFields.productName}
+              {selectedProductFields.webProductName}
             </Link>
           ) : (
-            selectedProductFields.productName
+            selectedProductFields.webProductName
           )}
         </div>
         {(selectedProductFields.parentCategory || selectedProductFields.subCategory) && (

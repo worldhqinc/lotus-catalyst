@@ -121,13 +121,11 @@ export function ProductDetail<F extends Field>({
                     <div className="flex flex-col gap-8" id="overview">
                       <div>
                         <h1 className="text-surface-foreground text-2xl leading-none @xl:text-3xl @4xl:text-4xl">
-                          {contentful?.fields.productName}
+                          {contentful?.fields.webProductName}
                         </h1>
-                        {Boolean(contentful?.fields.subCategory) && (
+                        {Boolean(contentful?.fields.webProductNameDescriptor) && (
                           <p className="text-surface-foreground mt-4">
-                            {[contentful?.fields.parentCategory, contentful?.fields.subCategory]
-                              .filter(Boolean)
-                              .join(' and ')}
+                            {contentful?.fields.webProductNameDescriptor}
                           </p>
                         )}
                       </div>

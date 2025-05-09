@@ -90,9 +90,9 @@ export const ProductStickyHeader = forwardRef<HTMLDivElement, ProductStickyHeade
         <nav className="ml-8 flex flex-1 items-center justify-center gap-8">
           <span
             className="text-surface-foreground max-w-xs truncate text-2xl font-medium tracking-widest uppercase @xl:max-w-md"
-            title={contentful?.fields.productName || ''}
+            title={contentful?.fields.webProductName || ''}
           >
-            {contentful?.fields.productName}
+            {contentful?.fields.webProductName}
           </span>
           <a
             className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"

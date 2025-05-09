@@ -117,6 +117,8 @@ export const productFinishedGoodsFieldsSchema = z.object({
   productName: z.string(),
   bcProductReference: z.string(),
   pageSlug: z.string().optional().nullable(),
+  webProductName: z.string(),
+  webProductNameDescriptor: z.string().optional().nullable(),
   shortDescription: z.string().optional().nullable(),
   defaultPrice: z.string(),
   defaultPriceFloat: z.number().optional().nullable(),
@@ -284,8 +286,6 @@ export const productFinishedGoodsFieldsSchema = z.object({
   productLine: z.array(z.string()).optional().nullable(),
   parentCategory: z.array(z.string()).optional().nullable(),
   subCategory: z.array(z.string()).optional().nullable(),
-  webProductName: z.string().optional().nullable(),
-  webProductNameDescriptor: z.string().optional().nullable(),
   webSubCategory: z.string().optional().nullable(),
   productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
   feature: z.array(z.string()).optional().nullable(),
@@ -1218,6 +1218,8 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
   productName: z.string(),
   bcProductReference: z.string(),
   pageSlug: z.string(),
+  webProductName: z.string(),
+  webProductNameDescriptor: z.string().optional().nullable(),
   associatedFinishedGoods: z
     .array(
       z.object({
@@ -1453,7 +1455,6 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
   metaTitle: z.string(),
   metaDescription: z.string().optional().nullable(),
   parentCategory: z.record(z.string(), z.unknown()).optional().nullable(),
-  productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
   details: z
     .object({
       nodeType: z.literal(BLOCKS.DOCUMENT),
@@ -1475,6 +1476,7 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
   price: z.string().optional().nullable(),
   priceFloat: z.number().optional().nullable(),
   couponCodesalesDates: z.string().optional().nullable(),
+  productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
   salePrice: z.string().optional().nullable(),
   salePriceFloat: z.number().optional().nullable(),
   productBadge: z.string().optional().nullable(),
@@ -1523,8 +1525,6 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
     .optional()
     .nullable(),
   isNew: z.boolean().optional().nullable(),
-  webProductName: z.string().optional().nullable(),
-  webProductNameDescriptor: z.string().optional().nullable(),
 });
 
 export const productPartsAndAccessoriesSchema = z.object({

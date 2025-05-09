@@ -25,7 +25,7 @@ export function FeatureItem({
       );
 
       return {
-        label: product.fields.productName,
+        label: product.fields.webProductName,
         value: supportDocumentation?.fields.url ?? '',
       };
     }) ?? [];

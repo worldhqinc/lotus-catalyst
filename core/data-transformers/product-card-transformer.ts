@@ -51,7 +51,7 @@ export function contentfulProductCardTransformer(
     const file = featuredImage.fields.file;
     const image = {
       src: ensureImageUrl(file.url),
-      alt: featuredImage.fields.description ?? fields.productName,
+      alt: featuredImage.fields.description ?? fields.webProductName,
     };
     const price = fields.salePrice
       ? {
@@ -63,7 +63,7 @@ export function contentfulProductCardTransformer(
 
     return {
       id: product.sys.id,
-      title: fields.productName,
+      title: fields.webProductName,
       href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
       image,
       price,
@@ -79,7 +79,7 @@ export function contentfulProductCardTransformer(
     const image = file
       ? {
           src: ensureImageUrl(file.url),
-          alt: featuredImage.fields.description ?? fields.productName,
+          alt: featuredImage.fields.description ?? fields.webProductName,
         }
       : undefined;
     const price = fields.salePrice
@@ -92,7 +92,7 @@ export function contentfulProductCardTransformer(
 
     return {
       id: product.sys.id,
-      title: fields.productName,
+      title: fields.webProductName,
       subtitle: fields.shortDescription ?? undefined,
       href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
       image,

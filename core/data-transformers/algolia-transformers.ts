@@ -5,7 +5,7 @@ export type Localized<T> = Record<string, T>;
 export interface ProductGridHit {
   objectID: string;
   fields?: {
-    productName?: Localized<string>;
+    webProductName?: Localized<string>;
     shortDescription?: Localized<string>;
     pageSlug?: Localized<string>;
     featuredImage?: Localized<{ fields?: { file?: { url: string } } }>;
@@ -69,7 +69,7 @@ export interface PostGridHit {
 export function transformProductHit(hit: ProductGridHit) {
   const f = hit.fields ?? {};
   const sku = f.bcProductReference?.['en-US'] || '';
-  const title = f.productName?.['en-US'] || '';
+  const title = f.webProductName?.['en-US'] || '';
   const description = f.shortDescription?.['en-US'] || '';
   const slug = f.pageSlug?.['en-US'] || '';
   const imgField = f.featuredImage?.['en-US']?.fields?.file?.url || null;

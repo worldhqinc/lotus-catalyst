@@ -16,20 +16,20 @@ export async function ProductFormulationLookup({
 
   const productsData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',
-    select: ['fields.productName', 'fields.bcProductReference'],
+    select: ['fields.webProductName', 'fields.bcProductReference'],
     limit: 1000,
   });
 
   const productOptions: Array<{ label: string; value: string }> = productsData.items.map((item) => {
     const fields = productFinishedGoodsFieldsSchema
       .pick({
-        productName: true,
+        webProductName: true,
         bcProductReference: true,
       })
       .parse(item.fields);
 
     return {
-      label: fields.productName,
+      label: fields.webProductName,
       value: fields.bcProductReference,
     };
   });
