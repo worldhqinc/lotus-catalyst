@@ -4,7 +4,6 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { Image } from '~/components/image';
-import { Link } from '~/components/link';
 import { Button } from '~/vibes/soul/primitives/button';
 
 import { type CartItem } from './_actions/minicart';
@@ -12,17 +11,17 @@ import { type CartItem } from './_actions/minicart';
 interface Props {
   items: CartItem[];
   title?: string;
-  subtitle?: string;
   nextLabel?: string;
   previousLabel?: string;
+  addToCartButton: (id: string) => React.ReactNode;
 }
 
 export function CompleteKitchen({
   items,
   title = 'Complete the kitchen',
-  subtitle = 'Add to bag',
   nextLabel = 'Next products',
   previousLabel = 'Previous products',
+  addToCartButton,
 }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -98,9 +97,7 @@ export function CompleteKitchen({
                     </span>
                   )}
                 </div>
-                <Link href={product.href}>
-                  <Button variant="link">{subtitle}</Button>
-                </Link>
+                {addToCartButton(product.id)}
               </div>
             </div>
           </div>
