@@ -1,7 +1,8 @@
 import { SiFacebook, SiInstagram, SiPinterest } from '@icons-pack/react-simple-icons';
-import { ArrowRight } from 'lucide-react';
 
+import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
+import { subscribe } from '~/components/subscribe/_actions/subscribe';
 import { communitySection } from '~/contentful/schema';
 
 export function CommunitySection({
@@ -23,41 +24,25 @@ export function CommunitySection({
         </p>
       ) : null}
       <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="border-border flex flex-col rounded-lg border bg-white p-8 text-left">
+        <div className="border-border flex aspect-[2.25] flex-col rounded-lg border bg-white p-8 text-left">
           <h3 className="text-icon-primary mb-2 text-2xl font-medium tracking-widest uppercase">
             {signUpLabel}
           </h3>
           {signUpDescription ? (
             <p className="text-icon-secondary mb-8 max-w-sm">{signUpDescription}</p>
           ) : null}
-          <form className="flex flex-1 flex-col justify-end pt-10">
-            <label className="sr-only" htmlFor="email">
-              {signUpLabel}
-            </label>
-            <div className="relative">
-              <input
-                className="border-contrast-200 text-icon-secondary font-heading w-full border-b p-3 pr-10"
-                id="email"
-                placeholder={signUpPlaceholder}
-                type="email"
-              />
-              <button
-                className="border-border absolute inset-y-0 top-1/2 right-0 flex h-min -translate-y-1/2 items-center rounded-full border bg-white p-2 disabled:opacity-50"
-                type="submit"
-              >
-                <ArrowRight className="text-icon-primary h-4 w-4" />
-              </button>
-            </div>
-          </form>
+          <div className="mt-auto">
+            <InlineEmailForm action={subscribe} placeholder={signUpPlaceholder} />
+          </div>
         </div>
-        <div className="border-border flex flex-col rounded-lg border bg-white p-8 text-left">
+        <div className="border-border flex aspect-[2.25] flex-col rounded-lg border bg-white p-8 text-left">
           <h3 className="text-icon-primary mb-2 text-2xl font-medium tracking-widest uppercase">
             {socialLabel}
           </h3>
           {socialDescription ? (
             <p className="text-icon-secondary mb-8 max-w-sm">{socialDescription}</p>
           ) : null}
-          <div className="flex flex-1 items-end space-x-4 pt-10">
+          <div className="mt-auto flex flex-1 items-end space-x-4">
             {socialLinks?.map((link) => {
               let Icon;
 

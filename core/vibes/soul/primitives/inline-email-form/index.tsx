@@ -18,6 +18,7 @@ type Action<State, Payload> = (
 
 export function InlineEmailForm({
   className,
+  arrowClassName,
   inputClassName,
   inputContainerClassName,
   action,
@@ -25,6 +26,7 @@ export function InlineEmailForm({
   placeholder = 'Enter your email',
 }: {
   className?: string;
+  arrowClassName?: string;
   inputClassName?: string;
   inputContainerClassName?: string;
   placeholder?: string;
@@ -92,7 +94,7 @@ export function InlineEmailForm({
             type="submit"
             variant="tertiary"
           >
-            <ArrowRight className="text-white" size={20} strokeWidth={1.5} />
+            <ArrowRight className={arrowClassName} size={20} strokeWidth={1.5} />
           </Button>
         </div>
       </div>
