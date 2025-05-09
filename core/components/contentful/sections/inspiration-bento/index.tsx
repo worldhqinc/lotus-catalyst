@@ -1,11 +1,13 @@
+import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { clsx } from 'clsx';
-import { z } from 'zod';
 
 import ContentfulCta from '~/components/contentful/cta';
 import {
   Asset,
   ctaSchema,
   featureSchema,
+  inspirationBento,
   inspirationCardSchema,
   recipeSchema,
   tutorialSchema,
@@ -13,13 +15,6 @@ import {
 import { ensureImageUrl } from '~/lib/utils';
 
 import { Card } from '../../primitives/card';
-
-interface InspirationBentoProps {
-  heading?: string | null;
-  video?: string | null;
-  cta?: z.infer<typeof ctaSchema> | null;
-  inspirationCards?: Array<z.infer<typeof inspirationCardSchema>> | null;
-}
 
 interface CardImageProp {
   fields: {
@@ -43,9 +38,17 @@ interface MappedCardData {
   shortDescription: string;
 }
 
-export function InspirationBento({ heading, video, cta, inspirationCards }: InspirationBentoProps) {
+export async function InspirationBento({
+  heading,
+  subheading,
+  video,
+  cta,
+  inspirationCards,
+  variant,
+}: inspirationBento['fields']) {
   const validCardsData = inspirationCards
-    ?.map((card): MappedCardData | null => {
+    ?.map((data): MappedCardData | null => {
+      const card = inspirationCardSchema.parse(data);
       const { contentReference } = card.fields;
       const cardId = card.sys.id;
 
@@ -73,17 +76,18 @@ export function InspirationBento({ heading, video, cta, inspirationCards }: Insp
 
       if (contentType === 'tutorial') {
         const tutorialData = tutorialSchema.parse(contentReference);
-        const { title } = tutorialData.fields;
+        const { pageSlug, categories, featuredImage } = tutorialData.fields;
+        const { title, subtitle } = card.fields;
 
         if (title) {
           return {
             id: cardId,
             type: 'tutorial',
-            categories: [],
-            originalImage: null,
-            pageSlug: 'tutorials',
+            categories: categories ?? [],
+            originalImage: featuredImage,
+            pageSlug: pageSlug ?? 'tutorials',
             recipeName: title,
-            shortDescription: 'View this tutorial',
+            shortDescription: subtitle ?? '',
           };
         }
       }
@@ -109,13 +113,36 @@ export function InspirationBento({ heading, video, cta, inspirationCards }: Insp
     })
     .filter((item): item is MappedCardData => item !== null);
 
+  const validCta = cta ? ctaSchema.parse(cta) : null;
+
+  const subheadingRichText = await richTextFromMarkdown(subheading ?? '');
+  const subheadingHtml = documentToHtmlString(subheadingRichText);
+
   return (
     <section className="@container">
       <div className="mx-auto flex flex-col items-stretch gap-x-16 gap-y-10 px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          {heading ? <h2 className="text-4xl">{heading}</h2> : null}
-          <ContentfulCta cta={cta} />
-        </div>
+        {variant === 'hero' ? (
+          <section className="space-y-4 py-4 lg:py-8">
+            <div className="container max-w-2xl text-center">
+              <h1 className="font-heading text-4xl leading-[100%] uppercase md:text-6xl">
+                {heading}
+              </h1>
+            </div>
+            {!!subheading && (
+              <div
+                className="prose container max-w-xl text-center"
+                dangerouslySetInnerHTML={{
+                  __html: subheadingHtml,
+                }}
+              />
+            )}
+          </section>
+        ) : (
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            {heading ? <h2 className="text-4xl">{heading}</h2> : null}
+            {validCta ? <ContentfulCta cta={validCta} /> : null}
+          </div>
+        )}
         <div className="mt-8 grid gap-8 lg:grid-cols-2">
           {video ? (
             <figure className="bg-surface-image relative aspect-[3/4] h-full w-full overflow-hidden rounded-lg lg:aspect-auto">

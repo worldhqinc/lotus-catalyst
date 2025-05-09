@@ -28,7 +28,7 @@ interface CardProps {
 export function Card({ categories, image, pageSlug, recipeName, shortDescription }: CardProps) {
   return (
     <article className="group relative max-h-max">
-      <figure className="bg-surface-image relative aspect-[4/3] overflow-hidden rounded-lg">
+      <figure className="bg-contrast-200 relative aspect-[4/3] overflow-hidden rounded-lg">
         {image && (
           <Image
             alt={recipeName}
@@ -40,10 +40,10 @@ export function Card({ categories, image, pageSlug, recipeName, shortDescription
         )}
       </figure>
       <div className="mt-2 flex flex-col gap-1">
-        <h3 className="ease-quad group-hover:text-primary text-3xl transition-colors duration-200">
+        <h3 className="ease-quad group-hover:text-primary text-surface-foreground font-heading text-3xl transition-colors duration-200">
           {recipeName}
         </h3>
-        <p className="text-contrast-400">{shortDescription}</p>
+        <p className="text-contrast-400 text-sm">{shortDescription}</p>
       </div>
       <div className="mt-4 flex flex-wrap items-center gap-2">
         {categories.map((category) => (

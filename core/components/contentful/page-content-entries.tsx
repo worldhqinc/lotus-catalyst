@@ -21,7 +21,6 @@ import {
   heroSectionSchema,
   highlightsSchema,
   inspirationBentoSchema,
-  inspirationCardSchema,
   introSectionSchema,
   newsletterFormSchema,
   pageHeaderSupportSchema,
@@ -75,21 +74,8 @@ const ContentComponentMap: Record<
   },
   inspirationBento: ({ contentEntry }) => {
     const bentoData = inspirationBentoSchema.parse(contentEntry);
-    const { cta, heading, inspirationCards, video } = bentoData.fields;
-    const validCta = cta ? ctaSchema.parse(cta) : null;
-    const validCards =
-      inspirationCards?.map((card) => {
-        return inspirationCardSchema.parse(card);
-      }) ?? [];
 
-    return (
-      <InspirationBento
-        cta={validCta}
-        heading={heading}
-        inspirationCards={validCards}
-        video={video}
-      />
-    );
+    return <InspirationBento {...bentoData.fields} />;
   },
   newsletterForm: ({ contentEntry }) => {
     const data = newsletterFormSchema.parse(contentEntry);
