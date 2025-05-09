@@ -8,7 +8,7 @@ import { getSessionCustomerAccessToken } from '~/auth';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { TAGS } from '~/client/tags';
-import { getCartId } from '~/lib/cart';
+import { addToOrCreateCart, getCartId } from '~/lib/cart';
 
 const GetMinicartQuery = graphql(`
   query GetMinicartQuery($cartId: String) {
@@ -148,7 +148,7 @@ interface State {
 const schema = z.object({
   id: z.string(),
   quantity: z.coerce.number().optional(),
-  intent: z.enum(['update', 'remove']),
+  intent: z.enum(['update', 'remove', 'add']),
 });
 
 interface RelatedProductNode {
@@ -295,48 +295,54 @@ export async function minicartAction(prevState: State, formData: FormData): Prom
   const customerAccessToken = await getSessionCustomerAccessToken();
   const { id, quantity, intent } = submission.value;
 
-  const currentItems = await getMinicartItems();
-  const currentItem = currentItems.find((item) => item.id === id);
-
-  if (!currentItem) {
-    return {
-      ...prevState,
-      lastResult: submission.reply({ formErrors: ['Item not found'] }),
-    };
-  }
-
   try {
-    if (intent === 'update' && quantity !== undefined) {
-      await client.fetch({
-        document: UpdateCartLineItemMutation,
-        variables: {
-          input: {
-            cartEntityId: cartId,
-            lineItemEntityId: id,
-            data: {
-              lineItem: {
-                quantity,
-                productEntityId: currentItem.productEntityId,
-                variantEntityId: currentItem.variantEntityId,
+    if (intent === 'add') {
+      await addToOrCreateCart({
+        lineItems: [
+          {
+            productEntityId: Number(id),
+            quantity: quantity ?? 1,
+          },
+        ],
+      });
+    } else {
+      const currentItems = await getMinicartItems();
+      const currentItem = currentItems.find((item) => item.id === id);
+
+      if (currentItem) {
+        if (intent === 'update' && quantity !== undefined) {
+          await client.fetch({
+            document: UpdateCartLineItemMutation,
+            variables: {
+              input: {
+                cartEntityId: cartId,
+                lineItemEntityId: id,
+                data: {
+                  lineItem: {
+                    quantity,
+                    productEntityId: currentItem.productEntityId,
+                    variantEntityId: currentItem.variantEntityId,
+                  },
+                },
               },
             },
-          },
-        },
-        customerAccessToken,
-        fetchOptions: { cache: 'no-store' },
-      });
-    } else if (intent === 'remove') {
-      await client.fetch({
-        document: DeleteCartLineItemMutation,
-        variables: {
-          input: {
-            cartEntityId: cartId,
-            lineItemEntityId: id,
-          },
-        },
-        customerAccessToken,
-        fetchOptions: { cache: 'no-store' },
-      });
+            customerAccessToken,
+            fetchOptions: { cache: 'no-store' },
+          });
+        } else if (intent === 'remove') {
+          await client.fetch({
+            document: DeleteCartLineItemMutation,
+            variables: {
+              input: {
+                cartEntityId: cartId,
+                lineItemEntityId: id,
+              },
+            },
+            customerAccessToken,
+            fetchOptions: { cache: 'no-store' },
+          });
+        }
+      }
     }
 
     const items = await getMinicartItems();

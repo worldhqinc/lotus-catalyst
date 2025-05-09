@@ -42,7 +42,7 @@ function CheckoutButton({ children }: { children: React.ReactNode }) {
 export function Minicart({ initialItems, onClose, cartHref }: Props) {
   const t = useTranslations('Minicart');
   const router = useRouter();
-  const [{ items, lastResult }, formAction] = useActionState(minicartAction, {
+  const [{ items, lastResult }, formAction, isPending] = useActionState(minicartAction, {
     items: initialItems,
     lastResult: null,
   });
@@ -105,6 +105,16 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
         formAction(formData);
         setOptimisticItems(formData);
       }
+    });
+  };
+
+  const handleAddRelatedProduct = (id: string) => {
+    startTransition(() => {
+      const formData = new FormData();
+
+      formData.set('id', id);
+      formData.set('intent', 'add');
+      formAction(formData);
     });
   };
 
@@ -211,10 +221,19 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
 
       <div className="mt-auto">
         <CompleteKitchen
+          addToCartButton={(id) => (
+            <Button
+              disabled={isPending}
+              loading={isPending}
+              onClick={() => handleAddRelatedProduct(id)}
+              variant="link"
+            >
+              {t('completeKitchen.addToCart')}
+            </Button>
+          )}
           items={optimisticItems}
           nextLabel={t('completeKitchen.nextProducts')}
           previousLabel={t('completeKitchen.previousProducts')}
-          subtitle={t('completeKitchen.addToCart')}
           title={t('completeKitchen.title')}
         />
 
