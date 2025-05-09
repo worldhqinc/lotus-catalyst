@@ -3046,8 +3046,52 @@ export type guidingPrinciple = z.infer<typeof guidingPrincipleSchema>;
 // Schema for ctaSection
 export const ctaSectionFieldsSchema = z.object({
   sectionTitle: z.string().optional().nullable(),
-  buttonText: z.string(),
-  buttonLink: z.string(),
+  sectionSubtitle: z.string().optional().nullable(),
+  buttonText: z.string().optional().nullable(),
+  buttonLink: z.string().optional().nullable(),
+  ctaList: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional().nullable(),
+          revision: z.number(),
+          locale: z.string().optional().nullable(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional()
+    .nullable(),
+  variant: z.string().optional().nullable(),
 });
 
 export const ctaSectionSchema = z.object({

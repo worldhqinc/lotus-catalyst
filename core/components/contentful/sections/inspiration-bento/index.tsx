@@ -2,6 +2,7 @@ import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { clsx } from 'clsx';
 
+import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import ContentfulCta from '~/components/contentful/cta';
 import {
   Asset,
@@ -119,89 +120,87 @@ export async function InspirationBento({
   const subheadingHtml = documentToHtmlString(subheadingRichText);
 
   return (
-    <section className="@container">
-      <div className="mx-auto flex flex-col items-stretch gap-x-16 gap-y-10 px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
-        {variant === 'hero' ? (
-          <section className="space-y-4 py-4 lg:py-8">
-            <div className="container max-w-2xl text-center">
-              <h1 className="font-heading text-4xl leading-[100%] uppercase md:text-6xl">
-                {heading}
-              </h1>
-            </div>
-            {!!subheading && (
-              <div
-                className="prose container max-w-xl text-center"
-                dangerouslySetInnerHTML={{
-                  __html: subheadingHtml,
-                }}
-              />
-            )}
-          </section>
-        ) : (
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            {heading ? <h2 className="text-4xl">{heading}</h2> : null}
-            {validCta ? <ContentfulCta cta={validCta} /> : null}
+    <SectionLayout>
+      {variant === 'hero' ? (
+        <section className="space-y-4 py-4 lg:py-8">
+          <div className="container max-w-2xl text-center">
+            <h1 className="font-heading text-4xl leading-[100%] uppercase md:text-6xl">
+              {heading}
+            </h1>
           </div>
-        )}
-        <div className="mt-8 grid gap-8 lg:grid-cols-2">
-          {video ? (
-            <figure className="bg-surface-image relative aspect-[3/4] h-full w-full overflow-hidden rounded-lg lg:aspect-auto">
-              <iframe
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-                className="h-full w-full border-0"
-                src={`//fast.wistia.net/embed/iframe/${video}?videoFoam=true`}
-                title={`${heading || 'Inspiration'} Video`}
-              />
-            </figure>
-          ) : null}
-          {validCardsData?.length ? (
+          {!!subheading && (
             <div
-              className={clsx(
-                'grid grid-cols-1 gap-8 md:grid-cols-2',
-                video ? 'lg:col-start-2' : 'lg:col-span-2',
-              )}
-            >
-              {validCardsData.map((cardData) => {
-                let imagePropForCard: CardImageProp | undefined;
+              className="prose container max-w-xl text-center"
+              dangerouslySetInnerHTML={{
+                __html: subheadingHtml,
+              }}
+            />
+          )}
+        </section>
+      ) : (
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          {heading ? <h2 className="text-4xl">{heading}</h2> : null}
+          {validCta ? <ContentfulCta cta={validCta} /> : null}
+        </div>
+      )}
+      <div className="mt-8 grid gap-8 lg:grid-cols-2">
+        {video ? (
+          <figure className="bg-surface-image relative aspect-[3/4] h-full w-full overflow-hidden rounded-lg lg:aspect-auto">
+            <iframe
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              className="h-full w-full border-0"
+              src={`//fast.wistia.net/embed/iframe/${video}?videoFoam=true`}
+              title={`${heading || 'Inspiration'} Video`}
+            />
+          </figure>
+        ) : null}
+        {validCardsData?.length ? (
+          <div
+            className={clsx(
+              'grid grid-cols-1 gap-8 md:grid-cols-2',
+              video ? 'lg:col-start-2' : 'lg:col-span-2',
+            )}
+          >
+            {validCardsData.map((cardData) => {
+              let imagePropForCard: CardImageProp | undefined;
 
-                if (cardData.originalImage?.fields) {
-                  const imageFile = cardData.originalImage.fields.file;
-                  const imageDetails = imageFile.details.image;
+              if (cardData.originalImage?.fields) {
+                const imageFile = cardData.originalImage.fields.file;
+                const imageDetails = imageFile.details.image;
 
-                  if (imageDetails) {
-                    imagePropForCard = {
-                      fields: {
-                        file: {
-                          url: imageFile.url ? ensureImageUrl(imageFile.url) : '/placeholder.jpg',
-                          details: {
-                            image: {
-                              height: imageDetails.height,
-                              width: imageDetails.width,
-                            },
+                if (imageDetails) {
+                  imagePropForCard = {
+                    fields: {
+                      file: {
+                        url: imageFile.url ? ensureImageUrl(imageFile.url) : '/placeholder.jpg',
+                        details: {
+                          image: {
+                            height: imageDetails.height,
+                            width: imageDetails.width,
                           },
                         },
-                        title: cardData.originalImage.fields.title ?? cardData.recipeName,
                       },
-                    };
-                  }
+                      title: cardData.originalImage.fields.title ?? cardData.recipeName,
+                    },
+                  };
                 }
+              }
 
-                return (
-                  <Card
-                    categories={cardData.categories}
-                    image={imagePropForCard}
-                    key={cardData.id}
-                    pageSlug={cardData.pageSlug}
-                    recipeName={cardData.recipeName}
-                    shortDescription={cardData.shortDescription}
-                  />
-                );
-              })}
-            </div>
-          ) : null}
-        </div>
+              return (
+                <Card
+                  categories={cardData.categories}
+                  image={imagePropForCard}
+                  key={cardData.id}
+                  pageSlug={cardData.pageSlug}
+                  recipeName={cardData.recipeName}
+                  shortDescription={cardData.shortDescription}
+                />
+              );
+            })}
+          </div>
+        ) : null}
       </div>
-    </section>
+    </SectionLayout>
   );
 }
