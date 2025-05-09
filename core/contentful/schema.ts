@@ -2152,6 +2152,7 @@ export type cta = z.infer<typeof ctaSchema>;
 // Schema for inspirationBento
 export const inspirationBentoFieldsSchema = z.object({
   heading: z.string().optional().nullable(),
+  subheading: z.string().optional().nullable(),
   cta: z
     .object({
       metadata: z.object({
@@ -2235,6 +2236,7 @@ export const inspirationBentoFieldsSchema = z.object({
     )
     .optional()
     .nullable(),
+  variant: z.string().optional().nullable(),
 });
 
 export const inspirationBentoSchema = z.object({
@@ -2295,7 +2297,8 @@ export const inspirationCardFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional(),
+    .optional()
+    .nullable(),
   cta: z
     .object({
       metadata: z.object({
@@ -2357,6 +2360,102 @@ export type inspirationCard = z.infer<typeof inspirationCardSchema>;
 // Schema for tutorial
 export const tutorialFieldsSchema = z.object({
   title: z.string(),
+  subtitle: z.string().optional().nullable(),
+  featuredImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.undefined().optional().nullable(),
+      }),
+      fields: z.object({
+        title: z.string().optional().nullable(),
+        description: z.string().optional().nullable(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional()
+              .nullable(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .optional()
+    .nullable(),
+  categories: z.array(z.string()).optional().nullable(),
+  pageSlug: z.string().optional().nullable(),
+  content: z.string().optional().nullable(),
+  productCarousel: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional()
+    .nullable(),
 });
 
 export const tutorialSchema = z.object({
