@@ -13,6 +13,8 @@ interface MenuLink {
   label: string;
   prefetch?: ComponentPropsWithoutRef<typeof SidebarMenuLink>['prefetch'];
   secondaryLinks?: Array<{ href: string; label: string }>;
+  onClick?: () => void;
+  component?: React.ComponentType<{ label: string }>;
 }
 
 interface Props {
@@ -41,15 +43,23 @@ export function SidebarMenu({ links: streamableLinks, placeholderCount = 5 }: Pr
 
                 return (
                   <li className="mb-2" key={index}>
-                    <SidebarMenuLink href={link.href} prefetch={link.prefetch}>
-                      {link.label}
-                    </SidebarMenuLink>
+                    {link.component ? (
+                      <link.component label={link.label} />
+                    ) : (
+                      <SidebarMenuLink
+                        href={link.href}
+                        onClick={link.onClick}
+                        prefetch={link.prefetch}
+                      >
+                        {link.label}
+                      </SidebarMenuLink>
+                    )}
                     {link.secondaryLinks && isPrimaryActive && (
                       <ul className="mt-1 ml-4">
                         {link.secondaryLinks.map((secondaryLink, secondaryIndex) => (
                           <li key={secondaryIndex}>
                             <SidebarMenuLink
-                              className="font-normal after:content-none"
+                              className="!tracking-normal !normal-case after:content-none"
                               href={secondaryLink.href}
                               isSecondary
                               prefetch={link.prefetch}

@@ -10,6 +10,7 @@ export function SidebarMenuLink({
   className,
   href,
   isSecondary,
+  onClick,
   ...rest
 }: React.ComponentPropsWithoutRef<typeof Link> & { isSecondary?: boolean }) {
   const pathname = usePathname();
@@ -20,6 +21,13 @@ export function SidebarMenuLink({
     (isSecondary
       ? pathname === linkPathname || pathname === `${linkPathname}/`
       : pathname.includes(linkPathname));
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (onClick) {
+      e.preventDefault();
+      onClick(e);
+    }
+  };
 
   return (
     <Link
@@ -32,6 +40,7 @@ export function SidebarMenuLink({
         className,
       )}
       href={href}
+      onClick={handleClick}
     />
   );
 }

@@ -7,6 +7,13 @@ interface MenuLink {
   href: string;
   label: string;
   secondaryLinks?: Array<{ href: string; label: string }>;
+  component?: React.ComponentType<{ label: string }>;
+}
+
+interface SelectOption {
+  value: string;
+  label: string;
+  isCustomAction?: boolean;
 }
 
 export function SidebarMenuSelect({ links }: { links: MenuLink[] }) {
@@ -23,8 +30,16 @@ export function SidebarMenuSelect({ links }: { links: MenuLink[] }) {
       )?.href;
     }, undefined) ?? '';
 
-  const options = links.flatMap((link) => [
-    ...(link.secondaryLinks?.length ? [] : [{ value: link.href, label: link.label }]),
+  const options: SelectOption[] = links.flatMap((link) => [
+    ...(link.secondaryLinks?.length
+      ? []
+      : [
+          {
+            value: link.href,
+            label: link.label,
+            isCustomAction: !!link.component,
+          },
+        ]),
     ...(link.secondaryLinks?.map((secondary) => ({
       value: secondary.href,
       label: `${link.label} - ${secondary.label}`,
@@ -35,7 +50,13 @@ export function SidebarMenuSelect({ links }: { links: MenuLink[] }) {
     <Select
       name="sidebar-layout-link-select"
       onValueChange={(value) => {
-        router.push(value);
+        const option = options.find((opt) => opt.value === value);
+
+        if (option?.isCustomAction) {
+          window.truste.eu.clickListener();
+        } else {
+          router.push(value);
+        }
       }}
       options={options}
       value={matchingLink}
