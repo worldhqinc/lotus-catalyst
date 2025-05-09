@@ -37,7 +37,6 @@ export const WishlistItemAddToCart = ({
 
   useEffect(() => {
     if (lastResult?.status === 'success' && successMessage) {
-      toast.success(successMessage);
       router.refresh();
     }
 
