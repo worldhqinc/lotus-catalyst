@@ -162,9 +162,10 @@ export const Footer = forwardRef(async function Footer(
                       {socialMediaLinks.map(({ href, icon }, i) => {
                         return (
                           <Link
-                            className="flex items-center justify-center rounded-lg fill-[var(--footer-social-icon,hsl(var(--contrast-400)))] p-1 ring-[var(--footer-focus,hsl(var(--primary)))] transition-colors duration-300 ease-out hover:fill-[var(--footer-social-icon-hover,hsl(var(--foreground)))] focus-visible:ring-2 focus-visible:outline-0"
+                            className="ease-quad hover:text-primary flex items-center justify-center rounded-lg fill-[var(--footer-social-icon,hsl(var(--contrast-400)))] p-1 ring-[var(--footer-focus,hsl(var(--primary)))] transition-colors duration-200 hover:fill-[var(--footer-social-icon-hover,hsl(var(--foreground)))] focus-visible:ring-2 focus-visible:outline-0"
                             href={href}
                             key={i}
+                            target="_blank"
                           >
                             {icon}
                           </Link>
@@ -379,41 +380,6 @@ export const Footer = forwardRef(async function Footer(
             </Link>
             <CookiePreferencesLink />
           </div>
-
-          {/* Social Media Links */}
-          {/* <Stream
-            fallback={
-              <div className="flex animate-pulse flex-wrap gap-2">
-                <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
-                <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
-                <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
-                <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
-                <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
-                <div className="bg-contrast-100 h-6 w-[2.1875rem] rounded-sm" />
-              </div>
-            }
-            value={streamableSocialMediaLinks}
-          >
-            {(socialMediaLinks) => {
-              if (socialMediaLinks != null) {
-                return (
-                  <div className="flex flex-1 items-center gap-3">
-                    {socialMediaLinks.map(({ href, icon }, i) => {
-                      return (
-                        <Link
-                          className="flex items-center justify-center rounded-lg fill-[var(--footer-social-icon,hsl(var(--contrast-400)))] p-1 ring-[var(--footer-focus,hsl(var(--primary)))] transition-colors duration-300 ease-out hover:fill-[var(--footer-social-icon-hover,hsl(var(--foreground)))] focus-visible:ring-2 focus-visible:outline-0"
-                          href={href}
-                          key={i}
-                        >
-                          {icon}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                );
-              }
-            }}
-          </Stream> */}
         </div>
       </div>
     </footer>
