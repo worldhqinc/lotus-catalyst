@@ -57,6 +57,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: metaDescription,
     keywords: metaKeywords ? metaKeywords.split(',') : null,
+    metadataBase: new URL(process.env.AUTH_URL ?? ''),
     openGraph: {
       images: [
         {
