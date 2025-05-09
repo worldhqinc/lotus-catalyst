@@ -3,7 +3,6 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { clsx } from 'clsx';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Script from 'next/script';
 import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
@@ -111,16 +110,6 @@ export default async function RootLayout({ params, children }: Props) {
           </NuqsAdapter>
         </NextIntlClientProvider>
         <VercelComponents />
-        <Script
-          id="ze-snippet"
-          src={`https://static.zdassets.com/ekr/snippet.js?key=${process.env.NEXT_PUBLIC_ZENDESK_KEY}`}
-          strategy="afterInteractive"
-        />
-        <Script
-          id="klaviyo-snippet"
-          src={`https://static.klaviyo.com/onsite/js/${process.env.KLAVIYO_PUBLIC_API_KEY}/klaviyo.js`}
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );
