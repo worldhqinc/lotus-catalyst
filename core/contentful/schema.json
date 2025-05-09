@@ -4620,7 +4620,7 @@
         "id": "ctaSection",
         "type": "ContentType",
         "createdAt": "2025-04-21T14:33:31.601Z",
-        "updatedAt": "2025-04-21T14:36:21.828Z",
+        "updatedAt": "2025-05-09T15:36:09.741Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4628,8 +4628,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 2,
-        "publishedAt": "2025-04-21T14:36:21.828Z",
+        "publishedVersion": 12,
+        "publishedAt": "2025-05-09T15:36:09.741Z",
         "firstPublishedAt": "2025-04-21T14:36:21.828Z",
         "createdBy": {
           "sys": {
@@ -4645,8 +4645,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 1,
-        "version": 3,
+        "publishedCounter": 6,
+        "version": 13,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -4672,11 +4672,22 @@
           "omitted": false
         },
         {
+          "id": "sectionSubtitle",
+          "name": "Section Subtitle",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
           "id": "buttonText",
           "name": "Button Text",
           "type": "Symbol",
           "localized": true,
-          "required": true,
+          "required": false,
           "validations": [
           ],
           "disabled": false,
@@ -4687,8 +4698,46 @@
           "name": "Button Link",
           "type": "Symbol",
           "localized": true,
-          "required": true,
+          "required": false,
           "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "ctaList",
+          "name": "CTA List",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkContentType": [
+                  "cta"
+                ]
+              }
+            ],
+            "linkType": "Entry"
+          }
+        },
+        {
+          "id": "variant",
+          "name": "Variant",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "in": [
+                "media-grid"
+              ]
+            }
           ],
           "disabled": false,
           "omitted": false
@@ -4977,7 +5026,7 @@
         "id": "heroBanner",
         "type": "ContentType",
         "createdAt": "2025-04-21T23:44:18.865Z",
-        "updatedAt": "2025-05-09T00:51:36.462Z",
+        "updatedAt": "2025-05-09T15:26:29.765Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4985,8 +5034,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 16,
-        "publishedAt": "2025-05-09T00:51:36.462Z",
+        "publishedVersion": 18,
+        "publishedAt": "2025-05-09T15:26:29.765Z",
         "firstPublishedAt": "2025-04-21T23:45:16.956Z",
         "createdBy": {
           "sys": {
@@ -5002,8 +5051,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 8,
-        "version": 17,
+        "publishedCounter": 9,
+        "version": 19,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -5150,7 +5199,8 @@
             {
               "in": [
                 "left-aligned",
-                "simple"
+                "simple",
+                "left-aligned-lowercase"
               ]
             }
           ],

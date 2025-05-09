@@ -1,5 +1,6 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { clsx } from 'clsx';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
@@ -63,16 +64,26 @@ export async function HeroBanner({
     );
   }
 
-  if (variant === 'left-aligned') {
+  if (variant === 'left-aligned' || variant === 'left-aligned-lowercase') {
     return (
-      <SectionLayout className="bg-surface-image relative">
+      <SectionLayout className="bg-contrast-200 relative">
         {mediaElement}
-        <div className="flex w-full flex-col gap-8 py-20">
-          <h1 className="text-surface-foreground font-heading max-w-xl text-4xl uppercase md:text-6xl">
+        <div
+          className={clsx(
+            'flex w-full flex-col gap-8 py-20',
+            variant === 'left-aligned' ? '' : 'lg:py-40',
+          )}
+        >
+          <h1
+            className={clsx(
+              'text-surface-foreground font-heading max-w-xl text-4xl md:text-6xl',
+              variant === 'left-aligned' && 'uppercase',
+            )}
+          >
             {title}
           </h1>
           {description ? <p className="text-contrast-400 max-w-lg text-xl">{description}</p> : null}
-          <HeroBannerCTAs primary={primary} secondary={secondary} />
+          <HeroBannerCTAs primary={primary} secondary={secondary} variant={variant} />
           <HeroBannerSecondary
             secondaryDescription={secondaryDescription}
             secondaryTitle={secondaryTitle}
@@ -83,7 +94,7 @@ export async function HeroBanner({
   }
 
   return (
-    <SectionLayout className="bg-surface-image relative">
+    <SectionLayout className="bg-contrast-200 relative">
       {mediaElement}
       <div className="flex w-full flex-col items-center justify-center gap-8 py-20">
         <h1 className="text-surface-foreground font-heading max-w-4xl text-center text-4xl uppercase md:text-6xl">
@@ -92,17 +103,28 @@ export async function HeroBanner({
         {description ? (
           <p className="text-contrast-400 max-w-lg text-center text-xl">{description}</p>
         ) : null}
-        <HeroBannerCTAs primary={primary} secondary={secondary} />
+        <HeroBannerCTAs primary={primary} secondary={secondary} variant={variant} />
       </div>
     </SectionLayout>
   );
 }
 
-function HeroBannerCTAs({ primary, secondary }: { primary: cta | null; secondary: cta | null }) {
-  if (!primary && !secondary) return null;
-
+function HeroBannerCTAs({
+  primary,
+  secondary,
+  variant,
+}: {
+  primary: cta | null;
+  secondary: cta | null;
+  variant?: string | null;
+}) {
   return (
-    <div className="mt-4 flex flex-col items-center gap-4 md:flex-row">
+    <div
+      className={clsx(
+        'mt-4 flex flex-col gap-4 md:flex-row',
+        variant?.startsWith('left-aligned') ? 'items-start' : 'items-center',
+      )}
+    >
       {primary && (
         <ButtonLink href={primary.fields.externalLink ?? ''}>{primary.fields.text}</ButtonLink>
       )}
