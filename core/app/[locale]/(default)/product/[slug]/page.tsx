@@ -63,7 +63,14 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
             },
           ],
         }
-      : null,
+      : {
+          images: [
+            {
+              url: '/images/lotus-social-share.jpg',
+              alt: 'Lotus',
+            },
+          ],
+        },
   };
 }
 

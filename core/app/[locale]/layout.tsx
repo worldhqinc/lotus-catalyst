@@ -57,6 +57,14 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: metaDescription,
     keywords: metaKeywords ? metaKeywords.split(',') : null,
+    openGraph: {
+      images: [
+        {
+          url: '/images/lotus-social-share.jpg',
+          alt: storeName || 'Lotus',
+        },
+      ],
+    },
     other: {
       platform: 'bigcommerce.catalyst',
       build_sha: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ?? '',
