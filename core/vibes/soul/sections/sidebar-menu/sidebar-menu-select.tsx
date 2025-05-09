@@ -3,11 +3,33 @@
 import { Select } from '@/vibes/soul/form/select';
 import { usePathname, useRouter } from '~/i18n/routing';
 
-export function SidebarMenuSelect({ links }: { links: Array<{ href: string; label: string }> }) {
+interface MenuLink {
+  href: string;
+  label: string;
+  secondaryLinks?: Array<{ href: string; label: string }>;
+}
+
+export function SidebarMenuSelect({ links }: { links: MenuLink[] }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  const matchingLink = links.find((link) => pathname.includes(link.href))?.href ?? '';
+  const matchingLink =
+    links.reduce<string | undefined>((match, link) => {
+      if (match) return match;
+      if (pathname === link.href || pathname === `${link.href}/`) return link.href;
+
+      return link.secondaryLinks?.find(
+        (secondary) => pathname === secondary.href || pathname === `${secondary.href}/`,
+      )?.href;
+    }, undefined) ?? '';
+
+  const options = links.flatMap((link) => [
+    ...(link.secondaryLinks?.length ? [] : [{ value: link.href, label: link.label }]),
+    ...(link.secondaryLinks?.map((secondary) => ({
+      value: secondary.href,
+      label: `${link.label} - ${secondary.label}`,
+    })) ?? []),
+  ]);
 
   return (
     <Select
@@ -15,7 +37,7 @@ export function SidebarMenuSelect({ links }: { links: Array<{ href: string; labe
       onValueChange={(value) => {
         router.push(value);
       }}
-      options={links.map((link) => ({ value: link.href, label: link.label }))}
+      options={options}
       value={matchingLink}
     />
   );
