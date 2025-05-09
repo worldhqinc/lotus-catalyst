@@ -29,7 +29,14 @@ export default async function Layout({ children, params }: Props) {
         sidebar={
           <SidebarMenu
             links={[
-              { href: '/policies/privacy-policy', label: t('privacyPolicy') },
+              {
+                href: '/policies/privacy-policy',
+                label: t('privacyPolicy.label'),
+                secondaryLinks: [
+                  { href: '/policies/privacy-policy', label: t('privacyPolicy.us') },
+                  { href: '/policies/privacy-policy/ca', label: t('privacyPolicy.ca') },
+                ],
+              },
               { href: '/policies/terms-of-service', label: t('termsOfService') },
               { href: '/policies/cookie-policy', label: t('cookiePolicy') },
               { href: '/policies/accessibility', label: t('accessibility') },

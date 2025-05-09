@@ -480,7 +480,11 @@
   },
   "Policies": {
     "Layout": {
-      "privacyPolicy": "Privacy Policy",
+      "privacyPolicy": {
+        "label": "Privacy Policy",
+        "us": "United States",
+        "ca": "Canada"
+      },
       "termsOfService": "Terms of Service",
       "cookiePolicy": "Cookie Policy",
       "accessibility": "Accessibility",

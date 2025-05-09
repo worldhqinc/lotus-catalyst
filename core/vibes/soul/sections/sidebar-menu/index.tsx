@@ -1,6 +1,9 @@
+'use client';
+
 import { ComponentPropsWithoutRef } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
+import { usePathname } from '~/i18n/routing';
 
 import { SidebarMenuLink } from './sidebar-menu-link';
 import { SidebarMenuSelect } from './sidebar-menu-select';
@@ -9,6 +12,7 @@ interface MenuLink {
   href: string;
   label: string;
   prefetch?: ComponentPropsWithoutRef<typeof SidebarMenuLink>['prefetch'];
+  secondaryLinks?: Array<{ href: string; label: string }>;
 }
 
 interface Props {
@@ -17,6 +21,8 @@ interface Props {
 }
 
 export function SidebarMenu({ links: streamableLinks, placeholderCount = 5 }: Props) {
+  const pathname = usePathname();
+
   return (
     <Stream
       fallback={<SidebarMenuSkeleton placeholderCount={placeholderCount} />}
@@ -30,13 +36,33 @@ export function SidebarMenu({ links: streamableLinks, placeholderCount = 5 }: Pr
         return (
           <nav>
             <ul className="hidden @2xl:block">
-              {links.map((link, index) => (
-                <li key={index}>
-                  <SidebarMenuLink href={link.href} prefetch={link.prefetch}>
-                    {link.label}
-                  </SidebarMenuLink>
-                </li>
-              ))}
+              {links.map((link, index) => {
+                const isPrimaryActive = pathname.includes(link.href);
+
+                return (
+                  <li className="mb-2" key={index}>
+                    <SidebarMenuLink href={link.href} prefetch={link.prefetch}>
+                      {link.label}
+                    </SidebarMenuLink>
+                    {link.secondaryLinks && isPrimaryActive && (
+                      <ul className="mt-1 ml-4">
+                        {link.secondaryLinks.map((secondaryLink, secondaryIndex) => (
+                          <li key={secondaryIndex}>
+                            <SidebarMenuLink
+                              className="font-normal after:content-none"
+                              href={secondaryLink.href}
+                              isSecondary
+                              prefetch={link.prefetch}
+                            >
+                              {secondaryLink.label}
+                            </SidebarMenuLink>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
             <div className="@2xl:hidden">
               <SidebarMenuSelect links={links} />
