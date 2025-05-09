@@ -1,16 +1,16 @@
 import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
-import {
-  SiFacebook,
-  SiInstagram,
-  SiPinterest,
-  SiX,
-  SiYoutube,
-} from '@icons-pack/react-simple-icons';
 import { getTranslations } from 'next-intl/server';
 import { cache, JSX } from 'react';
 
 import { Streamable } from '@/vibes/soul/lib/streamable';
 import { Footer as FooterSection } from '@/vibes/soul/sections/footer';
+import {
+  Facebook,
+  Instagram,
+  Pinterest,
+  X,
+  Youtube,
+} from '@/vibes/soul/sections/footer/social-icons';
 import { GetLinksAndSectionsQuery, LayoutQuery } from '~/app/[locale]/(default)/page-data';
 import { getSessionCustomerAccessToken } from '~/auth';
 import { client } from '~/client';
@@ -23,12 +23,12 @@ import { subscribe } from '../subscribe/_actions/subscribe';
 import { FooterFragment, FooterSectionsFragment } from './fragment';
 
 const socialIcons: Record<string, { icon: JSX.Element }> = {
-  Facebook: { icon: <SiFacebook title="Facebook" /> },
-  Twitter: { icon: <SiX title="Twitter" /> },
-  X: { icon: <SiX title="X" /> },
-  Pinterest: { icon: <SiPinterest title="Pinterest" /> },
-  Instagram: { icon: <SiInstagram title="Instagram" /> },
-  YouTube: { icon: <SiYoutube title="YouTube" /> },
+  Facebook: { icon: <Facebook /> },
+  Twitter: { icon: <X /> },
+  X: { icon: <X /> },
+  Pinterest: { icon: <Pinterest /> },
+  Instagram: { icon: <Instagram /> },
+  YouTube: { icon: <Youtube /> },
 };
 
 const getFooterSections = cache(async (customerAccessToken?: string) => {
