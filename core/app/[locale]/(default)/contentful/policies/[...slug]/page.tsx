@@ -25,12 +25,14 @@ export default async function PoliciesPage({ params }: Props) {
   return (
     <div>
       <h2 className="text-2xl leading-[120%] md:text-4xl md:leading-[120%]">{fields.pageName}</h2>
-      <div
-        className="prose [&_p:first-child]:text-foreground mt-4 max-w-none [&_h3:first-child]:mt-8"
-        dangerouslySetInnerHTML={{
-          __html: documentToHtmlString(fields.optionalPageDescription),
-        }}
-      />
+      {fields.optionalPageDescription && (
+        <div
+          className="prose [&_p:first-child]:text-foreground mt-4 max-w-none [&_h3:first-child]:mt-8"
+          dangerouslySetInnerHTML={{
+            __html: documentToHtmlString(fields.optionalPageDescription),
+          }}
+        />
+      )}
     </div>
   );
 }

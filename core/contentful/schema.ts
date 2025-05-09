@@ -284,6 +284,8 @@ export const productFinishedGoodsFieldsSchema = z.object({
   productLine: z.array(z.string()).optional().nullable(),
   parentCategory: z.array(z.string()).optional().nullable(),
   subCategory: z.array(z.string()).optional().nullable(),
+  webProductName: z.string().optional().nullable(),
+  webProductNameDescriptor: z.string().optional().nullable(),
   webSubCategory: z.string().optional().nullable(),
   productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
   feature: z.array(z.string()).optional().nullable(),
@@ -1521,6 +1523,8 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
     .optional()
     .nullable(),
   isNew: z.boolean().optional().nullable(),
+  webProductName: z.string().optional().nullable(),
+  webProductNameDescriptor: z.string().optional().nullable(),
 });
 
 export const productPartsAndAccessoriesSchema = z.object({

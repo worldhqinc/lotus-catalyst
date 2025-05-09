@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-07T19:36:41.450Z",
+        "updatedAt": "2025-05-09T17:23:15.695Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 159,
-        "publishedAt": "2025-05-07T19:36:41.450Z",
+        "publishedVersion": 165,
+        "publishedAt": "2025-05-09T17:23:15.695Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -37,8 +37,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 80,
-        "version": 160,
+        "publishedCounter": 83,
+        "version": 166,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -344,6 +344,28 @@
             "validations": [
             ]
           }
+        },
+        {
+          "id": "webProductName",
+          "name": "Web Product Name",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "webProductNameDescriptor",
+          "name": "Web Product Name Descriptor",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
         },
         {
           "id": "webSubCategory",
@@ -1694,7 +1716,7 @@
         "id": "productPartsAndAccessories",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:03.151Z",
-        "updatedAt": "2025-05-01T19:53:22.225Z",
+        "updatedAt": "2025-05-09T17:23:37.754Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1702,8 +1724,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 51,
-        "publishedAt": "2025-05-01T19:53:22.225Z",
+        "publishedVersion": 55,
+        "publishedAt": "2025-05-09T17:23:37.754Z",
         "firstPublishedAt": "2025-03-07T21:04:14.874Z",
         "createdBy": {
           "sys": {
@@ -1716,16 +1738,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 26,
-        "version": 52,
+        "publishedCounter": 28,
+        "version": 56,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productPartsAndAccessories"
@@ -2287,6 +2309,28 @@
           "id": "isNew",
           "name": "isNew",
           "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "webProductName",
+          "name": "Web Product Name",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "webProductNameDescriptor",
+          "name": "Web Product Name Descriptor",
+          "type": "Symbol",
           "localized": false,
           "required": false,
           "validations": [
