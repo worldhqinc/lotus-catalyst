@@ -46,3 +46,6 @@ hooks:
     deploy: |
         set -eu
         ./scripts/setup_mounts.sh
+    post_deploy: |
+        set -eu
+        curl -H "Fastly-Key: $FASTLY_API_TOKEN" -X POST "${FASTLY_API_URL}/service/${FASTLY_SERVICE_ID}/purge_all"
