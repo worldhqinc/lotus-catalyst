@@ -477,5 +477,18 @@
       "nextProducts": "Next products",
       "previousProducts": "Previous products"
     }
+  },
+  "Policies": {
+    "Layout": {
+      "privacyPolicy": {
+        "label": "Privacy Policy",
+        "us": "United States",
+        "ca": "Canada"
+      },
+      "termsOfService": "Terms of Service",
+      "cookiePolicy": "Cookie Policy",
+      "accessibility": "Accessibility",
+      "title": "Policies"
+    }
   }
 }

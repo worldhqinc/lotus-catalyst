@@ -166,6 +166,10 @@
       background-color: hsl(var(--foreground));
       font-family: var(--font-family-mono);
     }
+
+    u {
+      color: hsl(var(--contrast-400));
+    }
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {

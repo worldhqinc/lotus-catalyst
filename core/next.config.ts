@@ -109,6 +109,16 @@ export default async (): Promise<NextConfig> => {
         },
       ];
     },
+    // eslint-disable-next-line @typescript-eslint/require-await
+    async redirects() {
+      return [
+        {
+          source: '/policies',
+          destination: '/policies/privacy-policy',
+          permanent: true,
+        },
+      ];
+    },
   };
 
   // Apply withNextIntl to the config
