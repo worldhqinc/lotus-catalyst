@@ -1,9 +1,12 @@
+import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
 import { cta, ctaSchema, type heroBanner } from '~/contentful/schema';
 
-export function HeroBanner({
+export async function HeroBanner({
   title,
   description,
   image,
@@ -17,6 +20,9 @@ export function HeroBanner({
   const mediaUrl = video?.fields.file.url || image?.fields.file.url;
   const primary = primaryCta ? ctaSchema.parse(primaryCta) : null;
   const secondary = secondaryCta ? ctaSchema.parse(secondaryCta) : null;
+
+  const descriptionRichText = await richTextFromMarkdown(description ?? '');
+  const descriptionHtml = documentToHtmlString(descriptionRichText);
 
   let mediaElement: React.ReactNode = null;
 
@@ -38,6 +44,22 @@ export function HeroBanner({
         fill
         src={mediaUrl ?? ''}
       />
+    );
+  }
+
+  if (variant === 'simple') {
+    return (
+      <SectionLayout>
+        <div className="container max-w-2xl text-center">
+          <h1 className="font-heading text-4xl leading-[100%] uppercase md:text-6xl">{title}</h1>
+          {!!description && (
+            <div
+              className="prose container mt-8 max-w-2xl"
+              dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+            />
+          )}
+        </div>
+      </SectionLayout>
     );
   }
 

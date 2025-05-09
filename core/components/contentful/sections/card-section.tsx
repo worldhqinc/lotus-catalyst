@@ -12,6 +12,37 @@ export function CardSection({
 }: cardSection['fields']) {
   const cards = [featuresCard, recipesCard].map((card) => inspirationCardSchema.parse(card));
 
+  if (variant === 'outline') {
+    return (
+      <SectionLayout containerClassName="py-16">
+        <div className="border-contrast-200 divide-contrast-200 divide-y rounded-lg border lg:grid lg:grid-cols-[repeat(auto-fit,minmax(0,1fr))] lg:divide-x lg:divide-y-0">
+          {cards.map((card, index) => {
+            const validCta = card.fields.cta ? ctaSchema.parse(card.fields.cta) : null;
+
+            return (
+              <div
+                className="flex flex-col items-center justify-between gap-8 p-4 text-center lg:p-8"
+                key={`${card.sys.id}-${index}`}
+              >
+                <div>
+                  <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">
+                    {card.fields.title}
+                  </h2>
+                  <p className="text-contrast-400 mt-4 max-w-xs">{card.fields.subtitle}</p>
+                </div>
+                {validCta ? (
+                  <ButtonLink href={getLinkHref(validCta.fields)}>
+                    {validCta.fields.text}
+                  </ButtonLink>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      </SectionLayout>
+    );
+  }
+
   if (variant === 'simple') {
     return (
       <SectionLayout containerClassName=" py-16 ">
