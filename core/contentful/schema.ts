@@ -2297,7 +2297,8 @@ export const inspirationCardFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional(),
+    .optional()
+    .nullable(),
   cta: z
     .object({
       metadata: z.object({
