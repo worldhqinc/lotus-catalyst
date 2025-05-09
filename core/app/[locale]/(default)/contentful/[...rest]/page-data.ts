@@ -27,7 +27,7 @@ export const getPageBySlug = cache(
       content_type: contentType,
       'fields.pageSlug': rest.join('/'),
       limit: 1,
-      include: 4,
+      include: 5,
     });
 
     const pageData = response.items[0];
