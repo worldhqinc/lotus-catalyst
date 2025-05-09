@@ -74,7 +74,10 @@ function getCategoryAttribute(type: string) {
 }
 
 function CategoryFilter({ attribute }: { attribute: string }) {
-  const { items, refine } = useRefinementList({ attribute });
+  const { items, refine } = useRefinementList({
+    attribute,
+    sortBy: ['name:asc'],
+  });
 
   return (
     <div className="flex flex-wrap justify-center gap-2 py-12">
