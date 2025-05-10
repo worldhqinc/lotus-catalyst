@@ -16,8 +16,8 @@ export default async function CookiePreferencesNotice() {
 
   return (
     <div
+      className="msg-to-opt-out-users"
       dangerouslySetInnerHTML={{ __html: subtitleHtml }}
-      id="msg-to-opt-out-users"
       style={{ display: 'none' }}
     />
   );
