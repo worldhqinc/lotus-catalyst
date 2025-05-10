@@ -1,6 +1,5 @@
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { Metadata } from 'next';
-import { z } from 'zod';
 
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { faqListSchema, faqSchema } from '~/contentful/schema';
@@ -10,7 +9,7 @@ import { getPageBySlug } from '../[...rest]/page-data';
 import { FaqSearch } from './_components/faq-search';
 import { FaqSidebar } from './_components/faq-sidebar';
 
-type ContentfulEntry = {
+interface ContentfulEntry {
   sys: {
     contentType: {
       sys: {
@@ -20,7 +19,13 @@ type ContentfulEntry = {
     id: string;
   };
   fields: Record<string, unknown>;
-};
+}
+
+interface FaqCategory {
+  category: string;
+  id: string;
+  faqCategory: string | undefined;
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPageBySlug('pageStandard', ['faqs']);
@@ -35,19 +40,21 @@ export default async function FaqsPage({ searchParams }: { searchParams: { searc
   const page = await getPageBySlug('pageStandard', ['faqs']);
   const searchTerm = searchParams.search?.toLowerCase() || '';
 
-  const faqCategories =
+  const faqCategories: FaqCategory[] =
     page.fields.pageContent
       ?.filter((entry: ContentfulEntry) => entry.sys.contentType.sys.id === 'faqList')
       .map((entry: ContentfulEntry) => {
         const data = faqListSchema.parse(entry);
-        const faqCategory =
-          data.fields.faqReference[0]?.fields.faqCategory?.[0]?.fields.faqCategoryName;
+        const firstFaq = data.fields.faqReference[0];
+        const faqData = firstFaq ? faqSchema.parse(firstFaq) : undefined;
+        const categoryName = faqData?.fields.faqCategory[0]?.fields.faqCategoryName ?? undefined;
+        const faqCategory = typeof categoryName === 'string' ? categoryName : undefined;
 
         return {
           category: data.fields.faqParentCategory,
           id: data.sys.id,
           faqCategory,
-        };
+        } satisfies FaqCategory;
       }) || [];
 
   // Gets the first FAQ category to use as the header
