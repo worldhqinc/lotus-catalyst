@@ -64,8 +64,7 @@ export function InlineEmailForm({
     <form
       {...getFormProps(form)}
       action={formAction}
-      className={clsx('space-y-2', className)}
-      id="inline-email-form"
+      className={clsx('newsletter-signup-form space-y-2', className)}
     >
       <div
         className={clsx(

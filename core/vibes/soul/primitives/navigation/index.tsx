@@ -287,7 +287,7 @@ export const LocaleSwitcher = ({
   }
 
   return (
-    <>
+    <div className="locale-switcher">
       <div className="hidden @4xl:inline-block">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger
@@ -343,7 +343,7 @@ export const LocaleSwitcher = ({
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 
