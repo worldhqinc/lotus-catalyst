@@ -42,7 +42,7 @@ export function ProductRegistrationForm({ productOptions }: Props) {
   return (
     <div className="bg-contrast-100 px-4 py-8 md:py-16">
       <div className="mx-auto max-w-2xl rounded bg-white p-4 md:p-8">
-        <form action={formAction} className="flex flex-col gap-8" id="product-registration-form">
+        <form action={formAction} className="product-registration-form flex flex-col gap-8">
           {formState.errors?.general && (
             <div className="text-error text-sm">{formState.errors.general.join(', ')}</div>
           )}
