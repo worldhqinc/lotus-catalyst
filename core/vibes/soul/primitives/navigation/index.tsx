@@ -6,7 +6,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
-import { ChevronDown, ChevronRight, Search, ShoppingBag, User } from 'lucide-react';
+import { ChevronDown, ChevronRight, Search, ShoppingBag, User, X } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, {
   forwardRef,
@@ -31,6 +31,7 @@ import { useSearch } from '~/context/search-context';
 import { usePathname, useRouter } from '~/i18n/routing';
 
 import { LogoLotus } from '../logo-lotus';
+import { CookiePreferencesLink } from '../../sections/footer/_components/cookie-preferences-link';
 
 interface Link {
   label: string;
@@ -287,63 +288,90 @@ export const LocaleSwitcher = ({
   }
 
   return (
-    <div className="locale-switcher">
-      <div className="hidden @4xl:inline-block">
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger
-            className={clsx(
-              'nav-locale-button flex items-center gap-1 p-0 text-base transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30',
-            )}
-            disabled={isPending}
-          >
-            {getLocaleLabel(activeLocaleId)}
-            <ChevronDown size={16} strokeWidth={1.5} />
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Portal>
-            <DropdownMenu.Content
-              align="end"
-              className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
-              sideOffset={16}
-            >
-              {locales.map(({ id }) => (
-                <DropdownMenu.Item
-                  className={clsx(
-                    'nav-locale-item cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
-                    {
-                      'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
-                        id === activeLocaleId,
-                    },
-                  )}
-                  key={id}
-                  onSelect={() => startTransition(() => switchLocale(id))}
-                >
-                  {getLocaleLabel(id)}
-                </DropdownMenu.Item>
-              ))}
-            </DropdownMenu.Content>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Root>
-      </div>
-
-      <div className="flex flex-row items-center gap-2 @4xl:hidden">
-        {locales.map(({ id }) => {
-          return (
+    <>
+      <div className="msg-to-opt-out-users" style={{ display: 'none' }}>
+        <Dialog.Root>
+          <Dialog.Trigger asChild>
             <button
-              className={clsx(
-                'rounded-full border px-3 py-2 text-base font-medium',
-                id === activeLocaleId
-                  ? 'bg-contrast-100 border-contrast-100 text-foreground'
-                  : 'border-contrast-200 text-contrast-400 bg-transparent',
-              )}
-              key={id}
-              onClick={() => startTransition(() => switchLocale(id))}
+              className="flex items-center gap-1 p-0 text-base transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30"
+              type="button"
             >
-              {getLocaleLabel(id)}
+              English
+              <ChevronDown size={16} strokeWidth={1.5} />
             </button>
-          );
-        })}
+          </Dialog.Trigger>
+          <Dialog.Portal>
+            <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+            <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-6 shadow-xl">
+              <Dialog.Title className="mb-4 text-lg font-medium">
+                Message to opt out users
+              </Dialog.Title>
+              If the MESSAGE US button below doesn't work, you may either reset your cookies to
+              "FUNCTIONAL COOKIES" via <CookiePreferencesLink /> or email us at{' '}
+              <a href="mailto:customercare@lotuscooking.com">customercare@lotuscooking.com</a>.
+              <Dialog.Close className="text-contrast-400 hover:text-contrast-500 absolute top-4 right-4">
+                <X size={24} />
+              </Dialog.Close>
+            </Dialog.Content>
+          </Dialog.Portal>
+        </Dialog.Root>
       </div>
-    </div>
+      <div className="locale-switcher">
+        <div className="hidden @4xl:inline-block">
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger
+              className="nav-locale-button flex items-center gap-1 p-0 text-base transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30"
+              disabled={isPending}
+            >
+              {getLocaleLabel(activeLocaleId)}
+              <ChevronDown size={16} strokeWidth={1.5} />
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Portal>
+              <DropdownMenu.Content
+                align="end"
+                className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
+                sideOffset={16}
+              >
+                {locales.map(({ id }) => (
+                  <DropdownMenu.Item
+                    className={clsx(
+                      'nav-locale-item cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
+                      {
+                        'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
+                          id === activeLocaleId,
+                      },
+                    )}
+                    key={id}
+                    onSelect={() => startTransition(() => switchLocale(id))}
+                  >
+                    {getLocaleLabel(id)}
+                  </DropdownMenu.Item>
+                ))}
+              </DropdownMenu.Content>
+            </DropdownMenu.Portal>
+          </DropdownMenu.Root>
+        </div>
+
+        <div className="flex flex-row items-center gap-2 @4xl:hidden">
+          {locales.map(({ id }) => {
+            return (
+              <button
+                className={clsx(
+                  'rounded-full border px-3 py-2 text-base font-medium',
+                  id === activeLocaleId
+                    ? 'bg-contrast-100 border-contrast-100 text-foreground'
+                    : 'border-contrast-200 text-contrast-400 bg-transparent',
+                )}
+                key={id}
+                onClick={() => startTransition(() => switchLocale(id))}
+              >
+                {getLocaleLabel(id)}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </>
   );
 };
 
