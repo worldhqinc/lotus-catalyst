@@ -25,7 +25,7 @@ export const subscribe = async (
 
   const klaviyoResponse = await klaviyoNewsletterSignup(
     submission.value.email,
-    'lotuscooking.com Footer Newsletter Signup',
+    'Footer Newsletter Signup',
   );
 
   if (!klaviyoResponse.ok) {

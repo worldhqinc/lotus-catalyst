@@ -231,7 +231,7 @@ export async function registerCustomer<F extends Field>(
     if (shouldSubscribe) {
       const klaviyoResponse = await klaviyoNewsletterSignup(
         input.email,
-        'lotuscooking.com User Registration Newsletter Signup',
+        'User Registration Newsletter Signup',
       );
 
       if (!klaviyoResponse.ok) {
