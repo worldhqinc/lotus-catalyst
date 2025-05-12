@@ -53,10 +53,10 @@ export default function GoogleTagManagerScript() {
 
     const isDevHostname =
       /^(.+?\.)?(.*(stage|staging|beta|test).*|mybigcommerce\.com|platformsh\.site|localhost|local|(\d{1,3}\.){3}\d{1,3})$/i;
-    let gtm_id = process.env.NEXT_PUBLIC_GTM_ID_PROD;
+    let gtm_id = 'GTM-TRN8MB9P';
 
     if (isDevHostname.test(hostname)) {
-      gtm_id = process.env.NEXT_PUBLIC_GTM_ID_DEV;
+      gtm_id = 'GTM-P9MM6ZN6';
     }
 
     if (!gtm_id) {
