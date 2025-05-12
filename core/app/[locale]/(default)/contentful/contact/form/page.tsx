@@ -4,6 +4,7 @@ import { revalidate } from '~/client/revalidate-target';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 
 import { ContactForm } from '../_components/contact-form';
+import { Link } from '~/components/link';
 
 const TicketFormSchema = z.object({
   ticket_form: z.object({
@@ -179,9 +180,18 @@ export default async function ContactFormPage() {
           <p className="text-contrast-400 pt-2 text-center">Closed on major US holidays.</p>
         </div>
         <div className="border-contrast-200 mx-auto mt-8 max-w-2xl rounded-lg border p-4 lg:mt-16 lg:p-8">
-          {fields.length > 0 && <ContactForm fields={fields} />}
+          {fields.length > 0 ? (
+            <ContactForm fields={fields} />
+          ) : (
+            <p>
+              Unable to load form, please contact support at{' '}
+              <Link className="underline" href="mailto:customercare@lotuscooking.com">
+                customercare@lotuscooking.com
+              </Link>
+            </p>
+          )}
+          <CookiePreferencesNotice />
         </div>
-        <CookiePreferencesNotice />
       </div>
     </>
   );

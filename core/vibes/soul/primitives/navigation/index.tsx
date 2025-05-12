@@ -6,7 +6,15 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
-import { ChevronDown, ChevronRight, Search, ShoppingBag, User, X } from 'lucide-react';
+import {
+  ChevronDown,
+  ChevronRight,
+  Search,
+  ShoppingBag,
+  TriangleAlert,
+  User,
+  X,
+} from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, {
   forwardRef,
@@ -23,6 +31,8 @@ import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price } from '@/vibes/soul/primitives/price-label';
 import * as SidePanel from '@/vibes/soul/primitives/side-panel';
+import CookiePreferencesCta from '~/components/cookie-preferences-cta';
+import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import AlgoliaSearch from '~/components/header/algolia-search';
 import { Link } from '~/components/link';
 import { Minicart } from '~/components/minicart';
@@ -31,7 +41,7 @@ import { useSearch } from '~/context/search-context';
 import { usePathname, useRouter } from '~/i18n/routing';
 
 import { LogoLotus } from '../logo-lotus';
-import { CookiePreferencesLink } from '../../sections/footer/_components/cookie-preferences-link';
+import { Modal } from '../modal';
 
 interface Link {
   label: string;
@@ -287,34 +297,36 @@ export const LocaleSwitcher = ({
     }
   }
 
+  const [isOpen, setOpen] = useState(false);
+
   return (
     <>
       <div className="msg-to-opt-out-users" style={{ display: 'none' }}>
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
+        <Modal
+          className="min-w-64 @lg:w-lg"
+          isOpen={isOpen}
+          setOpen={setOpen}
+          title="Message to cookie opt out users"
+          trigger={
             <button
               className="flex items-center gap-1 p-0 text-base transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30"
               type="button"
             >
               English
-              <ChevronDown size={16} strokeWidth={1.5} />
+              <TriangleAlert size={16} strokeWidth={1.5} />
             </button>
-          </Dialog.Trigger>
-          <Dialog.Portal>
-            <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-            <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-6 shadow-xl">
-              <Dialog.Title className="mb-4 text-lg font-medium">
-                Message to opt out users
-              </Dialog.Title>
-              If the MESSAGE US button below doesn't work, you may either reset your cookies to
-              "FUNCTIONAL COOKIES" via <CookiePreferencesLink /> or email us at{' '}
-              <a href="mailto:customercare@lotuscooking.com">customercare@lotuscooking.com</a>.
-              <Dialog.Close className="text-contrast-400 hover:text-contrast-500 absolute top-4 right-4">
-                <X size={24} />
-              </Dialog.Close>
-            </Dialog.Content>
-          </Dialog.Portal>
-        </Dialog.Root>
+          }
+        >
+          <CookiePreferencesNotice
+            message={
+              <>
+                We use cookies to ensure you get the best experience on our website. Please enable
+                "Functional cookies" in your <CookiePreferencesCta variant="link" /> to continue
+                with site translations.
+              </>
+            }
+          />
+        </Modal>
       </div>
       <div className="locale-switcher">
         <div className="hidden @4xl:inline-block">
@@ -351,7 +363,6 @@ export const LocaleSwitcher = ({
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
         </div>
-
         <div className="flex flex-row items-center gap-2 @4xl:hidden">
           {locales.map(({ id }) => {
             return (
@@ -364,6 +375,7 @@ export const LocaleSwitcher = ({
                 )}
                 key={id}
                 onClick={() => startTransition(() => switchLocale(id))}
+                type="button"
               >
                 {getLocaleLabel(id)}
               </button>
