@@ -377,7 +377,10 @@ export const Footer = forwardRef(async function Footer(
             >
               Terms of Service
             </Link>
-            <CookiePreferencesCta variant="link" />
+            <CookiePreferencesCta
+              className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
+              variant="link"
+            />
           </div>
         </div>
       </div>
