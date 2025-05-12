@@ -5,12 +5,11 @@ import { forwardRef, ReactNode, type Ref } from 'react';
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
 import { auth } from '~/auth';
+import CookiePreferencesCta from '~/components/cookie-preferences-cta';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { Link } from '~/components/link';
 
 import { LogoLotus } from '../../primitives/logo-lotus';
-
-import { CookiePreferencesLink } from './_components/cookie-preferences-link';
 
 type Action<State, Payload> = (state: Awaited<State>, payload: Payload) => State | Promise<State>;
 
@@ -378,7 +377,7 @@ export const Footer = forwardRef(async function Footer(
             >
               Terms of Service
             </Link>
-            <CookiePreferencesLink />
+            <CookiePreferencesCta variant="link" />
           </div>
         </div>
       </div>

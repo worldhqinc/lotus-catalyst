@@ -1,5 +1,4 @@
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
-import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 
 import { ChatWidgetButton } from './_components/chat-widget-button';
 
@@ -44,7 +43,6 @@ export default function ContactPage() {
               <ButtonLink className="w-full md:w-auto" href="/contact/form" size="medium">
                 Send an email
               </ButtonLink>
-              <CookiePreferencesNotice />
             </div>
           </div>
           <div className="flex flex-col items-center p-4 text-center lg:p-8">

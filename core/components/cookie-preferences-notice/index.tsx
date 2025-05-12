@@ -1,24 +1,30 @@
-import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { Link } from '~/components/link';
 
-import { contentfulClient } from '~/lib/contentful';
-import { isString } from '~/lib/utils';
+import CookiePreferencesCta from '../cookie-preferences-cta';
 
-export default async function CookiePreferencesNotice() {
-  const entry = await contentfulClient.getEntry('7zFJPfQgnNb9EvITwjhvf');
+interface CookiePreferencesNoticeProps {
+  message?: string | React.ReactNode;
+}
 
-  const subtitle = entry.fields.subtitle;
-  const subtitleRichTextDocument =
-    subtitle && isString(subtitle) ? await richTextFromMarkdown(subtitle) : null;
-  const subtitleHtml = subtitleRichTextDocument
-    ? documentToHtmlString(subtitleRichTextDocument)
-    : '';
+export default function CookiePreferencesNotice({ message }: CookiePreferencesNoticeProps) {
+  let messageToDisplay: React.ReactNode = (
+    <p className="text-left">
+      We use cookies to ensure you get the best experience on our website. Please enable "Functional
+      cookies" in your <CookiePreferencesCta variant="link" /> or email us at{' '}
+      <Link className="underline" href="mailto:customercare@lotuscooking.com">
+        customercare@lotuscooking.com
+      </Link>
+      .
+    </p>
+  );
+
+  if (message) {
+    messageToDisplay = message;
+  }
 
   return (
-    <div
-      className="msg-to-opt-out-users"
-      dangerouslySetInnerHTML={{ __html: subtitleHtml }}
-      style={{ display: 'none' }}
-    />
+    <div className="msg-to-opt-out-users" style={{ display: 'none' }}>
+      {messageToDisplay}
+    </div>
   );
 }

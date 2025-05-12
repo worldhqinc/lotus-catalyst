@@ -1,8 +1,9 @@
-import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { productFinishedGoodsFieldsSchema } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
 
 import { ProductRegistrationForm } from './_components/product-registration-form';
+import CookiePreferencesCta from '~/components/cookie-preferences-cta';
+import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 
 export default async function ProductRegistration() {
   const productsData = await contentfulClient.getEntries({
@@ -38,7 +39,21 @@ export default async function ProductRegistration() {
         </div>
       </div>
       <ProductRegistrationForm productOptions={productOptions} />
-      <CookiePreferencesNotice />
+      <CookiePreferencesNotice
+        message={
+          <div className="flex min-h-[60vh] flex-col items-center justify-center px-4">
+            <h1 className="font-heading mt-8 mb-6 text-center text-5xl font-normal md:text-6xl">
+              Our cookie jar is empty.
+            </h1>
+            <p className="mb-10 max-w-2xl text-center text-xl text-gray-500">
+              If there is no information visible below, please update your cookie preferences to
+              include "functional cookies" via Cookie Preferences accessible with the button below
+              or in our website footer.
+            </p>
+            <CookiePreferencesCta label="Update cookie preferences" variant="button" />
+          </div>
+        }
+      />
     </div>
   );
 }
