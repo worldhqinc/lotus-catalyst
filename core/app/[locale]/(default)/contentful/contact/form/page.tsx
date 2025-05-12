@@ -2,9 +2,9 @@ import { z } from 'zod';
 
 import { revalidate } from '~/client/revalidate-target';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
+import { Link } from '~/components/link';
 
 import { ContactForm } from '../_components/contact-form';
-import { Link } from '~/components/link';
 
 const TicketFormSchema = z.object({
   ticket_form: z.object({

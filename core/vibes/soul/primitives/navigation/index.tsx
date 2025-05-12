@@ -6,15 +6,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
-import {
-  ChevronDown,
-  ChevronRight,
-  Search,
-  ShoppingBag,
-  TriangleAlert,
-  User,
-  X,
-} from 'lucide-react';
+import { ChevronDown, ChevronRight, Search, ShoppingBag, TriangleAlert, User } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, {
   forwardRef,

@@ -1,9 +1,9 @@
+import CookiePreferencesCta from '~/components/cookie-preferences-cta';
+import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { productFinishedGoodsFieldsSchema } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
 
 import { ProductRegistrationForm } from './_components/product-registration-form';
-import CookiePreferencesCta from '~/components/cookie-preferences-cta';
-import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 
 export default async function ProductRegistration() {
   const productsData = await contentfulClient.getEntries({
