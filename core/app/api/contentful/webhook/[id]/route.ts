@@ -4,7 +4,6 @@ import { z } from 'zod';
 
 import { productFinishedGoodsSchema } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
-import { ensureImageUrl } from '~/lib/utils';
 
 export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
@@ -22,8 +21,6 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
       include: 10,
     });
 
-    const parsedEntry = productFinishedGoodsSchema.parse(entry);
-
     const algoliaClient = algoliasearch(
       process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? '',
       process.env.ALGOLIA_ADMIN_API_KEY ?? '',
@@ -31,10 +28,8 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
 
     let body = {};
 
-    if (
-      entry.sys.contentType.sys.id === 'productFinishedGoods' ||
-      entry.sys.contentType.sys.id === 'productPartsAndAccessories'
-    ) {
+    if (entry.sys.contentType.sys.id === 'productFinishedGoods') {
+      const parsedEntry = productFinishedGoodsSchema.parse(entry);
       const price = parsedEntry.fields.price;
       const priceData = parsedEntry.fields.salePrice
         ? {
