@@ -20,7 +20,7 @@ export function NewsletterForm({
             action={subscribe}
             arrowClassName="text-white"
             inputClassName="h-16 w-full bg-transparent pr-16 text-white placeholder-white placeholder:font-normal focus:outline-none"
-            inputContainerClassName="bg-transparent"
+            inputContainerClassName="bg-transparent focus-within:border-white"
             placeholder={inputPlaceholder || 'Enter your email'}
           />
           <CookiePreferencesNotice />
