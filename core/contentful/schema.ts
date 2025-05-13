@@ -340,46 +340,6 @@ export const productFinishedGoodsFieldsSchema = z.object({
     )
     .optional()
     .nullable(),
-  spotlightVideo: z
-    .object({
-      metadata: z.object({
-        tags: z.array(z.unknown()),
-        concepts: z.array(z.unknown()),
-      }),
-      sys: z.object({
-        space: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('Space'),
-            id: z.string(),
-          }),
-        }),
-        id: z.string(),
-        type: z.literal('Entry'),
-        createdAt: z.string().datetime(),
-        updatedAt: z.string().datetime(),
-        environment: z.object({
-          sys: z.object({
-            id: z.string(),
-            type: z.literal('Link'),
-            linkType: z.literal('Environment'),
-          }),
-        }),
-        publishedVersion: z.number().optional().nullable(),
-        revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('ContentType'),
-            id: z.string(),
-          }),
-        }),
-      }),
-      fields: z.record(z.string(), z.unknown()),
-    })
-    .optional()
-    .nullable(),
   faqs: z
     .array(
       z.object({
@@ -1636,7 +1596,7 @@ export const supportDocumentFieldsSchema = z.object({
   modelNumber: z.string().optional().nullable(),
 });
 
-export const docSchema = z.object({
+export const supportDocumentSchema = z.object({
   metadata: metadataSchema,
   sys: sysEntrySchema.extend({
     contentType: z.object({
@@ -1650,7 +1610,7 @@ export const docSchema = z.object({
   fields: supportDocumentFieldsSchema,
 });
 
-export type Doc = z.infer<typeof docSchema>;
+export type supportDocument = z.infer<typeof supportDocumentSchema>;
 
 // Schema for pageStandard
 export const pageStandardFieldsSchema = z.object({
@@ -3195,6 +3155,7 @@ export type introSection = z.infer<typeof introSectionSchema>;
 
 // Schema for heroBanner
 export const heroBannerFieldsSchema = z.object({
+  variant: z.string().optional().nullable(),
   title: z.string(),
   description: z.string().optional().nullable(),
   image: z
@@ -3301,6 +3262,7 @@ export const heroBannerFieldsSchema = z.object({
     })
     .optional()
     .nullable(),
+  invertText: z.boolean().optional().nullable(),
   primaryCta: z
     .object({
       metadata: z.object({
@@ -3384,7 +3346,6 @@ export const heroBannerFieldsSchema = z.object({
   reviewQuote: z.string().optional().nullable(),
   reviewSource: z.string().optional().nullable(),
   reviewRating: z.number().int().optional().nullable(),
-  variant: z.string().optional().nullable(),
   secondaryTitle: z.string().optional().nullable(),
   secondaryDescription: z.string().optional().nullable(),
 });
@@ -4410,7 +4371,7 @@ export const contentfulEntrySchemaUnion = z.union([
   productPartsAndAccessoriesSchema,
   ingredientsListSchema,
   authorSchema,
-  docSchema,
+  supportDocumentSchema,
   pageStandardSchema,
   megaMenuSchema,
   faqListSchema,
@@ -4470,7 +4431,7 @@ export const contentfulSchemas = {
   productPartsAndAccessories: productPartsAndAccessoriesSchema,
   ingredientsList: ingredientsListSchema,
   author: authorSchema,
-  supportDocument: docSchema,
+  supportDocument: supportDocumentSchema,
   pageStandard: pageStandardSchema,
   megaMenu: megaMenuSchema,
   faqList: faqListSchema,

@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-13T18:15:31.231Z",
+        "updatedAt": "2025-05-13T19:25:15.189Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 367,
-        "publishedAt": "2025-05-13T18:15:31.231Z",
+        "publishedVersion": 371,
+        "publishedAt": "2025-05-13T19:25:15.189Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -37,8 +37,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 184,
-        "version": 368,
+        "publishedCounter": 186,
+        "version": 372,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -576,23 +576,6 @@
             ],
             "linkType": "Asset"
           }
-        },
-        {
-          "id": "spotlightVideo",
-          "name": "Spotlight Video",
-          "type": "Link",
-          "localized": false,
-          "required": false,
-          "validations": [
-            {
-              "linkContentType": [
-                "featureVideoBanner"
-              ]
-            }
-          ],
-          "disabled": false,
-          "omitted": false,
-          "linkType": "Entry"
         },
         {
           "id": "faqs",
@@ -4869,7 +4852,7 @@
         "id": "heroBanner",
         "type": "ContentType",
         "createdAt": "2025-04-21T23:44:18.865Z",
-        "updatedAt": "2025-05-09T15:26:29.765Z",
+        "updatedAt": "2025-05-13T20:10:13.992Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4877,8 +4860,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 18,
-        "publishedAt": "2025-05-09T15:26:29.765Z",
+        "publishedVersion": 20,
+        "publishedAt": "2025-05-13T20:10:13.992Z",
         "firstPublishedAt": "2025-04-21T23:45:16.956Z",
         "createdBy": {
           "sys": {
@@ -4891,16 +4874,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 9,
-        "version": 19,
+        "publishedCounter": 10,
+        "version": 21,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/heroBanner"
@@ -4909,6 +4892,24 @@
       "name": "Hero Banner",
       "description": "A banner with title, description, image or video, two CTAs, and a review",
       "fields": [
+        {
+          "id": "variant",
+          "name": "Variant",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "in": [
+                "left-aligned",
+                "simple",
+                "left-aligned-lowercase"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
         {
           "id": "title",
           "name": "Title",
@@ -4964,6 +4965,17 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Asset"
+        },
+        {
+          "id": "invertText",
+          "name": "Invert Text",
+          "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
         },
         {
           "id": "primaryCta",
@@ -5028,24 +5040,6 @@
           "localized": false,
           "required": false,
           "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "variant",
-          "name": "Variant",
-          "type": "Symbol",
-          "localized": false,
-          "required": false,
-          "validations": [
-            {
-              "in": [
-                "left-aligned",
-                "simple",
-                "left-aligned-lowercase"
-              ]
-            }
           ],
           "disabled": false,
           "omitted": false
