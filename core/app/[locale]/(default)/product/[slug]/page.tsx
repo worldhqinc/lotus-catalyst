@@ -211,25 +211,23 @@ export default async function Product(props: Props) {
     const product = await streamableProduct;
     const contentful = await getContentfulProductData(product.sku);
 
-    const customFields = removeEdgesAndNodes(product.customFields);
-
     const specifications = [
       {
-        name: t('ProductDetails.Accordions.sku'),
-        value: product.sku,
+        name: 'Weight',
+        value: `${contentful?.fields.outOfBoxNetWeight} ${contentful?.fields.outOfBoxWeightUom}`,
       },
       {
-        name: t('ProductDetails.Accordions.weight'),
-        value: `${product.weight?.value} ${product.weight?.unit}`,
+        name: 'Height',
+        value: `${contentful?.fields.outOfBoxHeight}`,
       },
       {
-        name: t('ProductDetails.Accordions.condition'),
-        value: product.condition,
+        name: 'Width',
+        value: `${contentful?.fields.outOfBoxWidth}`,
       },
-      ...customFields.map((field) => ({
-        name: field.name,
-        value: field.value,
-      })),
+      {
+        name: 'Depth',
+        value: `${contentful?.fields.outOfBoxDepth}`,
+      },
     ];
 
     return [
