@@ -10,11 +10,10 @@ export interface ProductGridHit {
     pageSlug?: Localized<string>;
     featuredImage?: Localized<{ fields?: { file?: { url: string } } }>;
     price?: Localized<string>;
-    defaultPrice?: Localized<string>;
     salePrice?: Localized<string>;
     badge?: Localized<string>;
     rating?: Localized<number>;
-    productLine?: Localized<string[]>;
+    webProductLine?: Localized<string[]>;
     bcProductReference?: Localized<string>;
     inventoryQuantity?: Localized<number>;
   };
@@ -61,8 +60,8 @@ export interface PostGridHit {
     pageName?: Localized<string>;
     shortDescription?: Localized<string>;
     pageImage?: Localized<string>;
-    productLine?: Localized<string[]>;
-    parentCategory?: Localized<string[]>;
+    webProductLine?: Localized<string[]>;
+    webCategory?: Localized<string[]>;
   };
 }
 

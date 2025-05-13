@@ -10,7 +10,7 @@ import { getSessionCustomerAccessToken } from '~/auth';
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { Link } from '~/components/link';
-import { productPartsAndAccessoriesSchema, supportDocumentSchema } from '~/contentful/schema';
+import { docSchema, productPartsAndAccessoriesSchema } from '~/contentful/schema';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
 import { getPreferredCurrencyCode } from '~/lib/currency';
@@ -255,20 +255,20 @@ export default async function Product(props: Props) {
             },
           ]
         : []),
-      ...(contentful?.fields.supportDocumentation
+      ...(contentful?.fields.docs
         ? [
             {
-              title: t('ProductDetails.Accordions.supportDocumentation'),
+              title: t('ProductDetails.Accordions.docs'),
               content: (
                 <div className="flex flex-col items-start gap-4">
-                  {contentful.fields.supportDocumentation.map((documentation, index) => {
-                    const { documentName, url } = supportDocumentSchema.parse(documentation).fields;
+                  {contentful.fields.docs.map((doc, index) => {
+                    const { documentName, url } = docSchema.parse(doc).fields;
 
                     return (
                       <Link
                         className="underline"
                         href={url}
-                        key={`${documentation.sys.id}-${index}`}
+                        key={`${doc.sys.id}-${index}`}
                         rel="noopener noreferrer"
                         target="_blank"
                       >

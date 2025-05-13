@@ -2,7 +2,7 @@
 
 import { Select } from '@/vibes/soul/form/select';
 import { Image } from '~/components/image';
-import type { featureItem, productFinishedGoods, supportDocument } from '~/contentful/schema';
+import type { Doc, featureItem, productFinishedGoods } from '~/contentful/schema';
 import { ensureImageUrl } from '~/lib/utils';
 
 type FeatureItemProps = Omit<featureItem['fields'], 'products'> & {
@@ -19,14 +19,13 @@ export function FeatureItem({
 }: FeatureItemProps) {
   const supportLinks =
     products?.map((product) => {
-      const supportDocumentation = product.fields.supportDocumentation?.find(
-        (documentation): documentation is supportDocument =>
-          documentation.fields.documentType === 'Use and Care Guide',
+      const docs = product.fields.docs?.find(
+        (doc): doc is Doc => doc.fields.documentType === 'Use and Care Guide',
       );
 
       return {
         label: product.fields.webProductName,
-        value: supportDocumentation?.fields.url ?? '',
+        value: docs?.fields.url ?? '',
       };
     }) ?? [];
 

@@ -67,7 +67,7 @@ export function contentfulProductCardTransformer(
       href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
       image,
       price,
-      badge: fields.productBadge ?? undefined,
+      badge: fields.badge ?? undefined,
       sku: fields.bcProductReference,
       inStock: fields.inventoryQuantity ? fields.inventoryQuantity > 0 : false,
     };
@@ -85,10 +85,10 @@ export function contentfulProductCardTransformer(
     const price = fields.salePrice
       ? {
           type: 'sale' as const,
-          previousValue: fields.defaultPrice,
+          previousValue: fields.price,
           currentValue: fields.salePrice,
         }
-      : fields.defaultPrice;
+      : fields.price;
 
     return {
       id: product.sys.id,
@@ -97,7 +97,7 @@ export function contentfulProductCardTransformer(
       href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
       image,
       price,
-      badge: fields.productBadge ?? undefined,
+      badge: fields.badge ?? undefined,
       sku: fields.bcProductReference,
     };
   }

@@ -115,25 +115,26 @@ export type RichTextNode = z.infer<typeof RichTextNodeSchema>;
 // Schema for productFinishedGoods
 export const productFinishedGoodsFieldsSchema = z.object({
   productName: z.string(),
+  modelNumber: z.string(),
   bcProductReference: z.string(),
   pageSlug: z.string().optional().nullable(),
+  newFlag: z.boolean().optional().nullable(),
   webProductName: z.string(),
   webProductNameDescriptor: z.string().optional().nullable(),
+  webCategory: z.array(z.string()).optional().nullable(),
+  webProductLine: z.array(z.string()).optional().nullable(),
+  webFeature: z.array(z.string()).optional().nullable(),
+  webTemperature: z.string().optional().nullable(),
+  webSize: z.string().optional().nullable(),
+  webSizeLabel: z.string().optional().nullable(),
+  webFinish: z.array(z.string()).optional().nullable(),
+  webPower: z.string().optional().nullable(),
+  webBullets: z.array(z.string()).optional().nullable(),
+  webWhatsIncluded: z.array(z.string()).optional().nullable(),
   shortDescription: z.string().optional().nullable(),
-  defaultPrice: z.string(),
-  defaultPriceFloat: z.number().optional().nullable(),
-  salePrice: z.string().optional().nullable(),
-  salePriceFloat: z.number().optional().nullable(),
-  couponCodesalesDates: z.string().optional().nullable(),
-  details: z
-    .object({
-      nodeType: z.literal(BLOCKS.DOCUMENT),
-      data: z.record(z.string(), z.unknown()),
-      content: z.array(RichTextNodeSchema),
-    })
-    .optional()
-    .nullable(),
-  faqs: z
+  wattage: z.string().optional().nullable(),
+  warranty: z.string().optional().nullable(),
+  docs: z
     .array(
       z.object({
         metadata: z.object({
@@ -227,6 +228,64 @@ export const productFinishedGoodsFieldsSchema = z.object({
     })
     .optional()
     .nullable(),
+  price: z.string(),
+  salePrice: z.string().optional().nullable(),
+  saleMessage: z.string().optional().nullable(),
+  inventoryQuantity: z.number().int().optional().nullable(),
+  partsAccessories: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional().nullable(),
+          revision: z.number(),
+          locale: z.string().optional().nullable(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional()
+    .nullable(),
+  outOfBoxNetWeight: z.string().optional().nullable(),
+  outOfBoxDepth: z.string().optional().nullable(),
+  outOfBoxWidth: z.string().optional().nullable(),
+  outOfBoxHeight: z.string().optional().nullable(),
+  outOfBoxSizeUom: z.string().optional().nullable(),
+  outOfBoxWeightUom: z.string().optional().nullable(),
+  metaTitle: z.string().optional().nullable(),
+  metaDescription: z.string().optional().nullable(),
+  factoryRecertifiedProduct: z.boolean().optional().nullable(),
+  archive: z.boolean().optional().nullable(),
+  productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
+  badge: z.string().optional().nullable(),
   additionalImages: z
     .array(
       z.object({
@@ -281,62 +340,6 @@ export const productFinishedGoodsFieldsSchema = z.object({
     )
     .optional()
     .nullable(),
-  metaTitle: z.string().optional().nullable(),
-  metaDescription: z.string().optional().nullable(),
-  productLine: z.array(z.string()).optional().nullable(),
-  parentCategory: z.array(z.string()).optional().nullable(),
-  subCategory: z.array(z.string()).optional().nullable(),
-  webSubCategory: z.string().optional().nullable(),
-  productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
-  feature: z.array(z.string()).optional().nullable(),
-  finish: z.array(z.string()).optional().nullable(),
-  size: z.string().optional().nullable(),
-  supportDocumentation: z
-    .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
-    )
-    .optional()
-    .nullable(),
-  factoryRecertifiedProduct: z.boolean().optional().nullable(),
-  modelNumber: z.string(),
-  wattage: z.string().optional().nullable(),
-  warranty: z.string().optional().nullable(),
   spotlightVideo: z
     .object({
       metadata: z.object({
@@ -377,17 +380,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
     })
     .optional()
     .nullable(),
-  outOfBoxNetWeight: z.string().optional().nullable(),
-  outOfBoxDepth: z.string().optional().nullable(),
-  outOfBoxWidth: z.string().optional().nullable(),
-  outOfBoxHeight: z.string().optional().nullable(),
-  outOfBoxSizeUom: z.string().optional().nullable(),
-  outOfBoxWeightUom: z.string().optional().nullable(),
-  archive: z.boolean().optional().nullable(),
-  productBadge: z.string().optional().nullable(),
-  isShipsFree: z.boolean().optional().nullable(),
-  inventoryQuantity: z.number().int().optional().nullable(),
-  pageContentEntries: z
+  faqs: z
     .array(
       z.object({
         metadata: z.object({
@@ -429,7 +422,6 @@ export const productFinishedGoodsFieldsSchema = z.object({
     )
     .optional()
     .nullable(),
-  isNew: z.boolean().optional().nullable(),
   featureCallout: z
     .object({
       metadata: z.object({
@@ -510,7 +502,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
     })
     .optional()
     .nullable(),
-  partsAccessories: z
+  pageContentEntries: z
     .array(
       z.object({
         metadata: z.object({
@@ -1216,10 +1208,15 @@ export type recipe = z.infer<typeof recipeSchema>;
 // Schema for productPartsAndAccessories
 export const productPartsAndAccessoriesFieldsSchema = z.object({
   productName: z.string(),
+  modelNumber: z.string().optional().nullable(),
   bcProductReference: z.string(),
   pageSlug: z.string(),
+  newFlag: z.boolean().optional().nullable(),
   webProductName: z.string(),
   webProductNameDescriptor: z.string().optional().nullable(),
+  webProductLine: z.array(z.string()).optional().nullable(),
+  webCategory: z.array(z.string()).optional().nullable(),
+  webFinish: z.array(z.string()).optional().nullable(),
   associatedFinishedGoods: z
     .array(
       z.object({
@@ -1304,11 +1301,6 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
     )
     .optional()
     .nullable(),
-  subCategory: z.array(z.string()).optional().nullable(),
-  productLine: z.array(z.string()).optional().nullable(),
-  feature: z.array(z.string()).optional().nullable(),
-  size: z.array(z.string()).optional().nullable(),
-  finish: z.array(z.string()).optional().nullable(),
   featuredImage: z.object({
     metadata: z.object({
       tags: z.array(z.unknown()),
@@ -1358,6 +1350,22 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
       }),
     }),
   }),
+  productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
+  price: z.string().optional().nullable(),
+  salePrice: z.string().optional().nullable(),
+  saleMessage: z.string().optional().nullable(),
+  inventoryQuantity: z.number().int().optional().nullable(),
+  outOfBoxNetWeight: z.string().optional().nullable(),
+  outOfBoxDepth: z.string().optional().nullable(),
+  outOfBoxWidth: z.string().optional().nullable(),
+  outOfBoxHeight: z.string().optional().nullable(),
+  outOfBoxSizeUom: z.string().optional().nullable(),
+  outOfBoxWeightUom: z.string().optional().nullable(),
+  metaTitle: z.string(),
+  metaDescription: z.string().optional().nullable(),
+  archive: z.boolean().optional().nullable(),
+  factoryRecertifiedProduct: z.boolean(),
+  badge: z.string().optional().nullable(),
   additionalImages: z
     .array(
       z.object({
@@ -1412,76 +1420,6 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
     )
     .optional()
     .nullable(),
-  productCarousel: z
-    .object({
-      metadata: z.object({
-        tags: z.array(z.unknown()),
-        concepts: z.array(z.unknown()),
-      }),
-      sys: z.object({
-        space: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('Space'),
-            id: z.string(),
-          }),
-        }),
-        id: z.string(),
-        type: z.literal('Entry'),
-        createdAt: z.string().datetime(),
-        updatedAt: z.string().datetime(),
-        environment: z.object({
-          sys: z.object({
-            id: z.string(),
-            type: z.literal('Link'),
-            linkType: z.literal('Environment'),
-          }),
-        }),
-        publishedVersion: z.number().optional().nullable(),
-        revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('ContentType'),
-            id: z.string(),
-          }),
-        }),
-      }),
-      fields: z.record(z.string(), z.unknown()),
-    })
-    .optional()
-    .nullable(),
-  metaTitle: z.string(),
-  metaDescription: z.string().optional().nullable(),
-  parentCategory: z.record(z.string(), z.unknown()).optional().nullable(),
-  details: z
-    .object({
-      nodeType: z.literal(BLOCKS.DOCUMENT),
-      data: z.record(z.string(), z.unknown()),
-      content: z.array(RichTextNodeSchema),
-    })
-    .optional()
-    .nullable(),
-  factoryRecertifiedProduct: z.boolean(),
-  modelNumber: z.string().optional().nullable(),
-  outOfBoxNetWeight: z.string().optional().nullable(),
-  outOfBoxDepth: z.string().optional().nullable(),
-  outOfBoxWidth: z.string().optional().nullable(),
-  outOfBoxHeight: z.string().optional().nullable(),
-  outOfBoxUnitVolume: z.string().optional().nullable(),
-  outOfBoxSizeUom: z.string().optional().nullable(),
-  outOfBoxWeightUom: z.string().optional().nullable(),
-  archived: z.boolean().optional().nullable(),
-  price: z.string().optional().nullable(),
-  priceFloat: z.number().optional().nullable(),
-  couponCodesalesDates: z.string().optional().nullable(),
-  productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
-  salePrice: z.string().optional().nullable(),
-  salePriceFloat: z.number().optional().nullable(),
-  productBadge: z.string().optional().nullable(),
-  isShipsFree: z.boolean().optional().nullable(),
-  inventoryQuantity: z.number().int().optional().nullable(),
   pageContentEntries: z
     .array(
       z.object({
@@ -1524,7 +1462,6 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
     )
     .optional()
     .nullable(),
-  isNew: z.boolean().optional().nullable(),
 });
 
 export const productPartsAndAccessoriesSchema = z.object({
@@ -1699,7 +1636,7 @@ export const supportDocumentFieldsSchema = z.object({
   modelNumber: z.string().optional().nullable(),
 });
 
-export const supportDocumentSchema = z.object({
+export const docSchema = z.object({
   metadata: metadataSchema,
   sys: sysEntrySchema.extend({
     contentType: z.object({
@@ -1713,7 +1650,7 @@ export const supportDocumentSchema = z.object({
   fields: supportDocumentFieldsSchema,
 });
 
-export type supportDocument = z.infer<typeof supportDocumentSchema>;
+export type Doc = z.infer<typeof docSchema>;
 
 // Schema for pageStandard
 export const pageStandardFieldsSchema = z.object({
@@ -4473,7 +4410,7 @@ export const contentfulEntrySchemaUnion = z.union([
   productPartsAndAccessoriesSchema,
   ingredientsListSchema,
   authorSchema,
-  supportDocumentSchema,
+  docSchema,
   pageStandardSchema,
   megaMenuSchema,
   faqListSchema,
@@ -4533,7 +4470,7 @@ export const contentfulSchemas = {
   productPartsAndAccessories: productPartsAndAccessoriesSchema,
   ingredientsList: ingredientsListSchema,
   author: authorSchema,
-  supportDocument: supportDocumentSchema,
+  supportDocument: docSchema,
   pageStandard: pageStandardSchema,
   megaMenu: megaMenuSchema,
   faqList: faqListSchema,

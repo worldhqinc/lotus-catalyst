@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-09T19:22:30.267Z",
+        "updatedAt": "2025-05-13T18:15:31.231Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 171,
-        "publishedAt": "2025-05-09T19:22:30.267Z",
+        "publishedVersion": 367,
+        "publishedAt": "2025-05-13T18:15:31.231Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -37,8 +37,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 86,
-        "version": 172,
+        "publishedCounter": 184,
+        "version": 368,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -57,6 +57,20 @@
           "name": "Product Name",
           "type": "Symbol",
           "localized": true,
+          "required": true,
+          "validations": [
+            {
+              "unique": true
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "modelNumber",
+          "name": "Model Number",
+          "type": "Symbol",
+          "localized": false,
           "required": true,
           "validations": [
             {
@@ -99,10 +113,21 @@
           "omitted": false
         },
         {
+          "id": "newFlag",
+          "name": "New Flag",
+          "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
           "id": "webProductName",
           "name": "Web Product Name",
           "type": "Symbol",
-          "localized": false,
+          "localized": true,
           "required": true,
           "validations": [
           ],
@@ -113,12 +138,152 @@
           "id": "webProductNameDescriptor",
           "name": "Web Product Name Descriptor",
           "type": "Symbol",
-          "localized": false,
+          "localized": true,
           "required": false,
           "validations": [
           ],
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "webCategory",
+          "name": "Web Category",
+          "type": "Array",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": [
+            ]
+          }
+        },
+        {
+          "id": "webProductLine",
+          "name": "Web Product Line",
+          "type": "Array",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": [
+            ]
+          }
+        },
+        {
+          "id": "webFeature",
+          "name": "Web Feature",
+          "type": "Array",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": [
+            ]
+          }
+        },
+        {
+          "id": "webTemperature",
+          "name": "Web Temperature",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "webSize",
+          "name": "Web Size",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "webSizeLabel",
+          "name": "Web Size Label",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "webFinish",
+          "name": "Web Finish",
+          "type": "Array",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": [
+            ]
+          }
+        },
+        {
+          "id": "webPower",
+          "name": "Web Power",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "webBullets",
+          "name": "Web Bullets",
+          "type": "Array",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": [
+            ]
+          }
+        },
+        {
+          "id": "webWhatsIncluded",
+          "name": "Web What's Included",
+          "type": "Array",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": [
+            ]
+          }
         },
         {
           "id": "shortDescription",
@@ -132,52 +297,8 @@
           "omitted": false
         },
         {
-          "id": "defaultPrice",
-          "name": "Default Price",
-          "type": "Symbol",
-          "localized": false,
-          "required": true,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "defaultPriceFloat",
-          "name": "Default Price Float",
-          "type": "Number",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "salePrice",
-          "name": "Sale Price",
-          "type": "Symbol",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "salePriceFloat",
-          "name": "Sale Price Float",
-          "type": "Number",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "couponCodesalesDates",
-          "name": "Sale Message",
+          "id": "wattage",
+          "name": "Wattage",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -187,58 +308,21 @@
           "omitted": false
         },
         {
-          "id": "details",
-          "name": "Details",
-          "type": "RichText",
+          "id": "warranty",
+          "name": "Warranty",
+          "type": "Symbol",
           "localized": true,
           "required": false,
           "validations": [
-            {
-              "enabledMarks": [
-                "bold",
-                "italic",
-                "underline",
-                "code",
-                "superscript",
-                "subscript"
-              ],
-              "message": "Only bold, italic, underline, code, superscript, and subscript marks are allowed"
-            },
-            {
-              "enabledNodeTypes": [
-                "heading-1",
-                "heading-2",
-                "heading-3",
-                "heading-4",
-                "heading-5",
-                "heading-6",
-                "ordered-list",
-                "unordered-list",
-                "hr",
-                "blockquote",
-                "embedded-entry-block",
-                "embedded-asset-block",
-                "table",
-                "hyperlink",
-                "entry-hyperlink",
-                "asset-hyperlink",
-                "embedded-entry-inline"
-              ],
-              "message": "Only heading 1, heading 2, heading 3, heading 4, heading 5, heading 6, ordered list, unordered list, horizontal rule, quote, block entry, asset, table, link to Url, link to entry, link to asset, and inline entry nodes are allowed"
-            },
-            {
-              "nodes": {
-              }
-            }
           ],
           "disabled": false,
           "omitted": false
         },
         {
-          "id": "faqs",
-          "name": "FAQs",
+          "id": "docs",
+          "name": "Docs",
           "type": "Array",
-          "localized": true,
+          "localized": false,
           "required": false,
           "validations": [
           ],
@@ -249,7 +333,7 @@
             "validations": [
               {
                 "linkContentType": [
-                  "faq"
+                  "supportDocument"
                 ]
               }
             ],
@@ -274,10 +358,54 @@
           "linkType": "Asset"
         },
         {
-          "id": "additionalImages",
-          "name": "Additional Images",
-          "type": "Array",
+          "id": "price",
+          "name": "Price",
+          "type": "Symbol",
           "localized": false,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "salePrice",
+          "name": "Sale Price",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "saleMessage",
+          "name": "Sale Message",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "inventoryQuantity",
+          "name": "Inventory Quantity",
+          "type": "Integer",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "partsAccessories",
+          "name": "Parts + Accessories",
+          "type": "Array",
+          "localized": true,
           "required": false,
           "validations": [
           ],
@@ -286,244 +414,13 @@
           "items": {
             "type": "Link",
             "validations": [
-              {
-                "linkMimetypeGroup": [
-                  "image",
-                  "video",
-                  "code"
-                ]
-              }
-            ],
-            "linkType": "Asset"
-          }
-        },
-        {
-          "id": "metaTitle",
-          "name": "Meta Title",
-          "type": "Symbol",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "metaDescription",
-          "name": "Meta Description",
-          "type": "Symbol",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "productLine",
-          "name": "Product Line",
-          "type": "Array",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Symbol",
-            "validations": [
-            ]
-          }
-        },
-        {
-          "id": "parentCategory",
-          "name": "Parent Category",
-          "type": "Array",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Symbol",
-            "validations": [
-            ]
-          }
-        },
-        {
-          "id": "subCategory",
-          "name": "Sub-Category",
-          "type": "Array",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Symbol",
-            "validations": [
-            ]
-          }
-        },
-        {
-          "id": "webSubCategory",
-          "name": "Web Sub Category",
-          "type": "Symbol",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "productFormulationInformation",
-          "name": "Product Formulation Information",
-          "type": "Object",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "feature",
-          "name": "Feature",
-          "type": "Array",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Symbol",
-            "validations": [
-            ]
-          }
-        },
-        {
-          "id": "finish",
-          "name": "Finish",
-          "type": "Array",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Symbol",
-            "validations": [
-            ]
-          }
-        },
-        {
-          "id": "size",
-          "name": "Size",
-          "type": "Symbol",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "supportDocumentation",
-          "name": "Support Documentation",
-          "type": "Array",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Link",
-            "validations": [
-              {
-                "linkContentType": [
-                  "supportDocument"
-                ]
-              }
             ],
             "linkType": "Entry"
           }
         },
         {
-          "id": "factoryRecertifiedProduct",
-          "name": "Factory Recertified Product",
-          "type": "Boolean",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "defaultValue": {
-            "en-US": false
-          },
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "modelNumber",
-          "name": "Model Number",
-          "type": "Symbol",
-          "localized": false,
-          "required": true,
-          "validations": [
-            {
-              "unique": true
-            }
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "wattage",
-          "name": "Wattage",
-          "type": "Symbol",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "warranty",
-          "name": "Warranty",
-          "type": "Symbol",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "spotlightVideo",
-          "name": "Spotlight Video",
-          "type": "Link",
-          "localized": false,
-          "required": false,
-          "validations": [
-            {
-              "linkContentType": [
-                "featureVideoBanner"
-              ]
-            }
-          ],
-          "disabled": false,
-          "omitted": false,
-          "linkType": "Entry"
-        },
-        {
           "id": "outOfBoxNetWeight",
-          "name": "Out of Box net_weight",
+          "name": "Out of Box Net Weight",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -534,7 +431,7 @@
         },
         {
           "id": "outOfBoxDepth",
-          "name": "Out of Box depth",
+          "name": "Out of Box Depth",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -545,7 +442,7 @@
         },
         {
           "id": "outOfBoxWidth",
-          "name": "Out of Box width",
+          "name": "Out of Box Width",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -556,7 +453,7 @@
         },
         {
           "id": "outOfBoxHeight",
-          "name": "Out of Box height",
+          "name": "Out of Box Height",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -588,19 +485,8 @@
           "omitted": false
         },
         {
-          "id": "archive",
-          "name": "Archive",
-          "type": "Boolean",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "productBadge",
-          "name": "Product Badge",
+          "id": "metaTitle",
+          "name": "Meta Title",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -610,8 +496,19 @@
           "omitted": false
         },
         {
-          "id": "isShipsFree",
-          "name": "isShipsFree",
+          "id": "metaDescription",
+          "name": "Meta Description",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "factoryRecertifiedProduct",
+          "name": "Factory Recertified Product",
           "type": "Boolean",
           "localized": false,
           "required": false,
@@ -624,9 +521,9 @@
           "omitted": false
         },
         {
-          "id": "inventoryQuantity",
-          "name": "Inventory Quantity",
-          "type": "Integer",
+          "id": "archive",
+          "name": "Archive",
+          "type": "Boolean",
           "localized": false,
           "required": false,
           "validations": [
@@ -635,8 +532,30 @@
           "omitted": false
         },
         {
-          "id": "pageContentEntries",
-          "name": "Page Content Entries",
+          "id": "productFormulationInformation",
+          "name": "Product Formulation Information",
+          "type": "Object",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "badge",
+          "name": "Badge",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "additionalImages",
+          "name": "Additional Images",
           "type": "Array",
           "localized": false,
           "required": false,
@@ -648,27 +567,54 @@
             "type": "Link",
             "validations": [
               {
+                "linkMimetypeGroup": [
+                  "image",
+                  "video",
+                  "code"
+                ]
+              }
+            ],
+            "linkType": "Asset"
+          }
+        },
+        {
+          "id": "spotlightVideo",
+          "name": "Spotlight Video",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "linkContentType": [
+                "featureVideoBanner"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Entry"
+        },
+        {
+          "id": "faqs",
+          "name": "FAQs",
+          "type": "Array",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
                 "linkContentType": [
-                  "blockProductFeatures",
-                  "blockProductFeaturesAccordion",
-                  "carouselRecipe",
-                  "carouselProduct"
+                  "faq"
                 ]
               }
             ],
             "linkType": "Entry"
           }
-        },
-        {
-          "id": "isNew",
-          "name": "isNew",
-          "type": "Boolean",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
         },
         {
           "id": "featureCallout",
@@ -705,10 +651,10 @@
           "linkType": "Entry"
         },
         {
-          "id": "partsAccessories",
-          "name": "Parts + Accessories",
+          "id": "pageContentEntries",
+          "name": "Page Content Entries",
           "type": "Array",
-          "localized": true,
+          "localized": false,
           "required": false,
           "validations": [
           ],
@@ -717,6 +663,14 @@
           "items": {
             "type": "Link",
             "validations": [
+              {
+                "linkContentType": [
+                  "blockProductFeatures",
+                  "blockProductFeaturesAccordion",
+                  "carouselRecipe",
+                  "carouselProduct"
+                ]
+              }
             ],
             "linkType": "Entry"
           }
@@ -1716,7 +1670,7 @@
         "id": "productPartsAndAccessories",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:03.151Z",
-        "updatedAt": "2025-05-09T19:22:18.645Z",
+        "updatedAt": "2025-05-13T18:28:22.043Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1724,8 +1678,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 63,
-        "publishedAt": "2025-05-09T19:22:18.645Z",
+        "publishedVersion": 169,
+        "publishedAt": "2025-05-13T18:28:22.043Z",
         "firstPublishedAt": "2025-03-07T21:04:14.874Z",
         "createdBy": {
           "sys": {
@@ -1741,8 +1695,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 32,
-        "version": 64,
+        "publishedCounter": 85,
+        "version": 170,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -1766,6 +1720,17 @@
             {
               "unique": true
             }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "modelNumber",
+          "name": "Model Number",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
           ],
           "disabled": false,
           "omitted": false
@@ -1805,10 +1770,21 @@
           "omitted": false
         },
         {
+          "id": "newFlag",
+          "name": "New",
+          "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
           "id": "webProductName",
           "name": "Web Product Name",
           "type": "Symbol",
-          "localized": false,
+          "localized": true,
           "required": true,
           "validations": [
           ],
@@ -1819,12 +1795,60 @@
           "id": "webProductNameDescriptor",
           "name": "Web Product Name Descriptor",
           "type": "Symbol",
-          "localized": false,
+          "localized": true,
           "required": false,
           "validations": [
           ],
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "webProductLine",
+          "name": "Web Product Line",
+          "type": "Array",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": [
+            ]
+          }
+        },
+        {
+          "id": "webCategory",
+          "name": "Web Category",
+          "type": "Array",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": [
+            ]
+          }
+        },
+        {
+          "id": "webFinish",
+          "name": "Web Finish",
+          "type": "Array",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": [
+            ]
+          }
         },
         {
           "id": "associatedFinishedGoods",
@@ -1871,86 +1895,6 @@
           }
         },
         {
-          "id": "subCategory",
-          "name": "Sub-Category",
-          "type": "Array",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Symbol",
-            "validations": [
-            ]
-          }
-        },
-        {
-          "id": "productLine",
-          "name": "Product Line",
-          "type": "Array",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Symbol",
-            "validations": [
-            ]
-          }
-        },
-        {
-          "id": "feature",
-          "name": "Feature",
-          "type": "Array",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Symbol",
-            "validations": [
-            ]
-          }
-        },
-        {
-          "id": "size",
-          "name": "Size",
-          "type": "Array",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Symbol",
-            "validations": [
-            ]
-          }
-        },
-        {
-          "id": "finish",
-          "name": "Finish",
-          "type": "Array",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Symbol",
-            "validations": [
-            ]
-          }
-        },
-        {
           "id": "featuredImage",
           "name": "Featured Image",
           "type": "Link",
@@ -1968,71 +1912,8 @@
           "linkType": "Asset"
         },
         {
-          "id": "additionalImages",
-          "name": "Additional Images",
-          "type": "Array",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Link",
-            "validations": [
-              {
-                "linkMimetypeGroup": [
-                  "image",
-                  "video",
-                  "code"
-                ]
-              }
-            ],
-            "linkType": "Asset"
-          }
-        },
-        {
-          "id": "productCarousel",
-          "name": "Product Carousel",
-          "type": "Link",
-          "localized": false,
-          "required": false,
-          "validations": [
-            {
-              "linkContentType": [
-                "carouselProduct"
-              ]
-            }
-          ],
-          "disabled": false,
-          "omitted": false,
-          "linkType": "Entry"
-        },
-        {
-          "id": "metaTitle",
-          "name": "Meta Title",
-          "type": "Symbol",
-          "localized": true,
-          "required": true,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "metaDescription",
-          "name": "Meta Description",
-          "type": "Symbol",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "parentCategory",
-          "name": "Parent Category",
+          "id": "productFormulationInformation",
+          "name": "Product Formulation Information",
           "type": "Object",
           "localized": false,
           "required": false,
@@ -2042,70 +1923,8 @@
           "omitted": false
         },
         {
-          "id": "details",
-          "name": "Details",
-          "type": "RichText",
-          "localized": true,
-          "required": false,
-          "validations": [
-            {
-              "enabledMarks": [
-                "bold",
-                "italic",
-                "underline",
-                "code",
-                "superscript",
-                "subscript"
-              ],
-              "message": "Only bold, italic, underline, code, superscript, and subscript marks are allowed"
-            },
-            {
-              "enabledNodeTypes": [
-                "heading-1",
-                "heading-2",
-                "heading-3",
-                "heading-4",
-                "heading-5",
-                "heading-6",
-                "unordered-list",
-                "ordered-list",
-                "blockquote",
-                "hr",
-                "table",
-                "hyperlink",
-                "entry-hyperlink",
-                "asset-hyperlink",
-                "embedded-entry-block",
-                "embedded-entry-inline",
-                "embedded-asset-block"
-              ],
-              "message": "Only heading 1, heading 2, heading 3, heading 4, heading 5, heading 6, unordered list, ordered list, quote, horizontal rule, table, link to Url, link to entry, link to asset, block entry, inline entry, and asset nodes are allowed"
-            },
-            {
-              "nodes": {
-              }
-            }
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "factoryRecertifiedProduct",
-          "name": "Factory Recertified Product",
-          "type": "Boolean",
-          "localized": false,
-          "required": true,
-          "validations": [
-          ],
-          "defaultValue": {
-            "en-US": false
-          },
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "modelNumber",
-          "name": "Model Number",
+          "id": "price",
+          "name": "Price",
           "type": "Symbol",
           "localized": false,
           "required": false,
@@ -2115,8 +1934,41 @@
           "omitted": false
         },
         {
+          "id": "salePrice",
+          "name": "Sale Price",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "saleMessage",
+          "name": "Sale Message",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "inventoryQuantity",
+          "name": "Inventory Quantity",
+          "type": "Integer",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
           "id": "outOfBoxNetWeight",
-          "name": "Out of Box net_weight",
+          "name": "Out of Box Net Weight",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -2127,7 +1979,7 @@
         },
         {
           "id": "outOfBoxDepth",
-          "name": "Out of Box depth",
+          "name": "Out of Box Depth",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -2138,7 +1990,7 @@
         },
         {
           "id": "outOfBoxWidth",
-          "name": "Out of Box width",
+          "name": "Out of Box Width",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -2149,18 +2001,7 @@
         },
         {
           "id": "outOfBoxHeight",
-          "name": "Out of Box height",
-          "type": "Symbol",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "outOfBoxUnitVolume",
-          "name": "Out of Box unit_volume",
+          "name": "Out of Box Height",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -2192,41 +2033,19 @@
           "omitted": false
         },
         {
-          "id": "archived",
-          "name": "Archived",
-          "type": "Boolean",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "price",
-          "name": "Price",
+          "id": "metaTitle",
+          "name": "Meta Title",
           "type": "Symbol",
-          "localized": false,
-          "required": false,
+          "localized": true,
+          "required": true,
           "validations": [
           ],
           "disabled": false,
           "omitted": false
         },
         {
-          "id": "priceFloat",
-          "name": "Price Float",
-          "type": "Number",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "couponCodesalesDates",
-          "name": "Sale Message",
+          "id": "metaDescription",
+          "name": "Meta Description",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -2236,55 +2055,22 @@
           "omitted": false
         },
         {
-          "id": "productFormulationInformation",
-          "name": "Product Formulation Information",
-          "type": "Object",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "salePrice",
-          "name": "Sale Price",
-          "type": "Symbol",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "salePriceFloat",
-          "name": "Sale Price Float",
-          "type": "Number",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "productBadge",
-          "name": "Product Badge",
-          "type": "Symbol",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "isShipsFree",
-          "name": "isShipsFree",
+          "id": "archive",
+          "name": "Archive",
           "type": "Boolean",
           "localized": false,
           "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "factoryRecertifiedProduct",
+          "name": "Factory Recertified Product",
+          "type": "Boolean",
+          "localized": false,
+          "required": true,
           "validations": [
           ],
           "defaultValue": {
@@ -2294,15 +2080,39 @@
           "omitted": false
         },
         {
-          "id": "inventoryQuantity",
-          "name": "Inventory Quantity",
-          "type": "Integer",
-          "localized": false,
+          "id": "badge",
+          "name": "Badge",
+          "type": "Symbol",
+          "localized": true,
           "required": false,
           "validations": [
           ],
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "additionalImages",
+          "name": "Additional Images",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkMimetypeGroup": [
+                  "image",
+                  "video",
+                  "code"
+                ]
+              }
+            ],
+            "linkType": "Asset"
+          }
         },
         {
           "id": "pageContentEntries",
@@ -2326,17 +2136,6 @@
             ],
             "linkType": "Entry"
           }
-        },
-        {
-          "id": "isNew",
-          "name": "isNew",
-          "type": "Boolean",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
         }
       ],
       "metadata": {

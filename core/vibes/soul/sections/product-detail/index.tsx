@@ -88,7 +88,7 @@ export function ProductDetail<F extends Field>({
                 <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-8 @2xl:grid-cols-2 @5xl:gap-x-12">
                   <div className="group/product-gallery">
                     <ProductGallery
-                      badge={contentful?.fields.productBadge}
+                      badge={contentful?.fields.badge}
                       featuredImage={
                         contentful?.fields.featuredImage && {
                           src: ensureImageUrl(contentful.fields.featuredImage.fields.file.url),
@@ -107,7 +107,7 @@ export function ProductDetail<F extends Field>({
                   <div className="px-4 py-8 @xl:px-0 @xl:py-0">
                     <div className="mb-8 flex items-start justify-between gap-4">
                       <div className="flex gap-2">
-                        {contentful?.fields.productLine?.map((line, index) => (
+                        {contentful?.fields.webProductLine?.map((line, index) => (
                           <Badge key={index}>{line}</Badge>
                         ))}
                       </div>

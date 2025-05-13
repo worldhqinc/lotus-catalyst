@@ -120,7 +120,7 @@ interface ProductFormulationLookupClientProps {
     value: string;
     featuredImage?: Asset | null;
     pageSlug?: string | null;
-    parentCategory?: string | null;
+    webCategory?: string | null;
     subCategory?: string | null;
   }>;
   selectedSku: string;
@@ -192,13 +192,11 @@ export function ProductFormulationLookupClient({
             selectedProductFields.webProductName
           )}
         </div>
-        {(selectedProductFields.parentCategory || selectedProductFields.subCategory) && (
+        {selectedProductFields.webProductNameDescriptor ? (
           <p className="text-contrast-400 mt-2 text-sm">
-            {[selectedProductFields.parentCategory, selectedProductFields.subCategory]
-              .filter(Boolean)
-              .join(' and ')}
+            {selectedProductFields.webProductNameDescriptor}
           </p>
-        )}
+        ) : null}
       </div>
     </div>
   ) : null;

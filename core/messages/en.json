@@ -370,7 +370,7 @@
         "sku": "SKU",
         "weight": "Weight",
         "condition": "Condition",
-        "supportDocumentation": "Use & Care"
+        "docs": "Use & Care"
       }
     },
     "RelatedProducts": {

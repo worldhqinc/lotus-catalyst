@@ -8,7 +8,7 @@ import { ProductRegistrationForm } from './_components/product-registration-form
 export default async function ProductRegistration() {
   const productsData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',
-    select: ['fields.bcProductReference', 'fields.parentCategory'],
+    select: ['fields.bcProductReference', 'fields.webCategory'],
     limit: 1000,
   });
 
