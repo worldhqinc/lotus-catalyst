@@ -47,6 +47,7 @@ export default async (): Promise<NextConfig> => {
   const settings = await writeSettingsToBuildConfig();
 
   let nextConfig: NextConfig = {
+    output: 'standalone',
     reactStrictMode: true,
     experimental: {
       optimizePackageImports: ['@icons-pack/react-simple-icons'],
@@ -87,12 +88,7 @@ export default async (): Promise<NextConfig> => {
       ],
     },
     generateBuildId: () => {
-      const id = `custom-${Date.now()}`;
-
-      // eslint-disable-next-line no-console
-      console.log('🔧 Custom Build ID:', id);
-
-      return id;
+      return `build-${Date.now()}`;
     },
     // default URL generation in BigCommerce uses trailing slash
     trailingSlash: process.env.TRAILING_SLASH !== 'false',
