@@ -2,7 +2,7 @@
 
 import { Select } from '@/vibes/soul/form/select';
 import { Image } from '~/components/image';
-import type { Doc, featureItem, productFinishedGoods } from '~/contentful/schema';
+import type { featureItem, productFinishedGoods, supportDocument } from '~/contentful/schema';
 import { ensureImageUrl } from '~/lib/utils';
 
 type FeatureItemProps = Omit<featureItem['fields'], 'products'> & {
@@ -20,7 +20,7 @@ export function FeatureItem({
   const supportLinks =
     products?.map((product) => {
       const docs = product.fields.docs?.find(
-        (doc): doc is Doc => doc.fields.documentType === 'Use and Care Guide',
+        (doc): doc is supportDocument => doc.fields.documentType === 'Use and Care Guide',
       );
 
       return {

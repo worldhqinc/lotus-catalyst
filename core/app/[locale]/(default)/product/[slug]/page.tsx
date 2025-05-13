@@ -10,7 +10,7 @@ import { getSessionCustomerAccessToken } from '~/auth';
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { Link } from '~/components/link';
-import { docSchema, productPartsAndAccessoriesSchema } from '~/contentful/schema';
+import { productPartsAndAccessoriesSchema, supportDocumentSchema } from '~/contentful/schema';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
 import { getPreferredCurrencyCode } from '~/lib/currency';
@@ -260,7 +260,7 @@ export default async function Product(props: Props) {
               content: (
                 <div className="flex flex-col items-start gap-4">
                   {contentful.fields.docs.map((doc, index) => {
-                    const { documentName, url } = docSchema.parse(doc).fields;
+                    const { documentName, url } = supportDocumentSchema.parse(doc).fields;
 
                     return (
                       <Link
