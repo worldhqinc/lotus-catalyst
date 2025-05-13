@@ -34,7 +34,7 @@ export function SectionLayout({
     <section className={clsx('@container overflow-hidden', className)} id={id}>
       <div
         className={clsx(
-          'mx-auto px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20',
+          'mx-auto px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-16',
           {
             md: 'max-w-[var(--section-max-width-md,768px)]',
             lg: 'max-w-[var(--section-max-width-lg,1024px)]',

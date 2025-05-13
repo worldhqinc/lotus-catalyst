@@ -28,7 +28,7 @@ export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields &
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-2xl md:text-4xl">{faqParentCategory}</h2>
           {faqParentCategory === 'Common questions' && (
-            <Link className="link text-primary flex items-center gap-2" href="/faqs">
+            <Link className="link flex items-center gap-2" href="/faqs">
               View all FAQ's
               <ArrowRight className="h-4 w-4" />
             </Link>

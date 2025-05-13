@@ -100,7 +100,7 @@ export default async function FaqsPage({ searchParams }: { searchParams: { searc
       </section>
       <div className="container lg:mt-16">
         <div className="grid lg:grid-cols-12 lg:gap-8">
-          <div className="sticky top-16 space-y-4 bg-white py-8 lg:top-32 lg:col-span-2 lg:max-h-max lg:space-y-8 lg:py-0">
+          <div className="sticky top-16 space-y-4 bg-white py-8 lg:top-32 lg:col-span-3 lg:max-h-max lg:space-y-8 lg:py-0">
             <FaqSearch />
             <FaqSidebar categories={faqCategories} faqCategoryHeader={faqCategoryHeader} />
           </div>

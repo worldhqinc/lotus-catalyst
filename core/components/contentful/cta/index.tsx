@@ -2,7 +2,7 @@
 
 import { ArrowRight } from 'lucide-react';
 
-import { ButtonLink } from '@/vibes/soul/primitives/button-link';
+import { Link } from '~/components/link';
 import { cta as CtaEntry } from '~/contentful/schema';
 import { getLinkHref } from '~/lib/utils';
 
@@ -20,15 +20,9 @@ export default function ContentfulCta({ cta }: ContentfulCtaProps) {
   const linkHref = getLinkHref(cta.fields);
 
   return (
-    <ButtonLink
-      className="[&_span]:flex [&_span]:items-center [&_span]:gap-2 [&_span]:font-medium"
-      href={linkHref}
-      shape="link"
-      size="link"
-      variant="link"
-    >
+    <Link className="link flex items-center gap-2" href={linkHref}>
       {text}
       <ArrowRight size={24} strokeWidth={1.4} />
-    </ButtonLink>
+    </Link>
   );
 }

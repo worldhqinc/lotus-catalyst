@@ -5,7 +5,9 @@ import { PersonStandingIcon } from 'lucide-react';
 import { ForwardedRef, forwardRef, ReactNode } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
+import { Image } from '~/components/image';
 import { Link } from '~/components/link';
+import BannerBackground from '~/public/images/Lotus-Pattern.svg';
 
 import { LocaleSwitcher } from '../navigation';
 
@@ -47,7 +49,18 @@ export const Banner = forwardRef(
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     return (
-      <div className={clsx('bg-primary py-4 text-white', className)} ref={ref}>
+      <div
+        className={clsx('bg-primary relative isolate overflow-hidden py-4 text-white', className)}
+        ref={ref}
+      >
+        <Image
+          alt="Lotus Pattern"
+          className="absolute inset-0 top-1/2 left-1/2 -z-10 min-w-[1440px] -translate-x-1/2 -translate-y-1/2"
+          height={807}
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          src={BannerBackground}
+          width={2560}
+        />
         <div className="@container container flex flex-row items-center justify-between">
           <div>
             <Stream

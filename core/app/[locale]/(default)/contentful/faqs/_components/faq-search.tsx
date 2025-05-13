@@ -33,7 +33,7 @@ export function FaqSearch() {
 
   return (
     <Input
-      className="w-full"
+      className="w-full lg:max-w-[204px]"
       onChange={handleSearch}
       placeholder="Search FAQs..."
       prepend={<Search className="h-4 w-4" />}
