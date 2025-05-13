@@ -4,7 +4,6 @@ import { z } from 'zod';
 
 import { productFinishedGoodsSchema } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
-import { ensureImageUrl } from '~/lib/utils';
 
 export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
@@ -21,8 +20,6 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
     const entry = await contentfulClient.getEntry(id, {
       include: 10,
     });
-
-    const parsedEntry = productFinishedGoodsSchema.parse(entry);
 
     const algoliaClient = algoliasearch(
       process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? '',
