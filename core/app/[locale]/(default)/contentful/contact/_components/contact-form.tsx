@@ -3,7 +3,7 @@
 import { Loader2 } from 'lucide-react';
 import { useActionState, useEffect, useRef, useState } from 'react';
 
-import { FieldError } from '@/vibes/soul/form/field-error';
+import { FormStatus } from '@/vibes/soul/form/form-status';
 import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
 import { Select } from '@/vibes/soul/form/select';
@@ -106,9 +106,9 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
     >
       <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">Email</h2>
       {formState.errors && (
-        <FieldError className="mt-4 mb-4" key="form-errors-general">
+        <FormStatus className="mt-4 mb-4" key="form-errors-general" type="error">
           Form has errors, see below.
-        </FieldError>
+        </FormStatus>
       )}
       <div className="flex flex-col gap-1">
         <Label className="text-foreground text-sm font-medium" htmlFor="email">
