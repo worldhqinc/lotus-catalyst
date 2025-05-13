@@ -10,9 +10,10 @@ export function Testimonials({ quote, logos }: testimonials['fields']) {
       </blockquote>
       <div className="mx-auto flex max-w-4xl flex-wrap justify-center gap-8 md:grid md:grid-cols-5">
         {logos?.map((logo) => (
-          <div
-            className="flex max-w-40 items-center justify-center opacity-50 hover:opacity-100 md:max-w-none"
+          <button
+            className="ease-quad flex max-w-40 items-center justify-center opacity-50 transition-opacity duration-200 hover:opacity-100 md:max-w-none"
             key={logo.sys.id}
+            type="button"
           >
             <Image
               alt={logo.fields.title || 'Logo'}
@@ -21,7 +22,7 @@ export function Testimonials({ quote, logos }: testimonials['fields']) {
               src={ensureImageUrl(logo.fields.file.url)}
               width={logo.fields.file.details.image?.width || 100}
             />
-          </div>
+          </button>
         ))}
       </div>
     </div>
