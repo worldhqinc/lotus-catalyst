@@ -87,7 +87,12 @@ export default async (): Promise<NextConfig> => {
       ],
     },
     generateBuildId: () => {
-      return process.env.PLATFORM_TREE_ID ?? null;
+      const id = `custom-${Date.now()}`;
+
+      // eslint-disable-next-line no-console
+      console.log('🔧 Custom Build ID:', id);
+
+      return id;
     },
     // default URL generation in BigCommerce uses trailing slash
     trailingSlash: process.env.TRAILING_SLASH !== 'false',
