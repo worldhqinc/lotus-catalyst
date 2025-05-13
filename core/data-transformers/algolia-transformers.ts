@@ -73,14 +73,14 @@ export function transformProductHit(hit: ProductGridHit) {
   const slug = f.pageSlug?.['en-US'] || '';
   const imgField = f.featuredImage?.['en-US']?.fields?.file?.url || null;
   const imgUrl = imgField ? ensureImageUrl(imgField) : null;
-  const defaultPrice = f.defaultPrice?.['en-US'] ?? f.price?.['en-US'];
-  const price = f.salePrice?.['en-US']
+  const price = f.price?.['en-US'];
+  const priceData = f.salePrice?.['en-US']
     ? {
         type: 'sale' as const,
         previousValue: `$${f.salePrice['en-US']}`,
-        currentValue: `$${defaultPrice}`,
+        currentValue: `$${price}`,
       }
-    : `$${defaultPrice}`;
+    : `$${price}`;
   const badge = f.badge?.['en-US'];
   const rating = f.rating?.['en-US'];
   const inStock = Boolean(f.inventoryQuantity?.['en-US'] ?? 0);
@@ -92,7 +92,7 @@ export function transformProductHit(hit: ProductGridHit) {
     subtitle: description,
     href: `/${slug}`,
     image: imgUrl ? { src: imgUrl, alt: title } : undefined,
-    price,
+    price: priceData,
     badge,
     rating,
     inStock,
