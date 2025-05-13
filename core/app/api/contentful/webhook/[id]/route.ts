@@ -29,7 +29,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
       process.env.ALGOLIA_ADMIN_API_KEY ?? '',
     );
 
-    let body;
+    let body = {};
 
     if (
       entry.sys.contentType.sys.id === 'productFinishedGoods' ||
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
         badge: parsedEntry.fields.badge,
         newFlag: parsedEntry.fields.newFlag,
         inStock: Boolean(parsedEntry.fields.inventoryQuantity ?? 0),
-        featuredImage: ensureImageUrl(parsedEntry.fields.featuredImage?.fields.file.url),
+        featuredImage: parsedEntry.fields.featuredImage?.fields.file.url,
       };
     }
 
