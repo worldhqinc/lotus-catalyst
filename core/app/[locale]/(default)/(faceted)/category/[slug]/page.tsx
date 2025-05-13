@@ -5,7 +5,7 @@ import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/serve
 import { createLoader, SearchParams } from 'nuqs/server';
 import { cache } from 'react';
 
-import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
+import { Streamable } from '@/vibes/soul/lib/streamable';
 import { createCompareLoader } from '@/vibes/soul/primitives/compare-drawer/loader';
 import { ProductsListSection } from '@/vibes/soul/sections/products-list-section';
 import { getFilterParsers } from '@/vibes/soul/sections/products-list-section/filter-parsers';
@@ -19,7 +19,7 @@ import { MAX_COMPARE_LIMIT } from '../../../compare/page-data';
 import { getCompareProducts } from '../../fetch-compare-products';
 import { fetchFacetedSearch } from '../../fetch-faceted-search';
 
-import { CategoryViewed } from './_components/category-viewed';
+// import { CategoryViewed } from './_components/category-viewed';
 import { getCategoryPageData } from './page-data';
 
 const getCachedCategory = cache((categoryId: number) => {
@@ -273,15 +273,9 @@ export default async function Category(props: Props) {
         title={category.name}
         totalCount={streamableTotalCount}
       />
-      <Stream value={streamableFacetedSearch}>
-        {(search) => (
-          <CategoryViewed
-            category={category}
-            categoryId={category.entityId}
-            products={search.products.items}
-          />
-        )}
-      </Stream>
+      {/* <Stream value={streamableFacetedSearch}>
+        {(search) => <CategoryViewed category={category} products={search.products.items} />}
+      </Stream> */}
     </>
   );
 }

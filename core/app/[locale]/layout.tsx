@@ -7,41 +7,53 @@ import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
-import { PropsWithChildren } from 'react';
+import { cache, PropsWithChildren } from 'react';
 
 import '../../globals.css';
 
 import { fonts } from '~/app/fonts';
+import { CookieNotifications } from '~/app/notifications';
+import { Providers } from '~/app/providers';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
+import { WebAnalyticsFragment } from '~/components/analytics/fragment';
 import WeglotClient from '~/components/weglot-client';
+// import { AnalyticsProvider } from '~/components/analytics/provider';
 import { routing } from '~/i18n/routing';
+import { getToastNotification } from '~/lib/server-toast';
 
-import { getToastNotification } from '../../lib/server-toast';
-import { CookieNotifications } from '../notifications';
-import { Providers } from '../providers';
-
-const RootLayoutMetadataQuery = graphql(`
-  query RootLayoutMetadataQuery {
-    site {
-      settings {
-        storeName
-        seo {
-          pageTitle
-          metaDescription
-          metaKeywords
+const RootLayoutMetadataQuery = graphql(
+  `
+    query RootLayoutMetadataQuery {
+      site {
+        settings {
+          storeName
+          seo {
+            pageTitle
+            metaDescription
+            metaKeywords
+          }
+          ...WebAnalyticsFragment
         }
       }
+      channel {
+        entityId
+      }
     }
-  }
-`);
+  `,
+  [WebAnalyticsFragment],
+);
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { data } = await client.fetch({
+const fetchRootLayoutMetadata = cache(async () => {
+  return await client.fetch({
     document: RootLayoutMetadataQuery,
     fetchOptions: { next: { revalidate } },
   });
+});
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { data } = await fetchRootLayoutMetadata();
 
   const storeName = data.site.settings?.storeName ?? '';
 
@@ -93,6 +105,8 @@ interface Props extends PropsWithChildren {
 
 export default async function RootLayout({ params, children }: Props) {
   const { locale } = await params;
+
+  // const { data } = await fetchRootLayoutMetadata();
   const toastNotificationCookieData = await getToastNotification();
 
   if (!routing.locales.includes(locale)) {
@@ -110,12 +124,14 @@ export default async function RootLayout({ params, children }: Props) {
         <NextIntlClientProvider>
           <WeglotClient />
           <NuqsAdapter>
+            {/* <AnalyticsProvider channelId={data.channel.entityId} settings={data.site.settings}> */}
             <Providers>
               {toastNotificationCookieData && (
                 <CookieNotifications {...toastNotificationCookieData} />
               )}
               {children}
             </Providers>
+            {/* </AnalyticsProvider> */}
           </NuqsAdapter>
         </NextIntlClientProvider>
         <VercelComponents />

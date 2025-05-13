@@ -16,7 +16,7 @@ import { redirectToCheckout } from './_actions/redirect-to-checkout';
 import { updateCouponCode } from './_actions/update-coupon-code';
 import { updateLineItem } from './_actions/update-line-item';
 import { updateShippingInfo } from './_actions/update-shipping-info';
-import { CartViewed } from './_components/cart-viewed';
+// import { CartViewed } from './_components/cart-viewed';
 import { getCart, getShippingCountries } from './page-data';
 
 const GetProductPricingQuery = graphql(`
@@ -324,11 +324,11 @@ export default async function Cart({ params, searchParams }: Props) {
         summaryTitle={t('CheckoutSummary.title')}
         title={t('title')}
       />
-      <CartViewed
+      {/* <CartViewed
         currencyCode={cart.currencyCode}
         lineItems={lineItems}
         subtotal={checkout?.subtotal?.value}
-      />
+      /> */}
     </>
   );
 }

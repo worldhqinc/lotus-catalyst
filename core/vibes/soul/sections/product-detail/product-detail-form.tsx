@@ -11,8 +11,15 @@ import {
 } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { createSerializer, parseAsString, useQueryStates } from 'nuqs';
-import { forwardRef, ReactNode, useActionState, useCallback, useEffect } from 'react';
-import { useFormStatus } from 'react-dom';
+import {
+  forwardRef,
+  ReactNode,
+  startTransition,
+  useActionState,
+  useCallback,
+  useEffect,
+} from 'react';
+import { requestFormReset, useFormStatus } from 'react-dom';
 import { z } from 'zod';
 
 import { ButtonRadioGroup } from '@/vibes/soul/form/button-radio-group';
@@ -27,6 +34,7 @@ import { Select } from '@/vibes/soul/form/select';
 import { SwatchRadioGroup } from '@/vibes/soul/form/swatch-radio-group';
 import { Textarea } from '@/vibes/soul/form/textarea';
 import { Button } from '@/vibes/soul/primitives/button';
+// import { useEvents } from '~/components/analytics/events';
 import NotifyBackInStock from '~/components/notify-back-in-stock';
 import { usePathname, useRouter } from '~/i18n/routing';
 
@@ -86,6 +94,7 @@ export function ProductDetailForm<F extends Field>({
 }: ProductDetailFormProps<F>) {
   const router = useRouter();
   const pathname = usePathname();
+  // const events = useEvents();
 
   const searchParams = fields.reduce<Record<string, typeof parseAsString>>((acc, field) => {
     return field.persist === true ? { ...acc, [field.name]: parseAsString } : acc;
@@ -131,6 +140,16 @@ export function ProductDetailForm<F extends Field>({
     constraint: getZodConstraint(schema(fields)),
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: schema(fields) });
+    },
+    onSubmit(event, { formData }) {
+      event.preventDefault();
+
+      startTransition(() => {
+        requestFormReset(event.currentTarget);
+        formAction(formData);
+
+        // events.onAddToCart?.(formData);
+      });
     },
     // @ts-expect-error: `defaultValue` types are conflicting with `onValidate`.
     defaultValue,

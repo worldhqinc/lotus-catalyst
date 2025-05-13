@@ -19,8 +19,9 @@ import { formatDimension, formatWeight } from '~/lib/unit-converter';
 import { isMobileUser } from '~/lib/user-agent';
 
 import { addToCart } from './_actions/add-to-cart';
+// import { ProductAnalyticsProvider } from './_components/product-analytics-provider';
 import { ProductSchema } from './_components/product-schema';
-import { ProductViewed } from './_components/product-viewed';
+// import { ProductViewed } from './_components/product-viewed';
 import { ProductShareButton } from './_components/share-button';
 import { WishlistButton } from './_components/wishlist-button';
 import { WishlistButtonForm } from './_components/wishlist-button/form';
@@ -344,8 +345,25 @@ export default async function Product(props: Props) {
     return getContentfulProductData(product.sku, product.categories.edges);
   });
 
+  // const streamableAnalyticsData = Streamable.from(async () => {
+  //   const [extendedProduct, pricingProduct] = await Streamable.all([
+  //     streamableProduct,
+  //     streamableProductPricingAndRelatedProducts,
+  //   ]);
+
+  //   return {
+  //     id: extendedProduct.entityId,
+  //     name: extendedProduct.name,
+  //     sku: extendedProduct.sku,
+  //     brand: extendedProduct.brand?.name ?? '',
+  //     price: pricingProduct?.prices?.price.value ?? 0,
+  //     currency: pricingProduct?.prices?.price.currencyCode ?? '',
+  //   };
+  // });
+
   return (
     <>
+      {/* <ProductAnalyticsProvider data={streamableAnalyticsData}></ProductAnalyticsProvider> */}
       <ProductDetail
         action={addToCart}
         additionalActions={
@@ -385,6 +403,7 @@ export default async function Product(props: Props) {
           accordions: streameableAccordions,
         }}
       />
+      {/* </ProductAnalyticsProvider> */}
 
       <Stream fallback={null} value={Streamable.all([streamableContentful, props.searchParams])}>
         {([contentful, searchParams]) => {
@@ -428,9 +447,9 @@ export default async function Product(props: Props) {
             <ProductSchema
               product={{ ...extendedProduct, prices: pricingProduct?.prices ?? null }}
             />
-            <ProductViewed
+            {/* <ProductViewed
               product={{ ...extendedProduct, prices: pricingProduct?.prices ?? null }}
-            />
+            /> */}
           </>
         )}
       </Stream>
