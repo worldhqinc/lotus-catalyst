@@ -98,6 +98,8 @@ export default async function RecipePage({ params }: Props) {
     ? documentToHtmlString(fields.recipeDirections)
     : '';
 
+  const variationsHtml = fields.variations ? documentToHtmlString(fields.variations) : '';
+
   const proTipHtml = fields.testKitchenTips ? documentToHtmlString(fields.testKitchenTips) : '';
 
   const recipeCarousel = fields.recipeCarousel
@@ -203,6 +205,15 @@ export default async function RecipePage({ params }: Props) {
         <div
           className="prose text-contrast-500 mt-4 max-w-none"
           dangerouslySetInnerHTML={{ __html: directionsHtml }}
+        />
+      </SectionLayout>
+
+      {/* Variations Section */}
+      <SectionLayout containerSize="md">
+        <h2 className="text-primary text-2xl font-medium uppercase">Variations</h2>
+        <div
+          className="prose text-contrast-500 mt-4 max-w-none"
+          dangerouslySetInnerHTML={{ __html: variationsHtml }}
         />
       </SectionLayout>
 
