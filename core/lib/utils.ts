@@ -1,4 +1,4 @@
-import { cta, pageStandardSchema } from '~/contentful/schema';
+import { cta } from '~/contentful/schema';
 
 export function exists<T>(value: T | null | undefined): value is T {
   return value != null;
@@ -18,27 +18,46 @@ export function ensureImageUrl(url: string) {
   return url;
 }
 
+export async function downloadFile(url: string, filename?: string): Promise<void> {
+  if (!url) return;
+
+  try {
+    // Fetch the file
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    // Create a blob URL and trigger download
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+
+    a.href = blobUrl;
+    a.download = filename || url.split('/').pop() || 'download';
+    document.body.appendChild(a);
+    a.click();
+
+    // Clean up
+    document.body.removeChild(a);
+    URL.revokeObjectURL(blobUrl);
+  } catch {
+    // Fallback to opening in new tab
+    window.open(url, '_blank');
+  }
+}
+
 export function getLinkHref(fields: cta['fields']) {
   let linkHref = '#';
 
   const { internalReference, externalLink } = fields;
 
   if (internalReference) {
-    const type = internalReference.sys.contentType.sys.id;
-
-    if (type === 'pageStandard') {
-      try {
-        const page = pageStandardSchema.parse(internalReference);
-
-        linkHref = page.fields.pageSlug ? `/${page.fields.pageSlug}` : '#';
-      } catch {
-        // parse error, keep default
-      }
-    } else {
-      linkHref = '/not-implemented';
+    if (
+      internalReference.fields.pageSlug &&
+      typeof internalReference.fields.pageSlug === 'string'
+    ) {
+      linkHref = `/${internalReference.fields.pageSlug}`;
+    } else if (externalLink) {
+      linkHref = externalLink;
     }
-  } else if (externalLink) {
-    linkHref = externalLink;
   }
 
   return linkHref;

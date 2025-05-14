@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-14T17:10:59.194Z",
+        "updatedAt": "2025-05-14T20:33:48.502Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 373,
-        "publishedAt": "2025-05-14T17:10:59.194Z",
+        "publishedVersion": 399,
+        "publishedAt": "2025-05-14T20:33:48.502Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -34,16 +34,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 187,
-        "version": 374,
+        "publishedCounter": 200,
+        "version": 400,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productFinishedGoods"
@@ -345,7 +345,7 @@
           "name": "Featured Image",
           "type": "Link",
           "localized": false,
-          "required": false,
+          "required": true,
           "validations": [
             {
               "linkMimetypeGroup": [
@@ -1172,7 +1172,7 @@
         "id": "recipe",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:03.111Z",
-        "updatedAt": "2025-05-14T15:29:21.469Z",
+        "updatedAt": "2025-05-14T19:35:32.331Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1180,8 +1180,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 37,
-        "publishedAt": "2025-05-14T15:29:21.469Z",
+        "publishedVersion": 41,
+        "publishedAt": "2025-05-14T19:35:32.331Z",
         "firstPublishedAt": "2025-03-07T21:04:15.617Z",
         "createdBy": {
           "sys": {
@@ -1194,16 +1194,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+            "id": "5WtxI4X1oPbwPPsjUjo9xH"
           }
         },
-        "publishedCounter": 19,
-        "version": 38,
+        "publishedCounter": 21,
+        "version": 42,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+            "id": "5WtxI4X1oPbwPPsjUjo9xH"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/recipe"
@@ -1435,6 +1435,28 @@
           }
         },
         {
+          "id": "products",
+          "name": "Products",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkContentType": [
+                  "productFinishedGoods"
+                ]
+              }
+            ],
+            "linkType": "Entry"
+          }
+        },
+        {
           "id": "recipeDirections",
           "name": "Recipe Directions",
           "type": "RichText",
@@ -1532,28 +1554,6 @@
           "omitted": false
         },
         {
-          "id": "products",
-          "name": "Products",
-          "type": "Array",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Link",
-            "validations": [
-              {
-                "linkContentType": [
-                  "productFinishedGoods"
-                ]
-              }
-            ],
-            "linkType": "Entry"
-          }
-        },
-        {
           "id": "testKitchenTips",
           "name": "Test Kitchen Tips",
           "type": "RichText",
@@ -1580,30 +1580,6 @@
           ],
           "disabled": false,
           "omitted": false
-        },
-        {
-          "id": "additionalImages",
-          "name": "Additional Images",
-          "type": "Array",
-          "localized": false,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Link",
-            "validations": [
-              {
-                "linkMimetypeGroup": [
-                  "image",
-                  "video",
-                  "code"
-                ]
-              }
-            ],
-            "linkType": "Asset"
-          }
         },
         {
           "id": "productCarousel",
@@ -1640,6 +1616,30 @@
           "linkType": "Entry"
         },
         {
+          "id": "additionalImages",
+          "name": "Additional Images",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkMimetypeGroup": [
+                  "image",
+                  "video",
+                  "code"
+                ]
+              }
+            ],
+            "linkType": "Asset"
+          }
+        },
+        {
           "id": "videoFeature",
           "name": "Video Feature",
           "type": "Link",
@@ -1670,7 +1670,7 @@
         "id": "productPartsAndAccessories",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:03.151Z",
-        "updatedAt": "2025-05-14T13:46:28.257Z",
+        "updatedAt": "2025-05-14T20:35:48.818Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1678,8 +1678,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 171,
-        "publishedAt": "2025-05-14T13:46:28.257Z",
+        "publishedVersion": 191,
+        "publishedAt": "2025-05-14T20:35:48.818Z",
         "firstPublishedAt": "2025-03-07T21:04:14.874Z",
         "createdBy": {
           "sys": {
@@ -1695,8 +1695,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 86,
-        "version": 172,
+        "publishedCounter": 96,
+        "version": 192,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -1927,7 +1927,7 @@
           "name": "Price",
           "type": "Symbol",
           "localized": false,
-          "required": false,
+          "required": true,
           "validations": [
           ],
           "disabled": false,
@@ -2136,6 +2136,17 @@
             ],
             "linkType": "Entry"
           }
+        },
+        {
+          "id": "shortDescription",
+          "name": "Short Description",
+          "type": "Text",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
         }
       ],
       "metadata": {
@@ -3032,7 +3043,7 @@
         "id": "cta",
         "type": "ContentType",
         "createdAt": "2025-04-03T18:13:04.806Z",
-        "updatedAt": "2025-04-17T18:12:37.676Z",
+        "updatedAt": "2025-05-14T20:47:22.626Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3040,8 +3051,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-17T18:12:37.676Z",
+        "publishedVersion": 5,
+        "publishedAt": "2025-05-14T20:47:22.626Z",
         "firstPublishedAt": "2025-04-03T18:13:05.109Z",
         "createdBy": {
           "sys": {
@@ -3057,8 +3068,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 2,
-        "version": 4,
+        "publishedCounter": 3,
+        "version": 6,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3084,6 +3095,23 @@
           "omitted": false
         },
         {
+          "id": "featuredImage",
+          "name": "Featured Image",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "linkMimetypeGroup": [
+                "image"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
+        },
+        {
           "id": "internalReference",
           "name": "Internal Reference",
           "type": "Link",
@@ -3101,6 +3129,18 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Entry"
+        },
+        {
+          "id": "mediaReference",
+          "name": "Media Reference",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
         },
         {
           "id": "externalLink",

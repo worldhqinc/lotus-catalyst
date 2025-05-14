@@ -99,12 +99,10 @@ export function ProductDetail<F extends Field>({
                   <div className="group/product-gallery">
                     <ProductGallery
                       badge={contentful.fields.badge}
-                      featuredImage={
-                        contentful.fields.featuredImage && {
-                          src: ensureImageUrl(contentful.fields.featuredImage.fields.file.url),
-                          alt: contentful.fields.featuredImage.fields.title ?? '',
-                        }
-                      }
+                      featuredImage={{
+                        src: ensureImageUrl(contentful.fields.featuredImage.fields.file.url),
+                        alt: contentful.fields.featuredImage.fields.title ?? '',
+                      }}
                       images={(contentful.fields.additionalImages ?? []).map((image) => ({
                         src: ensureImageUrl(image.fields.file.url),
                         alt: image.fields.title ?? '',
