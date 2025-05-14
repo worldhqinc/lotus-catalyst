@@ -71,6 +71,7 @@ export const Footer = async () => {
     .map((socialMediaLink) => ({
       href: socialMediaLink.url,
       icon: socialIcons[socialMediaLink.name]?.icon,
+      label: socialMediaLink.name,
     }));
 
   const streamableSections = Streamable.from(async () => {

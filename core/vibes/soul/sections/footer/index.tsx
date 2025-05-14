@@ -31,6 +31,7 @@ export interface Section {
 interface SocialMediaLink {
   href: string;
   icon: ReactNode;
+  label: string;
 }
 
 interface ContactInformation {
@@ -158,12 +159,14 @@ export const Footer = forwardRef(async function Footer(
                 if (socialMediaLinks != null) {
                   return (
                     <div className="flex items-center gap-3">
-                      {socialMediaLinks.map(({ href, icon }, i) => {
+                      {socialMediaLinks.map(({ href, icon, label }, i) => {
                         return (
                           <Link
+                            aria-label={`Follow us on ${label}`}
                             className="ease-quad hover:text-primary flex items-center justify-center rounded-lg fill-[var(--footer-social-icon,hsl(var(--contrast-400)))] p-1 ring-[var(--footer-focus,hsl(var(--primary)))] transition-colors duration-200 hover:fill-[var(--footer-social-icon-hover,hsl(var(--foreground)))] focus-visible:ring-2 focus-visible:outline-0"
                             href={href}
                             key={i}
+                            rel="noopener noreferrer"
                             target="_blank"
                           >
                             {icon}

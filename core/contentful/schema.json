@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-13T19:25:15.189Z",
+        "updatedAt": "2025-05-14T17:10:59.194Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 371,
-        "publishedAt": "2025-05-13T19:25:15.189Z",
+        "publishedVersion": 373,
+        "publishedAt": "2025-05-14T17:10:59.194Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -34,16 +34,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 186,
-        "version": 372,
+        "publishedCounter": 187,
+        "version": 374,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productFinishedGoods"
@@ -414,6 +414,11 @@
           "items": {
             "type": "Link",
             "validations": [
+              {
+                "linkContentType": [
+                  "productPartsAndAccessories"
+                ]
+              }
             ],
             "linkType": "Entry"
           }
@@ -1167,7 +1172,7 @@
         "id": "recipe",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:03.111Z",
-        "updatedAt": "2025-05-14T13:55:18.994Z",
+        "updatedAt": "2025-05-14T15:29:21.469Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1175,8 +1180,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 21,
-        "publishedAt": "2025-05-14T13:55:18.994Z",
+        "publishedVersion": 37,
+        "publishedAt": "2025-05-14T15:29:21.469Z",
         "firstPublishedAt": "2025-03-07T21:04:15.617Z",
         "createdBy": {
           "sys": {
@@ -1189,16 +1194,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 11,
-        "version": 22,
+        "publishedCounter": 19,
+        "version": 38,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/recipe"
@@ -1217,6 +1222,17 @@
             {
               "unique": true
             }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "pageSlug",
+          "name": "Page Slug",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [
           ],
           "disabled": false,
           "omitted": false
@@ -1244,17 +1260,6 @@
           "omitted": false
         },
         {
-          "id": "pageSlug",
-          "name": "Page Slug",
-          "type": "Symbol",
-          "localized": false,
-          "required": true,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
           "id": "shortDescription",
           "name": "Short Description",
           "type": "Text",
@@ -1264,6 +1269,51 @@
           ],
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "author",
+          "name": "Author",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "linkContentType": [
+                "author"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Entry"
+        },
+        {
+          "id": "cookTime",
+          "name": "Cook Time",
+          "type": "Symbol",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "featuredImage",
+          "name": "Featured Image",
+          "type": "Link",
+          "localized": false,
+          "required": true,
+          "validations": [
+            {
+              "linkMimetypeGroup": [
+                "image"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
         },
         {
           "id": "intro",
@@ -1339,34 +1389,6 @@
             "validations": [
             ]
           }
-        },
-        {
-          "id": "author",
-          "name": "Author",
-          "type": "Link",
-          "localized": false,
-          "required": false,
-          "validations": [
-            {
-              "linkContentType": [
-                "author"
-              ]
-            }
-          ],
-          "disabled": false,
-          "omitted": false,
-          "linkType": "Entry"
-        },
-        {
-          "id": "cookTime",
-          "name": "Cook Time",
-          "type": "Symbol",
-          "localized": true,
-          "required": false,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false
         },
         {
           "id": "numberOfIngredients",
@@ -1462,6 +1484,76 @@
           "omitted": false
         },
         {
+          "id": "variations",
+          "name": "Variations",
+          "type": "RichText",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "enabledMarks": [
+                "bold",
+                "italic",
+                "underline",
+                "code",
+                "superscript",
+                "subscript",
+                "strikethrough"
+              ],
+              "message": "Only bold, italic, underline, code, superscript, subscript, and strikethrough marks are allowed"
+            },
+            {
+              "enabledNodeTypes": [
+                "heading-3",
+                "heading-4",
+                "heading-5",
+                "heading-6",
+                "ordered-list",
+                "unordered-list",
+                "hr",
+                "blockquote",
+                "embedded-entry-block",
+                "embedded-asset-block",
+                "table",
+                "asset-hyperlink",
+                "embedded-entry-inline",
+                "entry-hyperlink",
+                "hyperlink",
+                "heading-2"
+              ],
+              "message": "Only heading 3, heading 4, heading 5, heading 6, ordered list, unordered list, horizontal rule, quote, block entry, asset, table, link to asset, inline entry, link to entry, link to Url, and heading 2 nodes are allowed"
+            },
+            {
+              "nodes": {
+              }
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "products",
+          "name": "Products",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Link",
+            "validations": [
+              {
+                "linkContentType": [
+                  "productFinishedGoods"
+                ]
+              }
+            ],
+            "linkType": "Entry"
+          }
+        },
+        {
           "id": "testKitchenTips",
           "name": "Test Kitchen Tips",
           "type": "RichText",
@@ -1490,23 +1582,6 @@
           "omitted": false
         },
         {
-          "id": "featuredImage",
-          "name": "Featured Image",
-          "type": "Link",
-          "localized": false,
-          "required": true,
-          "validations": [
-            {
-              "linkMimetypeGroup": [
-                "image"
-              ]
-            }
-          ],
-          "disabled": false,
-          "omitted": false,
-          "linkType": "Asset"
-        },
-        {
           "id": "additionalImages",
           "name": "Additional Images",
           "type": "Array",
@@ -1529,23 +1604,6 @@
             ],
             "linkType": "Asset"
           }
-        },
-        {
-          "id": "videoFeature",
-          "name": "Video Feature",
-          "type": "Link",
-          "localized": false,
-          "required": false,
-          "validations": [
-            {
-              "linkContentType": [
-                "featureVideoBanner"
-              ]
-            }
-          ],
-          "disabled": false,
-          "omitted": false,
-          "linkType": "Entry"
         },
         {
           "id": "productCarousel",
@@ -1574,6 +1632,23 @@
             {
               "linkContentType": [
                 "carouselRecipe"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Entry"
+        },
+        {
+          "id": "videoFeature",
+          "name": "Video Feature",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "linkContentType": [
+                "featureVideoBanner"
               ]
             }
           ],
@@ -4794,7 +4869,7 @@
         "id": "heroBanner",
         "type": "ContentType",
         "createdAt": "2025-04-21T23:44:18.865Z",
-        "updatedAt": "2025-05-13T20:10:13.992Z",
+        "updatedAt": "2025-05-14T14:51:30.985Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4802,8 +4877,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 20,
-        "publishedAt": "2025-05-13T20:10:13.992Z",
+        "publishedVersion": 24,
+        "publishedAt": "2025-05-14T14:51:30.985Z",
         "firstPublishedAt": "2025-04-21T23:45:16.956Z",
         "createdBy": {
           "sys": {
@@ -4819,8 +4894,8 @@
             "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 10,
-        "version": 21,
+        "publishedCounter": 12,
+        "version": 25,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -4848,6 +4923,17 @@
                 "left-aligned-lowercase"
               ]
             }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "isPageHeader",
+          "name": "Is Page Header",
+          "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [
           ],
           "disabled": false,
           "omitted": false
@@ -5938,7 +6024,7 @@
         "id": "featureCallout",
         "type": "ContentType",
         "createdAt": "2025-04-30T17:49:56.783Z",
-        "updatedAt": "2025-04-30T17:49:57.032Z",
+        "updatedAt": "2025-05-14T16:26:22.187Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -5946,8 +6032,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 1,
-        "publishedAt": "2025-04-30T17:49:57.032Z",
+        "publishedVersion": 3,
+        "publishedAt": "2025-05-14T16:26:22.187Z",
         "firstPublishedAt": "2025-04-30T17:49:57.032Z",
         "createdBy": {
           "sys": {
@@ -5963,8 +6049,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 1,
-        "version": 2,
+        "publishedCounter": 2,
+        "version": 4,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -6005,7 +6091,7 @@
           "name": "Logo",
           "type": "Link",
           "localized": false,
-          "required": true,
+          "required": false,
           "validations": [
             {
               "linkMimetypeGroup": [
