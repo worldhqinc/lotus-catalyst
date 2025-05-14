@@ -55,7 +55,7 @@ export const Banner = forwardRef(
       >
         <Image
           alt="Lotus Pattern"
-          className="absolute inset-0 top-1/2 left-1/2 -z-10 min-w-[1440px] -translate-x-1/2 -translate-y-1/2"
+          className="absolute inset-0 top-1/2 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2"
           height={807}
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           src={BannerBackground}
