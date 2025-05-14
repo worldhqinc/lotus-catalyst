@@ -41,7 +41,7 @@ export default async function ProductRegistration() {
       <ProductRegistrationForm productOptions={productOptions} />
       <CookiePreferencesNotice
         message={
-          <div className="flex min-h-[60vh] flex-col items-center justify-center px-4">
+          <div className="flex flex-col items-center justify-center pt-10 pb-20">
             <h1 className="font-heading mt-8 mb-6 text-center text-5xl font-normal md:text-6xl">
               Our cookie jar is empty.
             </h1>
