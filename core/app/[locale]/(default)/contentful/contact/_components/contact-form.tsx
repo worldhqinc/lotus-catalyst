@@ -8,6 +8,7 @@ import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
 import { Select } from '@/vibes/soul/form/select';
 import { Button } from '@/vibes/soul/primitives/button';
+import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { toast } from '@/vibes/soul/primitives/toaster';
 
 import { submitForm } from '../_actions/submit-form';
@@ -161,6 +162,14 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
           ),
       )}
       <div className="flex justify-end gap-2 md:mt-2">
+        <ButtonLink
+          className="flex-1 md:flex-none"
+          href="/contact"
+          size="medium"
+          variant="tertiary"
+        >
+          Back to Contact Us
+        </ButtonLink>
         <Button className="flex-1 md:flex-none" disabled={isPending} size="medium" type="submit">
           {isPending ? <Loader2 className="mr-2 animate-spin" size={16} /> : 'Submit'}
         </Button>
