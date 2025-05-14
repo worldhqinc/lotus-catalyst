@@ -22,7 +22,7 @@ type Action<State, Payload> = (
 export default function NotifyBackInStockModal({
   action,
   productId,
-  buttonLabel = 'Coming soon, notify me',
+  buttonLabel = 'Notify me',
   buttonClassName,
   buttonSize = 'medium',
 }: {
