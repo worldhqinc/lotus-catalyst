@@ -819,6 +819,7 @@ export const recipeFieldsSchema = z.object({
   metaDescription: z.string(),
   pageSlug: z.string(),
   shortDescription: z.string().optional().nullable(),
+  intro: z.string().optional().nullable(),
   mealTypeCategory: z.array(z.string()).optional().nullable(),
   occasionCategory: z.array(z.string()).optional().nullable(),
   ingredientsCategory: z.array(z.string()).optional().nullable(),
@@ -1168,9 +1169,9 @@ export type recipe = z.infer<typeof recipeSchema>;
 // Schema for productPartsAndAccessories
 export const productPartsAndAccessoriesFieldsSchema = z.object({
   productName: z.string(),
+  pageSlug: z.string(),
   modelNumber: z.string().optional().nullable(),
   bcProductReference: z.string(),
-  pageSlug: z.string(),
   newFlag: z.boolean().optional().nullable(),
   webProductName: z.string(),
   webProductNameDescriptor: z.string().optional().nullable(),

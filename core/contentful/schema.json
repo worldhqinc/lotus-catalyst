@@ -1167,7 +1167,7 @@
         "id": "recipe",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:03.111Z",
-        "updatedAt": "2025-04-17T18:12:34.034Z",
+        "updatedAt": "2025-05-14T13:55:18.994Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1175,8 +1175,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 17,
-        "publishedAt": "2025-04-17T18:12:34.034Z",
+        "publishedVersion": 21,
+        "publishedAt": "2025-05-14T13:55:18.994Z",
         "firstPublishedAt": "2025-03-07T21:04:15.617Z",
         "createdBy": {
           "sys": {
@@ -1189,16 +1189,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 9,
-        "version": 18,
+        "publishedCounter": 11,
+        "version": 22,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/recipe"
@@ -1266,6 +1266,17 @@
           "omitted": false
         },
         {
+          "id": "intro",
+          "name": "Intro",
+          "type": "Text",
+          "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
           "id": "mealTypeCategory",
           "name": "Meal Type (Category)",
           "type": "Array",
@@ -1278,22 +1289,6 @@
           "items": {
             "type": "Symbol",
             "validations": [
-              {
-                "in": [
-                  "Appetizers",
-                  "Beverages",
-                  "Breakfast Foods",
-                  "Desserts",
-                  "Dressings, Sauces, Marinades",
-                  "Main Course",
-                  "Salads",
-                  "Sandwiches",
-                  "Side Dishes",
-                  "Snack",
-                  "Soups, Stews and Chili",
-                  "Dinner"
-                ]
-              }
             ]
           }
         },
@@ -1310,19 +1305,6 @@
           "items": {
             "type": "Symbol",
             "validations": [
-              {
-                "in": [
-                  "4th of July",
-                  "Cinco de Mayo",
-                  "Easter",
-                  "Halloween",
-                  "Labor Day",
-                  "Memorial Day",
-                  "New Year's",
-                  "Thanksgiving",
-                  "Christmas"
-                ]
-              }
             ]
           }
         },
@@ -1339,22 +1321,6 @@
           "items": {
             "type": "Symbol",
             "validations": [
-              {
-                "in": [
-                  "Beef",
-                  "Chicken",
-                  "Eggs",
-                  "Fruit",
-                  "Lamb",
-                  "Pasta, Rice & Beans",
-                  "Pork",
-                  "Sausage",
-                  "Seafood",
-                  "Turkey",
-                  "Vegetables",
-                  "Game Meats"
-                ]
-              }
             ]
           }
         },
@@ -1362,7 +1328,7 @@
           "id": "applianceTypeCategory",
           "name": "Appliance Type (Category)",
           "type": "Array",
-          "localized": false,
+          "localized": true,
           "required": false,
           "validations": [
           ],
@@ -1371,30 +1337,6 @@
           "items": {
             "type": "Symbol",
             "validations": [
-              {
-                "in": [
-                  "Burger Presses",
-                  "Butcher Saws & Knives",
-                  "Canning",
-                  "Deep Fryers",
-                  "Dehydrators",
-                  "Freezer Paper & Bags",
-                  "French Fry Cutters",
-                  "Grills",
-                  "Jerky Guns",
-                  "Meat Grinders",
-                  "Meat Injector",
-                  "Meat Slicers",
-                  "Roaster Ovens",
-                  "Sausage Casings",
-                  "Sausage Stuffers",
-                  "Seasonings",
-                  "Smoker/Slow Cookers",
-                  "Strainers",
-                  "Vacuum Sealer Bags",
-                  "Vacuum Sealers"
-                ]
-              }
             ]
           }
         },
@@ -1653,7 +1595,7 @@
         "id": "productPartsAndAccessories",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:03.151Z",
-        "updatedAt": "2025-05-13T18:28:22.043Z",
+        "updatedAt": "2025-05-14T13:46:28.257Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1661,8 +1603,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 169,
-        "publishedAt": "2025-05-13T18:28:22.043Z",
+        "publishedVersion": 171,
+        "publishedAt": "2025-05-14T13:46:28.257Z",
         "firstPublishedAt": "2025-03-07T21:04:14.874Z",
         "createdBy": {
           "sys": {
@@ -1678,8 +1620,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 85,
-        "version": 170,
+        "publishedCounter": 86,
+        "version": 172,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -1708,6 +1650,26 @@
           "omitted": false
         },
         {
+          "id": "pageSlug",
+          "name": "Page Slug",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+            {
+              "unique": true
+            },
+            {
+              "regexp": {
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+                "flags": null
+              }
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
           "id": "modelNumber",
           "name": "Model Number",
           "type": "Symbol",
@@ -1727,26 +1689,6 @@
           "validations": [
             {
               "unique": true
-            }
-          ],
-          "disabled": false,
-          "omitted": false
-        },
-        {
-          "id": "pageSlug",
-          "name": "Page Slug",
-          "type": "Symbol",
-          "localized": true,
-          "required": true,
-          "validations": [
-            {
-              "unique": true
-            },
-            {
-              "regexp": {
-                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
-                "flags": null
-              }
             }
           ],
           "disabled": false,

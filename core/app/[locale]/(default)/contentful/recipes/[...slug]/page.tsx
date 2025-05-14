@@ -175,6 +175,11 @@ export default async function RecipePage({ params }: Props) {
         </SectionLayout>
       </div>
 
+      {/* Intro Section */}
+      <SectionLayout containerSize="md">
+        <p className="font-heading text-3xl">{fields.intro}</p>
+      </SectionLayout>
+
       {/* Social Share Section */}
       <SectionLayout containerClassName="!pb-0" containerSize="md">
         <RecipeActions recipeName={fields.recipeName} />
