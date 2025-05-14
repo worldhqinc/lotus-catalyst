@@ -48,7 +48,7 @@
     "Login": {
       "title": "Login",
       "heading": "Sign in",
-      "forgotPassword": "Reset password",
+      "forgotPassword": "Forgot password?",
       "cta": "Sign in",
       "invalidCredentials": "Your email address or password is incorrect. Try signing in again or reset your password",
       "somethingWentWrong": "Something went wrong. Please try again later.",
