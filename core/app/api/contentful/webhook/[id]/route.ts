@@ -81,7 +81,10 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
         },
       });
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({
+        updatedAt: new Date().toISOString(),
+        objectID: entry.sys.id,
+      });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error adding or updating object in Algolia:', error);
