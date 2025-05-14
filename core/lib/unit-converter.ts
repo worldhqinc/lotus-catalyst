@@ -43,7 +43,7 @@ function formatFractionalInches(inches: number): string {
 }
 
 export function formatDimension(value: string | null | undefined, unit: string) {
-  if (!value) return '';
+  if (!value || value === '0') return '';
 
   if (unit === 'IN') {
     // Check if we need to add the inch symbol
@@ -85,7 +85,7 @@ export function formatDimension(value: string | null | undefined, unit: string) 
 }
 
 export function formatWeight(value: string | null | undefined, unit: string) {
-  if (!value) return '';
+  if (!value || value === '0') return '';
 
   return value === 'LB' ? `${value} Pounds` : `${value}${unit.toLowerCase()}`;
 }

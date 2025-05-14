@@ -211,51 +211,46 @@ export default async function Product(props: Props) {
 
   const streameableAccordions = Streamable.from(async () => {
     const product = await streamableProduct;
-    const contentful = await getContentfulProductData(product.sku);
 
-    const specifications = [
-      {
-        name: 'Width',
-        value: formatDimension(
-          contentful?.fields.outOfBoxWidth,
-          contentful?.fields.outOfBoxSizeUom ?? 'IN',
-        ),
-      },
-      {
-        name: 'Height',
-        value: formatDimension(
-          contentful?.fields.outOfBoxHeight,
-          contentful?.fields.outOfBoxSizeUom ?? 'IN',
-        ),
-      },
-      {
-        name: 'Depth',
-        value: formatDimension(
-          contentful?.fields.outOfBoxDepth,
-          contentful?.fields.outOfBoxSizeUom ?? 'IN',
-        ),
-      },
-      {
-        name: 'Weight',
-        value: formatWeight(
-          contentful?.fields.outOfBoxNetWeight,
-          contentful?.fields.outOfBoxWeightUom ?? 'LB',
-        ),
-      },
-      {
-        name: 'Wattage',
-        value: contentful?.fields.wattage,
-      },
-    ].filter((it) => it.value);
+    const contentful = await getContentfulProductData(product.sku, product.categories.edges);
+
+    const fields = contentful?.fields;
+
+    const specifications = (
+      fields
+        ? [
+            {
+              name: 'Width',
+              value: formatDimension(fields.outOfBoxWidth, fields.outOfBoxSizeUom ?? 'IN'),
+            },
+            {
+              name: 'Height',
+              value: formatDimension(fields.outOfBoxHeight, fields.outOfBoxSizeUom ?? 'IN'),
+            },
+            {
+              name: 'Depth',
+              value: formatDimension(fields.outOfBoxDepth, fields.outOfBoxSizeUom ?? 'IN'),
+            },
+            {
+              name: 'Weight',
+              value: formatWeight(fields.outOfBoxNetWeight, fields.outOfBoxWeightUom ?? 'LB'),
+            },
+            {
+              name: 'Wattage',
+              value: 'wattage' in fields ? fields.wattage : null,
+            },
+          ]
+        : []
+    ).filter((it) => it.value);
 
     return [
-      ...(contentful?.fields.webBullets
+      ...(fields && 'webBullets' in fields && fields.webBullets?.length
         ? [
             {
               title: t('ProductDetails.Accordions.details'),
               content: (
                 <ul className="list-disc space-y-4 pl-4">
-                  {contentful.fields.webBullets.map((bullet, index) => (
+                  {fields.webBullets.map((bullet, index) => (
                     <li className="text-contrast-400 text-sm" key={index}>
                       {bullet}
                     </li>
@@ -265,13 +260,13 @@ export default async function Product(props: Props) {
             },
           ]
         : []),
-      ...(contentful?.fields.webWhatsIncluded
+      ...(fields && 'webWhatsIncluded' in fields && fields.webWhatsIncluded?.length
         ? [
             {
               title: t('ProductDetails.Accordions.included'),
               content: (
                 <ul className="space-y-4">
-                  {contentful.fields.webWhatsIncluded.map((item, index) => (
+                  {fields.webWhatsIncluded.map((item, index) => (
                     <li className="text-contrast-400 flex items-center gap-2 text-sm" key={index}>
                       <Check className="text-surface-foreground h-4 w-4" />
                       {item}
@@ -304,13 +299,13 @@ export default async function Product(props: Props) {
             },
           ]
         : []),
-      ...(contentful?.fields.docs
+      ...(fields && 'docs' in fields && fields.docs?.length
         ? [
             {
               title: t('ProductDetails.Accordions.docs'),
               content: (
                 <div className="flex flex-col items-start gap-4">
-                  {contentful.fields.docs.map((doc, index) => {
+                  {fields.docs.map((doc, index) => {
                     const { documentName, url } = supportDocumentSchema.parse(doc).fields;
 
                     return (
@@ -346,7 +341,7 @@ export default async function Product(props: Props) {
   const streamableContentful = Streamable.from(async () => {
     const product = await streamableProduct;
 
-    return getContentfulProductData(product.sku);
+    return getContentfulProductData(product.sku, product.categories.edges);
   });
 
   return (
@@ -393,11 +388,14 @@ export default async function Product(props: Props) {
 
       <Stream fallback={null} value={Streamable.all([streamableContentful, props.searchParams])}>
         {([contentful, searchParams]) => {
-          const pageContentEntries = contentful?.fields.pageContentEntries ?? [];
+          const fields = contentful?.fields;
 
-          const partsAccessories = contentful?.fields.partsAccessories?.map((part) =>
-            productPartsAndAccessoriesSchema.parse(part),
-          );
+          const pageContentEntries = fields?.pageContentEntries ?? [];
+
+          const partsAccessories =
+            fields && 'partsAccessories' in fields && fields.partsAccessories?.length
+              ? fields.partsAccessories.map((part) => productPartsAndAccessoriesSchema.parse(part))
+              : null;
 
           return (
             <>

@@ -5,7 +5,7 @@ import { PricingFragment } from '~/client/fragments/pricing';
 import { graphql, VariablesOf } from '~/client/graphql';
 import { revalidate } from '~/client/revalidate-target';
 import { FeaturedProductsCarouselFragment } from '~/components/featured-products-carousel/fragment';
-import { productFinishedGoodsSchema } from '~/contentful/schema';
+import { productFinishedGoodsSchema, productPartsAndAccessoriesSchema } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
 
 import { ProductSchemaFragment } from './_components/product-schema/fragment';
@@ -252,6 +252,14 @@ const StreamableProductQuery = graphql(
           availabilityV2 {
             status
           }
+          categories {
+            edges {
+              node {
+                name
+                path
+              }
+            }
+          }
           ...ProductViewedFragment
           ...ProductSchemaFragment
         }
@@ -320,15 +328,27 @@ export const getProductPricingAndRelatedProducts = cache(
   },
 );
 
-export const getContentfulProductData = async (sku: string) => {
+export const getContentfulProductData = async (
+  sku: string,
+  categories: Array<{ node: { name: string; path: string } }> | null = [],
+) => {
   const contentfulData = await contentfulClient.getEntries({
-    content_type: 'productFinishedGoods',
+    content_type: categories?.some((category) => category.node.path.includes('parts-accessories'))
+      ? 'productPartsAndAccessories'
+      : 'productFinishedGoods',
     'fields.bcProductReference': sku,
     include: 4,
   });
 
   if (contentfulData.items.length === 0) {
     return null;
+  }
+
+  if (
+    contentfulData.items[0] &&
+    contentfulData.items[0].sys.contentType.sys.id === 'productPartsAndAccessories'
+  ) {
+    return productPartsAndAccessoriesSchema.parse(contentfulData.items[0]);
   }
 
   return productFinishedGoodsSchema.parse(contentfulData.items[0]);

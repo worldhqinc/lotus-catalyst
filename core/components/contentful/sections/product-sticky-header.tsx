@@ -8,7 +8,7 @@ import { Button } from '@/vibes/soul/primitives/button';
 import { LogoLotus } from '@/vibes/soul/primitives/logo-lotus';
 import { Price } from '@/vibes/soul/primitives/price-label';
 import { addToCartBySkuForm } from '~/app/[locale]/(default)/cart/_actions/add-to-cart-by-sku-form';
-import { productFinishedGoods } from '~/contentful/schema';
+import { productFinishedGoods, productPartsAndAccessories } from '~/contentful/schema';
 import { useRouter } from '~/i18n/routing';
 
 function AddToBagForm({
@@ -67,7 +67,7 @@ export const ProductStickyHeader = forwardRef<
       id: string;
       sku?: string;
     };
-    contentful: productFinishedGoods | null | undefined;
+    contentful: productFinishedGoods | productPartsAndAccessories | null | undefined;
     detailFormRef: RefObject<HTMLDivElement | null>;
     streamableCtaDisabled?: Streamable<boolean | null>;
   }

@@ -15,6 +15,7 @@ import {
   featureCalloutSchema,
   featureTilesSchema,
   productFinishedGoods,
+  productPartsAndAccessories,
 } from '~/contentful/schema';
 import { ensureImageUrl } from '~/lib/utils';
 
@@ -42,7 +43,7 @@ interface ProductDetailProduct {
 
 export interface ProductDetailProps<F extends Field> {
   product: Streamable<ProductDetailProduct | null>;
-  contentful: Streamable<productFinishedGoods | null | undefined>;
+  contentful: Streamable<productFinishedGoods | productPartsAndAccessories | null | undefined>;
   action: ProductDetailFormAction<F>;
   fields: Streamable<F[]>;
   emptySelectPlaceholder?: string;
@@ -109,8 +110,9 @@ export function ProductDetail<F extends Field>({
                         alt: image.fields.title ?? '',
                       }))}
                       tiles={
-                        contentful.fields.featureTiles &&
-                        featureTilesSchema.parse(contentful.fields.featureTiles)
+                        'featureTiles' in contentful.fields
+                          ? featureTilesSchema.parse(contentful.fields.featureTiles)
+                          : null
                       }
                     />
                   </div>
@@ -121,11 +123,12 @@ export function ProductDetail<F extends Field>({
                           <Badge key={index}>{line}</Badge>
                         ))}
                       </div>
-                      {contentful.fields.featureCallout && (
-                        <FeatureCallout
-                          {...featureCalloutSchema.parse(contentful.fields.featureCallout)}
-                        />
-                      )}
+                      {'featureCallout' in contentful.fields &&
+                        contentful.fields.featureCallout && (
+                          <FeatureCallout
+                            {...featureCalloutSchema.parse(contentful.fields.featureCallout)}
+                          />
+                        )}
                     </div>
                     <div className="flex flex-col gap-8" id="overview">
                       <div>
@@ -141,16 +144,17 @@ export function ProductDetail<F extends Field>({
                       <div className="group/product-price">
                         <PriceLabel className="text-xl @xl:text-2xl" price={priceData} />
                       </div>
-                      {Boolean(contentful.fields.warranty) && (
+                      {'warranty' in contentful.fields && Boolean(contentful.fields.warranty) && (
                         <div className="text-contrast-300 font-medium">
                           {contentful.fields.warranty}
                         </div>
                       )}
-                      {Boolean(contentful.fields.shortDescription) && (
-                        <div className="text-contrast-400">
-                          {contentful.fields.shortDescription}
-                        </div>
-                      )}
+                      {'shortDescription' in contentful.fields &&
+                        Boolean(contentful.fields.shortDescription) && (
+                          <div className="text-contrast-400">
+                            {contentful.fields.shortDescription}
+                          </div>
+                        )}
                       <div className="grid gap-2 @xl:grid-cols-2">
                         {[
                           {
