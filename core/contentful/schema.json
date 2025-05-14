@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-14T20:33:48.502Z",
+        "updatedAt": "2025-05-14T20:59:08.663Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 399,
-        "publishedAt": "2025-05-14T20:33:48.502Z",
+        "publishedVersion": 401,
+        "publishedAt": "2025-05-14T20:59:08.663Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -37,8 +37,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 200,
-        "version": 400,
+        "publishedCounter": 201,
+        "version": 402,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -345,7 +345,7 @@
           "name": "Featured Image",
           "type": "Link",
           "localized": false,
-          "required": true,
+          "required": false,
           "validations": [
             {
               "linkMimetypeGroup": [
@@ -362,7 +362,7 @@
           "name": "Price",
           "type": "Symbol",
           "localized": false,
-          "required": true,
+          "required": false,
           "validations": [
           ],
           "disabled": false,
@@ -1670,7 +1670,7 @@
         "id": "productPartsAndAccessories",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:03.151Z",
-        "updatedAt": "2025-05-14T20:35:48.818Z",
+        "updatedAt": "2025-05-14T20:58:53.657Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1678,8 +1678,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 191,
-        "publishedAt": "2025-05-14T20:35:48.818Z",
+        "publishedVersion": 193,
+        "publishedAt": "2025-05-14T20:58:53.657Z",
         "firstPublishedAt": "2025-03-07T21:04:14.874Z",
         "createdBy": {
           "sys": {
@@ -1695,8 +1695,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 96,
-        "version": 192,
+        "publishedCounter": 97,
+        "version": 194,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -1899,7 +1899,7 @@
           "name": "Featured Image",
           "type": "Link",
           "localized": false,
-          "required": true,
+          "required": false,
           "validations": [
             {
               "linkMimetypeGroup": [
@@ -1927,7 +1927,7 @@
           "name": "Price",
           "type": "Symbol",
           "localized": false,
-          "required": true,
+          "required": false,
           "validations": [
           ],
           "disabled": false,

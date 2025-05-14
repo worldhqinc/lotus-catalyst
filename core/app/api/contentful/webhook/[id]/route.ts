@@ -37,14 +37,14 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
         sku: parsedEntry.fields.bcProductReference,
         title: parsedEntry.fields.webProductName,
         subtitle: parsedEntry.fields.shortDescription,
-        price: getPriceField(parsedEntry.fields.price, parsedEntry.fields.salePrice),
+        price: getPriceField(parsedEntry.fields.price ?? '0.00', parsedEntry.fields.salePrice),
         badge: parsedEntry.fields.badge,
         newFlag: parsedEntry.fields.newFlag,
         inStock: Boolean(parsedEntry.fields.inventoryQuantity ?? 0),
         image: {
-          src: ensureImageUrl(parsedEntry.fields.featuredImage.fields.file.url),
+          src: ensureImageUrl(parsedEntry.fields.featuredImage?.fields.file.url ?? ''),
           alt:
-            parsedEntry.fields.featuredImage.fields.description ??
+            parsedEntry.fields.featuredImage?.fields.description ??
             parsedEntry.fields.webProductName,
         },
       };
@@ -58,14 +58,14 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
         sku: parsedEntry.fields.bcProductReference,
         title: parsedEntry.fields.webProductName,
         subtitle: parsedEntry.fields.shortDescription,
-        price: getPriceField(parsedEntry.fields.price, parsedEntry.fields.salePrice),
+        price: getPriceField(parsedEntry.fields.price ?? '0.00', parsedEntry.fields.salePrice),
         badge: parsedEntry.fields.badge,
         newFlag: parsedEntry.fields.newFlag,
         inStock: Boolean(parsedEntry.fields.inventoryQuantity ?? 0),
         image: {
-          src: ensureImageUrl(parsedEntry.fields.featuredImage.fields.file.url),
+          src: ensureImageUrl(parsedEntry.fields.featuredImage?.fields.file.url ?? ''),
           alt:
-            parsedEntry.fields.featuredImage.fields.description ??
+            parsedEntry.fields.featuredImage?.fields.description ??
             parsedEntry.fields.webProductName,
         },
       };
@@ -117,9 +117,13 @@ function verifyWebhookSignature(request: NextRequest) {
 }
 
 function getPriceField(
-  price: string,
+  price?: string | null,
   salePrice?: string | null,
 ): string | { type: 'sale'; previousValue: string; currentValue: string } {
+  if (!price) {
+    return '0.00';
+  }
+
   const priceData = salePrice
     ? {
         type: 'sale' as const,

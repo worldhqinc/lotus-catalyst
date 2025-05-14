@@ -176,56 +176,59 @@ export const productFinishedGoodsFieldsSchema = z.object({
     )
     .optional()
     .nullable(),
-  featuredImage: z.object({
-    metadata: z.object({
-      tags: z.array(z.unknown()),
-      concepts: z.array(z.unknown()),
-    }),
-    sys: z.object({
-      space: z.object({
-        sys: z.object({
-          type: z.literal('Link'),
-          linkType: z.literal('Space'),
-          id: z.string(),
+  featuredImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.undefined().optional().nullable(),
+      }),
+      fields: z.object({
+        title: z.string().optional().nullable(),
+        description: z.string().optional().nullable(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional()
+              .nullable(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
         }),
       }),
-      id: z.string(),
-      type: z.literal('Asset'),
-      createdAt: z.string().datetime(),
-      updatedAt: z.string().datetime(),
-      environment: z.object({
-        sys: z.object({
-          id: z.string(),
-          type: z.literal('Link'),
-          linkType: z.literal('Environment'),
-        }),
-      }),
-      publishedVersion: z.number().optional().nullable(),
-      revision: z.number(),
-      locale: z.string().optional().nullable(),
-      contentType: z.undefined().optional().nullable(),
-    }),
-    fields: z.object({
-      title: z.string().optional().nullable(),
-      description: z.string().optional().nullable(),
-      file: z.object({
-        url: z.string(),
-        details: z.object({
-          size: z.number(),
-          image: z
-            .object({
-              width: z.number(),
-              height: z.number(),
-            })
-            .optional()
-            .nullable(),
-        }),
-        fileName: z.string(),
-        contentType: z.string(),
-      }),
-    }),
-  }),
-  price: z.string(),
+    })
+    .optional()
+    .nullable(),
+  price: z.string().optional().nullable(),
   salePrice: z.string().optional().nullable(),
   saleMessage: z.string().optional().nullable(),
   inventoryQuantity: z.number().int().optional().nullable(),
@@ -1309,57 +1312,60 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
     )
     .optional()
     .nullable(),
-  featuredImage: z.object({
-    metadata: z.object({
-      tags: z.array(z.unknown()),
-      concepts: z.array(z.unknown()),
-    }),
-    sys: z.object({
-      space: z.object({
-        sys: z.object({
-          type: z.literal('Link'),
-          linkType: z.literal('Space'),
-          id: z.string(),
+  featuredImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.undefined().optional().nullable(),
+      }),
+      fields: z.object({
+        title: z.string().optional().nullable(),
+        description: z.string().optional().nullable(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional()
+              .nullable(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
         }),
       }),
-      id: z.string(),
-      type: z.literal('Asset'),
-      createdAt: z.string().datetime(),
-      updatedAt: z.string().datetime(),
-      environment: z.object({
-        sys: z.object({
-          id: z.string(),
-          type: z.literal('Link'),
-          linkType: z.literal('Environment'),
-        }),
-      }),
-      publishedVersion: z.number().optional().nullable(),
-      revision: z.number(),
-      locale: z.string().optional().nullable(),
-      contentType: z.undefined().optional().nullable(),
-    }),
-    fields: z.object({
-      title: z.string().optional().nullable(),
-      description: z.string().optional().nullable(),
-      file: z.object({
-        url: z.string(),
-        details: z.object({
-          size: z.number(),
-          image: z
-            .object({
-              width: z.number(),
-              height: z.number(),
-            })
-            .optional()
-            .nullable(),
-        }),
-        fileName: z.string(),
-        contentType: z.string(),
-      }),
-    }),
-  }),
+    })
+    .optional()
+    .nullable(),
   productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
-  price: z.string(),
+  price: z.string().optional().nullable(),
   salePrice: z.string().optional().nullable(),
   saleMessage: z.string().optional().nullable(),
   inventoryQuantity: z.number().int().optional().nullable(),

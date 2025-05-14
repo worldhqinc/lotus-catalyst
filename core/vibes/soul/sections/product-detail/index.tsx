@@ -76,7 +76,7 @@ export function ProductDetail<F extends Field>({
       {([product, contentful]) => {
         if (!product || !contentful) return null;
 
-        const price = contentful.fields.price;
+        const price = contentful.fields.price ?? '0.00';
         const priceData = contentful.fields.salePrice
           ? {
               type: 'sale' as const,
@@ -99,10 +99,12 @@ export function ProductDetail<F extends Field>({
                   <div className="group/product-gallery">
                     <ProductGallery
                       badge={contentful.fields.badge}
-                      featuredImage={{
-                        src: ensureImageUrl(contentful.fields.featuredImage.fields.file.url),
-                        alt: contentful.fields.featuredImage.fields.title ?? '',
-                      }}
+                      featuredImage={
+                        contentful.fields.featuredImage && {
+                          src: ensureImageUrl(contentful.fields.featuredImage.fields.file.url),
+                          alt: contentful.fields.featuredImage.fields.title ?? '',
+                        }
+                      }
                       images={(contentful.fields.additionalImages ?? []).map((image) => ({
                         src: ensureImageUrl(image.fields.file.url),
                         alt: image.fields.title ?? '',

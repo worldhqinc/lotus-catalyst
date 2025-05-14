@@ -48,11 +48,13 @@ export function contentfulProductCardTransformer(
     const product = productPartsAndAccessoriesSchema.parse(entry);
     const fields = product.fields;
     const featuredImage = fields.featuredImage;
-    const file = featuredImage.fields.file;
-    const image = {
-      src: ensureImageUrl(file.url),
-      alt: featuredImage.fields.description ?? fields.webProductName,
-    };
+    const file = featuredImage?.fields.file;
+    const image = file
+      ? {
+          src: ensureImageUrl(file.url),
+          alt: featuredImage.fields.description ?? fields.webProductName,
+        }
+      : undefined;
     const price = fields.salePrice
       ? {
           type: 'sale' as const,
@@ -85,10 +87,10 @@ export function contentfulProductCardTransformer(
     const price = fields.salePrice
       ? {
           type: 'sale' as const,
-          previousValue: fields.price,
+          previousValue: fields.price ?? '0.00',
           currentValue: fields.salePrice,
         }
-      : fields.price;
+      : (fields.price ?? '0.00');
 
     return {
       id: product.sys.id,

@@ -59,7 +59,7 @@ export function AltProductCarousel({
     const image = file ? { src: ensureImageUrl(file.url), alt: fields.webProductName } : undefined;
     const href = fields.pageSlug ? `/${fields.pageSlug}` : '#';
     const priceValue = fields.salePrice ?? fields.price;
-    const priceNumber = parseFloat(priceValue);
+    const priceNumber = parseFloat(priceValue ?? '0.00');
     const price = `$${priceNumber.toFixed(2)}`;
 
     return {
