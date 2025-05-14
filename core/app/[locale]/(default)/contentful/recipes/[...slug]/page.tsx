@@ -191,7 +191,7 @@ export default async function RecipePage({ params }: Props) {
         <h2 className="text-2xl font-medium uppercase">Ingredients</h2>
         {fields.numberOfServings ? (
           <p className="text-primary mt-8 text-2xl font-medium uppercase">
-            Serves {fields.numberOfServings}
+            {fields.numberOfServings}
           </p>
         ) : null}
         <div className="mt-8">{renderIngredientsList(ingredientsListsData)}</div>

@@ -815,15 +815,10 @@ export type carouselProduct = z.infer<typeof carouselProductSchema>;
 // Schema for recipe
 export const recipeFieldsSchema = z.object({
   recipeName: z.string(),
+  pageSlug: z.string(),
   metaTitle: z.string(),
   metaDescription: z.string(),
-  pageSlug: z.string(),
   shortDescription: z.string().optional().nullable(),
-  intro: z.string().optional().nullable(),
-  mealTypeCategory: z.array(z.string()).optional().nullable(),
-  occasionCategory: z.array(z.string()).optional().nullable(),
-  ingredientsCategory: z.array(z.string()).optional().nullable(),
-  applianceTypeCategory: z.array(z.string()).optional().nullable(),
   author: z
     .object({
       metadata: z.object({
@@ -865,6 +860,60 @@ export const recipeFieldsSchema = z.object({
     .optional()
     .nullable(),
   cookTime: z.string().optional().nullable(),
+  featuredImage: z.object({
+    metadata: z.object({
+      tags: z.array(z.unknown()),
+      concepts: z.array(z.unknown()),
+    }),
+    sys: z.object({
+      space: z.object({
+        sys: z.object({
+          type: z.literal('Link'),
+          linkType: z.literal('Space'),
+          id: z.string(),
+        }),
+      }),
+      id: z.string(),
+      type: z.literal('Asset'),
+      createdAt: z.string().datetime(),
+      updatedAt: z.string().datetime(),
+      environment: z.object({
+        sys: z.object({
+          id: z.string(),
+          type: z.literal('Link'),
+          linkType: z.literal('Environment'),
+        }),
+      }),
+      publishedVersion: z.number().optional().nullable(),
+      revision: z.number(),
+      locale: z.string().optional().nullable(),
+      contentType: z.undefined().optional().nullable(),
+    }),
+    fields: z.object({
+      title: z.string().optional().nullable(),
+      description: z.string().optional().nullable(),
+      file: z.object({
+        url: z.string(),
+        details: z.object({
+          size: z.number(),
+          image: z
+            .object({
+              width: z.number(),
+              height: z.number(),
+            })
+            .optional()
+            .nullable(),
+        }),
+        fileName: z.string(),
+        contentType: z.string(),
+      }),
+    }),
+  }),
+  intro: z.string().optional().nullable(),
+  mealTypeCategory: z.array(z.string()).optional().nullable(),
+  occasionCategory: z.array(z.string()).optional().nullable(),
+  ingredientsCategory: z.array(z.string()).optional().nullable(),
+  applianceTypeCategory: z.array(z.string()).optional().nullable(),
   numberOfIngredients: z.string().optional().nullable(),
   numberOfServings: z.string().optional().nullable(),
   ingredientsLists: z
@@ -917,6 +966,56 @@ export const recipeFieldsSchema = z.object({
     })
     .optional()
     .nullable(),
+  variations: z
+    .object({
+      nodeType: z.literal(BLOCKS.DOCUMENT),
+      data: z.record(z.string(), z.unknown()),
+      content: z.array(RichTextNodeSchema),
+    })
+    .optional()
+    .nullable(),
+  products: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional().nullable(),
+          revision: z.number(),
+          locale: z.string().optional().nullable(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .optional()
+    .nullable(),
   testKitchenTips: z
     .object({
       nodeType: z.literal(BLOCKS.DOCUMENT),
@@ -925,55 +1024,6 @@ export const recipeFieldsSchema = z.object({
     })
     .optional()
     .nullable(),
-  featuredImage: z.object({
-    metadata: z.object({
-      tags: z.array(z.unknown()),
-      concepts: z.array(z.unknown()),
-    }),
-    sys: z.object({
-      space: z.object({
-        sys: z.object({
-          type: z.literal('Link'),
-          linkType: z.literal('Space'),
-          id: z.string(),
-        }),
-      }),
-      id: z.string(),
-      type: z.literal('Asset'),
-      createdAt: z.string().datetime(),
-      updatedAt: z.string().datetime(),
-      environment: z.object({
-        sys: z.object({
-          id: z.string(),
-          type: z.literal('Link'),
-          linkType: z.literal('Environment'),
-        }),
-      }),
-      publishedVersion: z.number().optional().nullable(),
-      revision: z.number(),
-      locale: z.string().optional().nullable(),
-      contentType: z.undefined().optional().nullable(),
-    }),
-    fields: z.object({
-      title: z.string().optional().nullable(),
-      description: z.string().optional().nullable(),
-      file: z.object({
-        url: z.string(),
-        details: z.object({
-          size: z.number(),
-          image: z
-            .object({
-              width: z.number(),
-              height: z.number(),
-            })
-            .optional()
-            .nullable(),
-        }),
-        fileName: z.string(),
-        contentType: z.string(),
-      }),
-    }),
-  }),
   additionalImages: z
     .array(
       z.object({
@@ -1028,46 +1078,6 @@ export const recipeFieldsSchema = z.object({
     )
     .optional()
     .nullable(),
-  videoFeature: z
-    .object({
-      metadata: z.object({
-        tags: z.array(z.unknown()),
-        concepts: z.array(z.unknown()),
-      }),
-      sys: z.object({
-        space: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('Space'),
-            id: z.string(),
-          }),
-        }),
-        id: z.string(),
-        type: z.literal('Entry'),
-        createdAt: z.string().datetime(),
-        updatedAt: z.string().datetime(),
-        environment: z.object({
-          sys: z.object({
-            id: z.string(),
-            type: z.literal('Link'),
-            linkType: z.literal('Environment'),
-          }),
-        }),
-        publishedVersion: z.number().optional().nullable(),
-        revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('ContentType'),
-            id: z.string(),
-          }),
-        }),
-      }),
-      fields: z.record(z.string(), z.unknown()),
-    })
-    .optional()
-    .nullable(),
   productCarousel: z
     .object({
       metadata: z.object({
@@ -1109,6 +1119,46 @@ export const recipeFieldsSchema = z.object({
     .optional()
     .nullable(),
   recipeCarousel: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Entry'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.string(), z.unknown()),
+    })
+    .optional()
+    .nullable(),
+  videoFeature: z
     .object({
       metadata: z.object({
         tags: z.array(z.unknown()),
@@ -3157,6 +3207,7 @@ export type introSection = z.infer<typeof introSectionSchema>;
 // Schema for heroBanner
 export const heroBannerFieldsSchema = z.object({
   variant: z.string().optional().nullable(),
+  isPageHeader: z.boolean().optional().nullable(),
   title: z.string(),
   description: z.string().optional().nullable(),
   image: z
@@ -4021,55 +4072,58 @@ export type accordionItem = z.infer<typeof accordionItemSchema>;
 export const featureCalloutFieldsSchema = z.object({
   internalName: z.string(),
   label: z.string(),
-  logo: z.object({
-    metadata: z.object({
-      tags: z.array(z.unknown()),
-      concepts: z.array(z.unknown()),
-    }),
-    sys: z.object({
-      space: z.object({
-        sys: z.object({
-          type: z.literal('Link'),
-          linkType: z.literal('Space'),
-          id: z.string(),
+  logo: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.undefined().optional().nullable(),
+      }),
+      fields: z.object({
+        title: z.string().optional().nullable(),
+        description: z.string().optional().nullable(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional()
+              .nullable(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
         }),
       }),
-      id: z.string(),
-      type: z.literal('Asset'),
-      createdAt: z.string().datetime(),
-      updatedAt: z.string().datetime(),
-      environment: z.object({
-        sys: z.object({
-          id: z.string(),
-          type: z.literal('Link'),
-          linkType: z.literal('Environment'),
-        }),
-      }),
-      publishedVersion: z.number().optional().nullable(),
-      revision: z.number(),
-      locale: z.string().optional().nullable(),
-      contentType: z.undefined().optional().nullable(),
-    }),
-    fields: z.object({
-      title: z.string().optional().nullable(),
-      description: z.string().optional().nullable(),
-      file: z.object({
-        url: z.string(),
-        details: z.object({
-          size: z.number(),
-          image: z
-            .object({
-              width: z.number(),
-              height: z.number(),
-            })
-            .optional()
-            .nullable(),
-        }),
-        fileName: z.string(),
-        contentType: z.string(),
-      }),
-    }),
-  }),
+    })
+    .optional()
+    .nullable(),
 });
 
 export const featureCalloutSchema = z.object({

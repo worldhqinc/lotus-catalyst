@@ -7,11 +7,23 @@ import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
 import { cta, ctaSchema, type heroBanner } from '~/contentful/schema';
 
-function SimpleHeroBanner({ descriptionHtml, title }: { descriptionHtml: string; title: string }) {
+function SimpleHeroBanner({
+  descriptionHtml,
+  title,
+  isPageHeader,
+}: {
+  descriptionHtml: string;
+  title: string;
+  isPageHeader?: boolean | null;
+}) {
   return (
     <SectionLayout>
       <div className="container max-w-2xl text-center">
-        <h1 className="font-heading text-4xl leading-[100%] uppercase md:text-6xl">{title}</h1>
+        {isPageHeader ? (
+          <h1 className="font-heading text-4xl leading-[100%] uppercase md:text-6xl">{title}</h1>
+        ) : (
+          <h2 className="font-heading text-4xl leading-[100%] uppercase md:text-6xl">{title}</h2>
+        )}
         {!!descriptionHtml && (
           <div
             className="prose container mt-8 max-w-2xl"
@@ -26,6 +38,7 @@ function SimpleHeroBanner({ descriptionHtml, title }: { descriptionHtml: string;
 function LeftAlignedHeroBanner({
   description,
   invertText,
+  isPageHeader,
   mediaElement,
   primary,
   secondary,
@@ -36,6 +49,7 @@ function LeftAlignedHeroBanner({
 }: {
   description?: string | null;
   invertText?: boolean | null;
+  isPageHeader?: boolean | null;
   mediaElement: React.ReactNode;
   primary: cta | null;
   secondary: cta | null;
@@ -53,15 +67,27 @@ function LeftAlignedHeroBanner({
           variant === 'left-aligned' ? '' : 'lg:py-40',
         )}
       >
-        <h1
-          className={clsx(
-            'font-heading max-w-xl text-4xl md:text-6xl',
-            invertText ? 'text-white' : 'text-surface-foreground',
-            variant === 'left-aligned' && 'uppercase',
-          )}
-        >
-          {title}
-        </h1>
+        {isPageHeader ? (
+          <h1
+            className={clsx(
+              'font-heading max-w-xl text-4xl md:text-6xl',
+              invertText ? 'text-white' : 'text-surface-foreground',
+              variant === 'left-aligned' && 'uppercase',
+            )}
+          >
+            {title}
+          </h1>
+        ) : (
+          <h2
+            className={clsx(
+              'font-heading max-w-xl text-4xl md:text-6xl',
+              invertText ? 'text-white' : 'text-surface-foreground',
+              variant === 'left-aligned' && 'uppercase',
+            )}
+          >
+            {title}
+          </h2>
+        )}
         {description ? (
           <p className={clsx('max-w-lg text-xl', invertText ? 'text-white' : 'text-contrast-400')}>
             {description}
@@ -81,6 +107,7 @@ function LeftAlignedHeroBanner({
 function CenteredHeroBanner({
   description,
   invertText,
+  isPageHeader,
   mediaElement,
   primary,
   secondary,
@@ -88,6 +115,7 @@ function CenteredHeroBanner({
 }: {
   description?: string | null;
   invertText?: boolean | null;
+  isPageHeader?: boolean | null;
   mediaElement: React.ReactNode;
   primary: cta | null;
   secondary: cta | null;
@@ -97,14 +125,25 @@ function CenteredHeroBanner({
     <SectionLayout className="bg-contrast-200 relative">
       {mediaElement}
       <div className="flex w-full flex-col items-center justify-center gap-8 py-20">
-        <h1
-          className={clsx(
-            'font-heading max-w-4xl text-center text-4xl uppercase md:text-6xl',
-            invertText ? 'text-white' : 'text-surface-foreground',
-          )}
-        >
-          {title}
-        </h1>
+        {isPageHeader ? (
+          <h1
+            className={clsx(
+              'font-heading max-w-4xl text-center text-4xl uppercase md:text-6xl',
+              invertText ? 'text-white' : 'text-surface-foreground',
+            )}
+          >
+            {title}
+          </h1>
+        ) : (
+          <h2
+            className={clsx(
+              'font-heading max-w-4xl text-center text-4xl uppercase md:text-6xl',
+              invertText ? 'text-white' : 'text-surface-foreground',
+            )}
+          >
+            {title}
+          </h2>
+        )}
         {description ? (
           <p
             className={clsx(
@@ -125,6 +164,7 @@ export async function HeroBanner({
   description,
   image,
   invertText,
+  isPageHeader,
   primaryCta,
   secondaryCta,
   secondaryDescription,
@@ -165,7 +205,13 @@ export async function HeroBanner({
   }
 
   if (variant === 'simple') {
-    return <SimpleHeroBanner descriptionHtml={descriptionHtml} title={title} />;
+    return (
+      <SimpleHeroBanner
+        descriptionHtml={descriptionHtml}
+        isPageHeader={isPageHeader}
+        title={title}
+      />
+    );
   }
 
   if (variant === 'left-aligned' || variant === 'left-aligned-lowercase') {
@@ -173,6 +219,7 @@ export async function HeroBanner({
       <LeftAlignedHeroBanner
         description={description}
         invertText={invertText}
+        isPageHeader={isPageHeader}
         mediaElement={mediaElement}
         primary={primary}
         secondary={secondary}
@@ -188,6 +235,7 @@ export async function HeroBanner({
     <CenteredHeroBanner
       description={description}
       invertText={invertText}
+      isPageHeader={isPageHeader}
       mediaElement={mediaElement}
       primary={primary}
       secondary={secondary}
