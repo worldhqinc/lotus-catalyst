@@ -1,11 +1,19 @@
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
+import { Image } from '~/components/image';
+import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 
 import { ChatWidgetButton } from './_components/chat-widget-button';
 
 export default function ContactPage() {
   return (
     <>
-      <div className="bg-primary py-8 text-center text-white md:py-16">
+      <div className="bg-primary relative isolate overflow-hidden py-8 text-center text-white md:py-16">
+        <Image
+          alt="Lotus Pattern"
+          className="absolute inset-0 top-1/2 left-1/2 -z-10 h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover"
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          src={BrandArtwork}
+        />
         <div className="container max-w-[300px] md:max-w-lg lg:max-w-2xl">
           <h1 className="font-heading text-4xl uppercase md:text-6xl">Contact Lotus</h1>
           <p className="mt-4">Have a question? Need a hand? Our team is ready to help.</p>
@@ -20,7 +28,7 @@ export default function ContactPage() {
         </div>
       </div>
       <div className="container my-8 md:my-16 lg:max-w-[1142px]">
-        <div className="border-contrast-200 divide-contrast-200 divide-y rounded-lg border lg:grid lg:grid-cols-[repeat(auto-fit,minmax(0,1fr))] lg:divide-x lg:divide-y-0">
+        <div className="border-contrast-200 divide-contrast-200 divide-y rounded-lg border px-4 lg:grid lg:grid-cols-[repeat(auto-fit,minmax(0,1fr))] lg:divide-x lg:divide-y-0 lg:p-8">
           <div className="flex flex-col items-center p-4 text-center lg:p-8">
             <div>
               <h2 className="text-lg font-medium tracking-[1.8px] uppercase md:text-2xl lg:leading-[120%]">

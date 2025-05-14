@@ -24,9 +24,9 @@ export function DynamicFormSection<F extends Field>({
   isRegisterForm,
 }: Props<F>) {
   return (
-    <div className="@container">
-      <div className="flex flex-col justify-center gap-y-4 px-3 py-10 @xl:flex-row @xl:gap-x-4 @xl:px-6 @4xl:gap-x-8 @4xl:py-16 @5xl:px-16">
-        <div className="border-contrast-200 flex w-full flex-col rounded-lg border p-4 @xl:max-w-md @5xl:p-8">
+    <div className="@container px-4 py-8 xl:py-16 @xl:px-8">
+      <div className="border-contrast-200 divide-contrast-200 mx-auto grid max-w-[1076px] grid-cols-1 divide-y rounded-lg border p-4 @xl:grid-cols-2 @xl:divide-x @xl:divide-y-0 @xl:p-8">
+        <div className="flex w-full flex-col pb-4 @xl:pr-8 @xl:pb-0">
           {title != null && title !== '' && (
             <header className="mb-8">
               <h1 className="text-2xl leading-[120%] @5xl:text-4xl">{title}</h1>
@@ -42,7 +42,7 @@ export function DynamicFormSection<F extends Field>({
             submitLabel={submitLabel}
           />
         </div>
-        <div className="border-contrast-200 flex w-full flex-col rounded-lg border p-4 @xl:max-w-md @5xl:p-8">
+        <div className="flex w-full flex-col pt-4 @xl:pt-0 @xl:pl-8">
           <div>
             <h2 className="text-xl leading-[140%] font-medium">{benefits?.title}</h2>
           </div>
