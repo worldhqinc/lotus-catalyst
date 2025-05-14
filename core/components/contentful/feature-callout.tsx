@@ -13,11 +13,11 @@ export function FeatureCallout({ fields }: FeatureCalloutProps) {
     <div className="text-contrast-400 flex items-center gap-2 text-sm">
       {fields.label}{' '}
       <Image
-        alt={fields.logo.fields.title || fields.label}
+        alt={fields.logo?.fields.title || fields.label}
         className="h-7 w-auto"
-        height={fields.logo.fields.file.details.image?.height || 28}
-        src={ensureImageUrl(fields.logo.fields.file.url)}
-        width={fields.logo.fields.file.details.image?.width || 37}
+        height={fields.logo?.fields.file.details.image?.height || 28}
+        src={ensureImageUrl(fields.logo?.fields.file.url || '')}
+        width={fields.logo?.fields.file.details.image?.width || 37}
       />
     </div>
   );
