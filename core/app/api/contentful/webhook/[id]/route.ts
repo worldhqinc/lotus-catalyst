@@ -2,8 +2,9 @@ import { algoliasearch } from 'algoliasearch';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-import { productFinishedGoodsSchema } from '~/contentful/schema';
+import { productFinishedGoodsSchema, productPartsAndAccessoriesSchema } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
+import { ensureImageUrl } from '~/lib/utils';
 
 export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
@@ -30,27 +31,43 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
 
     if (entry.sys.contentType.sys.id === 'productFinishedGoods') {
       const parsedEntry = productFinishedGoodsSchema.parse(entry);
-      const price = parsedEntry.fields.price;
-      const priceData = parsedEntry.fields.salePrice
-        ? {
-            type: 'sale' as const,
-            previousValue: `$${parsedEntry.fields.salePrice}`,
-            currentValue: `$${price}`,
-          }
-        : `$${price}`;
 
       body = {
-        objectID: parsedEntry.sys.id,
-        contentType: parsedEntry.sys.contentType.sys.id,
+        href: `/${parsedEntry.fields.pageSlug}`,
         sku: parsedEntry.fields.bcProductReference,
-        slug: parsedEntry.fields.pageSlug,
-        productName: parsedEntry.fields.webProductName,
-        description: parsedEntry.fields.shortDescription,
-        price: priceData,
+        title: parsedEntry.fields.webProductName,
+        subtitle: parsedEntry.fields.shortDescription,
+        price: getPriceField(parsedEntry.fields.price, parsedEntry.fields.salePrice),
         badge: parsedEntry.fields.badge,
         newFlag: parsedEntry.fields.newFlag,
         inStock: Boolean(parsedEntry.fields.inventoryQuantity ?? 0),
-        featuredImage: parsedEntry.fields.featuredImage?.fields.file.url,
+        image: {
+          src: ensureImageUrl(parsedEntry.fields.featuredImage.fields.file.url),
+          alt:
+            parsedEntry.fields.featuredImage.fields.description ??
+            parsedEntry.fields.webProductName,
+        },
+      };
+    }
+
+    if (entry.sys.contentType.sys.id === 'productPartAndAccessories') {
+      const parsedEntry = productPartsAndAccessoriesSchema.parse(entry);
+
+      body = {
+        href: `/${parsedEntry.fields.pageSlug}`,
+        sku: parsedEntry.fields.bcProductReference,
+        title: parsedEntry.fields.webProductName,
+        subtitle: parsedEntry.fields.shortDescription,
+        price: getPriceField(parsedEntry.fields.price, parsedEntry.fields.salePrice),
+        badge: parsedEntry.fields.badge,
+        newFlag: parsedEntry.fields.newFlag,
+        inStock: Boolean(parsedEntry.fields.inventoryQuantity ?? 0),
+        image: {
+          src: ensureImageUrl(parsedEntry.fields.featuredImage.fields.file.url),
+          alt:
+            parsedEntry.fields.featuredImage.fields.description ??
+            parsedEntry.fields.webProductName,
+        },
       };
     }
 
@@ -58,7 +75,10 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
       await algoliaClient.addOrUpdateObject({
         indexName: process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? '',
         objectID: entry.sys.id,
-        body,
+        body: {
+          contentType: entry.sys.contentType.sys.id,
+          ...body,
+        },
       });
 
       return NextResponse.json({ success: true });
@@ -94,4 +114,19 @@ function verifyWebhookSignature(request: NextRequest) {
   }
 
   return true;
+}
+
+function getPriceField(
+  price: string,
+  salePrice?: string | null,
+): string | { type: 'sale'; previousValue: string; currentValue: string } {
+  const priceData = salePrice
+    ? {
+        type: 'sale' as const,
+        previousValue: `$${salePrice}`,
+        currentValue: `$${price}`,
+      }
+    : `$${price}`;
+
+  return priceData;
 }

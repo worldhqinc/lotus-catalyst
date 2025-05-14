@@ -82,7 +82,6 @@ export function transformProductHit(hit: ProductGridHit) {
       }
     : `$${price}`;
   const badge = f.badge?.['en-US'];
-  const rating = f.rating?.['en-US'];
   const inStock = Boolean(f.inventoryQuantity?.['en-US'] ?? 0);
 
   return {
@@ -94,7 +93,6 @@ export function transformProductHit(hit: ProductGridHit) {
     image: imgUrl ? { src: imgUrl, alt: title } : undefined,
     price: priceData,
     badge,
-    rating,
     inStock,
   };
 }
