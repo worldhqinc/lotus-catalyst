@@ -373,7 +373,7 @@ export const Footer = forwardRef(async function Footer(
             </Link>
             <Link
               className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
-              href="/terms-of-service"
+              href="/policies/terms-of-service"
             >
               Terms of Service
             </Link>
