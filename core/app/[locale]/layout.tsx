@@ -57,7 +57,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: metaDescription,
     keywords: metaKeywords ? metaKeywords.split(',') : null,
-    metadataBase: new URL('https://lotuscooking.com'),
+    metadataBase: new URL('https://staging.lotuscooking.com'),
     openGraph: {
       images: [
         {
