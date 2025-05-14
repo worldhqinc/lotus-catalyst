@@ -146,8 +146,8 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
         key={searchKey}
         searchClient={searchClient}
       >
-        <div className="flex w-full items-center justify-between gap-4 pt-12">
-          <div className="flex items-center gap-4">
+        <div className="flex w-full justify-between gap-4 pt-12 @2xl:flex-row @2xl:items-center">
+          <div className="flex flex-col gap-4 @2xl:flex-row">
             <div className="flex flex-col items-start">
               <Select
                 name="sort"
@@ -158,7 +158,7 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
               />
             </div>
             {type !== 'accessories' && (
-              <div className="flex flex-col items-start">
+              <div className="flex max-w-max flex-col items-start @2xl:max-w-none">
                 <Select
                   name="filter"
                   onValueChange={(value) => {
