@@ -188,8 +188,8 @@ export function ProductDetail<F extends Field>({
                               action={action}
                               additionalActions={
                                 <div className="flex items-center justify-between gap-2">
-                                  <div className="text-contrast-400 text-sm">
-                                    {contentful.fields.modelNumber}
+                                  <div className="text-contrast-400 text-md uppercase">
+                                    Model {contentful.fields.modelNumber}
                                   </div>
                                   {additionalActions}
                                 </div>
@@ -335,7 +335,7 @@ function ProductDetailSkeleton() {
   return (
     <section className="@container">
       <div className="group/product-detail mx-auto w-full max-w-(--breakpoint-2xl) @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
-        <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-8 @2xl:grid-cols-2 @5xl:gap-x-12">
+        <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-8 @2xl:grid-cols-[70%_30%] @5xl:gap-x-12">
           <div className="group/product-gallery">
             <ProductGallerySkeleton />
           </div>
