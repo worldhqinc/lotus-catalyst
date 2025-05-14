@@ -365,6 +365,8 @@
         "unavailable": "Unavailable"
       },
       "Accordions": {
+        "details": "Details",
+        "included": "What's included",
         "specifications": "Specifications",
         "warranty": "Warranty",
         "sku": "SKU",

@@ -70,7 +70,7 @@ export interface ProductDetailFormProps<F extends Field> {
   ctaDisabled?: boolean;
   prefetch?: boolean;
   additionalActions?: ReactNode;
-  addToBagButtonRef?: React.Ref<HTMLButtonElement>;
+  detailFormRef?: React.Ref<HTMLDivElement>;
 }
 
 export function ProductDetailForm<F extends Field>({
@@ -82,7 +82,7 @@ export function ProductDetailForm<F extends Field>({
   ctaDisabled = false,
   prefetch = false,
   additionalActions,
-  addToBagButtonRef,
+  detailFormRef,
 }: ProductDetailFormProps<F>) {
   const router = useRouter();
   const pathname = usePathname();
@@ -164,7 +164,7 @@ export function ProductDetailForm<F extends Field>({
               {error}
             </FormStatus>
           ))}
-          <div className="flex items-center gap-x-3">
+          <div className="flex items-center gap-x-3" ref={detailFormRef}>
             {/* <NumberInput
               aria-label="Quantity"
               decrementLabel="Decrement"
@@ -182,9 +182,7 @@ export function ProductDetailForm<F extends Field>({
             ) : (
               <>
                 <input name={formFields.quantity.name} type="hidden" value="1" />
-                <SubmitButton disabled={ctaDisabled} ref={addToBagButtonRef}>
-                  {ctaLabel}
-                </SubmitButton>
+                <SubmitButton disabled={ctaDisabled}>{ctaLabel}</SubmitButton>
               </>
             )}
           </div>

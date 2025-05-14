@@ -10,7 +10,6 @@ import { Price, PriceLabel } from '@/vibes/soul/primitives/price-label';
 import * as Skeleton from '@/vibes/soul/primitives/skeleton';
 import { ProductGallery } from '@/vibes/soul/sections/product-detail/product-gallery';
 import { FeatureCallout } from '~/components/contentful/feature-callout';
-import { FeatureTiles } from '~/components/contentful/feature-tiles';
 import { ProductStickyHeader } from '~/components/contentful/sections/product-sticky-header';
 import {
   featureCalloutSchema,
@@ -66,7 +65,7 @@ export function ProductDetail<F extends Field>({
   additionalInformationTitle = 'Additional information',
   additionalActions,
 }: ProductDetailProps<F>) {
-  const addToBagButtonRef = useRef<HTMLButtonElement | null>(null);
+  const detailFormRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <Stream
@@ -74,86 +73,82 @@ export function ProductDetail<F extends Field>({
       value={Streamable.all([streamableProduct, streamableContentful])}
     >
       {([product, contentful]) => {
-        if (!product) return null;
+        if (!product || !contentful) return null;
+
+        const price = contentful.fields.price;
+        const priceData = contentful.fields.salePrice
+          ? {
+              type: 'sale' as const,
+              previousValue: `$${contentful.fields.salePrice}`,
+              currentValue: `$${price}`,
+            }
+          : `$${price}`;
 
         return (
           <>
             <ProductStickyHeader
-              addToBagButtonRef={addToBagButtonRef}
               contentful={contentful}
+              detailFormRef={detailFormRef}
               product={product}
+              streamableCtaDisabled={streamableCtaDisabled}
             />
             <section className="@container">
               <div className="group/product-detail mx-auto w-full max-w-(--breakpoint-2xl) @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
                 <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-8 @2xl:grid-cols-2 @5xl:gap-x-12">
                   <div className="group/product-gallery">
                     <ProductGallery
-                      badge={contentful?.fields.badge}
+                      badge={contentful.fields.badge}
                       featuredImage={
-                        contentful?.fields.featuredImage && {
+                        contentful.fields.featuredImage && {
                           src: ensureImageUrl(contentful.fields.featuredImage.fields.file.url),
                           alt: contentful.fields.featuredImage.fields.title ?? '',
                         }
                       }
-                      images={(contentful?.fields.additionalImages ?? []).map((image) => ({
+                      images={(contentful.fields.additionalImages ?? []).map((image) => ({
                         src: ensureImageUrl(image.fields.file.url),
                         alt: image.fields.title ?? '',
                       }))}
+                      tiles={
+                        contentful.fields.featureTiles &&
+                        featureTilesSchema.parse(contentful.fields.featureTiles)
+                      }
                     />
-                    {contentful?.fields.featureTiles && (
-                      <FeatureTiles {...featureTilesSchema.parse(contentful.fields.featureTiles)} />
-                    )}
                   </div>
                   <div className="px-4 py-8 @xl:px-0 @xl:py-0">
                     <div className="mb-8 flex items-start justify-between gap-4">
                       <div className="flex gap-2">
-                        {contentful?.fields.webProductLine?.map((line, index) => (
+                        {contentful.fields.webProductLine?.map((line, index) => (
                           <Badge key={index}>{line}</Badge>
                         ))}
                       </div>
-                      {contentful?.fields.featureCallout && (
+                      {contentful.fields.featureCallout && (
                         <FeatureCallout
                           {...featureCalloutSchema.parse(contentful.fields.featureCallout)}
                         />
                       )}
                     </div>
-                    {/* Product Details */}
                     <div className="flex flex-col gap-8" id="overview">
                       <div>
                         <h1 className="text-surface-foreground text-2xl leading-none @xl:text-3xl @4xl:text-4xl">
-                          {contentful?.fields.webProductName}
+                          {contentful.fields.webProductName}
                         </h1>
-                        {Boolean(contentful?.fields.webProductNameDescriptor) && (
+                        {Boolean(contentful.fields.webProductNameDescriptor) && (
                           <p className="text-surface-foreground mt-4">
-                            {contentful?.fields.webProductNameDescriptor}
+                            {contentful.fields.webProductNameDescriptor}
                           </p>
                         )}
                       </div>
-                      {/* <div className="group/product-rating">
-                        <Stream fallback={<RatingSkeleton />} value={product.rating}>
-                          {(rating) => <Rating rating={rating ?? 0} />}
-                        </Stream>
-                      </div> */}
                       <div className="group/product-price">
-                        <Stream fallback={<PriceLabelSkeleton />} value={product.price}>
-                          {(price) => (
-                            <PriceLabel className="text-xl @xl:text-2xl" price={price ?? ''} />
-                          )}
-                        </Stream>
+                        <PriceLabel className="text-xl @xl:text-2xl" price={priceData} />
                       </div>
-                      <Stream fallback={null} value={product.price}>
-                        {(price) =>
-                          !!price &&
-                          typeof price === 'object' &&
-                          'type' in price &&
-                          price.type === 'sale' && (
-                            <div className="text-primary font-medium">Limited Time Offer</div>
-                          )
-                        }
-                      </Stream>
-                      {Boolean(contentful?.fields.shortDescription) && (
+                      {Boolean(contentful.fields.warranty) && (
+                        <div className="text-contrast-300 font-medium">
+                          {contentful.fields.warranty}
+                        </div>
+                      )}
+                      {Boolean(contentful.fields.shortDescription) && (
                         <div className="text-contrast-400">
-                          {contentful?.fields.shortDescription}
+                          {contentful.fields.shortDescription}
                         </div>
                       )}
                       <div className="grid gap-2 @xl:grid-cols-2">
@@ -187,10 +182,17 @@ export function ProductDetail<F extends Field>({
                           {([fields, ctaLabel, ctaDisabled]) => (
                             <ProductDetailForm
                               action={action}
-                              addToBagButtonRef={addToBagButtonRef}
-                              additionalActions={additionalActions}
+                              additionalActions={
+                                <div className="flex items-center justify-between gap-2">
+                                  <div className="text-contrast-400 text-sm">
+                                    {contentful.fields.modelNumber}
+                                  </div>
+                                  {additionalActions}
+                                </div>
+                              }
                               ctaDisabled={ctaDisabled ?? undefined}
                               ctaLabel={ctaLabel ?? undefined}
+                              detailFormRef={detailFormRef}
                               emptySelectPlaceholder={emptySelectPlaceholder}
                               fields={fields}
                               prefetch={prefetch}

@@ -1,4 +1,5 @@
 import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
+import { Check } from 'lucide-react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
@@ -14,6 +15,7 @@ import { productPartsAndAccessoriesSchema, supportDocumentSchema } from '~/conte
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { productOptionsTransformer } from '~/data-transformers/product-options-transformer';
 import { getPreferredCurrencyCode } from '~/lib/currency';
+import { formatDimension, formatWeight } from '~/lib/unit-converter';
 import { isMobileUser } from '~/lib/user-agent';
 
 import { addToCart } from './_actions/add-to-cart';
@@ -213,24 +215,73 @@ export default async function Product(props: Props) {
 
     const specifications = [
       {
-        name: 'Weight',
-        value: `${contentful?.fields.outOfBoxNetWeight} ${contentful?.fields.outOfBoxWeightUom}`,
+        name: 'Width',
+        value: formatDimension(
+          contentful?.fields.outOfBoxWidth,
+          contentful?.fields.outOfBoxSizeUom ?? 'IN',
+        ),
       },
       {
         name: 'Height',
-        value: `${contentful?.fields.outOfBoxHeight}`,
-      },
-      {
-        name: 'Width',
-        value: `${contentful?.fields.outOfBoxWidth}`,
+        value: formatDimension(
+          contentful?.fields.outOfBoxHeight,
+          contentful?.fields.outOfBoxSizeUom ?? 'IN',
+        ),
       },
       {
         name: 'Depth',
-        value: `${contentful?.fields.outOfBoxDepth}`,
+        value: formatDimension(
+          contentful?.fields.outOfBoxDepth,
+          contentful?.fields.outOfBoxSizeUom ?? 'IN',
+        ),
       },
-    ];
+      {
+        name: 'Weight',
+        value: formatWeight(
+          contentful?.fields.outOfBoxNetWeight,
+          contentful?.fields.outOfBoxWeightUom ?? 'LB',
+        ),
+      },
+      {
+        name: 'Wattage',
+        value: contentful?.fields.wattage,
+      },
+    ].filter((it) => it.value);
 
     return [
+      ...(contentful?.fields.webBullets
+        ? [
+            {
+              title: t('ProductDetails.Accordions.details'),
+              content: (
+                <ul className="list-disc space-y-4 pl-4">
+                  {contentful.fields.webBullets.map((bullet, index) => (
+                    <li className="text-contrast-400 text-sm" key={index}>
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              ),
+            },
+          ]
+        : []),
+      ...(contentful?.fields.webWhatsIncluded
+        ? [
+            {
+              title: t('ProductDetails.Accordions.included'),
+              content: (
+                <ul className="space-y-4">
+                  {contentful.fields.webWhatsIncluded.map((item, index) => (
+                    <li className="text-contrast-400 flex items-center gap-2 text-sm" key={index}>
+                      <Check className="text-surface-foreground h-4 w-4" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              ),
+            },
+          ]
+        : []),
       ...(specifications.length
         ? [
             {
@@ -243,7 +294,7 @@ export default async function Product(props: Props) {
                         className="text-contrast-400 grid grid-cols-1 gap-2 @lg:grid-cols-2"
                         key={index}
                       >
-                        <dt className="uppercase">{field.name}</dt>
+                        <dt className="font-medium">{field.name}</dt>
                         <dd>{field.value}</dd>
                       </div>
                     ))}
