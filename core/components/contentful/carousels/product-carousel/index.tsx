@@ -24,7 +24,9 @@ function NavHeader({ title, subtitle }: { title: string; subtitle?: string | nul
   return (
     <div className="mb-12 flex items-start justify-between">
       <div className="flex flex-col gap-2">
-        <h2 className="text-4xl uppercase">{title}</h2>
+        <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
+          {title}
+        </h2>
         {subtitle ? <p className="text-icon-secondary max-w-md text-base">{subtitle}</p> : null}
       </div>
       <div className="flex gap-4">

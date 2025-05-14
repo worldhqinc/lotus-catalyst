@@ -25,7 +25,7 @@ export function CommunitySection({
       ) : null}
       <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="border-border flex aspect-[2.25] flex-col rounded-lg border bg-white p-8 text-left">
-          <h3 className="text-icon-primary mb-2 text-2xl font-medium tracking-widest uppercase">
+          <h3 className="text-icon-primary mb-2 text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
             {signUpLabel}
           </h3>
           {signUpDescription ? (
@@ -36,7 +36,7 @@ export function CommunitySection({
           </div>
         </div>
         <div className="border-border flex aspect-[2.25] flex-col rounded-lg border bg-white p-8 text-left">
-          <h3 className="text-icon-primary mb-2 text-2xl font-medium tracking-widest uppercase">
+          <h3 className="text-icon-primary mb-2 text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
             {socialLabel}
           </h3>
           {socialDescription ? (
