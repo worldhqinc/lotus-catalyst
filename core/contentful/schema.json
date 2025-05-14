@@ -3043,7 +3043,7 @@
         "id": "cta",
         "type": "ContentType",
         "createdAt": "2025-04-03T18:13:04.806Z",
-        "updatedAt": "2025-04-17T18:12:37.676Z",
+        "updatedAt": "2025-05-14T20:47:22.626Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3051,8 +3051,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-17T18:12:37.676Z",
+        "publishedVersion": 5,
+        "publishedAt": "2025-05-14T20:47:22.626Z",
         "firstPublishedAt": "2025-04-03T18:13:05.109Z",
         "createdBy": {
           "sys": {
@@ -3068,8 +3068,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 2,
-        "version": 4,
+        "publishedCounter": 3,
+        "version": 6,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3095,6 +3095,23 @@
           "omitted": false
         },
         {
+          "id": "featuredImage",
+          "name": "Featured Image",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+            {
+              "linkMimetypeGroup": [
+                "image"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
+        },
+        {
           "id": "internalReference",
           "name": "Internal Reference",
           "type": "Link",
@@ -3112,6 +3129,18 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Entry"
+        },
+        {
+          "id": "mediaReference",
+          "name": "Media Reference",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
         },
         {
           "id": "externalLink",

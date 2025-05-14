@@ -2,9 +2,11 @@ import { DownloadIcon } from 'lucide-react';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
+import { Image } from '~/components/image';
 import { Link } from '~/components/link';
-import { ctaSchema, ctaSection } from '~/contentful/schema';
-import { getLinkHref } from '~/lib/utils';
+import { DownloadableLink } from '~/components/link/downloadable-link';
+import { assetSchema, ctaSchema, ctaSection } from '~/contentful/schema';
+import { ensureImageUrl, getLinkHref } from '~/lib/utils';
 
 export function CtaSection({
   sectionTitle,
@@ -31,14 +33,56 @@ export function CtaSection({
               const { fields, sys } = ctaSchema.parse(cta);
               const href = getLinkHref(fields);
 
-              return (
-                <div className="flex flex-col gap-2" key={`${sys.id}-${index}`}>
-                  <div className="bg-contrast-200 aspect-[1.3333] rounded" />
-                  <Link className="flex items-center justify-between gap-4" href={href}>
+              const featuredImage = fields.featuredImage
+                ? assetSchema.parse(fields.featuredImage)
+                : null;
+              const file = featuredImage?.fields.file;
+              const featuredImageUrl = file?.url;
+
+              const asset = fields.mediaReference ? assetSchema.parse(fields.mediaReference) : null;
+              const assetUrl = asset?.fields.file.url;
+              const assetFilename = asset?.fields.file.fileName;
+
+              const linkContent = (
+                <>
+                  <div className="bg-contrast-200 aspect-[1.3333] overflow-hidden rounded">
+                    {featuredImageUrl ? (
+                      <Image
+                        alt={featuredImage?.fields.title ?? ''}
+                        className="size-full object-cover"
+                        height={file.details.image?.height}
+                        src={ensureImageUrl(featuredImageUrl)}
+                        width={file.details.image?.width}
+                      />
+                    ) : null}
+                  </div>
+                  <div className="flex items-center justify-between gap-4">
                     <p className="text-surface-foreground text-xl font-medium">{fields.text}</p>
-                    <DownloadIcon className="text-surface-foreground h-6 w-6" strokeWidth={1.5} />
-                  </Link>
-                </div>
+                    {fields.mediaReference && (
+                      <DownloadIcon className="text-surface-foreground h-6 w-6" strokeWidth={1.5} />
+                    )}
+                  </div>
+                </>
+              );
+
+              return fields.mediaReference ? (
+                <DownloadableLink
+                  assetFilename={assetFilename}
+                  assetUrl={assetUrl}
+                  className="flex flex-col gap-2"
+                  href={assetUrl ?? href}
+                  key={`${sys.id}-${index}`}
+                >
+                  {linkContent}
+                </DownloadableLink>
+              ) : (
+                <Link
+                  className="flex flex-col gap-2"
+                  href={assetUrl ?? href}
+                  key={`${sys.id}-${index}`}
+                >
+                  {linkContent}
+                </Link>
               );
             })}
           </div>
