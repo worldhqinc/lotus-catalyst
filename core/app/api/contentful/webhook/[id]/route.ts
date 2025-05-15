@@ -94,6 +94,12 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
       body = {
         href: `/${parsedEntry.fields.pageSlug}`,
         title: parsedEntry.fields.recipeName,
+        subtitle: parsedEntry.fields.intro,
+        categories: parsedEntry.fields.mealTypeCategory,
+        image: {
+          src: ensureImageUrl(parsedEntry.fields.featuredImage.fields.file.url),
+          alt: parsedEntry.fields.featuredImage.fields.description,
+        },
       };
     }
 
@@ -103,6 +109,12 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
       body = {
         href: `/${parsedEntry.fields.pageSlug}`,
         title: parsedEntry.fields.title,
+        subtitle: parsedEntry.fields.subtitle,
+        categories: parsedEntry.fields.categories,
+        image: {
+          src: ensureImageUrl(parsedEntry.fields.featuredImage?.fields.file.url ?? ''),
+          alt: parsedEntry.fields.featuredImage?.fields.description ?? '',
+        },
       };
     }
 

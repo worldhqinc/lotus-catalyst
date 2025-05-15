@@ -113,7 +113,7 @@ export function PostGrid({ title, subtitle, type }: PostGridProps) {
         searchClient={searchClient}
       >
         <CategoryFilter attribute={getCategoryAttribute(type)} />
-        <Configure filters={`sys.contentType.sys.id:${type}`} hitsPerPage={9} />
+        <Configure filters={`contentType:${type}`} hitsPerPage={9} />
         <InfiniteHits type={type} />
       </InstantSearch>
     </SectionLayout>
@@ -125,21 +125,21 @@ export function PostCard({
   title,
   subtitle,
   categories,
-  slug,
+  href,
   onClick,
 }: {
-  image: string | null;
+  image: { src: string; alt: string };
   title: string;
   subtitle: string | null;
   categories: string[];
-  slug: string | null;
+  href: string;
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }) {
   return (
     <article className="group relative flex flex-col">
-      {image ? (
+      {image.src ? (
         <figure className="bg-surface-image aspect-square w-full overflow-hidden rounded-lg">
-          <Image alt={title} className="h-full w-full object-cover" src={image} />
+          <Image alt={image.alt} className="h-full w-full object-cover" src={image.src} />
         </figure>
       ) : (
         <figure className="bg-surface-image aspect-square w-full rounded-lg" />
@@ -153,8 +153,8 @@ export function PostCard({
           <Badge key={cat}>{cat}</Badge>
         ))}
       </div>
-      {!!slug && (
-        <Link aria-label={title} className="absolute inset-0" href={`/${slug}`} onClick={onClick}>
+      {!!href && (
+        <Link aria-label={title} className="absolute inset-0" href={href} onClick={onClick}>
           <span className="sr-only">View {title}</span>
         </Link>
       )}

@@ -28,74 +28,109 @@ interface SearchComponentProps {
   closeSearch?: () => void;
 }
 
+interface HitProps {
+  hit: unknown;
+  sendEvent: (eventType: string, hit: unknown, eventName: string) => void;
+}
+
 interface GroupConfig {
   key: string;
   label: string;
   href: string;
   filter: string;
-  card: ({
-    hit,
-    sendEvent,
-  }: {
-    hit: ProductGridHit | PostGridHit;
-    sendEvent: (eventType: string, hit: ProductGridHit | PostGridHit, eventName: string) => void;
-  }) => JSX.Element;
+  card: (props: HitProps) => JSX.Element;
 }
+
+function hasRequiredProductFields(hit: object): hit is ProductGridHit {
+  if (!('contentType' in hit)) return false;
+
+  const contentType = hit.contentType;
+
+  return 'sku' in hit && typeof contentType === 'string' && contentType.includes('product');
+}
+
+function hasRequiredPostFields(hit: object): hit is PostGridHit {
+  return 'fields' in hit && !('sku' in hit);
+}
+
+const isProductGridHit = (hit: unknown): hit is ProductGridHit => {
+  return typeof hit === 'object' && hit !== null && hasRequiredProductFields(hit);
+};
+
+const isPostGridHit = (hit: unknown): hit is PostGridHit => {
+  return typeof hit === 'object' && hit !== null && hasRequiredPostFields(hit);
+};
 
 const GROUP_CONFIG: GroupConfig[] = [
   {
     key: 'products',
     label: 'Products',
     href: '/shop/all',
-    filter: 'sys.contentType.sys.id:productFinishedGoods',
-    card: ({ hit, sendEvent }) => (
-      <ProductCard
-        aspectRatio="1:1"
-        key={hit.objectID}
-        onClick={() => sendEvent('click', hit, 'Product Clicked')}
-        product={transformProductHit(hit)}
-      />
-    ),
+    filter: 'contentType:productFinishedGoods',
+    card: ({ hit, sendEvent }) => {
+      if (!isProductGridHit(hit)) return <div />;
+
+      return (
+        <ProductCard
+          aspectRatio="1:1"
+          key={hit.objectID}
+          onClick={() => sendEvent('click', hit, 'Product Clicked')}
+          product={transformProductHit(hit)}
+        />
+      );
+    },
   },
   {
     key: 'accessories',
     label: 'Accessories',
     href: '/shop/accessories',
-    filter: 'sys.contentType.sys.id:productPartsAndAccessories',
-    card: ({ hit, sendEvent }) => (
-      <ProductCard
-        aspectRatio="1:1"
-        key={hit.objectID}
-        onClick={() => sendEvent('click', hit, 'Accessory Clicked')}
-        product={transformProductHit(hit)}
-      />
-    ),
+    filter: 'contentType:productPartsAndAccessories',
+    card: ({ hit, sendEvent }) => {
+      if (!isProductGridHit(hit)) return <div />;
+
+      return (
+        <ProductCard
+          aspectRatio="1:1"
+          key={hit.objectID}
+          onClick={() => sendEvent('click', hit, 'Accessory Clicked')}
+          product={transformProductHit(hit)}
+        />
+      );
+    },
   },
   {
     key: 'recipes',
     label: 'Recipes',
     href: '/recipes',
-    filter: 'sys.contentType.sys.id:recipe',
-    card: ({ hit, sendEvent }) => (
-      <PostGridPostCard
-        key={hit.objectID}
-        {...transformPostHit(hit)}
-        onClick={() => sendEvent('click', hit, 'Recipe Clicked')}
-      />
-    ),
+    filter: 'contentType:recipe',
+    card: ({ hit, sendEvent }) => {
+      if (!isPostGridHit(hit)) return <div />;
+
+      return (
+        <PostGridPostCard
+          key={hit.objectID}
+          {...transformPostHit(hit)}
+          onClick={() => sendEvent('click', hit, 'Recipe Clicked')}
+        />
+      );
+    },
   },
   {
     key: 'features',
     label: 'Features',
     href: '/features',
-    filter: 'sys.contentType.sys.id:feature',
-    card: ({ hit, sendEvent }) => (
-      <PostGridPostCard
-        key={hit.objectID}
-        {...transformPostHit(hit)}
-        onClick={() => sendEvent('click', hit, 'Feature Clicked')}
-      />
-    ),
+    filter: 'contentType:feature',
+    card: ({ hit, sendEvent }) => {
+      if (!isPostGridHit(hit)) return <div />;
+
+      return (
+        <PostGridPostCard
+          key={hit.objectID}
+          {...transformPostHit(hit)}
+          onClick={() => sendEvent('click', hit, 'Feature Clicked')}
+        />
+      );
+    },
   },
 ];
 
