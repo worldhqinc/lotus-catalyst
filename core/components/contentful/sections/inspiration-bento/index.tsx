@@ -4,6 +4,7 @@ import { clsx } from 'clsx';
 
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import ContentfulCta from '~/components/contentful/cta';
+import { WistiaPlayer } from '~/components/wistia-player';
 import {
   Asset,
   ctaSchema,
@@ -150,13 +151,7 @@ export async function InspirationBento({
       <div className="mt-8 grid gap-8 lg:grid-cols-2">
         {video ? (
           <figure className="bg-surface-image relative aspect-[3/4] h-full w-full overflow-hidden rounded-lg lg:aspect-auto">
-            <iframe
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-              className="h-full w-full border-0"
-              src={`//fast.wistia.net/embed/iframe/${video}?videoFoam=true`}
-              title={`${heading || 'Inspiration'} Video`}
-            />
+            <WistiaPlayer anchorIds={[]} pageType="page" wistiaMediaId={video} />
           </figure>
         ) : null}
         {validCardsData?.length ? (

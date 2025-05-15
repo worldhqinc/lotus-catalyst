@@ -5,6 +5,7 @@ import { clsx } from 'clsx';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
+import { WistiaPlayer } from '~/components/wistia-player';
 import { cta, ctaSchema, type heroBanner } from '~/contentful/schema';
 
 function SimpleHeroBanner({
@@ -122,9 +123,9 @@ function CenteredHeroBanner({
   title: string;
 }) {
   return (
-    <SectionLayout className="bg-contrast-200 relative">
+    <SectionLayout className="bg-contrast-200 relative isolate h-[90vh]">
       {mediaElement}
-      <div className="flex w-full flex-col items-center justify-center gap-8 py-20">
+      <div className="flex w-full flex-col items-center justify-center gap-8 py-20 lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
         {isPageHeader ? (
           <h1
             className={clsx(
@@ -172,6 +173,7 @@ export async function HeroBanner({
   title,
   variant,
   video,
+  wistiaId,
 }: heroBanner['fields']) {
   const mediaUrl = video?.fields.file.url || image?.fields.file.url;
   const absoluteMediaUrl = mediaUrl?.startsWith('//') ? `https:${mediaUrl}` : mediaUrl;
@@ -201,6 +203,12 @@ export async function HeroBanner({
         fill
         src={absoluteMediaUrl ?? ''}
       />
+    );
+  } else if (wistiaId) {
+    mediaElement = (
+      <figure className="bg-surface-image absolute inset-0 -z-20 h-full w-full after:absolute after:inset-0 after:bg-black after:opacity-30 [&_.wistia_responsive_padding]:!p-0 [&_div]:rounded-none [&_div.wistia_responsive_wrapper]:pointer-events-none [&_div.wistia_responsive_wrapper]:!absolute [&_div:not(.wistia-player-control)]:!static [&_video]:!absolute [&_video]:inset-0 [&_video]:h-full [&_video]:w-full [&_video]:rounded-none [&_video]:!object-cover">
+        <WistiaPlayer anchorIds={[]} pageType="page" wistiaMediaId={wistiaId} />
+      </figure>
     );
   }
 

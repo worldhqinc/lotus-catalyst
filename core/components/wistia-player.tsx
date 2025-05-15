@@ -1,8 +1,10 @@
 'use client';
 
+import { PauseIcon, PlayIcon } from 'lucide-react';
 import Script from 'next/script';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { Button } from '@/vibes/soul/primitives/button';
 import { Image } from '~/components/image';
 
 declare global {
@@ -27,53 +29,66 @@ interface VideoSegment {
 export function WistiaPlayer({
   activeId,
   anchorIds,
+  pageType = 'product',
   wistiaMediaId,
   wistiaMediaSegments,
 }: {
   activeId?: string;
   anchorIds: string[];
+  pageType?: 'product' | 'page';
   wistiaMediaId?: string | null;
   wistiaMediaSegments?: string[] | null;
 }) {
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const videoInitializedRef = useRef(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const videoSegments = useRef<Record<string, VideoSegment>>({});
 
   // Setup video segments
   useEffect(() => {
-    // Validate and parse wistiaMediaSegments
-    const validSegments = (wistiaMediaSegments || [])
-      .map((segment) => parseFloat(segment))
-      .filter((time) => Number.isFinite(time));
+    // Only setup segments for product pages
+    if (pageType === 'product') {
+      // Validate and parse wistiaMediaSegments
+      const validSegments = (wistiaMediaSegments || [])
+        .map((segment) => parseFloat(segment))
+        .filter((time) => Number.isFinite(time));
 
-    // Create segments for each accordion item
-    const segmentsMap: Record<string, VideoSegment> = {};
+      // Create segments for each accordion item
+      const segmentsMap: Record<string, VideoSegment> = {};
 
-    anchorIds.forEach((id, index) => {
-      const startTime = index === 0 ? 0 : validSegments[index - 1] || 0;
-      // If there's a next segment time, use it as end time, otherwise use a large number to play to the end
-      const endTime = validSegments[index] || Number.MAX_SAFE_INTEGER;
+      anchorIds.forEach((id, index) => {
+        const startTime = index === 0 ? 0 : validSegments[index - 1] || 0;
+        const endTime = validSegments[index] || Number.MAX_SAFE_INTEGER;
 
-      segmentsMap[id] = {
-        start: startTime,
-        end: endTime,
-      };
-    });
+        segmentsMap[id] = {
+          start: startTime,
+          end: endTime,
+        };
+      });
 
-    videoSegments.current = segmentsMap;
-  }, [anchorIds, wistiaMediaSegments]);
+      videoSegments.current = segmentsMap;
+    }
+  }, [anchorIds, wistiaMediaSegments, pageType]);
 
   // Get current segment based on active accordion item
   const getCurrentSegment = useCallback(() => {
+    if (pageType !== 'product') return undefined;
+
     return activeId ? videoSegments.current[activeId] : undefined;
-  }, [activeId]);
+  }, [activeId, pageType]);
 
   // Function to play the current segment
   const playCurrentSegment = useCallback(() => {
     if (!('wistiaVideo' in window)) return;
 
     const video = window.wistiaVideo;
+
+    if (pageType !== 'product') {
+      video.play();
+
+      return;
+    }
 
     const currentSegment = getCurrentSegment();
 
@@ -94,7 +109,57 @@ export function WistiaPlayer({
 
     // Play the video segment
     video.play();
-  }, [getCurrentSegment]);
+  }, [getCurrentSegment, pageType]);
+
+  const handlePlay = useCallback(() => {
+    if (!('wistiaVideo' in window)) return;
+    window.wistiaVideo.play();
+    setIsPlaying(true);
+  }, []);
+
+  const handlePause = useCallback(() => {
+    if (!('wistiaVideo' in window)) return;
+    window.wistiaVideo.pause();
+    setIsPlaying(false);
+  }, []);
+
+  // Load Wistia scripts when component mounts
+  useEffect(() => {
+    // eslint-disable-next-line no-underscore-dangle
+    window._wq = window._wq || [];
+    // eslint-disable-next-line no-underscore-dangle
+    window._wq.push({
+      id: wistiaMediaId,
+      options: {
+        autoplay: true,
+        loop: pageType !== 'product',
+        endVideoBehavior: 'loop',
+        playsinline: true,
+      },
+      onReady(video: Window['wistiaVideo']) {
+        window.wistiaVideo = video;
+
+        if (videoInitializedRef.current) {
+          playCurrentSegment();
+        }
+
+        video.bind('play', () => setIsPlaying(true));
+        video.bind('pause', () => setIsPlaying(false));
+      },
+    });
+
+    return () => {
+      if ('wistiaVideo' in window) {
+        try {
+          window.wistiaVideo.unbind('timechange');
+          window.wistiaVideo.unbind('play');
+          window.wistiaVideo.unbind('pause');
+        } catch {
+          // Do nothing
+        }
+      }
+    };
+  }, [wistiaMediaId, playCurrentSegment, pageType]);
 
   // Set up Intersection Observer to play video when it's in view
   useEffect(() => {
@@ -105,23 +170,22 @@ export function WistiaPlayer({
     const options = {
       root: null,
       rootMargin: '0px',
-      threshold: 0.5, // 50% of the element must be visible
+      threshold: 0.5,
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // When video is 50% in view and we have wistiaVideo ready
-          const segment = getCurrentSegment();
           const wistiaVideoAvailable = 'wistiaVideo' in window;
 
-          if (wistiaVideoAvailable && segment && !videoInitializedRef.current) {
-            // Only initialize once
-            videoInitializedRef.current = true;
+          if (wistiaVideoAvailable) {
+            if (!videoInitializedRef.current) {
+              videoInitializedRef.current = true;
+            }
+
             playCurrentSegment();
           }
         } else if ('wistiaVideo' in window) {
-          // Pause when out of view
           window.wistiaVideo.pause();
         }
       });
@@ -129,50 +193,19 @@ export function WistiaPlayer({
 
     observer.observe(videoContainer);
 
-    return () => {
-      observer.unobserve(videoContainer);
-    };
-  }, [getCurrentSegment, playCurrentSegment]);
-
-  // Load Wistia scripts when component mounts
-  useEffect(() => {
-    // Set up Wistia API when scripts are loaded
-    // eslint-disable-next-line no-underscore-dangle
-    window._wq = window._wq || [];
-    // eslint-disable-next-line no-underscore-dangle
-    window._wq.push({
-      id: wistiaMediaId,
-      onReady(video: Window['wistiaVideo']) {
-        window.wistiaVideo = video;
-
-        // If video is already in view, play the initial segment
-        if (videoInitializedRef.current) {
-          playCurrentSegment();
-        }
-      },
-    });
-
-    // Clean up previous bindings when component unmounts
-    return () => {
-      if ('wistiaVideo' in window) {
-        try {
-          // Attempt to unbind timechange events
-          window.wistiaVideo.unbind('timechange');
-        } catch {
-          // Do nothing
-        }
-      }
-    };
-  }, [wistiaMediaId, playCurrentSegment]);
+    return () => observer.unobserve(videoContainer);
+  }, [getCurrentSegment, playCurrentSegment, pageType]);
 
   // Update segment when active item changes
   useEffect(() => {
+    if (pageType !== 'product') return;
+
     const hasWistiaVideo = 'wistiaVideo' in window;
 
     if (videoInitializedRef.current && hasWistiaVideo) {
       playCurrentSegment();
     }
-  }, [activeId, playCurrentSegment]);
+  }, [activeId, playCurrentSegment, pageType]);
 
   const renderWistiaImage = () => {
     if (!wistiaMediaId) return null;
@@ -195,6 +228,31 @@ export function WistiaPlayer({
 
   return (
     <div className="overflow-hidden rounded-lg" ref={videoContainerRef}>
+      {pageType !== 'product' && (
+        <div className="wistia-player-control absolute right-4 bottom-4 z-20 flex items-center justify-center">
+          {!isPlaying ? (
+            <Button
+              className="text-white"
+              onClick={handlePlay}
+              shape="link"
+              size="medium"
+              variant="link"
+            >
+              <PlayIcon />
+            </Button>
+          ) : (
+            <Button
+              className="text-white"
+              onClick={handlePause}
+              shape="link"
+              size="medium"
+              variant="link"
+            >
+              <PauseIcon />
+            </Button>
+          )}
+        </div>
+      )}
       {/* Add Wistia Scripts */}
       <Script src="https://fast.wistia.com/assets/external/E-v1.js" strategy="afterInteractive" />
       <Script id="wistia-setup-script" strategy="afterInteractive">{`
@@ -202,23 +260,8 @@ export function WistiaPlayer({
       `}</Script>
       {/* Wistia embed wrapper */}
       <div className="h-full w-full">
-        <div
-          className="wistia_responsive_padding"
-          style={{
-            padding: '125.0% 0 0 0',
-            position: 'relative',
-          }}
-        >
-          <div
-            className="wistia_responsive_wrapper"
-            style={{
-              height: '100%',
-              left: 0,
-              position: 'absolute',
-              top: 0,
-              width: '100%',
-            }}
-          >
+        <div className="wistia_responsive_padding">
+          <div className="wistia_responsive_wrapper">
             <div
               className={`wistia_embed wistia_async_${wistiaMediaId} videoFoam=true`}
               style={{

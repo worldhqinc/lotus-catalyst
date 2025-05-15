@@ -814,7 +814,7 @@ export const Navigation = forwardRef(function Navigation(
                                     );
                                   })}
                                   <div className="border-border col-start-3 border-t pt-6">
-                                    <Link className="w-full" href="/shop/professional-series">
+                                    <Link className="w-full" href="/professional-series">
                                       <div className="flex h-full flex-col">
                                         <figure className="bg-surface-image aspect-[19/6] h-full min-h-[246px] w-full rounded-lg" />
                                         <span className="py-2 text-sm font-medium">
