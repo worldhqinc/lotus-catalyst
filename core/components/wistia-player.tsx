@@ -7,7 +7,7 @@ import { Image } from '~/components/image';
 
 declare global {
   interface Window {
-    _wq: unknown[];
+    _wq?: unknown[];
     wistiaVideo: {
       time: (seconds: number) => void;
       play: () => void;
