@@ -2025,6 +2025,8 @@ export const blockProductFeaturesAccordionFieldsSchema = z.object({
     )
     .optional()
     .nullable(),
+  wistiaMediaId: z.string().optional().nullable(),
+  wistiaMediaSegments: z.array(z.string()).optional().nullable(),
 });
 
 export const blockProductFeaturesAccordionSchema = z.object({

@@ -2939,7 +2939,7 @@
         "id": "blockProductFeaturesAccordion",
         "type": "ContentType",
         "createdAt": "2025-04-02T14:58:51.790Z",
-        "updatedAt": "2025-04-29T17:50:27.613Z",
+        "updatedAt": "2025-05-15T15:26:40.034Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -2947,8 +2947,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 5,
-        "publishedAt": "2025-04-29T17:50:27.613Z",
+        "publishedVersion": 11,
+        "publishedAt": "2025-05-15T15:26:40.034Z",
         "firstPublishedAt": "2025-04-02T14:58:52.107Z",
         "createdBy": {
           "sys": {
@@ -2964,8 +2964,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 3,
-        "version": 6,
+        "publishedCounter": 6,
+        "version": 12,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3027,6 +3027,33 @@
             "validations": [
             ],
             "linkType": "Asset"
+          }
+        },
+        {
+          "id": "wistiaMediaId",
+          "name": "Wistia Media Id",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "wistiaMediaSegments",
+          "name": "Wistia Media Segments",
+          "type": "Array",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "items": {
+            "type": "Symbol",
+            "validations": [
+            ]
           }
         }
       ]

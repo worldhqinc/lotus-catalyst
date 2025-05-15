@@ -1,20 +1,20 @@
+'use client';
+
+import { useState } from 'react';
+
 import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
-import { Slideshow } from '@/vibes/soul/sections/slideshow';
+import { WistiaPlayer } from '~/components/wistia-player';
 import { accordionItemSchema, blockProductFeaturesAccordion } from '~/contentful/schema';
-import { ensureImageUrl } from '~/lib/utils';
 
 export function BlockProductFeaturesAccordion({
   heading,
   items,
-  media,
+  wistiaMediaId,
+  wistiaMediaSegments,
 }: blockProductFeaturesAccordion['fields']) {
   const accordionItems = items?.map((item) => accordionItemSchema.parse(item)) ?? [];
-  const slides = (media ?? []).map((asset) => ({
-    title: asset.fields.title || '',
-    image: { alt: asset.fields.title || '', src: ensureImageUrl(asset.fields.file.url) },
-    showDescription: false,
-  }));
+  const [activeItem, setActiveItem] = useState<string | undefined>(accordionItems[0]?.sys.id);
 
   return (
     <SectionLayout containerClassName="bg-white py-24" containerSize="2xl">
@@ -24,10 +24,20 @@ export function BlockProductFeaturesAccordion({
         </h2>
       </div>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <div className="overflow-hidden rounded-lg">
-          <Slideshow interval={5000} playOnInit={false} slides={slides} />
-        </div>
-        <Accordion collapsible defaultValue={accordionItems[0]?.sys.id} type="single">
+        <WistiaPlayer
+          activeId={activeItem}
+          anchorIds={accordionItems.map((item) => item.sys.id)}
+          wistiaMediaId={wistiaMediaId}
+          wistiaMediaSegments={wistiaMediaSegments}
+        />
+        <Accordion
+          collapsible
+          defaultValue={accordionItems[0]?.sys.id}
+          onValueChange={(value) => {
+            setActiveItem(value);
+          }}
+          type="single"
+        >
           {accordionItems.map((item) => (
             <AccordionItem
               className="border-contrast-200 border-t py-4"

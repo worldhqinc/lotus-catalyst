@@ -64,6 +64,11 @@ export default async (): Promise<NextConfig> => {
           hostname: 'cdn11.bigcommerce.com',
           pathname: '**',
         },
+        {
+          protocol: 'https',
+          hostname: 'fast.wistia.com',
+          pathname: '**',
+        },
       ],
     },
     typescript: {
