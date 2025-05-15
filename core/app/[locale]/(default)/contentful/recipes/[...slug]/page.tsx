@@ -193,10 +193,13 @@ export default async function RecipePage({ params }: Props) {
       {/* Intro Section */}
       <div className="py-8 lg:py-16">
         <SectionLayout className="mx-auto max-w-2xl [&_>div]:pb-0">
-          <p className="font-heading text-3xl">{fields.intro}</p>
+          <h2 className="font-heading text-2xl leading-[120%] lg:text-3xl lg:leading-[120%]">
+            {fields.intro}
+          </h2>
           <div className="mt-12">
             {/* Social Share Section */}
             <SocialShare
+              align="left"
               media={fields.featuredImage?.fields.file.url}
               title={fields.recipeName}
               url={fullUrl}

@@ -1,5 +1,6 @@
 'use client';
 
+import { clsx } from 'clsx';
 import { Mail, Printer } from 'lucide-react';
 import {
   EmailShareButton,
@@ -12,18 +13,28 @@ import { Facebook, Pinterest, X } from '@/vibes/soul/sections/footer/social-icon
 import Placeholder from '~/public/images/Lotus-Media-Placeholder.png';
 
 interface Props {
+  align?: 'center' | 'left' | 'right';
   media?: string;
   title: string;
   url: string;
 }
 
-export default function SocialShare({ media, title, url }: Props) {
-  const print = () => {
-    window.print();
+export default function SocialShare({ align = 'center', media, title, url }: Props) {
+  const handlePrint = () => {
+    if (typeof window !== 'undefined') {
+      window.print();
+    }
   };
 
   return (
-    <div className="mx-auto flex max-w-2xl justify-center space-x-4 lg:space-x-8">
+    <div
+      className={clsx(
+        'mx-auto flex max-w-2xl items-center gap-8',
+        align === 'center' && 'justify-center',
+        align === 'left' && 'justify-start',
+        align === 'right' && 'justify-end',
+      )}
+    >
       <FacebookShareButton
         className="!text-foreground ease-quad hover:!text-primary transition-colors duration-200"
         url={url}
@@ -52,7 +63,7 @@ export default function SocialShare({ media, title, url }: Props) {
       </EmailShareButton>
       <button
         className="!text-foreground ease-quad hover:!text-primary transition-colors duration-200"
-        onClick={print}
+        onClick={handlePrint}
         type="button"
       >
         <Printer className="h-6 w-6" />

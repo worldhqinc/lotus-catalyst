@@ -1,6 +1,5 @@
-import { SiFacebook, SiInstagram, SiPinterest } from '@icons-pack/react-simple-icons';
-
 import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
+import { Facebook, Instagram, Pinterest } from '@/vibes/soul/sections/footer/social-icons';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { subscribe } from '~/components/subscribe/_actions/subscribe';
 import { communitySection } from '~/contentful/schema';
@@ -46,9 +45,9 @@ export function CommunitySection({
             {socialLinks?.map((link) => {
               let Icon;
 
-              if (link.includes('facebook')) Icon = SiFacebook;
-              else if (link.includes('instagram')) Icon = SiInstagram;
-              else if (link.includes('pinterest')) Icon = SiPinterest;
+              if (link.includes('facebook')) Icon = Facebook;
+              else if (link.includes('instagram')) Icon = Instagram;
+              else if (link.includes('pinterest')) Icon = Pinterest;
               else
                 return (
                   <a className="text-icon-primary hover:underline" href={link} key={link}>
@@ -58,11 +57,14 @@ export function CommunitySection({
 
               return (
                 <a
-                  className="text-icon-primary border-border rounded-full border p-3 hover:opacity-75"
+                  aria-label={`Follow us on ${link}`}
+                  className="text-icon-primary border-border inline-flex aspect-square min-w-12 items-center justify-center rounded-full border p-3 hover:opacity-75"
                   href={link}
                   key={link}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
-                  <Icon className="h-6 w-6" title={Icon.name} />
+                  <Icon />
                 </a>
               );
             })}
