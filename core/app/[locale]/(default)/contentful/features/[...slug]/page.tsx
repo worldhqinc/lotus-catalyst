@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { SearchParams } from 'nuqs';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
+import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import { Image } from '~/components/image';
@@ -82,6 +83,14 @@ export default async function FeaturePage({ params }: Props) {
       {/* Story Content */}
       <SectionLayout className="mx-auto max-w-2xl">
         <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: storyHtml }} />
+      </SectionLayout>
+
+      <SectionLayout className="mx-auto max-w-2xl">
+        <div className="flex items-center justify-center">
+          <ButtonLink href="/features" size="medium" variant="tertiary">
+            Explore more features
+          </ButtonLink>
+        </div>
       </SectionLayout>
 
       {/* Product Carousel */}
