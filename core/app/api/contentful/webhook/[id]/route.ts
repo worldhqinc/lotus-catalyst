@@ -57,7 +57,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
       };
     }
 
-    if (entry.sys.contentType.sys.id === 'productPartAndAccessories') {
+    if (entry.sys.contentType.sys.id === 'productPartsAndAccessories') {
       const parsedEntry = productPartsAndAccessoriesSchema.parse(entry);
 
       body = {
@@ -94,11 +94,11 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
       body = {
         href: `/${parsedEntry.fields.pageSlug}`,
         title: parsedEntry.fields.recipeName,
-        subtitle: parsedEntry.fields.intro,
+        subtitle: parsedEntry.fields.shortDescription,
         categories: parsedEntry.fields.mealTypeCategory,
         image: {
           src: ensureImageUrl(parsedEntry.fields.featuredImage.fields.file.url),
-          alt: parsedEntry.fields.featuredImage.fields.description,
+          alt: parsedEntry.fields.featuredImage.fields.description ?? parsedEntry.fields.recipeName,
         },
       };
     }
@@ -113,7 +113,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
         categories: parsedEntry.fields.categories,
         image: {
           src: ensureImageUrl(parsedEntry.fields.featuredImage?.fields.file.url ?? ''),
-          alt: parsedEntry.fields.featuredImage?.fields.description ?? '',
+          alt: parsedEntry.fields.featuredImage?.fields.description ?? parsedEntry.fields.title,
         },
       };
     }

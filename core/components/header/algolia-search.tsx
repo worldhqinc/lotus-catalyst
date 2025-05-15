@@ -29,8 +29,8 @@ interface SearchComponentProps {
 }
 
 interface HitProps {
-  hit: unknown;
-  sendEvent: (eventType: string, hit: unknown, eventName: string) => void;
+  hit: ProductGridHit | PostGridHit;
+  sendEvent: (eventType: string, hit: { contentType: string }, eventName: string) => void;
 }
 
 interface GroupConfig {
@@ -41,26 +41,6 @@ interface GroupConfig {
   card: (props: HitProps) => JSX.Element;
 }
 
-function hasRequiredProductFields(hit: object): hit is ProductGridHit {
-  if (!('contentType' in hit)) return false;
-
-  const contentType = hit.contentType;
-
-  return 'sku' in hit && typeof contentType === 'string' && contentType.includes('product');
-}
-
-function hasRequiredPostFields(hit: object): hit is PostGridHit {
-  return 'fields' in hit && !('sku' in hit);
-}
-
-const isProductGridHit = (hit: unknown): hit is ProductGridHit => {
-  return typeof hit === 'object' && hit !== null && hasRequiredProductFields(hit);
-};
-
-const isPostGridHit = (hit: unknown): hit is PostGridHit => {
-  return typeof hit === 'object' && hit !== null && hasRequiredPostFields(hit);
-};
-
 const GROUP_CONFIG: GroupConfig[] = [
   {
     key: 'products',
@@ -68,13 +48,12 @@ const GROUP_CONFIG: GroupConfig[] = [
     href: '/shop/all',
     filter: 'contentType:productFinishedGoods',
     card: ({ hit, sendEvent }) => {
-      if (!isProductGridHit(hit)) return <div />;
-
       return (
         <ProductCard
           aspectRatio="1:1"
           key={hit.objectID}
           onClick={() => sendEvent('click', hit, 'Product Clicked')}
+          // @ts-expect-error - hit is a ProductGridHit
           product={transformProductHit(hit)}
         />
       );
@@ -85,52 +64,43 @@ const GROUP_CONFIG: GroupConfig[] = [
     label: 'Accessories',
     href: '/shop/accessories',
     filter: 'contentType:productPartsAndAccessories',
-    card: ({ hit, sendEvent }) => {
-      if (!isProductGridHit(hit)) return <div />;
-
-      return (
-        <ProductCard
-          aspectRatio="1:1"
-          key={hit.objectID}
-          onClick={() => sendEvent('click', hit, 'Accessory Clicked')}
-          product={transformProductHit(hit)}
-        />
-      );
-    },
+    card: ({ hit, sendEvent }) => (
+      <ProductCard
+        aspectRatio="1:1"
+        key={hit.objectID}
+        onClick={() => sendEvent('click', hit, 'Accessory Clicked')}
+        // @ts-expect-error - hit is a ProductGridHit
+        product={transformProductHit(hit)}
+      />
+    ),
   },
   {
     key: 'recipes',
     label: 'Recipes',
     href: '/recipes',
     filter: 'contentType:recipe',
-    card: ({ hit, sendEvent }) => {
-      if (!isPostGridHit(hit)) return <div />;
-
-      return (
-        <PostGridPostCard
-          key={hit.objectID}
-          {...transformPostHit(hit)}
-          onClick={() => sendEvent('click', hit, 'Recipe Clicked')}
-        />
-      );
-    },
+    card: ({ hit, sendEvent }) => (
+      <PostGridPostCard
+        key={hit.objectID}
+        // @ts-expect-error - hit is a PostGridHit
+        {...transformPostHit(hit)}
+        onClick={() => sendEvent('click', hit, 'Recipe Clicked')}
+      />
+    ),
   },
   {
     key: 'features',
     label: 'Features',
     href: '/features',
     filter: 'contentType:feature',
-    card: ({ hit, sendEvent }) => {
-      if (!isPostGridHit(hit)) return <div />;
-
-      return (
-        <PostGridPostCard
-          key={hit.objectID}
-          {...transformPostHit(hit)}
-          onClick={() => sendEvent('click', hit, 'Feature Clicked')}
-        />
-      );
-    },
+    card: ({ hit, sendEvent }) => (
+      <PostGridPostCard
+        key={hit.objectID}
+        // @ts-expect-error - hit is a PostGridHit
+        {...transformPostHit(hit)}
+        onClick={() => sendEvent('click', hit, 'Feature Clicked')}
+      />
+    ),
   },
 ];
 
@@ -153,6 +123,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
       </div>
       <Hits
         classNames={{ list: 'grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8' }}
+        // @ts-expect-error - hit is a ProductGridHit | PostGridHit
         hitComponent={(props) => group.card(props)}
       />
     </div>

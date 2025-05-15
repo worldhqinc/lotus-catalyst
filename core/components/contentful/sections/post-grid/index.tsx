@@ -139,7 +139,13 @@ export function PostCard({
     <article className="group relative flex flex-col">
       {image.src ? (
         <figure className="bg-surface-image aspect-square w-full overflow-hidden rounded-lg">
-          <Image alt={image.alt} className="h-full w-full object-cover" src={image.src} />
+          <Image
+            alt={image.alt}
+            className="h-full w-full object-cover"
+            height={1000}
+            src={image.src}
+            width={1000}
+          />
         </figure>
       ) : (
         <figure className="bg-surface-image aspect-square w-full rounded-lg" />

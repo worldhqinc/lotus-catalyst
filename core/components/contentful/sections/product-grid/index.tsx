@@ -103,18 +103,18 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
   const getFilterString = () => {
     switch (filterOption) {
       case 'accessory':
-        return 'sys.contentType.sys.id:productPartsAndAccessories';
+        return 'contentType:productPartsAndAccessories';
 
       case 'product':
-        return 'sys.contentType.sys.id:productFinishedGoods';
+        return 'contentType:productFinishedGoods';
 
       case 'all':
       default:
         if (type === 'accessories') {
-          return 'sys.contentType.sys.id:productPartsAndAccessories';
+          return 'contentType:productPartsAndAccessories';
         }
 
-        return 'sys.contentType.sys.id:productFinishedGoods OR sys.contentType.sys.id:productPartsAndAccessories';
+        return 'contentType:productFinishedGoods OR contentType:productPartsAndAccessories';
     }
   };
 
