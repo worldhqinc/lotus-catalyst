@@ -6,6 +6,7 @@ interface NotifyBackInStockProps {
   buttonLabel?: string;
   buttonClassName?: string;
   buttonSize?: 'small' | 'medium';
+  textCta?: boolean;
 }
 
 export default function NotifyBackInStock({
@@ -13,6 +14,7 @@ export default function NotifyBackInStock({
   buttonLabel,
   buttonClassName,
   buttonSize = 'medium',
+  textCta = false,
 }: NotifyBackInStockProps) {
   return (
     <NotifyBackInStockModal
@@ -21,6 +23,7 @@ export default function NotifyBackInStock({
       buttonLabel={buttonLabel}
       buttonSize={buttonSize}
       productId={productId}
+      textCta={textCta}
     />
   );
 }

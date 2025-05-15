@@ -25,6 +25,7 @@ export default function NotifyBackInStockModal({
   buttonLabel = 'Notify me',
   buttonClassName,
   buttonSize = 'medium',
+  textCta = false,
 }: {
   action: Action<
     {
@@ -38,6 +39,7 @@ export default function NotifyBackInStockModal({
   buttonLabel?: string;
   buttonClassName?: string;
   buttonSize?: 'small' | 'medium';
+  textCta?: boolean;
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [{ lastResult, successMessage, errorMessage }, formAction, isPending] = useActionState(
@@ -72,15 +74,30 @@ export default function NotifyBackInStockModal({
 
   return (
     <>
-      <Button
-        className={clsx(buttonClassName, 'w-full')}
-        onClick={() => setModalOpen(true)}
-        size={buttonSize}
-        type="button"
-        variant="secondary"
-      >
-        {buttonLabel}
-      </Button>
+      {textCta ? (
+        <div className="flex items-center">
+          Coming soon{' '}
+          <Button
+            className="text-contrast-400 text-md underline"
+            onClick={() => setModalOpen(true)}
+            size="medium"
+            type="button"
+            variant="link"
+          >
+            Notify me!
+          </Button>
+        </div>
+      ) : (
+        <Button
+          className={clsx(buttonClassName, 'w-full')}
+          onClick={() => setModalOpen(true)}
+          size={buttonSize}
+          type="button"
+          variant="secondary"
+        >
+          {buttonLabel}
+        </Button>
+      )}
       <Modal
         className="w-[90%] @lg:w-120"
         isOpen={modalOpen}

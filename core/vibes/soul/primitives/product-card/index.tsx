@@ -158,7 +158,6 @@ export function ProductCard({
             </form>
           )}
         </div>
-
         <div className="mt-2 flex flex-wrap items-start gap-x-4 gap-y-3 px-1 @xs:mt-3">
           <div className="flex-1 space-y-2 text-sm @[16rem]:text-base">
             <div>
@@ -187,7 +186,7 @@ export function ProductCard({
                 </span>
               )}
             </div>
-            {price != null && <PriceLabel colorScheme={colorScheme} price={price} />}
+            {price != null && inStock && <PriceLabel colorScheme={colorScheme} price={price} />}
           </div>
           {/* {rating != null && (
             <div className="text-foreground mb-2 flex items-center gap-1 text-sm">
@@ -214,6 +213,7 @@ export function ProductCard({
           </Link>
         )}
       </div>
+      {!inStock && <NotifyBackInStock productId={id} textCta={true} />}
       {showCompare && (
         <div className="mt-0.5 shrink-0">
           <Compare
