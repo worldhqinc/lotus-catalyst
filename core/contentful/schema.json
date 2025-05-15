@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-14T20:59:08.663Z",
+        "updatedAt": "2025-05-15T11:39:14.684Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 401,
-        "publishedAt": "2025-05-14T20:59:08.663Z",
+        "publishedVersion": 403,
+        "publishedAt": "2025-05-15T11:39:14.684Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -37,8 +37,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 201,
-        "version": 402,
+        "publishedCounter": 202,
+        "version": 404,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -1172,7 +1172,7 @@
         "id": "recipe",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:03.111Z",
-        "updatedAt": "2025-05-14T19:35:32.331Z",
+        "updatedAt": "2025-05-14T22:02:28.532Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1180,8 +1180,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 41,
-        "publishedAt": "2025-05-14T19:35:32.331Z",
+        "publishedVersion": 43,
+        "publishedAt": "2025-05-14T22:02:28.532Z",
         "firstPublishedAt": "2025-03-07T21:04:15.617Z",
         "createdBy": {
           "sys": {
@@ -1197,8 +1197,8 @@
             "id": "5WtxI4X1oPbwPPsjUjo9xH"
           }
         },
-        "publishedCounter": 21,
-        "version": 42,
+        "publishedCounter": 22,
+        "version": 44,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -1391,8 +1391,8 @@
           }
         },
         {
-          "id": "numberOfIngredients",
-          "name": "Number of Ingredients",
+          "id": "numberOfServings",
+          "name": "Number of Servings",
           "type": "Symbol",
           "localized": false,
           "required": false,
@@ -1402,8 +1402,8 @@
           "omitted": false
         },
         {
-          "id": "numberOfServings",
-          "name": "Number of Servings",
+          "id": "numberOfIngredients",
+          "name": "Number of Ingredients",
           "type": "Symbol",
           "localized": false,
           "required": false,

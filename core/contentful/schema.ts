@@ -914,8 +914,8 @@ export const recipeFieldsSchema = z.object({
   occasionCategory: z.array(z.string()).optional().nullable(),
   ingredientsCategory: z.array(z.string()).optional().nullable(),
   applianceTypeCategory: z.array(z.string()).optional().nullable(),
-  numberOfIngredients: z.string().optional().nullable(),
   numberOfServings: z.string().optional().nullable(),
+  numberOfIngredients: z.string().optional().nullable(),
   ingredientsLists: z
     .array(
       z.object({
