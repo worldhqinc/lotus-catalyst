@@ -614,7 +614,7 @@ export const Navigation = forwardRef(function Navigation(
                         </div>
                         {/* TODO: Add dynamic content */}
                         <div className="col-start-3">
-                          <Link className="group w-full" href="/shop/professional-series">
+                          <Link className="group w-full" href="/professional-series">
                             <div className="flex h-full flex-col">
                               <figure className="bg-surface-image aspect-[19/6] h-full min-h-[246px] w-full rounded-lg" />
                               <span className="ease-quad group-hover:text-primary py-2 font-medium transition-colors duration-200">

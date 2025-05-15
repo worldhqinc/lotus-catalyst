@@ -114,6 +114,10 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
           return 'contentType:productPartsAndAccessories';
         }
 
+        if (type === 'products') {
+          return 'contentType:productFinishedGoods';
+        }
+
         return 'contentType:productFinishedGoods OR contentType:productPartsAndAccessories';
     }
   };
@@ -157,7 +161,7 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
                 variant="rectangle"
               />
             </div>
-            {type !== 'accessories' && (
+            {type === 'all' && (
               <div className="flex max-w-max flex-col items-start @2xl:max-w-none">
                 <Select
                   name="filter"
