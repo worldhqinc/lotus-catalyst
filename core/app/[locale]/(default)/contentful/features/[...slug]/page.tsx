@@ -1,13 +1,13 @@
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
-import { SiFacebook, SiPinterest, SiX } from '@icons-pack/react-simple-icons';
-import { Mail, Printer } from 'lucide-react';
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { SearchParams } from 'nuqs';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
+import SocialShare from '~/components/contentful/sections/social-share';
 import { Image } from '~/components/image';
 import { carouselProductSchema } from '~/contentful/schema';
 
@@ -31,6 +31,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function FeaturePage({ params }: Props) {
   const { slug } = await params;
+  const headersList = await headers();
+  const host = headersList.get('host');
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const fullUrl = `${protocol}://${host}/features/${slug.join('/')}`;
+
   const page = await getPageBySlug('feature', ['features', ...slug]);
   const { fields } = page;
 
@@ -48,7 +53,7 @@ export default async function FeaturePage({ params }: Props) {
       {featuredImage && (
         <Image
           alt={featuredImage.fields.title ?? fields.title}
-          className="h-auto w-full object-cover"
+          className="h-auto max-h-[620px] w-full object-cover"
           height={featuredImage.fields.file.details.image?.height ?? 0}
           src={`https:${featuredImage.fields.file.url}`}
           width={featuredImage.fields.file.details.image?.width ?? 0}
@@ -57,29 +62,18 @@ export default async function FeaturePage({ params }: Props) {
 
       {/* Feature Header */}
       <SectionLayout className="mx-auto max-w-2xl text-center">
-        {fields.categories?.map((category) => <Badge key={category}>{category}</Badge>)}
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {fields.categories?.map((category) => <Badge key={category}>{category}</Badge>)}
+        </div>
         <h1 className="font-heading mt-8 text-4xl font-medium uppercase">{fields.title}</h1>
         {fields.subtitle ? (
           <p className="prose [&_p]:text-icon-secondary mt-6 max-w-none">{fields.subtitle}</p>
         ) : null}
       </SectionLayout>
-      <div className="mx-auto flex max-w-2xl justify-center space-x-4">
-        <a className="text-icon-secondary hover:text-icon-default" href="/">
-          <SiFacebook className="h-6 w-6" title="Facebook" />
-        </a>
-        <a className="text-icon-secondary hover:text-icon-default" href="/">
-          <SiX className="h-6 w-6" title="X" />
-        </a>
-        <a className="text-icon-secondary hover:text-icon-default" href="/">
-          <SiPinterest className="h-6 w-6" title="Pinterest" />
-        </a>
-        <a className="text-icon-secondary hover:text-icon-default" href="/">
-          <Mail className="h-6 w-6" />
-        </a>
-        <a className="text-icon-secondary hover:text-icon-default" href="/">
-          <Printer className="h-6 w-6" />
-        </a>
-      </div>
+      <SocialShare
+        media={featuredImage ? `https:${featuredImage.fields.file.url}` : undefined}
+        url={fullUrl}
+      />
       {/* Story Content */}
       <SectionLayout className="mx-auto max-w-2xl">
         <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: storyHtml }} />
