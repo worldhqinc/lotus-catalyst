@@ -384,6 +384,12 @@ export const Footer = forwardRef(async function Footer(
               className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
               variant="link"
             />
+            <Link
+              className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
+              href="/product-formulation-lookup"
+            >
+              Product Formulation Information
+            </Link>
           </div>
         </div>
       </div>
