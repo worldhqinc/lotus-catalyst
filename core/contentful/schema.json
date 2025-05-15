@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-15T11:39:14.684Z",
+        "updatedAt": "2025-05-15T18:58:06.390Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 403,
-        "publishedAt": "2025-05-15T11:39:14.684Z",
+        "publishedVersion": 405,
+        "publishedAt": "2025-05-15T18:58:06.390Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -34,16 +34,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "0BSO7Skn75LkVCxBc3hKPN"
           }
         },
-        "publishedCounter": 202,
-        "version": 404,
+        "publishedCounter": 203,
+        "version": 406,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "0BSO7Skn75LkVCxBc3hKPN"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productFinishedGoods"
@@ -4936,7 +4936,7 @@
         "id": "heroBanner",
         "type": "ContentType",
         "createdAt": "2025-04-21T23:44:18.865Z",
-        "updatedAt": "2025-05-14T14:51:30.985Z",
+        "updatedAt": "2025-05-15T20:09:47.501Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4944,8 +4944,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 24,
-        "publishedAt": "2025-05-14T14:51:30.985Z",
+        "publishedVersion": 26,
+        "publishedAt": "2025-05-15T20:09:47.501Z",
         "firstPublishedAt": "2025-04-21T23:45:16.956Z",
         "createdBy": {
           "sys": {
@@ -4961,8 +4961,8 @@
             "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 12,
-        "version": 25,
+        "publishedCounter": 13,
+        "version": 27,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -5060,6 +5060,17 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Asset"
+        },
+        {
+          "id": "wistiaId",
+          "name": "Wistia ID",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
         },
         {
           "id": "invertText",
@@ -6364,7 +6375,7 @@
         "id": "productGrid",
         "type": "ContentType",
         "createdAt": "2025-04-30T23:08:10.675Z",
-        "updatedAt": "2025-04-30T23:08:41.790Z",
+        "updatedAt": "2025-05-15T20:14:37.030Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -6372,8 +6383,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-30T23:08:41.790Z",
+        "publishedVersion": 5,
+        "publishedAt": "2025-05-15T20:14:37.030Z",
         "firstPublishedAt": "2025-04-30T23:08:11.108Z",
         "createdBy": {
           "sys": {
@@ -6386,16 +6397,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 2,
-        "version": 4,
+        "publishedCounter": 3,
+        "version": 6,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productGrid"
@@ -6436,6 +6447,7 @@
             {
               "in": [
                 "all",
+                "product",
                 "accessories"
               ]
             }

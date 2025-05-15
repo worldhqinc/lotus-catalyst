@@ -3424,6 +3424,7 @@ export const heroBannerFieldsSchema = z.object({
     })
     .optional()
     .nullable(),
+  wistiaId: z.string().optional().nullable(),
   invertText: z.boolean().optional().nullable(),
   primaryCta: z
     .object({
