@@ -83,6 +83,8 @@ const baseIndex = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? '';
 
 export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
   const [sortOption, setSortOption] = useState('relevance');
+  const [filterOption, setFilterOption] = useState('all');
+  const [searchKey, setSearchKey] = useState(0);
 
   const getSortBy = () => {
     switch (sortOption) {
@@ -98,10 +100,34 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
     }
   };
 
+  const getFilterString = () => {
+    switch (filterOption) {
+      case 'accessory':
+        return 'sys.contentType.sys.id:productPartsAndAccessories';
+
+      case 'product':
+        return 'sys.contentType.sys.id:productFinishedGoods';
+
+      case 'all':
+      default:
+        if (type === 'accessories') {
+          return 'sys.contentType.sys.id:productPartsAndAccessories';
+        }
+
+        return 'sys.contentType.sys.id:productFinishedGoods OR sys.contentType.sys.id:productPartsAndAccessories';
+    }
+  };
+
   const sortOptions = [
     { label: 'Relevance', value: 'relevance' },
     { label: 'Price: Low to High', value: 'price_asc' },
     { label: 'Price: High to Low', value: 'price_desc' },
+  ];
+
+  const filterOptions = [
+    { label: 'All', value: 'all' },
+    { label: 'Products', value: 'product' },
+    { label: 'Accessories', value: 'accessory' },
   ];
 
   return (
@@ -117,28 +143,38 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
           preserveSharedStateOnUnmount: true,
         }}
         indexName={getSortBy()}
+        key={searchKey}
         searchClient={searchClient}
       >
-        <div className="flex w-full items-center justify-between gap-4 pt-12">
-          <div>
-            <Select
-              name="sort"
-              onValueChange={(value) => setSortOption(value)}
-              options={sortOptions}
-              value={sortOption}
-              variant="rectangle"
-            />
+        <div className="flex w-full justify-between gap-4 pt-12 @2xl:flex-row @2xl:items-center">
+          <div className="flex flex-col gap-4 @2xl:flex-row">
+            <div className="flex flex-col items-start">
+              <Select
+                name="sort"
+                onValueChange={(value) => setSortOption(value)}
+                options={sortOptions}
+                value={sortOption}
+                variant="rectangle"
+              />
+            </div>
+            {type !== 'accessories' && (
+              <div className="flex max-w-max flex-col items-start @2xl:max-w-none">
+                <Select
+                  name="filter"
+                  onValueChange={(value) => {
+                    setFilterOption(value);
+                    setSearchKey((prev) => prev + 1);
+                  }}
+                  options={filterOptions}
+                  value={filterOption}
+                  variant="rectangle"
+                />
+              </div>
+            )}
           </div>
           <ResultCount />
         </div>
-        <Configure
-          filters={
-            type === 'accessories'
-              ? 'sys.contentType.sys.id:productPartsAndAccessories'
-              : 'sys.contentType.sys.id:productFinishedGoods OR sys.contentType.sys.id:productPartsAndAccessories'
-          }
-          hitsPerPage={20}
-        />
+        <Configure filters={getFilterString()} hitsPerPage={20} />
         <InfiniteHits />
       </InstantSearch>
     </SectionLayout>

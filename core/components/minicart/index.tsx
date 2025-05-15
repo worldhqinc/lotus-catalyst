@@ -9,8 +9,8 @@ import { z } from 'zod';
 
 import { NumberInput } from '@/vibes/soul/form/number-input';
 import { Button } from '@/vibes/soul/primitives/button';
+import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { Image } from '~/components/image';
-import { Link } from '~/components/link';
 import { minicartCheckoutAction } from '~/components/minicart/_actions/checkout';
 import { type CartItem, minicartAction } from '~/components/minicart/_actions/minicart';
 import { useRouter } from '~/i18n/routing';
@@ -33,7 +33,7 @@ function CheckoutButton({ children }: { children: React.ReactNode }) {
   const { pending } = useFormStatus();
 
   return (
-    <Button className="w-full" disabled={pending} loading={pending} type="submit">
+    <Button className="w-full" disabled={pending} loading={pending} size="medium" type="submit">
       {children}
     </Button>
   );
@@ -128,8 +128,8 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
 
   if (optimisticItems.length === 0) {
     return (
-      <div className="bg-surface-secondary flex h-full flex-col">
-        <div className="bg-background flex items-center gap-2 border-b border-[#e5e5e5] px-6 py-4">
+      <div className="bg-contrast-100 flex h-full flex-col">
+        <div className="bg-contrast-100 border-contrast-200 flex items-center gap-2 border-b px-6 py-4">
           <div className="flex flex-1 items-center gap-2">
             <Button
               className="-ml-2.5"
@@ -149,8 +149,8 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
   }
 
   return (
-    <div className="bg-surface-secondary flex h-full flex-col">
-      <div className="bg-background flex items-center gap-2 border-b border-[#e5e5e5] px-6 py-4">
+    <div className="bg-contrast-100 flex h-full flex-col">
+      <div className="bg-contrast-100 border-contrast-200 flex items-center gap-2 border-b px-6 py-4">
         <div className="flex flex-1 items-center gap-2">
           <Button
             className="-ml-2.5"
@@ -237,7 +237,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
           title={t('completeKitchen.title')}
         />
 
-        <div className="bg-background flex flex-col gap-4 border-t border-[#e5e5e5] px-4 py-4 sm:px-6">
+        <div className="bg-background border-contrast-200 flex flex-col gap-4 border-t px-4 py-4 sm:px-6">
           <div className="flex flex-col gap-1">
             {savings > 0 && (
               <div className="flex justify-between text-sm">
@@ -252,11 +252,15 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
           </div>
 
           <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
-            <Link className="flex-1" href={cartHref} onClick={onClose}>
-              <Button className="w-full" variant="secondary">
-                {t('viewCart')}
-              </Button>
-            </Link>
+            <ButtonLink
+              className="flex-1"
+              href={cartHref}
+              onClick={onClose}
+              size="medium"
+              variant="tertiary"
+            >
+              {t('viewCart')}
+            </ButtonLink>
             <form action={checkoutAction} className="flex-1">
               <CheckoutButton>{t('checkout')}</CheckoutButton>
             </form>

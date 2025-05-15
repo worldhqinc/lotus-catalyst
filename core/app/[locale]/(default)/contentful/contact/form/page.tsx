@@ -2,7 +2,9 @@ import { z } from 'zod';
 
 import { revalidate } from '~/client/revalidate-target';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
+import { Image } from '~/components/image';
 import { Link } from '~/components/link';
+import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 
 import { ContactForm } from '../_components/contact-form';
 
@@ -166,7 +168,13 @@ export default async function ContactFormPage() {
 
   return (
     <>
-      <div className="bg-primary py-8 text-center text-white md:py-16">
+      <div className="bg-primary relative isolate overflow-hidden py-8 text-center text-white md:py-16">
+        <Image
+          alt="Lotus Pattern"
+          className="absolute inset-0 top-1/2 left-1/2 -z-10 h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover"
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          src={BrandArtwork}
+        />
         <div className="container max-w-[300px] md:max-w-lg lg:max-w-2xl">
           <h1 className="font-heading text-4xl uppercase md:text-6xl">Contact Lotus</h1>
           <p className="mt-4">Have a question? Need a hand? Our team is ready to help.</p>

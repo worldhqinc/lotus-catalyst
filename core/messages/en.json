@@ -48,7 +48,7 @@
     "Login": {
       "title": "Login",
       "heading": "Sign in",
-      "forgotPassword": "Reset password",
+      "forgotPassword": "Forgot password?",
       "cta": "Sign in",
       "invalidCredentials": "Your email address or password is incorrect. Try signing in again or reset your password",
       "somethingWentWrong": "Something went wrong. Please try again later.",
@@ -487,7 +487,7 @@
         "us": "United States",
         "ca": "Canada"
       },
-      "termsOfService": "Terms of Service",
+      "termsAndConditions": "Terms and Conditions",
       "cookiePolicy": "Cookie Policy",
       "accessibility": "Accessibility",
       "title": "Policies"

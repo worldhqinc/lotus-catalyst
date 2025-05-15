@@ -38,7 +38,7 @@ export default async function Layout({ children, params }: Props) {
                   { href: '/policies/privacy-policy/ca', label: t('privacyPolicy.ca') },
                 ],
               },
-              { href: '/policies/terms-of-service', label: t('termsOfService') },
+              { href: '/policies/terms-and-conditions', label: t('termsAndConditions') },
               {
                 href: '#',
                 label: t('cookiePolicy'),

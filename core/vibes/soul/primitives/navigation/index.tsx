@@ -6,7 +6,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
-import { ChevronDown, ChevronRight, Search, ShoppingBag, TriangleAlert, User } from 'lucide-react';
+import { ChevronDown, ChevronRight, Search, ShoppingCart, TriangleAlert, User } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, {
   forwardRef,
@@ -114,7 +114,7 @@ const MobileMenuButton = forwardRef<
     <button
       {...rest}
       className={clsx(
-        'group relative overflow-hidden rounded-lg p-2 ring-[var(--nav-focus,hsl(var(--primary)))] outline-0 transition-colors focus-visible:ring-2',
+        'group relative overflow-hidden rounded-lg p-3 ring-[var(--nav-focus,hsl(var(--primary)))] outline-0 transition-colors focus-visible:ring-2',
         className,
       )}
       ref={ref}
@@ -141,7 +141,7 @@ const MobileMenuButton = forwardRef<
 
         <div
           className={clsx(
-            'absolute top-4 flex transform items-center justify-between bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all duration-500',
+            'absolute top-5 flex transform items-center justify-between bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all duration-500',
             open ? 'w-12 translate-x-0' : 'w-0 -translate-x-10',
           )}
         >
@@ -536,7 +536,7 @@ export const Navigation = forwardRef(function Navigation(
                         className={clsx(
                           '@4xl:after:bg-border @4xl:after:ease-quad hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
                           pathname.includes('/shop/')
-                            ? 'after:bg-primary after:scale-x-100'
+                            ? '@4xl:after:bg-primary @4xl:after:scale-x-100'
                             : 'after:scale-x-0',
                         )}
                       >
@@ -547,7 +547,7 @@ export const Navigation = forwardRef(function Navigation(
                         className={clsx(
                           '@4xl:after:bg-border @4xl:after:ease-quad text-nowrap after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
                           pathname === item.href || pathname === `${item.href}/`
-                            ? 'after:bg-primary after:scale-x-100'
+                            ? '@4xl:after:bg-primary @4xl:after:scale-x-100'
                             : 'after:scale-x-0',
                         )}
                         href={item.href}
@@ -562,7 +562,7 @@ export const Navigation = forwardRef(function Navigation(
                       onPointerEnter={(event) => event.preventDefault()}
                       onPointerLeave={(event) => event.preventDefault()}
                     >
-                      <div className="container m-auto grid grid-cols-3 justify-center gap-5 py-16">
+                      <div className="container m-auto grid grid-cols-3 justify-center gap-8 py-16">
                         <div className="flex flex-col items-start gap-6">
                           {item.groups.map((group, columnIndex) => (
                             <ul className="flex flex-col gap-6" key={columnIndex}>
@@ -613,15 +613,15 @@ export const Navigation = forwardRef(function Navigation(
                           </div>
                         </div>
                         {/* TODO: Add dynamic content */}
-                        <div className="col-start-3 grid grid-cols-2 gap-5">
-                          <div className="flex flex-col">
-                            <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
-                            <span className="text-medium py-2">Shop The Perfectionist™</span>
-                          </div>
-                          <div className="flex flex-col">
-                            <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
-                            <span className="text-medium py-2">Shop The Sous</span>
-                          </div>
+                        <div className="col-start-3">
+                          <Link className="group w-full" href="/shop/professional-series">
+                            <div className="flex h-full flex-col">
+                              <figure className="bg-surface-image aspect-[19/6] h-full min-h-[246px] w-full rounded-lg" />
+                              <span className="ease-quad group-hover:text-primary py-2 font-medium transition-colors duration-200">
+                                Explore the Professional Series
+                              </span>
+                            </div>
+                          </Link>
                         </div>
                       </div>
                     </NavigationMenu.Content>
@@ -647,7 +647,7 @@ export const Navigation = forwardRef(function Navigation(
                 onPointerLeave={(e) => e.preventDefault()}
                 onPointerMove={(e) => e.preventDefault()}
               >
-                <Search size={20} strokeWidth={1} />
+                <Search size={24} strokeWidth={1} />
               </button>
             </Dialog.Trigger>
             <Dialog.Portal>
@@ -666,7 +666,7 @@ export const Navigation = forwardRef(function Navigation(
             <User size={24} strokeWidth={1} />
           </Link>
           <Link aria-label={cartLabel} className={navButtonClassName} href={cartHref}>
-            <ShoppingBag size={24} strokeWidth={1} />
+            <ShoppingCart size={24} strokeWidth={1} />
             <Stream
               fallback={
                 <span className="bg-contrast-100 text-background absolute top-1 right-1 flex h-4 w-4 animate-pulse items-center justify-center rounded-full text-xs" />
@@ -715,7 +715,7 @@ export const Navigation = forwardRef(function Navigation(
             <Popover.Trigger asChild>
               <MobileMenuButton
                 aria-label={mobileMenuTriggerLabel}
-                className="mr-1 @4xl:hidden"
+                className="-mr-3 @4xl:hidden"
                 onClick={() => setIsMobileMenuOpen((prev) => !prev)}
                 open={isMobileMenuOpen}
               />
@@ -808,19 +808,15 @@ export const Navigation = forwardRef(function Navigation(
                                       </ul>
                                     );
                                   })}
-                                  <div className="border-border col-start-3 grid grid-cols-2 gap-5 border-t pt-6">
-                                    <div className="flex flex-col">
-                                      <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
-                                      <span className="py-2 text-sm font-medium">
-                                        Shop The Perfectionist™
-                                      </span>
-                                    </div>
-                                    <div className="flex flex-col">
-                                      <figure className="bg-surface-image aspect-square h-auto w-full rounded-lg" />
-                                      <span className="py-2 text-sm font-medium">
-                                        Shop The Sous
-                                      </span>
-                                    </div>
+                                  <div className="border-border col-start-3 border-t pt-6">
+                                    <Link className="w-full" href="/shop/professional-series">
+                                      <div className="flex h-full flex-col">
+                                        <figure className="bg-surface-image aspect-[19/6] h-full min-h-[246px] w-full rounded-lg" />
+                                        <span className="py-2 text-sm font-medium">
+                                          Explore the Professional Series
+                                        </span>
+                                      </div>
+                                    </Link>
                                   </div>
                                 </SidePanel.Content>
                               </SidePanel.Root>

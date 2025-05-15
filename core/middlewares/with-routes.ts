@@ -267,7 +267,6 @@ const getRouteInfo = async (request: NextRequest, event: NextFetchEvent) => {
 };
 
 export const withRoutes: MiddlewareFactory = () => {
-  // eslint-disable-next-line complexity
   return async (request, event) => {
     const locale = request.headers.get('x-bc-locale') ?? '';
 

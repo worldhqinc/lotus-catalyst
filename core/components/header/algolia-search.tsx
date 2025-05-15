@@ -107,7 +107,9 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
   return (
     <div className="py-12 first:mt-8">
       <div className="mb-8 flex items-center justify-between gap-4">
-        <h2 className="text-surface-foreground text-4xl">{group.label}</h2>
+        <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
+          {group.label}
+        </h2>
         <ButtonLink href={group.href} shape="link" size="link" variant="link">
           <span className="flex items-center gap-2 text-base font-normal">
             View more <ArrowRight size={20} strokeWidth={1.5} />

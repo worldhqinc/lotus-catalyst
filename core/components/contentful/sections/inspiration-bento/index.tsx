@@ -139,7 +139,11 @@ export async function InspirationBento({
         </section>
       ) : (
         <div className="flex flex-wrap items-center justify-between gap-4">
-          {heading ? <h2 className="text-4xl">{heading}</h2> : null}
+          {heading ? (
+            <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
+              {heading}
+            </h2>
+          ) : null}
           {validCta ? <ContentfulCta cta={validCta} /> : null}
         </div>
       )}
