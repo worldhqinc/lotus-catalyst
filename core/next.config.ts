@@ -1,4 +1,5 @@
 import bundleAnalyzer from '@next/bundle-analyzer';
+import { randomBytes } from 'crypto';
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
@@ -92,7 +93,7 @@ export default async (): Promise<NextConfig> => {
       ],
     },
     generateBuildId: () => {
-      return `build-${Date.now()}`;
+      return randomBytes(16).toString('hex');
     },
     // default URL generation in BigCommerce uses trailing slash
     trailingSlash: process.env.TRAILING_SLASH !== 'false',
