@@ -17,6 +17,7 @@ import {
   ingredientsListSchema,
 } from '~/contentful/schema';
 import { ensureImageUrl } from '~/lib/utils';
+import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 
 import { getPageBySlug } from '../../[...rest]/page-data';
 import { RecipeActions } from '../_components/recipe-actions';
@@ -118,7 +119,14 @@ export default async function RecipePage({ params }: Props) {
   return (
     <article>
       {/* Hero Section */}
-      <div className="bg-primary relative pb-18">
+      <div className="bg-primary relative isolate overflow-hidden pb-18">
+        <Image
+          alt="Lotus Pattern"
+          className="absolute inset-0 h-full w-full object-cover"
+          fill
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          src={BrandArtwork}
+        />
         <div className="bg-background absolute inset-0 bottom-1/2 lg:hidden" />
         <div className="bg-background top-0 right-0 left-0 lg:absolute">
           <SectionLayout className="relative" containerSize="xl">
@@ -178,53 +186,51 @@ export default async function RecipePage({ params }: Props) {
       </div>
 
       {/* Intro Section */}
-      <SectionLayout containerSize="md">
-        <p className="font-heading text-3xl">{fields.intro}</p>
-      </SectionLayout>
-
-      {/* Social Share Section */}
-      <SectionLayout containerClassName="!pb-0" containerSize="md">
-        <RecipeActions recipeName={fields.recipeName} />
-        <hr className="border-border" />
-      </SectionLayout>
-
-      {/* Ingredients Section */}
-      <SectionLayout containerSize="md">
-        <h2 className="text-2xl font-medium uppercase">Ingredients</h2>
-        {fields.numberOfServings ? (
-          <p className="text-primary mt-8 text-2xl font-medium uppercase">
-            {fields.numberOfServings}
-          </p>
-        ) : null}
-        <div className="mt-8">{renderIngredientsList(ingredientsListsData)}</div>
-      </SectionLayout>
-
-      {/* Directions Section */}
-      <SectionLayout containerSize="md">
-        <h2 className="text-2xl font-medium uppercase">Directions</h2>
-        <div
-          className="prose text-contrast-500 mt-4 max-w-none"
-          dangerouslySetInnerHTML={{ __html: directionsHtml }}
-        />
-      </SectionLayout>
-
-      {/* Variations Section */}
-      <SectionLayout containerSize="md">
-        <h2 className="text-primary text-2xl font-medium uppercase">Variations</h2>
-        <div
-          className="prose text-contrast-500 mt-4 max-w-none"
-          dangerouslySetInnerHTML={{ __html: variationsHtml }}
-        />
-      </SectionLayout>
-
-      {/* Pro Tip Section */}
-      <SectionLayout containerSize="md">
-        <h2 className="text-primary text-2xl font-medium uppercase">Pro Tip</h2>
-        <div
-          className="prose text-contrast-500 mt-4 max-w-none"
-          dangerouslySetInnerHTML={{ __html: proTipHtml }}
-        />
-      </SectionLayout>
+      <div className="py-8 lg:py-16">
+        <SectionLayout className="mx-auto max-w-2xl [&_>div]:pb-0">
+          <p className="font-heading text-3xl">{fields.intro}</p>
+          <div className="mt-12">
+            {/* Social Share Section */}
+            <RecipeActions recipeName={fields.recipeName} />
+            <hr className="border-border" />
+          </div>
+        </SectionLayout>
+        {/* Ingredients Section */}
+        <SectionLayout className="mx-auto max-w-2xl">
+          <h2 className="text-2xl font-medium uppercase">Ingredients</h2>
+          {fields.numberOfServings ? (
+            <p className="text-primary mt-8 text-2xl font-medium uppercase">
+              {fields.numberOfServings}
+            </p>
+          ) : null}
+          <div className="mt-8">{renderIngredientsList(ingredientsListsData)}</div>
+        </SectionLayout>
+        {/* Directions Section */}
+        <SectionLayout className="mx-auto max-w-2xl">
+          <h2 className="text-2xl font-medium uppercase">Directions</h2>
+          <div
+            className="prose text-contrast-500 mt-4 max-w-none"
+            dangerouslySetInnerHTML={{ __html: directionsHtml }}
+          />
+        </SectionLayout>
+        {/* Variations Section */}
+        <SectionLayout className="mx-auto max-w-2xl">
+          <h2 className="text-primary text-2xl font-medium uppercase">Variations</h2>
+          <div
+            className="prose text-contrast-500 mt-4 max-w-none"
+            dangerouslySetInnerHTML={{ __html: variationsHtml }}
+          />
+        </SectionLayout>
+        {/* Pro Tip Section */}
+        <SectionLayout className="mx-auto max-w-2xl">
+          <h2 className="text-primary text-2xl font-medium uppercase">Pro Tip</h2>
+          <div
+            className="prose text-contrast-500 mt-4 max-w-none"
+            dangerouslySetInnerHTML={{ __html: proTipHtml }}
+          />
+          <hr className="border-border mt-12" />
+        </SectionLayout>
+      </div>
 
       {/* Recipe Carousel Section */}
       {recipeCarousel ? <RecipeCarousel carousel={recipeCarousel} /> : null}

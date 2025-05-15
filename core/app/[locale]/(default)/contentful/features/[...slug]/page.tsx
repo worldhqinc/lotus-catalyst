@@ -55,14 +55,14 @@ export default async function FeaturePage({ params }: Props) {
       )}
 
       {/* Feature Header */}
-      <SectionLayout className="text-center" containerSize="md">
+      <SectionLayout className="mx-auto max-w-2xl text-center">
         {fields.categories?.map((category) => <Badge key={category}>{category}</Badge>)}
         <h1 className="font-heading mt-8 text-4xl font-medium uppercase">{fields.title}</h1>
         {fields.subtitle ? (
           <p className="prose [&_p]:text-icon-secondary mt-6 max-w-none">{fields.subtitle}</p>
         ) : null}
       </SectionLayout>
-      <div className="flex justify-center space-x-4">
+      <div className="mx-auto flex max-w-2xl justify-center space-x-4">
         <a className="text-icon-secondary hover:text-icon-default" href="/">
           <SiFacebook className="h-6 w-6" title="Facebook" />
         </a>
@@ -80,7 +80,7 @@ export default async function FeaturePage({ params }: Props) {
         </a>
       </div>
       {/* Story Content */}
-      <SectionLayout containerSize="lg">
+      <SectionLayout className="mx-auto max-w-2xl">
         <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: storyHtml }} />
       </SectionLayout>
 
