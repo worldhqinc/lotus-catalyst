@@ -2,10 +2,17 @@ import { algoliasearch } from 'algoliasearch';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-import { productFinishedGoodsSchema, productPartsAndAccessoriesSchema } from '~/contentful/schema';
+import {
+  featureSchema,
+  pageStandardSchema,
+  productFinishedGoodsSchema,
+  productPartsAndAccessoriesSchema,
+  recipeSchema,
+} from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
 import { ensureImageUrl } from '~/lib/utils';
 
+// eslint-disable-next-line complexity
 export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
 
@@ -68,6 +75,34 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
             parsedEntry.fields.featuredImage?.fields.description ??
             parsedEntry.fields.webProductName,
         },
+      };
+    }
+
+    if (entry.sys.contentType.sys.id === 'pageStandard') {
+      const parsedEntry = pageStandardSchema.parse(entry);
+
+      body = {
+        href: `/${parsedEntry.fields.pageSlug}`,
+        title: parsedEntry.fields.pageName,
+        subtitle: parsedEntry.fields.optionalPageDescription,
+      };
+    }
+
+    if (entry.sys.contentType.sys.id === 'recipe') {
+      const parsedEntry = recipeSchema.parse(entry);
+
+      body = {
+        href: `/${parsedEntry.fields.pageSlug}`,
+        title: parsedEntry.fields.recipeName,
+      };
+    }
+
+    if (entry.sys.contentType.sys.id === 'feature') {
+      const parsedEntry = featureSchema.parse(entry);
+
+      body = {
+        href: `/${parsedEntry.fields.pageSlug}`,
+        title: parsedEntry.fields.title,
       };
     }
 
