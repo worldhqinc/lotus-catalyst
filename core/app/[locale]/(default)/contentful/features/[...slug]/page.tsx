@@ -72,6 +72,7 @@ export default async function FeaturePage({ params }: Props) {
       </SectionLayout>
       <SocialShare
         media={featuredImage ? `https:${featuredImage.fields.file.url}` : undefined}
+        title={fields.title}
         url={fullUrl}
       />
       {/* Story Content */}

@@ -13,10 +13,11 @@ import Placeholder from '~/public/images/Lotus-Media-Placeholder.png';
 
 interface Props {
   media?: string;
+  title: string;
   url: string;
 }
 
-export default function SocialShare({ media, url }: Props) {
+export default function SocialShare({ media, title, url }: Props) {
   const print = () => {
     window.print();
   };
@@ -44,6 +45,7 @@ export default function SocialShare({ media, url }: Props) {
       </PinterestShareButton>
       <EmailShareButton
         className="!text-foreground ease-quad hover:!text-primary transition-colors duration-200"
+        subject={title}
         url={url}
       >
         <Mail className="h-6 w-6" />
