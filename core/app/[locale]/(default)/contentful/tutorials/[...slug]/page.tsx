@@ -1,14 +1,14 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
-import { SiFacebook, SiPinterest, SiX } from '@icons-pack/react-simple-icons';
-import { Mail, Printer } from 'lucide-react';
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { SearchParams } from 'nuqs';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
+import SocialShare from '~/components/contentful/sections/social-share';
 import { Image } from '~/components/image';
 import { carouselProductSchema } from '~/contentful/schema';
 
@@ -32,6 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function FeaturePage({ params }: Props) {
   const { slug } = await params;
+  const headersList = await headers();
+  const host = headersList.get('host');
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const fullUrl = `${protocol}://${host}/tutorials/${slug.join('/')}`;
   const page = await getPageBySlug('tutorial', ['tutorials', ...slug]);
   const { fields } = page;
 
@@ -59,28 +63,20 @@ export default async function FeaturePage({ params }: Props) {
 
       {/* Feature Header */}
       <SectionLayout className="text-center" containerSize="md">
-        {fields.categories?.map((category) => <Badge key={category}>{category}</Badge>)}
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {fields.categories?.map((category) => <Badge key={category}>{category}</Badge>)}
+        </div>
         <h1 className="font-heading mt-8 text-4xl font-medium uppercase">{fields.title}</h1>
         {fields.subtitle ? (
           <p className="prose [&_p]:text-icon-secondary mt-6 max-w-none">{fields.subtitle}</p>
         ) : null}
       </SectionLayout>
       <div className="mx-auto mb-12 flex w-[min(calc(100%-2rem),672px)] justify-center space-x-4 lg:space-x-8">
-        <a className="text-icon-secondary hover:text-icon-default" href="/">
-          <SiFacebook className="h-6 w-6" title="Facebook" />
-        </a>
-        <a className="text-icon-secondary hover:text-icon-default" href="/">
-          <SiX className="h-6 w-6" title="X" />
-        </a>
-        <a className="text-icon-secondary hover:text-icon-default" href="/">
-          <SiPinterest className="h-6 w-6" title="Pinterest" />
-        </a>
-        <a className="text-icon-secondary hover:text-icon-default" href="/">
-          <Mail className="h-6 w-6" />
-        </a>
-        <a className="text-icon-secondary hover:text-icon-default" href="/">
-          <Printer className="h-6 w-6" />
-        </a>
+        <SocialShare
+          media={featuredImage ? `https:${featuredImage.fields.file.url}` : undefined}
+          title={fields.title}
+          url={fullUrl}
+        />
       </div>
       {/* Story Content */}
       <SectionLayout className="[&_>div]:border-border [&_>div]:mx-auto [&_>div]:w-[min(calc(100%-2rem),672px)] [&_>div]:border-y [&_>div]:px-0">

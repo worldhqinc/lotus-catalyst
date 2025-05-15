@@ -2,6 +2,7 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { SearchParams } from 'nuqs';
 import { z } from 'zod';
 
@@ -9,6 +10,7 @@ import { Badge } from '@/vibes/soul/primitives/badge';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import { RecipeCarousel } from '~/components/contentful/carousels/recipe-carousel';
+import SocialShare from '~/components/contentful/sections/social-share';
 import { Image } from '~/components/image';
 import {
   authorSchema,
@@ -20,7 +22,6 @@ import { ensureImageUrl } from '~/lib/utils';
 import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 
 import { getPageBySlug } from '../../[...rest]/page-data';
-import { RecipeActions } from '../_components/recipe-actions';
 
 interface Props {
   params: Promise<{ locale: string; slug: string[] }>;
@@ -85,6 +86,10 @@ const renderMetaInfo = (
 
 export default async function RecipePage({ params }: Props) {
   const { slug } = await params;
+  const headersList = await headers();
+  const host = headersList.get('host');
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const fullUrl = `${protocol}://${host}/recipes/${slug.join('/')}`;
   const page = await getPageBySlug('recipe', ['recipes', ...slug]);
   const { fields } = page;
 
@@ -188,11 +193,18 @@ export default async function RecipePage({ params }: Props) {
       {/* Intro Section */}
       <div className="py-8 lg:py-16">
         <SectionLayout className="mx-auto max-w-2xl [&_>div]:pb-0">
-          <p className="font-heading text-3xl">{fields.intro}</p>
+          <h2 className="font-heading text-2xl leading-[120%] lg:text-3xl lg:leading-[120%]">
+            {fields.intro}
+          </h2>
           <div className="mt-12">
             {/* Social Share Section */}
-            <RecipeActions recipeName={fields.recipeName} />
-            <hr className="border-border" />
+            <SocialShare
+              align="left"
+              media={fields.featuredImage?.fields.file.url}
+              title={fields.recipeName}
+              url={fullUrl}
+            />
+            <hr className="border-border mt-12" />
           </div>
         </SectionLayout>
         {/* Ingredients Section */}
