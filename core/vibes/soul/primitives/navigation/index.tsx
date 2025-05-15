@@ -614,12 +614,12 @@ export const Navigation = forwardRef(function Navigation(
                           </div>
                         </div>
                         <div className="col-start-3">
-                          <Link className="group w-full" href="/professional-series">
+                          <Link className="group w-full" href="/shop/professional-series">
                             <div className="flex h-full flex-col">
                               <Image
                                 alt="Explore Lotus Professional Series"
                                 height={246}
-                                src="/images/professional-series.png"
+                                src="https://images.ctfassets.net/esj3sw7u4uve/6qen7gqAvmEaKF2fusTjCF/9240e8a5fadb8fa961dc221295f49e1d/LTSCM500-LTSTR502-Mixed-Use-Group-Horiontal-Wide-Talent-V2.webp"
                                 width={369}
                               />
                               <span className="ease-quad group-hover:text-primary py-2 font-medium transition-colors duration-200">
