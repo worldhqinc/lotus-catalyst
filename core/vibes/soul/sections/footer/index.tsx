@@ -226,7 +226,7 @@ export const Footer = forwardRef(async function Footer(
                 <li>
                   <Link
                     className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block transition-colors duration-200"
-                    href="/press"
+                    href="/press-and-media-kits"
                   >
                     Press
                   </Link>
