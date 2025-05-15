@@ -66,13 +66,6 @@ function InfiniteHits({ type }: { type: string }) {
   );
 }
 
-function getCategoryAttribute(type: string) {
-  if (type === 'feature') return 'fields.categories.en-US';
-  if (type === 'recipe') return 'fields.mealTypeCategory.en-US';
-
-  return '';
-}
-
 function CategoryFilter({ attribute }: { attribute: string }) {
   const { items, refine } = useRefinementList({
     attribute,
@@ -112,7 +105,7 @@ export function PostGrid({ title, subtitle, type }: PostGridProps) {
         indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? ''}
         searchClient={searchClient}
       >
-        <CategoryFilter attribute={getCategoryAttribute(type)} />
+        <CategoryFilter attribute="categories" />
         <Configure filters={`contentType:${type}`} hitsPerPage={9} />
         <InfiniteHits type={type} />
       </InstantSearch>
