@@ -329,30 +329,30 @@ export const withRoutes: MiddlewareFactory = () => {
     let url: string;
 
     switch (node?.__typename) {
-      case 'Brand': {
-        url = `/${locale}/brand/${node.entityId}`;
-        break;
-      }
+      // case 'Brand': {
+      //   url = `/${locale}/brand/${node.entityId}`;
+      //   break;
+      // }
 
-      case 'Category': {
-        url = `/${locale}/category/${node.entityId}`;
-        break;
-      }
+      // case 'Category': {
+      //   url = `/${locale}/category/${node.entityId}`;
+      //   break;
+      // }
 
       case 'Product': {
         url = `/${locale}/product/${node.entityId}`;
         break;
       }
 
-      case 'NormalPage': {
-        url = `/${locale}/webpages/${node.id}/normal/`;
-        break;
-      }
+      // case 'NormalPage': {
+      //   url = `/${locale}/webpages/${node.id}/normal/`;
+      //   break;
+      // }
 
-      case 'ContactPage': {
-        url = `/${locale}/webpages/${node.id}/contact/`;
-        break;
-      }
+      // case 'ContactPage': {
+      //   url = `/${locale}/webpages/${node.id}/contact/`;
+      //   break;
+      // }
 
       case 'RawHtmlPage': {
         const { htmlBody } = await getRawWebPageContent(node.id);
@@ -362,15 +362,15 @@ export const withRoutes: MiddlewareFactory = () => {
         });
       }
 
-      case 'Blog': {
-        url = `/${locale}/blog`;
-        break;
-      }
+      // case 'Blog': {
+      //   url = `/${locale}/blog`;
+      //   break;
+      // }
 
-      case 'BlogPost': {
-        url = `/${locale}/blog/${node.entityId}`;
-        break;
-      }
+      // case 'BlogPost': {
+      //   url = `/${locale}/blog/${node.entityId}`;
+      //   break;
+      // }
 
       default: {
         const { pathname } = new URL(request.url);
@@ -381,13 +381,13 @@ export const withRoutes: MiddlewareFactory = () => {
           '/account',
           '/cart',
           '/checkout',
-          '/compare',
+          // '/compare',
           '/login',
           '/logout',
           '/register',
           '/change-password',
           '/maintenance',
-          '/search',
+          // '/search',
           '/wishlist',
         ];
 
