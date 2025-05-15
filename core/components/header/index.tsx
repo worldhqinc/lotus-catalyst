@@ -131,6 +131,10 @@ export const Header = async () => {
         ],
       },
       {
+        label: 'Explore',
+        href: '/professional-series',
+      },
+      {
         label: 'Inspiration',
         href: '/inspiration',
       },

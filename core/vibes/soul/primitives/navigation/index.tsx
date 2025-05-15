@@ -26,6 +26,7 @@ import * as SidePanel from '@/vibes/soul/primitives/side-panel';
 import CookiePreferencesCta from '~/components/cookie-preferences-cta';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import AlgoliaSearch from '~/components/header/algolia-search';
+import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { Minicart } from '~/components/minicart';
 import { CartItem } from '~/components/minicart/_actions/minicart';
@@ -612,11 +613,15 @@ export const Navigation = forwardRef(function Navigation(
                             </NavigationMenu.Link>
                           </div>
                         </div>
-                        {/* TODO: Add dynamic content */}
                         <div className="col-start-3">
                           <Link className="group w-full" href="/professional-series">
                             <div className="flex h-full flex-col">
-                              <figure className="bg-surface-image aspect-[19/6] h-full min-h-[246px] w-full rounded-lg" />
+                              <Image
+                                alt="Explore Lotus Professional Series"
+                                height={246}
+                                src="/images/professional-series.png"
+                                width={369}
+                              />
                               <span className="ease-quad group-hover:text-primary py-2 font-medium transition-colors duration-200">
                                 Explore the Professional Series
                               </span>
