@@ -55,9 +55,9 @@ export function getLinkHref(fields: cta['fields']) {
       typeof internalReference.fields.pageSlug === 'string'
     ) {
       linkHref = `/${internalReference.fields.pageSlug}`;
-    } else if (externalLink) {
-      linkHref = externalLink;
     }
+  } else if (externalLink) {
+    linkHref = externalLink;
   }
 
   return linkHref;
