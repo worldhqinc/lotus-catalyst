@@ -26,7 +26,7 @@ interface Props extends Omit<WishlistItem, 'itemId' | 'product'> {
 }
 
 export const WishlistItemAddToCart = ({
-  callToAction = { label: 'Add to bag' },
+  callToAction = { label: 'Add to cart' },
   productId,
   variantId,
   action,

@@ -327,7 +327,7 @@
   },
   "Compare": {
     "title": "Compare products",
-    "addToCart": "Add to bag",
+    "addToCart": "Add to cart",
     "next": "Next products",
     "previous": "Previous products",
     "noProductsToCompare": "No products to compare",
@@ -359,7 +359,7 @@
       "thumbnail": "View image number",
       "additionalInformation": "Additional information",
       "Submit": {
-        "addToCart": "Add to bag",
+        "addToCart": "Add to cart",
         "outOfStock": "Out of stock",
         "preorder": "Preorder",
         "unavailable": "Unavailable"
@@ -476,7 +476,7 @@
     "savings": "Savings",
     "completeKitchen": {
       "title": "Complete the kitchen",
-      "addToCart": "Add to bag",
+      "addToCart": "Add to cart",
       "nextProducts": "Next products",
       "previousProducts": "Previous products"
     }

@@ -36,7 +36,7 @@ function AddToBagForm({
   if (!sku) {
     return (
       <Button disabled size="small">
-        Add to bag{priceDisplay ? ` | ${priceDisplay}` : ''}
+        Add to cart{priceDisplay ? ` | ${priceDisplay}` : ''}
       </Button>
     );
   }
@@ -53,7 +53,7 @@ function AddToBagForm({
     >
       <input name="sku" type="hidden" value={sku} />
       <Button disabled={isPending} loading={isPending} size="small" type="submit">
-        Add to bag{priceDisplay ? ` | ${priceDisplay}` : ''}
+        Add to cart{priceDisplay ? ` | ${priceDisplay}` : ''}
       </Button>
     </form>
   );
@@ -133,7 +133,7 @@ export const ProductStickyHeader = forwardRef<
         <Stream
           fallback={
             <Button loading size="small">
-              Add to bag
+              Add to cart
             </Button>
           }
           value={Streamable.all([product.price, streamableCtaDisabled])}
