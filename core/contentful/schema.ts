@@ -2931,6 +2931,58 @@ export const heroSectionFieldsSchema = z.object({
     })
     .optional()
     .nullable(),
+  image: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.undefined().optional().nullable(),
+      }),
+      fields: z.object({
+        title: z.string().optional().nullable(),
+        description: z.string().optional().nullable(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional()
+              .nullable(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .optional()
+    .nullable(),
 });
 
 export const heroSectionSchema = z.object({

@@ -4169,7 +4169,7 @@
         "id": "heroSection",
         "type": "ContentType",
         "createdAt": "2025-04-21T14:33:30.959Z",
-        "updatedAt": "2025-05-08T23:32:39.553Z",
+        "updatedAt": "2025-05-16T20:20:13.259Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4177,8 +4177,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 12,
-        "publishedAt": "2025-05-08T23:32:39.553Z",
+        "publishedVersion": 18,
+        "publishedAt": "2025-05-16T20:20:13.259Z",
         "firstPublishedAt": "2025-04-21T14:35:44.484Z",
         "createdBy": {
           "sys": {
@@ -4191,16 +4191,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 6,
-        "version": 13,
+        "publishedCounter": 9,
+        "version": 19,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/heroSection"
@@ -4264,6 +4264,18 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Entry"
+        },
+        {
+          "id": "image",
+          "name": "Image",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
         }
       ]
     },
