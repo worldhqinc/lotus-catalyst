@@ -15,6 +15,22 @@ interface FaqListProps {
 type FaqListFields = z.infer<typeof faqListFieldsSchema>;
 
 export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields & FaqListProps) {
+  // Filters out FAQs with unpublished or invalid categories
+  const validFaqs = faqReference.filter((faq) => {
+    try {
+      const fields = faqFieldsSchema.parse(faq.fields);
+
+      // Checks if the category exists and is properly published
+      return (
+        fields.faqCategory[0]?.sys.type === 'Entry' && fields.faqCategory[0].fields.faqCategoryName
+      );
+    } catch {
+      return false;
+    }
+  });
+
+  if (validFaqs.length === 0) return null;
+
   return (
     <SectionLayout
       className={clsx(
@@ -38,10 +54,10 @@ export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields &
           <Accordion
             className="divide-contrast-200 divide-y"
             collapsible
-            defaultValue={faqReference[0]?.sys.id}
+            defaultValue={validFaqs[0]?.sys.id}
             type="single"
           >
-            {faqReference.map((faq) => {
+            {validFaqs.map((faq) => {
               const fields = faqFieldsSchema.parse(faq.fields);
 
               return (
