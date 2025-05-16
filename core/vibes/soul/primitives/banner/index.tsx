@@ -49,7 +49,7 @@ export const Banner = forwardRef(
   ) => {
     return (
       <div
-        className={clsx('bg-primary relative isolate overflow-hidden py-4 text-white', className)}
+        className={clsx('bg-primary relative isolate overflow-hidden py-3 text-white', className)}
         ref={ref}
       >
         <Image
