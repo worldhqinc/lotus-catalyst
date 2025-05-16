@@ -8,14 +8,14 @@ const schema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   email: z.string().email('Please enter a valid Email address'),
-  product: z.string().refine((val) => val !== 'null', 'Please select a Product'),
-  subscribe: z.string().optional(),
+  modelNumber: z.string().refine((val) => val === 'null', 'Please select a Model number'),
+  subscribe: z.boolean().optional().nullable(),
 });
 
 interface FormState {
   errors: Record<string, string[]> | null;
   success: boolean;
-  formData?: Record<string, string | null>;
+  formData?: Record<string, string | boolean | null>;
 }
 
 export async function submitForm(state: FormState, formData: FormData): Promise<FormState> {
@@ -23,7 +23,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     firstName: formData.get('firstName'),
     lastName: formData.get('lastName'),
     email: formData.get('email'),
-    product: formData.get('productType'),
+    modelNumber: formData.get('modelNumber'),
     subscribe: formData.get('subscribe'),
   });
 

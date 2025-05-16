@@ -31,7 +31,7 @@ async function getProductOptions() {
     };
   });
 
-  productOptions.unshift({ label: 'Select a Model Number', value: 'null' });
+  productOptions.unshift({ label: 'Select a model number', value: 'null' });
 
   productOptions = Array.from(
     new Map(productOptions.map((item) => [item.value, item])).values(),
