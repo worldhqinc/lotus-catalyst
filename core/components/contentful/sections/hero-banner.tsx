@@ -252,6 +252,25 @@ export async function HeroBanner({
   );
 }
 
+function getUrl(fields: {
+  externalLink?: unknown;
+  internalReference?: {
+    fields?: {
+      pageSlug?: unknown;
+    } | null;
+  } | null;
+}) {
+  if (typeof fields.externalLink === 'string') {
+    return fields.externalLink;
+  }
+
+  if (typeof fields.internalReference?.fields?.pageSlug === 'string') {
+    return fields.internalReference.fields.pageSlug;
+  }
+
+  return '';
+}
+
 function HeroBannerCTAs({
   primary,
   secondary,
@@ -268,11 +287,9 @@ function HeroBannerCTAs({
         variant?.startsWith('left-aligned') ? 'items-start' : 'items-center',
       )}
     >
-      {primary && (
-        <ButtonLink href={primary.fields.externalLink ?? ''}>{primary.fields.text}</ButtonLink>
-      )}
+      {primary && <ButtonLink href={getUrl(primary.fields)}>{primary.fields.text}</ButtonLink>}
       {secondary && (
-        <ButtonLink href={secondary.fields.externalLink ?? ''} variant="tertiary">
+        <ButtonLink href={getUrl(secondary.fields)} variant="tertiary">
           {secondary.fields.text}
         </ButtonLink>
       )}
