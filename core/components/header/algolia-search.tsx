@@ -10,6 +10,8 @@ import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { ProductCard } from '@/vibes/soul/primitives/product-card';
 import Tabs from '@/vibes/soul/primitives/tabs';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
+import { useSearch } from '~/context/search-context';
+import { usePathname } from '~/i18n/routing';
 
 import {
   PostGridHit,
@@ -31,6 +33,7 @@ interface SearchComponentProps {
 interface HitProps {
   hit: ProductGridHit | PostGridHit;
   sendEvent: (eventType: string, hit: { contentType: string }, eventName: string) => void;
+  onItemClick?: (path: string) => void;
 }
 
 interface GroupConfig {
@@ -47,12 +50,15 @@ const GROUP_CONFIG: GroupConfig[] = [
     label: 'Products',
     href: '/shop/all',
     filter: 'contentType:productFinishedGoods',
-    card: ({ hit, sendEvent }) => {
+    card: ({ hit, sendEvent, onItemClick }) => {
       return (
         <ProductCard
           aspectRatio="1:1"
           key={hit.objectID}
-          onClick={() => sendEvent('click', hit, 'Product Clicked')}
+          onClick={() => {
+            sendEvent('click', hit, 'Product Clicked');
+            onItemClick?.(hit.href);
+          }}
           // @ts-expect-error - hit is a ProductGridHit
           product={transformProductHit(hit)}
         />
@@ -64,11 +70,14 @@ const GROUP_CONFIG: GroupConfig[] = [
     label: 'Accessories',
     href: '/shop/accessories',
     filter: 'contentType:productPartsAndAccessories',
-    card: ({ hit, sendEvent }) => (
+    card: ({ hit, sendEvent, onItemClick }) => (
       <ProductCard
         aspectRatio="1:1"
         key={hit.objectID}
-        onClick={() => sendEvent('click', hit, 'Accessory Clicked')}
+        onClick={() => {
+          sendEvent('click', hit, 'Accessory Clicked');
+          onItemClick?.(hit.href);
+        }}
         // @ts-expect-error - hit is a ProductGridHit
         product={transformProductHit(hit)}
       />
@@ -79,12 +88,15 @@ const GROUP_CONFIG: GroupConfig[] = [
     label: 'Recipes',
     href: '/recipes',
     filter: 'contentType:recipe',
-    card: ({ hit, sendEvent }) => (
+    card: ({ hit, sendEvent, onItemClick }) => (
       <PostGridPostCard
         key={hit.objectID}
         // @ts-expect-error - hit is a PostGridHit
         {...transformPostHit(hit)}
-        onClick={() => sendEvent('click', hit, 'Recipe Clicked')}
+        onClick={() => {
+          sendEvent('click', hit, 'Recipe Clicked');
+          onItemClick?.(hit.href);
+        }}
       />
     ),
   },
@@ -93,12 +105,15 @@ const GROUP_CONFIG: GroupConfig[] = [
     label: 'Features',
     href: '/features',
     filter: 'contentType:feature',
-    card: ({ hit, sendEvent }) => (
+    card: ({ hit, sendEvent, onItemClick }) => (
       <PostGridPostCard
         key={hit.objectID}
         // @ts-expect-error - hit is a PostGridHit
         {...transformPostHit(hit)}
-        onClick={() => sendEvent('click', hit, 'Feature Clicked')}
+        onClick={() => {
+          sendEvent('click', hit, 'Feature Clicked');
+          onItemClick?.(hit.href);
+        }}
       />
     ),
   },
@@ -106,8 +121,20 @@ const GROUP_CONFIG: GroupConfig[] = [
 
 function GroupTabContent({ group }: { group: GroupConfig }) {
   const { items } = useHits();
+  const { setIsSearchOpen } = useSearch();
+  const currentPath = usePathname();
 
   if (items.length === 0) return null;
+
+  const handleClick = (path: string) => {
+    // Remove trailing slashes and normalize paths for comparison
+    const normalizedCurrentPath = currentPath.replace(/\/$/, '');
+    const normalizedPath = path.replace(/\/$/, '');
+
+    if (normalizedPath === normalizedCurrentPath) {
+      setIsSearchOpen(false);
+    }
+  };
 
   return (
     <div className="py-12 first:mt-8">
@@ -115,7 +142,13 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
         <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
           {group.label}
         </h2>
-        <ButtonLink href={group.href} shape="link" size="link" variant="link">
+        <ButtonLink
+          href={group.href}
+          onClick={() => handleClick(group.href)}
+          shape="link"
+          size="link"
+          variant="link"
+        >
           <span className="flex items-center gap-2 text-base font-normal">
             View more <ArrowRight size={20} strokeWidth={1.5} />
           </span>
@@ -124,7 +157,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
       <Hits
         classNames={{ list: 'grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-8' }}
         // @ts-expect-error - hit is a ProductGridHit | PostGridHit
-        hitComponent={(props) => group.card(props)}
+        hitComponent={(props) => group.card({ ...props, onItemClick: handleClick })}
       />
     </div>
   );
