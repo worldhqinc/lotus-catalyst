@@ -87,15 +87,17 @@ export function ProductRegistrationForm({ productOptions }: Props) {
           <div>
             <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">Your Product</h2>
             <div className="flex flex-1 flex-col gap-1">
+              <Label htmlFor="modelNumber">Model number *</Label>
               <Select
-                aria-label="Select a product"
+                aria-label="Select a model number"
                 className="flex-1"
                 defaultValue={formState.formData?.product ?? ''}
                 errors={formState.errors?.product}
-                key="productSelect"
-                name="product"
+                id="modelNumber"
+                key="modelNumber"
+                name="modelNumber"
                 options={productOptions}
-                placeholder="Select a product"
+                placeholder="Select a model number"
               />
             </div>
           </div>
