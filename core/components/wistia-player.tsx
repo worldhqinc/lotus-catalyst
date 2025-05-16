@@ -28,14 +28,14 @@ interface VideoSegment {
 
 export function WistiaPlayer({
   activeId,
-  anchorIds,
+  anchorIds = [],
   pageType = 'product',
   wistiaMediaId,
   wistiaMediaSegments,
 }: {
   activeId?: string;
-  anchorIds: string[];
-  pageType?: 'product' | 'page';
+  anchorIds?: string[];
+  pageType?: 'product' | 'page' | 'tutorial';
   wistiaMediaId?: string | null;
   wistiaMediaSegments?: string[] | null;
 }) {

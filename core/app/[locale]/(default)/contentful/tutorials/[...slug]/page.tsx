@@ -10,6 +10,7 @@ import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import SocialShare from '~/components/contentful/sections/social-share';
 import { Image } from '~/components/image';
+import { WistiaPlayer } from '~/components/wistia-player';
 import { carouselProductSchema } from '~/contentful/schema';
 
 import { getPageBySlug } from '../../[...rest]/page-data';
@@ -62,7 +63,7 @@ export default async function FeaturePage({ params }: Props) {
       )}
 
       {/* Feature Header */}
-      <SectionLayout className="text-center" containerSize="md">
+      <SectionLayout className="text-center" containerClassName="!pb-8" containerSize="md">
         <div className="flex flex-wrap items-center justify-center gap-2">
           {fields.categories?.map((category) => <Badge key={category}>{category}</Badge>)}
         </div>
@@ -78,9 +79,26 @@ export default async function FeaturePage({ params }: Props) {
           url={fullUrl}
         />
       </div>
+
+      <SectionLayout containerClassName="!py-0" containerSize="md">
+        <hr className="border-border" />
+      </SectionLayout>
+
       {/* Story Content */}
-      <SectionLayout className="[&_>div]:border-border [&_>div]:mx-auto [&_>div]:w-[min(calc(100%-2rem),672px)] [&_>div]:border-y [&_>div]:px-0">
-        <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: storyHtml }} />
+      <SectionLayout containerSize="md">
+        {fields.wistiaMediaId ? (
+          <div className="mb-8">
+            <WistiaPlayer pageType="tutorial" wistiaMediaId={fields.wistiaMediaId} />
+          </div>
+        ) : null}
+        <div
+          className="prose [&_p]:text-surface-foreground max-w-none [&_p]:text-lg"
+          dangerouslySetInnerHTML={{ __html: storyHtml }}
+        />
+      </SectionLayout>
+
+      <SectionLayout containerClassName="!py-0" containerSize="md">
+        <hr className="border-border" />
       </SectionLayout>
 
       <SectionLayout className="mx-auto max-w-2xl">

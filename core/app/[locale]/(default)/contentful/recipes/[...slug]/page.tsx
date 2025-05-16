@@ -7,6 +7,7 @@ import { SearchParams } from 'nuqs';
 import { z } from 'zod';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
+import { ProductCard } from '@/vibes/soul/primitives/product-card';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { ProductCarousel } from '~/components/contentful/carousels/product-carousel';
 import { RecipeCarousel } from '~/components/contentful/carousels/recipe-carousel';
@@ -17,7 +18,10 @@ import {
   carouselProductSchema,
   carouselRecipeSchema,
   ingredientsListSchema,
+  productFinishedGoodsSchema,
+  productPartsAndAccessoriesSchema,
 } from '~/contentful/schema';
+import { contentfulProductCardTransformer } from '~/data-transformers/product-card-transformer';
 import { ensureImageUrl } from '~/lib/utils';
 import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 
@@ -84,6 +88,14 @@ const renderMetaInfo = (
   );
 };
 
+function getGridColumnsClass(productCount: number): string {
+  if (productCount === 1) return 'grid-cols-1';
+  if (productCount === 2) return 'grid-cols-2';
+  if (productCount === 3) return 'grid-cols-2 md:grid-cols-3';
+
+  return 'grid-cols-2 md:grid-cols-4';
+}
+
 export default async function RecipePage({ params }: Props) {
   const { slug } = await params;
   const headersList = await headers();
@@ -137,10 +149,14 @@ export default async function RecipePage({ params }: Props) {
           <SectionLayout className="relative" containerSize="xl">
             <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2">
               <div className="max-w-xl">
-                {/* Category Pill */}
-                {fields.mealTypeCategory?.[0] ? (
-                  <Badge className="uppercase">{fields.mealTypeCategory[0]}</Badge>
-                ) : null}
+                {/* Category Pills */}
+                <div className="flex flex-wrap gap-2">
+                  {fields.mealTypeCategory?.map((category) => (
+                    <Badge className="uppercase" key={category}>
+                      {category}
+                    </Badge>
+                  ))}
+                </div>
 
                 {/* Title */}
                 <h1 className="text-icon-primary font-heading mt-6 text-4xl leading-tight font-medium uppercase md:text-5xl">
@@ -162,7 +178,10 @@ export default async function RecipePage({ params }: Props) {
                   <>
                     <div className="text-icon-secondary mt-6">—</div>
                     <p className="text-icon-secondary mt-6 text-sm">
-                      Ideal for: {fields.applianceTypeCategory.join(', ')}
+                      Ideal for:{' '}
+                      <span className="text-surface-foreground font-medium">
+                        {fields.applianceTypeCategory.join(', ')}
+                      </span>
                     </p>
                   </>
                 ) : null}
@@ -217,6 +236,35 @@ export default async function RecipePage({ params }: Props) {
           ) : null}
           <div className="mt-8">{renderIngredientsList(ingredientsListsData)}</div>
         </SectionLayout>
+
+        {fields.products?.length ? (
+          <SectionLayout className="mx-auto max-w-2xl">
+            <hr className="border-border mb-12" />
+            <h2 className="text-surface-foreground text-2xl font-medium uppercase">
+              What You'll Need
+            </h2>
+            <div className={`mt-6 grid gap-4 ${getGridColumnsClass(fields.products.length)}`}>
+              {fields.products.map((product) => {
+                const parsed =
+                  product.sys.contentType.sys.id === 'productFinishedGoods'
+                    ? productFinishedGoodsSchema.parse(product)
+                    : productPartsAndAccessoriesSchema.parse(product);
+                const cardData = contentfulProductCardTransformer(parsed);
+
+                return (
+                  <ProductCard
+                    aspectRatio="1:1"
+                    className="w-full !max-w-none"
+                    key={product.sys.id}
+                    product={cardData}
+                  />
+                );
+              })}
+            </div>
+            <hr className="border-border mt-12" />
+          </SectionLayout>
+        ) : null}
+
         {/* Directions Section */}
         <SectionLayout className="mx-auto max-w-2xl">
           <h2 className="text-2xl font-medium uppercase">Directions</h2>

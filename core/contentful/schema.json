@@ -3448,7 +3448,7 @@
         "id": "tutorial",
         "type": "ContentType",
         "createdAt": "2025-04-03T18:35:56.772Z",
-        "updatedAt": "2025-05-09T01:14:56.143Z",
+        "updatedAt": "2025-05-16T15:43:30.292Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3456,8 +3456,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 5,
-        "publishedAt": "2025-05-09T01:14:56.143Z",
+        "publishedVersion": 13,
+        "publishedAt": "2025-05-16T15:43:30.292Z",
         "firstPublishedAt": "2025-04-03T18:35:57.091Z",
         "createdBy": {
           "sys": {
@@ -3473,8 +3473,8 @@
             "id": "1BR0P0qbpGVHzRK0rjdom6"
           }
         },
-        "publishedCounter": 3,
-        "version": 6,
+        "publishedCounter": 7,
+        "version": 14,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3576,6 +3576,17 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Entry"
+        },
+        {
+          "id": "wistiaMediaId",
+          "name": "Wistia Media ID",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
         }
       ]
     },
@@ -6375,7 +6386,7 @@
         "id": "productGrid",
         "type": "ContentType",
         "createdAt": "2025-04-30T23:08:10.675Z",
-        "updatedAt": "2025-05-15T20:14:37.030Z",
+        "updatedAt": "2025-05-15T20:20:54.770Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -6383,8 +6394,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 5,
-        "publishedAt": "2025-05-15T20:14:37.030Z",
+        "publishedVersion": 7,
+        "publishedAt": "2025-05-15T20:20:54.770Z",
         "firstPublishedAt": "2025-04-30T23:08:11.108Z",
         "createdBy": {
           "sys": {
@@ -6400,8 +6411,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 3,
-        "version": 6,
+        "publishedCounter": 4,
+        "version": 8,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -6447,7 +6458,7 @@
             {
               "in": [
                 "all",
-                "product",
+                "products",
                 "accessories"
               ]
             }
