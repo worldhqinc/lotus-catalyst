@@ -158,12 +158,7 @@ export function Slideshow({
   }, [emblaApi, playCount]);
 
   return (
-    <section
-      className={clsx(
-        '@container relative h-[80vh] bg-[var(--slideshow-background,color-mix(in_oklab,hsl(var(--primary)),black_75%))]',
-        className,
-      )}
-    >
+    <section className={clsx('bg-contrast-200 @container relative h-[80vh]', className)}>
       <div className="h-full overflow-hidden" ref={emblaRef}>
         <div className={clsx('flex h-full', vertical && 'flex-col')}>
           {slides.map(
