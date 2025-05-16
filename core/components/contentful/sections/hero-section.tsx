@@ -5,7 +5,6 @@ import { ctaSchema, heroSection } from '~/contentful/schema';
 import { getLinkHref } from '~/lib/utils';
 
 export function HeroSection({ type, heroTitle, heroTagline, cta, image }: heroSection['fields']) {
-  // get the absolute url of the image
   const imageUrl = image?.fields.file.url;
   const absoluteMediaUrl = imageUrl?.startsWith('//') ? `https:${imageUrl}` : imageUrl;
   const imageComponent = absoluteMediaUrl ? (
