@@ -101,7 +101,7 @@ function WishlistListItemItems({
         }
 
         return (
-          <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+          <div className="mt-6 grid flex-1 auto-cols-fr grid-flow-col gap-4 overflow-hidden [mask-image:linear-gradient(to_right,_black_70%,_transparent_100%)] lg:grid-cols-5">
             {items.map(({ product }) => (
               <div className="min-w-36" key={product.id}>
                 <ProductCard aspectRatio="1:1" product={product} />
