@@ -67,7 +67,7 @@ export function AltProductCarousel({
       image,
       href,
       title: fields.webProductName,
-      subtitle: fields.shortDescription,
+      subtitle: fields.webProductNameDescriptor,
       price,
     };
   });

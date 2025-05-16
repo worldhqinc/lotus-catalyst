@@ -95,7 +95,7 @@ export function contentfulProductCardTransformer(
     return {
       id: product.sys.id,
       title: fields.webProductName,
-      subtitle: fields.shortDescription ?? undefined,
+      subtitle: fields.webProductNameDescriptor ?? undefined,
       href: fields.pageSlug ? `/${fields.pageSlug}` : '#',
       image,
       price,
