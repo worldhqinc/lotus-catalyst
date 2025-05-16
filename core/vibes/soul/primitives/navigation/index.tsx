@@ -616,12 +616,15 @@ export const Navigation = forwardRef(function Navigation(
                         <div className="col-start-3">
                           <Link className="group w-full" href="/shop/professional-series">
                             <div className="flex h-full flex-col">
-                              <Image
-                                alt="Explore Lotus Professional Series"
-                                height={246}
-                                src="https://images.ctfassets.net/esj3sw7u4uve/6qen7gqAvmEaKF2fusTjCF/9240e8a5fadb8fa961dc221295f49e1d/LTSCM500-LTSTR502-Mixed-Use-Group-Horiontal-Wide-Talent-V2.webp"
-                                width={369}
-                              />
+                              <figure className="bg-surface-image aspect-[19/6] h-full min-h-[246px] w-full overflow-hidden rounded-lg">
+                                <Image
+                                  alt="Explore Lotus Professional Series"
+                                  className="h-full w-full object-cover"
+                                  height={246}
+                                  src="https://images.ctfassets.net/esj3sw7u4uve/6qen7gqAvmEaKF2fusTjCF/9240e8a5fadb8fa961dc221295f49e1d/LTSCM500-LTSTR502-Mixed-Use-Group-Horiontal-Wide-Talent-V2.webp"
+                                  width={369}
+                                />
+                              </figure>
                               <span className="ease-quad group-hover:text-primary py-2 font-medium transition-colors duration-200">
                                 Explore the Professional Series
                               </span>
@@ -816,7 +819,15 @@ export const Navigation = forwardRef(function Navigation(
                                   <div className="border-border col-start-3 border-t pt-6">
                                     <Link className="w-full" href="/professional-series">
                                       <div className="flex h-full flex-col">
-                                        <figure className="bg-surface-image aspect-[19/6] h-full min-h-[246px] w-full rounded-lg" />
+                                        <figure className="bg-surface-image aspect-[19/6] h-full min-h-[246px] w-full overflow-hidden rounded-lg">
+                                          <Image
+                                            alt="Explore Lotus Professional Series"
+                                            className="h-full w-full object-cover"
+                                            height={246}
+                                            src="https://images.ctfassets.net/esj3sw7u4uve/6qen7gqAvmEaKF2fusTjCF/9240e8a5fadb8fa961dc221295f49e1d/LTSCM500-LTSTR502-Mixed-Use-Group-Horiontal-Wide-Talent-V2.webp"
+                                            width={369}
+                                          />
+                                        </figure>
                                         <span className="py-2 text-sm font-medium">
                                           Explore the Professional Series
                                         </span>
