@@ -2518,6 +2518,7 @@ export const tutorialFieldsSchema = z.object({
     })
     .optional()
     .nullable(),
+  wistiaMediaId: z.string().optional().nullable(),
 });
 
 export const tutorialSchema = z.object({
