@@ -6,13 +6,8 @@ import { ComponentProps, useEffect, useRef, useState } from 'react';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { Slideshow } from '@/vibes/soul/sections/slideshow';
 import { Image } from '~/components/image';
-import {
-  assetSchema,
-  heroCarousel,
-  heroSlideSchema,
-  pageStandardSchema,
-} from '~/contentful/schema';
-import { ensureImageUrl } from '~/lib/utils';
+import { assetSchema, heroCarousel, heroSlideSchema } from '~/contentful/schema';
+import { ensureImageUrl, isString } from '~/lib/utils';
 
 interface Props {
   data: heroCarousel;
@@ -32,13 +27,14 @@ export function HeroCarousel({ data }: Props) {
       const parsedSlide = heroSlideSchema.parse(slide);
       const fields = parsedSlide.fields;
       const ctaLink = fields.ctaLink;
-      const ctaLinkFields = ctaLink ? pageStandardSchema.parse(ctaLink).fields : null;
       const title = fields.headline;
       const description = fields.subhead;
       const imageAsset = fields.image;
       const imageFile = imageAsset ? assetSchema.parse(imageAsset).fields.file : null;
 
       if (!title) return null;
+
+      const pageSlug = isString(ctaLink?.fields.pageSlug) ? ctaLink.fields.pageSlug : undefined;
 
       const slideData: Slide = {
         title,
@@ -52,13 +48,13 @@ export function HeroCarousel({ data }: Props) {
             }
           : undefined,
         cta:
-          fields.ctaLabel && ctaLinkFields?.pageSlug
+          fields.ctaLabel && pageSlug
             ? {
                 label: fields.ctaLabel,
-                href: `/${ctaLinkFields.pageSlug}`,
+                href: `/${pageSlug}`,
               }
             : undefined,
-        showCta: Boolean(fields.ctaLabel && ctaLinkFields?.pageSlug),
+        showCta: Boolean(fields.ctaLabel && pageSlug),
       };
 
       return slideData;
