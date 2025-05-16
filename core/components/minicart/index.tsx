@@ -247,7 +247,13 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
             )}
             <div className="flex justify-between">
               <span>{t('subtotal')}</span>
-              <span className="font-medium">${subtotal.toFixed(2)}</span>
+              <span className="font-medium">
+                $
+                {subtotal.toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </span>
             </div>
           </div>
 
