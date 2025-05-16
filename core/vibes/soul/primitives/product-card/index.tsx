@@ -285,7 +285,7 @@ function AddToBagForm({
           size="small"
           type="submit"
         >
-          Add to bag
+          Add to cart
         </Button>
       ) : (
         <NotifyBackInStock

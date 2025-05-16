@@ -85,7 +85,7 @@ export function ProductDetailForm<F extends Field>({
   action,
   fields,
   productId,
-  ctaLabel = 'Add to bag',
+  ctaLabel = 'Add to cart',
   emptySelectPlaceholder = 'Select an option',
   ctaDisabled = false,
   prefetch = false,

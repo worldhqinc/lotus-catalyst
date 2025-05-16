@@ -57,7 +57,7 @@ export function CompareCard({
   className,
   product,
   addToCartAction,
-  addToCartLabel = 'Add to bag',
+  addToCartLabel = 'Add to cart',
   descriptionLabel = 'Description',
   noDescriptionLabel = 'There is no description available.',
   ratingLabel = 'Rating',
