@@ -52,7 +52,7 @@ export function BlockProductFeatures({
               ) : (
                 <div className={isFirst ? 'md:row-span-2' : ''}>
                   <div
-                    className={`relative overflow-hidden rounded-lg ${isFirst ? 'aspect-[4/3] md:h-full md:w-full' : 'aspect-[4/3]'}`}
+                    className={`relative overflow-hidden rounded-lg ${isFirst ? 'aspect-video md:h-full md:w-full' : 'aspect-video'}`}
                   >
                     <Image
                       alt={fields.image.fields.title || fields.heading}
