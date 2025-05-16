@@ -9,12 +9,14 @@ export function HeroSection({ type, heroTitle, heroTagline, cta, image }: heroSe
   const imageUrl = image?.fields.file.url;
   const absoluteMediaUrl = imageUrl?.startsWith('//') ? `https:${imageUrl}` : imageUrl;
   const imageComponent = absoluteMediaUrl ? (
-    <Image
-      alt={image?.fields.title || ''}
-      className="absolute inset-0 -z-10 h-full w-full object-cover"
-      fill
-      src={absoluteMediaUrl}
-    />
+    <figure className="absolute inset-0 -z-10 h-full w-full overflow-hidden after:absolute after:inset-0 after:bg-black after:opacity-30">
+      <Image
+        alt={image?.fields.title || ''}
+        className="h-full w-full object-cover"
+        fill
+        src={absoluteMediaUrl}
+      />
+    </figure>
   ) : null;
 
   if (type === 'white') {
