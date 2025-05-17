@@ -41,6 +41,7 @@ hooks:
         chmod +x scripts/setup_mounts.sh
         ./scripts/setup_env_vars.sh
         pnpm install
+        pnpm lint
         ./scripts/setup_mounts.sh
     deploy: |
         set -eu
