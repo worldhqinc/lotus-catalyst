@@ -76,7 +76,7 @@ export default async (): Promise<NextConfig> => {
       ignoreBuildErrors: !!process.env.CI,
     },
     eslint: {
-      ignoreDuringBuilds: true,
+      ignoreDuringBuilds: !!process.env.CI,
       dirs: [
         'app',
         'auth',
