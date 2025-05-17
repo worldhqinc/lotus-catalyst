@@ -23,6 +23,8 @@ type ParsedPageData<T extends ContentType> = z.infer<(typeof schemaMap)[T]>;
 
 export const getPageBySlug = cache(
   async <T extends ContentType>(contentType: T, rest: string[]): Promise<ParsedPageData<T>> => {
+    'use cache';
+    console.log('getPageBySlug', contentType, rest);
     const response = await contentfulClient.getEntries({
       content_type: contentType,
       'fields.pageSlug': rest.join('/'),

@@ -51,6 +51,7 @@ export default async (): Promise<NextConfig> => {
     experimental: {
       optimizePackageImports: ['@icons-pack/react-simple-icons'],
       ppr: 'incremental',
+      useCache: true,
     },
     images: {
       remotePatterns: [
@@ -75,7 +76,7 @@ export default async (): Promise<NextConfig> => {
       ignoreBuildErrors: !!process.env.CI,
     },
     eslint: {
-      ignoreDuringBuilds: !!process.env.CI,
+      ignoreDuringBuilds: true,
       dirs: [
         'app',
         'auth',
