@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+
 import { createClient, CreateClientParams } from 'contentful';
 
 import { revalidate } from '~/client/revalidate-target';
@@ -6,7 +9,6 @@ const adapter: CreateClientParams['adapter'] = async (config) => {
   const { url, method, headers = {}, data, params } = config;
 
   if (!url || !method) {
-    console.error('Error on fetching data', config);
     throw new Error('Error on fetching data');
   }
 
@@ -25,7 +27,8 @@ const adapter: CreateClientParams['adapter'] = async (config) => {
 
   let responseData;
   const contentType = response.headers.get('content-type');
-  if (contentType && contentType.includes('application/json')) {
+
+  if (contentType?.includes('application/json')) {
     responseData = await response.json();
   } else {
     responseData = await response.text();

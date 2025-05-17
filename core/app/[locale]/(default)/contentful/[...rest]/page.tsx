@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import { SearchParams } from 'nuqs';
 
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
-
 import { routing } from '~/i18n/routing';
+
 import { getPageBySlug } from './page-data';
 
 const SPECIAL_LAYOUT_PAGES = ['returns', 'warranty', 'free-shipping'] as const;
