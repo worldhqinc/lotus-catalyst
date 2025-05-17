@@ -111,11 +111,7 @@ export default function NotifyBackInStockModal({
         <form {...getFormProps(form)} action={formAction} className="space-y-4">
           <input name="productId" type="hidden" value={productId} />
           <Label htmlFor="email">Email</Label>
-          <Input
-            {...getInputProps(fields.email, { type: 'email' })}
-            key={fields.email.id}
-            required
-          />
+          <Input {...getInputProps(fields.email, { type: 'email' })} key={fields.email.id} />
           <div className="flex justify-end gap-4">
             <Button
               disabled={isPending}
