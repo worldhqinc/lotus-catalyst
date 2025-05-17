@@ -44,7 +44,6 @@ hooks:
         ./scripts/setup_mounts.sh
     deploy: |
         set -eu
-        rm -rf /app/core/.next
         NODE_OPTIONS="--max-old-space-size=8192" pnpm build
         ./scripts/setup_mounts.sh
     post_deploy: |
