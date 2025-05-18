@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { SearchParams } from 'nuqs';
 
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
-import { routing } from '~/i18n/routing';
 
 import { getPageBySlug } from './page-data';
 
@@ -11,15 +10,6 @@ const SPECIAL_LAYOUT_PAGES = ['returns', 'warranty', 'free-shipping'] as const;
 
 function shouldShowSpecialLayout(rest: string[]): boolean {
   return SPECIAL_LAYOUT_PAGES.some((page) => rest.includes(page));
-}
-
-interface Props {
-  params: Promise<{ locale: string; rest: string[] }>;
-  searchParams: Promise<SearchParams>;
-}
-
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -33,6 +23,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: fields.metaDescription,
     keywords: fields.metaKeywordsSeo,
   };
+}
+
+interface Props {
+  params: Promise<{ locale: string; rest: string[] }>;
+  searchParams: Promise<SearchParams>;
 }
 
 export default async function ContentfulPage({ params, searchParams }: Props) {

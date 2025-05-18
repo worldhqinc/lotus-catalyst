@@ -5,7 +5,9 @@ import { contentfulClient } from '~/lib/contentful';
 
 import { ProductRegistrationForm } from './_components/product-registration-form';
 
-export default async function ProductRegistration() {
+async function getProductOptions() {
+  'use cache';
+
   const productsData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',
     select: ['fields.bcProductReference', 'fields.webCategory'],
@@ -30,6 +32,12 @@ export default async function ProductRegistration() {
   productOptions = Array.from(
     new Map(productOptions.map((item) => [item.value, item])).values(),
   ).filter((item) => item.value !== '');
+
+  return productOptions;
+}
+
+export default async function ProductRegistration() {
+  const productOptions = await getProductOptions();
 
   return (
     <div>
