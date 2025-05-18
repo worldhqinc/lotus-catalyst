@@ -41,7 +41,6 @@ hooks:
         chmod +x scripts/setup_mounts.sh
         ./scripts/setup_env_vars.sh
         pnpm install
-        pnpm lint
         NODE_OPTIONS="--max-old-space-size=8192" pnpm build
         ./scripts/setup_mounts.sh
     post_deploy: |
