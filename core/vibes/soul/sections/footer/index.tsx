@@ -370,7 +370,7 @@ export const Footer = forwardRef(async function Footer(
             </Link>
             <Link
               className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
-              href="#"
+              href="/policies/privacy-policy"
             >
               Don't Sell or Share My Information
             </Link>
