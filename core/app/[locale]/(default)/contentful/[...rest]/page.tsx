@@ -12,6 +12,11 @@ function shouldShowSpecialLayout(rest: string[]): boolean {
   return SPECIAL_LAYOUT_PAGES.some((page) => rest.includes(page));
 }
 
+interface Props {
+  params: Promise<{ locale: string; rest: string[] }>;
+  searchParams: Promise<SearchParams>;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { rest } = await params;
   const page = await getPageBySlug('pageStandard', rest);
@@ -23,11 +28,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: fields.metaDescription,
     keywords: fields.metaKeywordsSeo,
   };
-}
-
-interface Props {
-  params: Promise<{ locale: string; rest: string[] }>;
-  searchParams: Promise<SearchParams>;
 }
 
 export default async function ContentfulPage({ params, searchParams }: Props) {
