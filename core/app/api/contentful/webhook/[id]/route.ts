@@ -1,4 +1,5 @@
 import { algoliasearch } from 'algoliasearch';
+import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -127,6 +128,8 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
           ...body,
         },
       });
+
+      revalidatePath('/');
 
       return NextResponse.json({
         updatedAt: new Date().toISOString(),
