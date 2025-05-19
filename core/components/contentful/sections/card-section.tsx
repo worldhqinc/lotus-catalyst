@@ -1,5 +1,6 @@
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
+import { Image } from '~/components/image';
 import { type cardSection, ctaSchema, inspirationCardSchema } from '~/contentful/schema';
 import { getLinkHref } from '~/lib/utils';
 
@@ -47,18 +48,39 @@ export function CardSection({
     return (
       <SectionLayout containerClassName="py-16">
         <div className="grid gap-8 text-white md:grid-cols-2">
-          {cards.map((card, index) => (
-            <div
-              className="bg-surface-image relative flex aspect-square flex-col justify-end overflow-hidden rounded-lg p-8"
-              key={`${card.sys.id}-${index}`}
-            >
-              <div className="top absolute inset-0 bg-gradient-to-b from-black/0 from-70% to-black/50" />
-              <div className="relative flex flex-col">
-                <h3 className="font-medium">{card.fields.title}</h3>
-                <p className="max-w-md">{card.fields.subtitle}</p>
+          {cards.map((card, index) => {
+            const validCta = card.fields.cta ? ctaSchema.parse(card.fields.cta) : null;
+            const mediaUrl = card.fields.image?.fields.file.url;
+            const absoluteMediaUrl = mediaUrl?.startsWith('//') ? `https:${mediaUrl}` : mediaUrl;
+
+            return (
+              <div
+                className="bg-surface-image relative isolate flex aspect-square flex-col justify-end overflow-hidden rounded-lg p-8"
+                key={`${card.sys.id}-${index}`}
+              >
+                {card.fields.image && (
+                  <figure className="absolute inset-0 -z-10 after:absolute after:inset-0 after:bg-black after:opacity-30">
+                    <Image
+                      alt={card.fields.image.fields.title ?? ''}
+                      className="h-full w-full object-cover object-center"
+                      fill
+                      src={absoluteMediaUrl ?? ''}
+                    />
+                  </figure>
+                )}
+                <div className="top absolute inset-0 bg-gradient-to-b from-black/0 from-70% to-black/50" />
+                <div className="relative flex flex-col items-start">
+                  <h3 className="font-medium">{card.fields.title}</h3>
+                  <p className="max-w-md">{card.fields.subtitle}</p>
+                  {validCta ? (
+                    <ButtonLink className="mt-8" href={getLinkHref(validCta.fields)} size="medium">
+                      {validCta.fields.text}
+                    </ButtonLink>
+                  ) : null}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </SectionLayout>
     );
@@ -73,20 +95,32 @@ export function CardSection({
       <div className="grid gap-8 md:grid-cols-2">
         {cards.map((card, index) => {
           const validCta = card.fields.cta ? ctaSchema.parse(card.fields.cta) : null;
+          const mediaUrl = card.fields.image?.fields.file.url;
+          const absoluteMediaUrl = mediaUrl?.startsWith('//') ? `https:${mediaUrl}` : mediaUrl;
 
           return (
             <div
-              className="bg-contrast-200 aspect-square rounded-lg p-8"
+              className="bg-contrast-200 relative isolate aspect-square overflow-hidden rounded-lg p-8"
               key={`${card.sys.id}-${index}`}
             >
+              {card.fields.image && (
+                <figure className="absolute inset-0 -z-10 after:absolute after:inset-0 after:bg-black after:opacity-30">
+                  <Image
+                    alt={card.fields.image.fields.title ?? ''}
+                    className="h-full w-full object-cover object-center"
+                    fill
+                    src={absoluteMediaUrl ?? ''}
+                  />
+                </figure>
+              )}
               <div className="flex size-full flex-col justify-between gap-8">
                 <div className="flex flex-col gap-4">
-                  <h3 className="text-surface-foreground text-4xl">{card.fields.title}</h3>
-                  <p className="text-contrast-400 max-w-xs">{card.fields.subtitle}</p>
+                  <h3 className="text-4xl text-white">{card.fields.title}</h3>
+                  <p className="max-w-xs text-white">{card.fields.subtitle}</p>
                 </div>
                 <div>
                   {validCta ? (
-                    <ButtonLink href={getLinkHref(validCta.fields)}>
+                    <ButtonLink href={getLinkHref(validCta.fields)} size="medium">
                       {validCta.fields.text}
                     </ButtonLink>
                   ) : null}

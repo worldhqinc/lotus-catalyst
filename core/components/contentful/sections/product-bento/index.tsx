@@ -34,7 +34,10 @@ export function ProductBento(props: productBento['fields']) {
   };
 
   return (
-    <SectionLayout>
+    <SectionLayout
+      {...(props.pageAnchor && { id: props.pageAnchor })}
+      className="scroll-mt-32 !overflow-auto"
+    >
       <div className="mb-8 flex flex-col items-center gap-4">
         <h2 className="text-icon-primary max-w-sm text-center text-4xl">{props.title}</h2>
         <p className="text-icon-secondary max-w-lg text-center">{props.subtitle}</p>

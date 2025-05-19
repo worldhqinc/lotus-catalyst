@@ -6,6 +6,7 @@ import { ensureImageUrl, getLinkHref } from '~/lib/utils';
 import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 
 export function Highlights({
+  pageAnchor,
   title,
   quoteText,
   quoteAuthorImage,
@@ -18,7 +19,10 @@ export function Highlights({
   const text = validatedCta?.fields.text ?? null;
 
   return (
-    <SectionLayout className="bg-surface-secondary">
+    <SectionLayout
+      {...(pageAnchor && { id: pageAnchor })}
+      className="bg-surface-secondary scroll-mt-32 !overflow-auto"
+    >
       <div className="mb-12 flex flex-col items-center gap-4">
         <h2 className="text-icon-primary text-4xl">{title}</h2>
       </div>
