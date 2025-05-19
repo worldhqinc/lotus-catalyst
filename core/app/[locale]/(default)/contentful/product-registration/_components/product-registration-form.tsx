@@ -20,10 +20,11 @@ interface FormState {
 }
 
 interface Props {
-  productOptions: Array<{ label: string; value: string }>;
+  modelNumberOptions: Array<{ label: string; value: string }>;
+  productTypeOptions: Array<{ label: string; value: string }>;
 }
 
-export function ProductRegistrationForm({ productOptions }: Props) {
+export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions }: Props) {
   const initialState: FormState = {
     errors: null,
     success: false,
@@ -53,7 +54,9 @@ export function ProductRegistrationForm({ productOptions }: Props) {
             </div>
             <div className="flex flex-col gap-4 md:flex-row">
               <div className="flex flex-1 flex-col gap-1">
-                <Label htmlFor="firstName">First name *</Label>
+                <Label className="text-foreground text-sm font-medium" htmlFor="firstName">
+                  First name*
+                </Label>
                 <Input
                   defaultValue={formState.formData?.firstName ?? ''}
                   errors={formState.errors?.firstName}
@@ -63,7 +66,9 @@ export function ProductRegistrationForm({ productOptions }: Props) {
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1">
-                <Label htmlFor="lastName">Last name *</Label>
+                <Label className="text-foreground text-sm font-medium" htmlFor="lastName">
+                  Last name*
+                </Label>
                 <Input
                   defaultValue={formState.formData?.lastName ?? ''}
                   errors={formState.errors?.lastName}
@@ -74,7 +79,9 @@ export function ProductRegistrationForm({ productOptions }: Props) {
               </div>
             </div>
             <div className="mt-4 flex flex-col gap-1">
-              <Label htmlFor="email">Email address *</Label>
+              <Label className="text-foreground text-sm font-medium" htmlFor="email">
+                Email address*
+              </Label>
               <Input
                 defaultValue={formState.formData?.email ?? ''}
                 errors={formState.errors?.email}
@@ -86,19 +93,39 @@ export function ProductRegistrationForm({ productOptions }: Props) {
           </div>
           <div>
             <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">Your Product</h2>
-            <div className="flex flex-1 flex-col gap-1">
-              <Label htmlFor="modelNumber">Model number *</Label>
-              <Select
-                aria-label="Select a model number"
-                className="flex-1"
-                defaultValue={formState.formData?.product ?? ''}
-                errors={formState.errors?.product}
-                id="modelNumber"
-                key="modelNumber"
-                name="modelNumber"
-                options={productOptions}
-                placeholder="Select a model number"
-              />
+            <div className="flex flex-col gap-4 md:flex-row">
+              <div className="flex flex-1 flex-col gap-1">
+                <Label className="text-foreground text-sm font-medium" htmlFor="productType">
+                  Product type*
+                </Label>
+                <Select
+                  aria-label="Select a product type"
+                  className="flex-1"
+                  defaultValue={formState.formData?.productType ?? ''}
+                  errors={formState.errors?.productType}
+                  id="productType"
+                  key="productType"
+                  name="productType"
+                  options={productTypeOptions}
+                  placeholder="Select a product type"
+                />
+              </div>
+              <div className="flex flex-1 flex-col gap-1">
+                <Label className="text-foreground text-sm font-medium" htmlFor="modelNumber">
+                  Model number*
+                </Label>
+                <Select
+                  aria-label="Select a model number"
+                  className="flex-1"
+                  defaultValue={formState.formData?.modelNumber ?? ''}
+                  errors={formState.errors?.modelNumber}
+                  id="modelNumber"
+                  key="modelNumber"
+                  name="modelNumber"
+                  options={modelNumberOptions}
+                  placeholder="Select a model number"
+                />
+              </div>
             </div>
           </div>
           <div>
