@@ -113,7 +113,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
       )}
       <div className="flex flex-col gap-1">
         <Label className="text-foreground text-sm font-medium" htmlFor="email">
-          Email Address *
+          Email Address*
         </Label>
         <Input
           defaultValue={getFormValue(formState.formData, 'email')}

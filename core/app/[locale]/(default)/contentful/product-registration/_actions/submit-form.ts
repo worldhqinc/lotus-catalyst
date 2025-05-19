@@ -8,7 +8,14 @@ const schema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   email: z.string().email('Please enter a valid Email address'),
-  modelNumber: z.string().refine((val) => val === 'null', 'Please select a Model number'),
+  productType: z
+    .string()
+    .min(1, 'Please select a Product type')
+    .refine((val) => val !== 'null', 'Please select a valid Product type'),
+  modelNumber: z
+    .string()
+    .min(1, 'Please select a Model number')
+    .refine((val) => val !== 'null', 'Please select a valid Model number'),
   subscribe: z.boolean().optional().nullable(),
 });
 
@@ -23,6 +30,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     firstName: formData.get('firstName'),
     lastName: formData.get('lastName'),
     email: formData.get('email'),
+    productType: formData.get('productType'),
     modelNumber: formData.get('modelNumber'),
     subscribe: formData.get('subscribe'),
   });
@@ -58,11 +66,13 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
         submission.data.email,
         submission.data.firstName,
         submission.data.lastName,
+        submission.data.productType,
+        submission.data.modelNumber,
         'Product Registration',
       );
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error('Error submitting form:', error);
+      console.error('Error submitting product registration form:', error);
     }
 
     if (submission.data.subscribe) {
@@ -70,7 +80,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
         await klaviyoNewsletterSignup(submission.data.email, 'Product Registration');
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.error('Error submitting form:', error);
+        console.error('Error submitting product registration form, newsletter signup:', error);
       }
     }
 

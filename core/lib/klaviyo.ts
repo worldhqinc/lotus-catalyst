@@ -52,6 +52,8 @@ export async function klaviyoProductRegistrationSubmission(
   email: string,
   firstName: string,
   lastName: string,
+  productType: string,
+  modelNumber: string,
   source: string,
 ) {
   return await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs', {
@@ -81,6 +83,10 @@ export async function klaviyoProductRegistrationSubmission(
                         consent: 'SUBSCRIBED',
                       },
                     },
+                  },
+                  properties: {
+                    product_type: productType,
+                    model_number: modelNumber,
                   },
                 },
               },

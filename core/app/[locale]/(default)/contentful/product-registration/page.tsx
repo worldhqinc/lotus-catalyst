@@ -18,24 +18,39 @@ async function getProductOptions() {
     limit: 1000,
   });
 
-  let productOptions: Array<{ label: string; value: string }> = productsData.items.map((item) => {
-    const fields = productFinishedGoodsFieldsSchema
-      .pick({
-        bcProductReference: true,
-      })
-      .parse(item.fields);
+  const productTypeOptions: Array<{ label: string; value: string }> = productsData.items.map(
+    (item) => {
+      const fields = productFinishedGoodsFieldsSchema
+        .pick({
+          webCategory: true,
+        })
+        .parse(item.fields);
 
-    return {
-      label: fields.bcProductReference,
-      value: fields.bcProductReference,
-    };
-  });
+      return {
+        label: fields.webCategory,
+        value: fields.webCategory,
+      };
+    },
+  );
 
-  productOptions.unshift({ label: 'Select a model number', value: 'null' });
+  productTypeOptions.unshift({ label: 'Select a product type', value: 'null' });
 
-  productOptions = Array.from(
-    new Map(productOptions.map((item) => [item.value, item])).values(),
-  ).filter((item) => item.value !== '');
+  const modelNumberOptions: Array<{ label: string; value: string }> = productsData.items.map(
+    (item) => {
+      const fields = productFinishedGoodsFieldsSchema
+        .pick({
+          bcProductReference: true,
+        })
+        .parse(item.fields);
+
+      return {
+        label: fields.bcProductReference,
+        value: fields.bcProductReference,
+      };
+    },
+  );
+
+  modelNumberOptions.unshift({ label: 'Select a model number', value: 'null' });
 
   return productOptions;
 }
@@ -50,7 +65,10 @@ export default async function ProductRegistration() {
           <h1 className="font-heading text-4xl uppercase md:text-6xl">Product Registration</h1>
         </div>
       </div>
-      <ProductRegistrationForm productOptions={productOptions} />
+      <ProductRegistrationForm
+        modelNumberOptions={modelNumberOptions}
+        productTypeOptions={productTypeOptions}
+      />
       <CookiePreferencesNotice
         message={
           <div className="flex flex-col items-center justify-center pt-10 pb-20">
