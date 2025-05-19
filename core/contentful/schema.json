@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-15T18:58:06.390Z",
+        "updatedAt": "2025-05-19T12:47:36.532Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 405,
-        "publishedAt": "2025-05-15T18:58:06.390Z",
+        "publishedVersion": 407,
+        "publishedAt": "2025-05-19T12:47:36.532Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -34,16 +34,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "0BSO7Skn75LkVCxBc3hKPN"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 203,
-        "version": 406,
+        "publishedCounter": 204,
+        "version": 408,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "0BSO7Skn75LkVCxBc3hKPN"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productFinishedGoods"
@@ -150,7 +150,7 @@
           "name": "Web Category",
           "type": "Array",
           "localized": true,
-          "required": false,
+          "required": true,
           "validations": [
           ],
           "disabled": false,
@@ -6828,6 +6828,83 @@
           "name": "Disclaimer",
           "type": "Text",
           "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "esj3sw7u4uve"
+          }
+        },
+        "id": "mediaBanner",
+        "type": "ContentType",
+        "createdAt": "2025-05-19T15:20:04.122Z",
+        "updatedAt": "2025-05-19T15:20:04.467Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 1,
+        "publishedAt": "2025-05-19T15:20:04.467Z",
+        "firstPublishedAt": "2025-05-19T15:20:04.467Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+          }
+        },
+        "publishedCounter": 1,
+        "version": 2,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/mediaBanner"
+      },
+      "displayField": "wistiaId",
+      "name": "Media Banner",
+      "description": "",
+      "fields": [
+        {
+          "id": "image",
+          "name": "Image",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
+        },
+        {
+          "id": "wistiaId",
+          "name": "Wistia ID",
+          "type": "Symbol",
+          "localized": false,
           "required": false,
           "validations": [
           ],
