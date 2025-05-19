@@ -61,18 +61,20 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
   }
 
   try {
-    try {
-      await klaviyoProductRegistrationSubmission(
-        submission.data.email,
-        submission.data.firstName,
-        submission.data.lastName,
-        submission.data.productType,
-        submission.data.modelNumber,
-        'Product Registration',
-      );
-    } catch (error) {
+    const registrationResponse = await klaviyoProductRegistrationSubmission(
+      submission.data.email,
+      submission.data.firstName,
+      submission.data.lastName,
+      submission.data.productType,
+      submission.data.modelNumber,
+    );
+
+    if (!registrationResponse.ok) {
       // eslint-disable-next-line no-console
-      console.error('Error submitting product registration form:', error);
+      console.error(
+        'Error submitting product registration form:',
+        await registrationResponse.json(),
+      );
 
       return {
         errors: { general: ['Something went wrong, please try again.'] },
@@ -82,11 +84,17 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     }
 
     if (submission.data.subscribe) {
-      try {
-        await klaviyoNewsletterSignup(submission.data.email, 'Product Registration');
-      } catch (error) {
+      const newsletterResponse = await klaviyoNewsletterSignup(
+        submission.data.email,
+        'Product Registration',
+      );
+
+      if (!newsletterResponse.ok) {
         // eslint-disable-next-line no-console
-        console.error('Error submitting product registration form, newsletter signup:', error);
+        console.error(
+          'Error submitting product registration form, newsletter signup:',
+          newsletterResponse,
+        );
 
         return {
           errors: { general: ['Something went wrong, please try again.'] },

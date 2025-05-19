@@ -80,9 +80,7 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
 
   useEffect(() => {
     if (formState.success) {
-      formRef.current?.reset();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
       toast.success(
         <div
           dangerouslySetInnerHTML={{
@@ -91,12 +89,9 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
           }}
         />,
       );
+      formRef.current?.reset();
     }
-
-    if (formState.errors) {
-      formRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [formState.success, formState.errors, formRef]);
+  }, [formState.success]);
 
   return (
     <form
@@ -106,11 +101,6 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
       ref={formRef}
     >
       <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">Email</h2>
-      {formState.errors && (
-        <FormStatus className="mt-4 mb-4" key="form-errors-general" type="error">
-          Form has errors, see below.
-        </FormStatus>
-      )}
       <div className="flex flex-col gap-1">
         <Label className="text-foreground text-sm font-medium" htmlFor="email">
           Email Address*
@@ -174,6 +164,11 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
           {isPending ? <Loader2 className="mr-2 animate-spin" size={16} /> : 'Submit'}
         </Button>
       </div>
+      {formState.errors && (
+        <FormStatus className="mt-4 mb-4" key="form-errors-general" type="error">
+          Form has errors, see above.
+        </FormStatus>
+      )}
     </form>
   );
 };
