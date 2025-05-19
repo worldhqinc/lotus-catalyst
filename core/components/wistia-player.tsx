@@ -1,5 +1,6 @@
 'use client';
 
+import { clsx } from 'clsx';
 import { PauseIcon, PlayIcon } from 'lucide-react';
 import Script from 'next/script';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -133,7 +134,6 @@ export function WistiaPlayer({
       options: {
         autoplay: true,
         loop: pageType !== 'product',
-        endVideoBehavior: 'loop',
         playsinline: true,
       },
       onReady(video: Window['wistiaVideo']) {
@@ -227,7 +227,13 @@ export function WistiaPlayer({
   };
 
   return (
-    <div className="overflow-hidden rounded-lg" ref={videoContainerRef}>
+    <div
+      className={clsx(
+        'overflow-hidden rounded-lg',
+        pageType !== 'tutorial' && '[&_.click-for-sound-btn]:!hidden',
+      )}
+      ref={videoContainerRef}
+    >
       {pageType !== 'product' && (
         <div className="wistia-player-control absolute right-0 bottom-0 z-20 flex items-center justify-center">
           {!isPlaying ? (
