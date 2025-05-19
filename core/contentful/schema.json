@@ -3336,7 +3336,7 @@
         "id": "inspirationCard",
         "type": "ContentType",
         "createdAt": "2025-04-03T18:16:56.554Z",
-        "updatedAt": "2025-05-08T23:03:26.936Z",
+        "updatedAt": "2025-05-19T16:20:38.480Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3344,8 +3344,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 31,
-        "publishedAt": "2025-05-08T23:03:26.936Z",
+        "publishedVersion": 33,
+        "publishedAt": "2025-05-19T16:20:38.480Z",
         "firstPublishedAt": "2025-04-03T18:16:56.910Z",
         "createdBy": {
           "sys": {
@@ -3358,16 +3358,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 16,
-        "version": 32,
+        "publishedCounter": 17,
+        "version": 34,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/inspirationCard"
@@ -3397,6 +3397,18 @@
           ],
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "image",
+          "name": "Image",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
         },
         {
           "id": "contentReference",
@@ -5824,7 +5836,7 @@
         "id": "productBento",
         "type": "ContentType",
         "createdAt": "2025-04-22T19:05:48.381Z",
-        "updatedAt": "2025-04-22T19:05:48.635Z",
+        "updatedAt": "2025-05-19T19:58:47.690Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -5832,8 +5844,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 1,
-        "publishedAt": "2025-04-22T19:05:48.635Z",
+        "publishedVersion": 3,
+        "publishedAt": "2025-05-19T19:58:47.690Z",
         "firstPublishedAt": "2025-04-22T19:05:48.635Z",
         "createdBy": {
           "sys": {
@@ -5846,16 +5858,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 1,
-        "version": 2,
+        "publishedCounter": 2,
+        "version": 4,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productBento"
@@ -5880,6 +5892,17 @@
           "name": "Subtitle",
           "type": "Symbol",
           "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "pageAnchor",
+          "name": "Page Anchor",
+          "type": "Symbol",
+          "localized": false,
           "required": false,
           "validations": [
           ],
@@ -5922,7 +5945,7 @@
         "id": "highlights",
         "type": "ContentType",
         "createdAt": "2025-04-22T20:14:20.088Z",
-        "updatedAt": "2025-04-22T20:17:24.332Z",
+        "updatedAt": "2025-05-19T19:59:11.925Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -5930,8 +5953,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-22T20:17:24.332Z",
+        "publishedVersion": 5,
+        "publishedAt": "2025-05-19T19:59:11.925Z",
         "firstPublishedAt": "2025-04-22T20:14:20.540Z",
         "createdBy": {
           "sys": {
@@ -5944,16 +5967,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 2,
-        "version": 4,
+        "publishedCounter": 3,
+        "version": 6,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/highlights"
@@ -5968,6 +5991,17 @@
           "type": "Symbol",
           "localized": true,
           "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "pageAnchor",
+          "name": "Page Anchor",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
           "validations": [
           ],
           "disabled": false,
