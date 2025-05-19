@@ -172,7 +172,7 @@ function GroupTabs() {
       value: group.key,
       children: (
         <Index indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? ''} key={group.key}>
-          <Configure filters={group.filter} hitsPerPage={4} />
+          <Configure filters={group.filter} hitsPerPage={6} />
           <GroupTabContent group={group} />
         </Index>
       ),
