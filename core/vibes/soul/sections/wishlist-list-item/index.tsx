@@ -143,7 +143,7 @@ function WishlistListItemItemsSkeleton({
   placeholderCount?: number;
 }) {
   return (
-    <div className="mt-6 flex flex-1 gap-4 overflow-hidden [mask-image:linear-gradient(to_right,_black_70%,_transparent_100%)]">
+    <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
       {Array.from({ length: placeholderCount }).map((_, index) => (
         <div className={clsx('min-w-36', className)} key={index}>
           <ProductCardSkeleton aspectRatio="1:1" />
