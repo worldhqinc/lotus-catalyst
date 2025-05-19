@@ -12,37 +12,43 @@ export default async function ProductRegistration() {
     limit: 1000,
   });
 
-  const productTypeOptions: Array<{ label: string; value: string }> = productsData.items.map(
-    (item) => {
-      const fields = productFinishedGoodsFieldsSchema
-        .pick({
-          webCategory: true,
-        })
-        .parse(item.fields);
+  const productTypeOptions: Array<{ label: string; value: string }> = Array.from(
+    new Set(
+      productsData.items
+        .map((item) => {
+          const fields = productFinishedGoodsFieldsSchema
+            .pick({
+              webCategory: true,
+            })
+            .parse(item.fields);
 
-      return {
-        label: fields.webCategory,
-        value: fields.webCategory,
-      };
-    },
-  );
+          return fields.webCategory[0];
+        })
+        .filter((category): category is string => category !== undefined),
+    ),
+  ).map((category) => ({
+    label: category,
+    value: category,
+  }));
 
   productTypeOptions.unshift({ label: 'Select a product type', value: 'null' });
 
-  const modelNumberOptions: Array<{ label: string; value: string }> = productsData.items.map(
-    (item) => {
-      const fields = productFinishedGoodsFieldsSchema
-        .pick({
-          bcProductReference: true,
-        })
-        .parse(item.fields);
+  const modelNumberOptions: Array<{ label: string; value: string }> = Array.from(
+    new Set(
+      productsData.items.map((item) => {
+        const fields = productFinishedGoodsFieldsSchema
+          .pick({
+            bcProductReference: true,
+          })
+          .parse(item.fields);
 
-      return {
-        label: fields.bcProductReference,
-        value: fields.bcProductReference,
-      };
-    },
-  );
+        return fields.bcProductReference;
+      }),
+    ),
+  ).map((reference) => ({
+    label: reference,
+    value: reference,
+  }));
 
   modelNumberOptions.unshift({ label: 'Select a model number', value: 'null' });
 

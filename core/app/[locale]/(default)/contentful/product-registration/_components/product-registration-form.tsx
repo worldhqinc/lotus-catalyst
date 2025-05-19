@@ -16,7 +16,7 @@ import { submitForm } from '../_actions/submit-form';
 interface FormState {
   errors: Record<string, string[]> | null;
   success: boolean;
-  formData?: Record<string, string | null>;
+  formData?: Record<string, string | boolean | null>;
 }
 
 interface Props {
@@ -40,6 +40,9 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
     toast.success('Thank you for registering your product!');
   }
 
+  console.log(productTypeOptions);
+  console.log(modelNumberOptions);
+
   return (
     <div className="bg-contrast-100 product-registration-form px-4 py-8 md:py-16">
       <div className="mx-auto max-w-2xl rounded bg-white p-4 md:p-8">
@@ -58,7 +61,7 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
                   First name*
                 </Label>
                 <Input
-                  defaultValue={formState.formData?.firstName ?? ''}
+                  defaultValue={String(formState.formData?.firstName ?? '')}
                   errors={formState.errors?.firstName}
                   id="firstName"
                   name="firstName"
@@ -70,7 +73,7 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
                   Last name*
                 </Label>
                 <Input
-                  defaultValue={formState.formData?.lastName ?? ''}
+                  defaultValue={String(formState.formData?.lastName ?? '')}
                   errors={formState.errors?.lastName}
                   id="lastName"
                   name="lastName"
@@ -83,7 +86,7 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
                 Email address*
               </Label>
               <Input
-                defaultValue={formState.formData?.email ?? ''}
+                defaultValue={String(formState.formData?.email ?? '')}
                 errors={formState.errors?.email}
                 id="email"
                 name="email"
@@ -101,7 +104,7 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
                 <Select
                   aria-label="Select a product type"
                   className="flex-1"
-                  defaultValue={formState.formData?.productType ?? ''}
+                  defaultValue={String(formState.formData?.productType ?? '')}
                   errors={formState.errors?.productType}
                   id="productType"
                   key="productType"
@@ -117,7 +120,7 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
                 <Select
                   aria-label="Select a model number"
                   className="flex-1"
-                  defaultValue={formState.formData?.modelNumber ?? ''}
+                  defaultValue={String(formState.formData?.modelNumber ?? '')}
                   errors={formState.errors?.modelNumber}
                   id="modelNumber"
                   key="modelNumber"
