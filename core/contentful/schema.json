@@ -5708,7 +5708,7 @@
         "id": "featureItem",
         "type": "ContentType",
         "createdAt": "2025-04-21T23:44:20.444Z",
-        "updatedAt": "2025-05-08T18:45:43.437Z",
+        "updatedAt": "2025-05-19T21:02:58.172Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -5716,8 +5716,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 14,
-        "publishedAt": "2025-05-08T18:45:43.437Z",
+        "publishedVersion": 16,
+        "publishedAt": "2025-05-19T21:02:58.172Z",
         "firstPublishedAt": "2025-04-21T23:45:12.912Z",
         "createdBy": {
           "sys": {
@@ -5730,16 +5730,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 7,
-        "version": 15,
+        "publishedCounter": 8,
+        "version": 17,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/featureItem"
@@ -5786,6 +5786,17 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Asset"
+        },
+        {
+          "id": "wistiaId",
+          "name": "Wistia ID",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
         },
         {
           "id": "products",

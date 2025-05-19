@@ -229,25 +229,13 @@ export function WistiaPlayer({
   return (
     <div className="overflow-hidden rounded-lg" ref={videoContainerRef}>
       {pageType !== 'product' && (
-        <div className="wistia-player-control absolute right-4 bottom-4 z-20 flex items-center justify-center">
+        <div className="wistia-player-control absolute right-0 bottom-0 z-20 flex items-center justify-center">
           {!isPlaying ? (
-            <Button
-              className="text-white"
-              onClick={handlePlay}
-              shape="link"
-              size="medium"
-              variant="link"
-            >
+            <Button className="text-white" onClick={handlePlay} shape="link" variant="link">
               <PlayIcon />
             </Button>
           ) : (
-            <Button
-              className="text-white"
-              onClick={handlePause}
-              shape="link"
-              size="medium"
-              variant="link"
-            >
+            <Button className="text-white" onClick={handlePause} shape="link" variant="link">
               <PauseIcon />
             </Button>
           )}
