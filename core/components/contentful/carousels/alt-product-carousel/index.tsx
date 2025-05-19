@@ -2,7 +2,7 @@
 
 import { clsx } from 'clsx';
 import { ArrowRight } from 'lucide-react';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import {
@@ -18,11 +18,25 @@ import { ensureImageUrl } from '~/lib/utils';
 
 function CarouselPagination({ className }: { className?: string }) {
   const { api } = useCarousel();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      setSelectedIndex(api.selectedScrollSnap());
+    };
+
+    api.on('select', onSelect);
+
+    return () => {
+      api.off('select', onSelect);
+    };
+  }, [api]);
 
   if (!api) return null;
 
   const scrollSnaps = api.scrollSnapList();
-  const selectedIndex = api.selectedScrollSnap();
 
   return (
     <div className={clsx('flex items-center gap-2', className)}>
