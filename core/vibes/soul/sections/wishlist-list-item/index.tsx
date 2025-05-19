@@ -101,7 +101,7 @@ function WishlistListItemItems({
         }
 
         return (
-          <div className="mt-6 flex flex-1 gap-4 overflow-hidden [mask-image:linear-gradient(to_right,_black_70%,_transparent_100%)]">
+          <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
             {items.map(({ product }) => (
               <div className="min-w-36" key={product.id}>
                 <ProductCard aspectRatio="1:1" product={product} />
@@ -143,7 +143,7 @@ function WishlistListItemItemsSkeleton({
   placeholderCount?: number;
 }) {
   return (
-    <div className="mt-6 flex flex-1 gap-4 overflow-hidden [mask-image:linear-gradient(to_right,_black_70%,_transparent_100%)]">
+    <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
       {Array.from({ length: placeholderCount }).map((_, index) => (
         <div className={clsx('min-w-36', className)} key={index}>
           <ProductCardSkeleton aspectRatio="1:1" />

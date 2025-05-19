@@ -6,7 +6,6 @@ import { createSearchParamsCache, parseAsInteger, parseAsString } from 'nuqs/ser
 
 import { Streamable } from '@/vibes/soul/lib/streamable';
 import { CursorPaginationInfo } from '@/vibes/soul/primitives/cursor-pagination';
-import { Breadcrumb, Breadcrumbs } from '@/vibes/soul/sections/breadcrumbs';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Wishlist, WishlistDetails } from '@/vibes/soul/sections/wishlist-details';
 import { addWishlistItemToCart } from '~/app/[locale]/(default)/account/wishlists/[id]/_actions/add-to-cart';
@@ -74,20 +73,6 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   };
 }
 
-async function getBreadcrumbs(
-  token: string,
-  searchParams: Promise<SearchParams>,
-): Promise<Breadcrumb[]> {
-  const t = await getTranslations('PublicWishlist');
-  const searchParamsParsed = searchParamsCache.parse(await searchParams);
-  const wishlist = await getPublicWishlist(token, searchParamsParsed);
-
-  return [
-    { href: '/', label: 'Home' },
-    { href: '#', label: wishlist?.name ?? t('defaultName') },
-  ];
-}
-
 export default async function PublicWishlist({ params, searchParams }: Props) {
   const { locale, token } = await params;
 
@@ -131,8 +116,6 @@ export default async function PublicWishlist({ params, searchParams }: Props) {
 
   return (
     <SectionLayout>
-      <Breadcrumbs breadcrumbs={Streamable.from(() => getBreadcrumbs(token, searchParams))} />
-
       <WishlistDetails
         action={addWishlistItemToCart}
         className="mt-8"
