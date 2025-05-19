@@ -121,7 +121,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
   newFlag: z.boolean().optional().nullable(),
   webProductName: z.string(),
   webProductNameDescriptor: z.string().optional().nullable(),
-  webCategory: z.array(z.string()).optional().nullable(),
+  webCategory: z.array(z.string()),
   webProductLine: z.array(z.string()).optional().nullable(),
   webFeature: z.array(z.string()).optional().nullable(),
   webTemperature: z.string().optional().nullable(),
@@ -4576,6 +4576,79 @@ export const productFormulationLookupSchema = z.object({
 
 export type productFormulationLookup = z.infer<typeof productFormulationLookupSchema>;
 
+// Schema for mediaBanner
+export const mediaBannerFieldsSchema = z.object({
+  image: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.literal('Asset'),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.undefined().optional().nullable(),
+      }),
+      fields: z.object({
+        title: z.string().optional().nullable(),
+        description: z.string().optional().nullable(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .optional()
+              .nullable(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .optional()
+    .nullable(),
+  wistiaId: z.string().optional().nullable(),
+});
+
+export const mediaBannerSchema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('mediaBanner'),
+      }),
+    }),
+  }),
+  fields: mediaBannerFieldsSchema,
+});
+
+export type mediaBanner = z.infer<typeof mediaBannerSchema>;
+
 // ========================================
 // Union Schema and Helper Object
 // ========================================
@@ -4629,6 +4702,7 @@ export const contentfulEntrySchemaUnion = z.union([
   productSupportLinksSchema,
   supportLinkSchema,
   productFormulationLookupSchema,
+  mediaBannerSchema,
 ]);
 export type ContentfulEntry = z.infer<typeof contentfulEntrySchemaUnion>;
 
@@ -4689,4 +4763,5 @@ export const contentfulSchemas = {
   productSupportLinks: productSupportLinksSchema,
   supportLink: supportLinkSchema,
   productFormulationLookup: productFormulationLookupSchema,
+  mediaBanner: mediaBannerSchema,
 };
