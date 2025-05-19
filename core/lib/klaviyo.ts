@@ -50,10 +50,11 @@ export async function klaviyoNewsletterSignup(email: string, source: string) {
 
 export async function klaviyoProductRegistrationSubmission(
   email: string,
-  // firstName: string,
-  // lastName: string,
-  // productType: string,
-  // modelNumber: string,
+  firstName: string,
+  lastName: string,
+  productType: string,
+  modelNumber: string,
+  source: string,
 ) {
   // TODO move this to a follow up API call
   // properties: {
@@ -88,6 +89,10 @@ export async function klaviyoProductRegistrationSubmission(
                         consent: 'SUBSCRIBED',
                       },
                     },
+                  },
+                  properties: {
+                    product_type: productType,
+                    model_number: modelNumber,
                   },
                 },
               },
