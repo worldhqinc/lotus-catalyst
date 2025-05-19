@@ -73,6 +73,12 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error submitting product registration form:', error);
+
+      return {
+        errors: { general: ['Something went wrong, please try again.'] },
+        success: false,
+        formData: submission.data,
+      };
     }
 
     if (submission.data.subscribe) {
@@ -81,10 +87,14 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error('Error submitting product registration form, newsletter signup:', error);
+
+        return {
+          errors: { general: ['Something went wrong, please try again.'] },
+          success: false,
+          formData: submission.data,
+        };
       }
     }
-
-    // TODO handle errors
 
     return {
       errors: null,
@@ -98,12 +108,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     return {
       errors: { general: ['Something went wrong, please try again.'] },
       success: false,
-      formData: Object.fromEntries(
-        Array.from(formData.entries()).map(([key, value]) => [
-          key,
-          value instanceof File ? value.name : value.toString(),
-        ]),
-      ),
+      formData: submission.data,
     };
   }
 }
