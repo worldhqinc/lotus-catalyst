@@ -43,6 +43,9 @@ hooks:
         pnpm install
         NODE_OPTIONS="--max-old-space-size=8192" pnpm build
         ./scripts/setup_mounts.sh
+    deploy: |
+        set -eu
+        ./scripts/setup_mounts.sh
     post_deploy: |
         set -eu
         curl -H "Fastly-Key: $FASTLY_API_TOKEN" -X POST "https://api.fastly.com/service/${FASTLY_SERVICE_ID}/purge_all"
