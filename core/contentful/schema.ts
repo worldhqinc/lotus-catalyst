@@ -4022,6 +4022,7 @@ export const featureItemFieldsSchema = z.object({
       }),
     }),
   }),
+  wistiaId: z.string().optional().nullable(),
   products: z
     .array(
       z.object({

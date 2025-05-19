@@ -1,6 +1,6 @@
 'use client';
 
-import { Package, RefreshCw } from 'lucide-react';
+import { Package2, RefreshCw } from 'lucide-react';
 import { ReactNode, useRef } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
@@ -158,7 +158,7 @@ export function ProductDetail<F extends Field>({
                       <div className="grid gap-2 @xl:grid-cols-2">
                         {[
                           {
-                            icon: Package,
+                            icon: Package2,
                             label: 'Free shipping on all products',
                           },
                           {
