@@ -6350,7 +6350,7 @@
         "id": "featureTile",
         "type": "ContentType",
         "createdAt": "2025-04-30T19:48:13.329Z",
-        "updatedAt": "2025-04-30T19:51:24.623Z",
+        "updatedAt": "2025-05-19T21:31:06.017Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -6358,8 +6358,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 5,
-        "publishedAt": "2025-04-30T19:51:24.623Z",
+        "publishedVersion": 7,
+        "publishedAt": "2025-05-19T21:31:06.017Z",
         "firstPublishedAt": "2025-04-30T19:48:13.670Z",
         "createdBy": {
           "sys": {
@@ -6372,16 +6372,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 3,
-        "version": 6,
+        "publishedCounter": 4,
+        "version": 8,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/featureTile"
@@ -6410,8 +6410,13 @@
           "validations": [
             {
               "in": [
+                "circle-gauge",
                 "circle-slash-2",
-                "microwave"
+                "fingerprint",
+                "flame",
+                "heater",
+                "microwave",
+                "thermometer"
               ]
             }
           ],
