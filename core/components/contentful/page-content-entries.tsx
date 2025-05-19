@@ -22,6 +22,7 @@ import {
   highlightsSchema,
   inspirationBentoSchema,
   introSectionSchema,
+  mediaBannerSchema,
   newsletterFormSchema,
   pageHeaderSupportSchema,
   pageStandard,
@@ -51,6 +52,7 @@ import { HeroSection } from './sections/hero-section';
 import { Highlights } from './sections/highlights';
 import { InspirationBento } from './sections/inspiration-bento';
 import { IntroSection } from './sections/intro-section';
+import { MediaBanner } from './sections/media-banner';
 import { NewsletterForm } from './sections/newsletter-form';
 import { PageHeaderSupport } from './sections/page-header';
 import { PostGrid } from './sections/post-grid';
@@ -209,6 +211,11 @@ const ContentComponentMap: Record<
         }
       />
     );
+  },
+  mediaBanner: ({ contentEntry }) => {
+    const data = mediaBannerSchema.parse(contentEntry);
+
+    return <MediaBanner {...data.fields} />;
   },
 };
 
