@@ -101,12 +101,14 @@ function WishlistListItemItems({
         }
 
         return (
-          <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-            {items.map(({ product }) => (
-              <div className="min-w-36" key={product.id}>
-                <ProductCard aspectRatio="1:1" product={product} />
-              </div>
-            ))}
+          <div className="mt-8 flex-1 overflow-hidden [mask-image:linear-gradient(to_right,_black_70%,_transparent_100%)]">
+            <div className="grid min-w-[1024px] auto-cols-fr grid-flow-col grid-cols-6 gap-4 overflow-hidden">
+              {items.map(({ product }) => (
+                <div className="min-w-36" key={product.id}>
+                  <ProductCard aspectRatio="1:1" product={product} />
+                </div>
+              ))}
+            </div>
           </div>
         );
       }}

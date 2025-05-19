@@ -34,7 +34,7 @@ export const WishlistsSection = ({
   return (
     <section className="w-full">
       <header className="border-b-contrast-200 border-b">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-8 flex items-center justify-between">
           <h1 className="text-2xl leading-[120%] @2xl:text-4xl">{title}</h1>
           {actions}
         </div>

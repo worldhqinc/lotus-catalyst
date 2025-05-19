@@ -68,7 +68,7 @@ export const WishlistDetails = ({
 
         return (
           <section className={clsx('@container w-full', className)}>
-            <header className="mb-6 flex flex-col gap-4 @lg:flex-row @lg:justify-between">
+            <header className="mb-8 flex flex-col gap-4 @lg:flex-row @lg:justify-between">
               <div className="flex flex-1 gap-2">
                 {prevHref != null && prevHref !== '' && (
                   <ButtonLink href={prevHref} shape="circle" size="small" variant="ghost">
