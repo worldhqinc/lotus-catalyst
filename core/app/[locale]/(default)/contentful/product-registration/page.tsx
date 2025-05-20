@@ -58,11 +58,14 @@ async function getProductOptions() {
 
   modelNumberOptions.unshift({ label: 'Select a model number', value: 'null' });
 
-  return productOptions;
+  return {
+    productTypeOptions,
+    modelNumberOptions,
+  };
 }
 
 export default async function ProductRegistration() {
-  const productOptions = await getProductOptions();
+  const { productTypeOptions, modelNumberOptions } = await getProductOptions();
 
   return (
     <div>
