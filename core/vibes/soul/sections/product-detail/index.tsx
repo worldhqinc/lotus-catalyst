@@ -38,7 +38,7 @@ interface ProductDetailProduct {
       content: ReactNode;
     }>
   >;
-  sku?: string;
+  sku: string;
 }
 
 export interface ProductDetailProps<F extends Field> {
