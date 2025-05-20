@@ -29,6 +29,9 @@ export const subscribe = async (
   );
 
   if (!klaviyoResponse.ok) {
+    // eslint-disable-next-line no-console
+    console.error('Error submitting newsletter signup:', klaviyoResponse);
+
     return { lastResult: submission.reply(), successMessage: null, errorMessage: t('error') };
   }
 

@@ -52,8 +52,17 @@ export async function klaviyoProductRegistrationSubmission(
   email: string,
   firstName: string,
   lastName: string,
-  source: string,
+  productType: string,
+  modelNumber: string,
 ) {
+  // TODO move this to a follow up API call
+  // properties: {
+  //   first_name: firstName,
+  //   last_name: lastName,
+  //   product_type: productType,
+  //   model_number: modelNumber,
+  // },
+
   return await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs', {
     method: 'POST',
     headers: {
@@ -66,15 +75,13 @@ export async function klaviyoProductRegistrationSubmission(
       data: {
         type: 'profile-subscription-bulk-create-job',
         attributes: {
-          custom_source: source,
+          custom_source: 'Product Registration',
           profiles: {
             data: [
               {
                 type: 'profile',
                 attributes: {
                   email,
-                  first_name: firstName,
-                  last_name: lastName,
                   subscriptions: {
                     email: {
                       marketing: {

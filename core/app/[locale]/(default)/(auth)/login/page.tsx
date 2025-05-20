@@ -54,9 +54,9 @@ export default async function Login({ params, searchParams }: Props) {
             <p className="text-xl font-medium">{t('CreateAccount.accountBenefits')}</p>
             <ul className="text-contrast-400 mt-2 flex list-disc flex-col gap-y-1 ps-4">
               <li>{t('CreateAccount.fastCheckout')}</li>
-              <li>{t('CreateAccount.multipleAddresses')}</li>
-              <li>{t('CreateAccount.ordersHistory')}</li>
               <li>{t('CreateAccount.ordersTracking')}</li>
+              <li>{t('CreateAccount.ordersHistory')}</li>
+              <li>{t('CreateAccount.multipleAddresses')}</li>
               <li>{t('CreateAccount.wishlists')}</li>
             </ul>
           </div>

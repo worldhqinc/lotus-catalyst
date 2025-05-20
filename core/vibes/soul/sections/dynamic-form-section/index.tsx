@@ -33,6 +33,11 @@ export function DynamicFormSection<F extends Field>({
               {subtitle != null && subtitle !== '' && (
                 <p className="text-base leading-none font-light">{subtitle}</p>
               )}
+              {isRegisterForm && (
+                <p className="text-foreground mt-6 text-right text-sm">
+                  Required Fields <span className="text-contrast-400">*</span>
+                </p>
+              )}
             </header>
           )}
           <DynamicForm
