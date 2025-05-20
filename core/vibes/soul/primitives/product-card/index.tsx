@@ -141,7 +141,7 @@ export function ProductCard({
               {badge}
             </Badge>
           )}
-          {!!sku && (
+          {!!sku && inStock && (
             <form
               action={() => {
                 startTransition(async () => {
@@ -154,8 +154,19 @@ export function ProductCard({
               }}
               className="pointer-events-none absolute inset-0 z-10"
             >
-              <AddToBagForm inStock={inStock} productId={id} sku={sku} />
+              <AddToBagForm sku={sku} />
             </form>
+          )}
+          {!!sku && !inStock && (
+            <div className="pointer-events-none absolute inset-0 z-10">
+              <div className="flex size-full items-end justify-center p-4 transition-opacity duration-500 group-hover:opacity-100">
+                <NotifyBackInStock
+                  buttonClassName="pointer-events-auto w-full"
+                  sku={sku}
+                  textCta={false}
+                />
+              </div>
+            </div>
           )}
         </div>
         <div className="mt-2 flex flex-wrap items-start gap-x-4 gap-y-3 px-1 @xs:mt-3">
@@ -258,15 +269,7 @@ export function ProductCardSkeleton({
   );
 }
 
-function AddToBagForm({
-  sku,
-  inStock,
-  productId,
-}: {
-  sku: string;
-  inStock: boolean;
-  productId: string;
-}) {
+function AddToBagForm({ sku }: { sku: string }) {
   const { pending } = useFormStatus();
 
   return (
@@ -277,23 +280,15 @@ function AddToBagForm({
       )}
     >
       <input name="sku" type="hidden" value={sku} />
-      {inStock ? (
-        <Button
-          className="pointer-events-auto w-full"
-          disabled={!sku || pending}
-          loading={pending}
-          size="small"
-          type="submit"
-        >
-          Add to cart
-        </Button>
-      ) : (
-        <NotifyBackInStock
-          buttonClassName="pointer-events-auto w-full"
-          buttonSize="small"
-          productId={productId}
-        />
-      )}
+      <Button
+        className="pointer-events-auto w-full"
+        disabled={!sku || pending}
+        loading={pending}
+        size="small"
+        type="submit"
+      >
+        Add to cart
+      </Button>
     </div>
   );
 }

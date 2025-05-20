@@ -201,6 +201,7 @@ export function ProductDetail<F extends Field>({
                               fields={fields}
                               prefetch={prefetch}
                               productId={product.id}
+                              sku={product.sku}
                             />
                           )}
                         </Stream>

@@ -2,7 +2,7 @@ import { subscribe } from './_actions/subscribe';
 import NotifyBackInStockModal from './_components/modal';
 
 interface NotifyBackInStockProps {
-  productId: string;
+  sku: string;
   buttonLabel?: string;
   buttonClassName?: string;
   buttonSize?: 'small' | 'medium';
@@ -10,7 +10,7 @@ interface NotifyBackInStockProps {
 }
 
 export default function NotifyBackInStock({
-  productId,
+  sku,
   buttonLabel,
   buttonClassName,
   buttonSize = 'medium',
@@ -22,7 +22,7 @@ export default function NotifyBackInStock({
       buttonClassName={buttonClassName}
       buttonLabel={buttonLabel}
       buttonSize={buttonSize}
-      productId={productId}
+      sku={sku}
       textCta={textCta}
     />
   );

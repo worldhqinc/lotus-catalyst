@@ -100,8 +100,8 @@ export async function klaviyoProductRegistrationSubmission(
   });
 }
 
-export async function klaviyoBackInStockSubscription(email: string, productId: string) {
-  const variantId = await getDefaultProductVariantId(Number(productId));
+export async function klaviyoBackInStockSubscription(email: string, sku: string) {
+  const variantId = await getDefaultProductVariantId(sku);
 
   return await fetch('https://a.klaviyo.com/api/back-in-stock-subscriptions', {
     method: 'POST',
@@ -138,6 +138,16 @@ export async function klaviyoBackInStockSubscription(email: string, productId: s
   });
 }
 
+const GetProductBySkuQuery = graphql(`
+  query GetProductBySkuQuery($sku: String!) {
+    site {
+      product(sku: $sku) {
+        entityId
+      }
+    }
+  }
+`);
+
 const GetDefaultProductVariantId = graphql(`
   query GetDefaultProductVariantId($productId: Int!) {
     site {
@@ -154,10 +164,16 @@ const GetDefaultProductVariantId = graphql(`
   }
 `);
 
-async function getDefaultProductVariantId(productId: number) {
+async function getDefaultProductVariantId(sku: string) {
+  const { data: productData } = await client.fetch({
+    document: GetProductBySkuQuery,
+    variables: { sku },
+    fetchOptions: { cache: 'no-store' },
+  });
+
   const { data } = await client.fetch({
     document: GetDefaultProductVariantId,
-    variables: { productId },
+    variables: { productId: productData.site.product?.entityId ?? 0 },
     fetchOptions: { cache: 'no-store' },
   });
 
