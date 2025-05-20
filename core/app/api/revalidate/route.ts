@@ -5,8 +5,8 @@ import { z } from 'zod';
 const revalidateSchema = z.object({
   entityId: z.string(),
   contentType: z.string().optional(),
-  pageSlug: z.string().optional(),
-  sku: z.string().optional(),
+  pageSlug: z.record(z.string(), z.string()).optional(),
+  modelNumber: z.record(z.string(), z.string()).optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -22,19 +22,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Invalid request body' }, { status: 400 });
   }
 
-  const { entityId, contentType, pageSlug, sku } = result.data;
+  const { entityId, contentType, pageSlug, modelNumber } = result.data;
 
   try {
     if (pageSlug) {
-      revalidatePath(pageSlug);
+      revalidatePath(pageSlug['en-US'] ?? '');
     }
 
     if (entityId) {
       revalidateTag(`contentful:${entityId}`);
     }
 
-    if (sku) {
-      revalidateTag(`contentful:${sku}`);
+    if (modelNumber) {
+      revalidateTag(`contentful:${modelNumber['en-US']}`);
     }
 
     if (contentType) {
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (contentType && pageSlug) {
-      revalidateTag(`contentful:${contentType}:${pageSlug}`);
+      revalidateTag(`contentful:${contentType}:${pageSlug['en-US']}`);
     }
 
     return NextResponse.json({
