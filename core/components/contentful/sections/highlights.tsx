@@ -8,6 +8,7 @@ import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 export function Highlights({
   pageAnchor,
   title,
+  image,
   quoteText,
   quoteAuthorImage,
   quoteAuthorName,
@@ -40,8 +41,8 @@ export function Highlights({
             <div className="flex h-full flex-col justify-between gap-2">
               <p className="text-background font-heading text-4xl lg:text-5xl">“{quoteText}”</p>
               <div className="mt-auto flex flex-col pt-5">
-                <div className="bg-surface-image mb-8 aspect-square w-20 overflow-hidden rounded-full">
-                  {quoteAuthorImage ? (
+                {quoteAuthorImage ? (
+                  <div className="bg-surface-image mb-8 aspect-square w-20 overflow-hidden rounded-full">
                     <Image
                       alt={quoteAuthorImage.fields.title || quoteAuthorName || ''}
                       className="h-full w-full object-cover"
@@ -49,15 +50,24 @@ export function Highlights({
                       src={ensureImageUrl(quoteAuthorImage.fields.file.url)}
                       width={quoteAuthorImage.fields.file.details.image?.width || 600}
                     />
-                  ) : null}
-                </div>
+                  </div>
+                ) : null}
                 <p className="text-background font-medium">{quoteAuthorName},</p>
                 <p className="text-background font-medium">{quoteAuthorTitle}</p>
               </div>
             </div>
           </div>
         </div>
-        <div className="bg-contrast-200 flex aspect-square h-full w-full flex-col justify-end rounded-lg p-4 lg:p-8">
+        <div className="bg-contrast-200 relative isolate flex aspect-square h-full w-full flex-col justify-end overflow-hidden rounded-lg p-4 lg:p-8">
+          {image && (
+            <Image
+              alt={image.fields.title || ''}
+              className="absolute inset-0 -z-10 h-full w-full object-cover"
+              height={image.fields.file.details.image?.height || 400}
+              src={ensureImageUrl(image.fields.file.url)}
+              width={image.fields.file.details.image?.width || 600}
+            />
+          )}
           <div>
             <ButtonLink href={linkHref}>{text}</ButtonLink>
           </div>
