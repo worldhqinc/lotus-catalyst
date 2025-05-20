@@ -61,7 +61,6 @@ export default function NotifyBackInStockModal({
   });
 
   const handleModalClose = () => {
-    form.reset();
     setModalOpen(false);
   };
 
@@ -111,7 +110,18 @@ export default function NotifyBackInStockModal({
         <form {...getFormProps(form)} action={formAction} className="space-y-4">
           <input name="productId" type="hidden" value={productId} />
           <Label htmlFor="email">Email</Label>
-          <Input {...getInputProps(fields.email, { type: 'email' })} key={fields.email.id} />
+          <Input
+            {...getInputProps(fields.email, { type: 'email' })}
+            className={clsx(
+              fields.email.errors && fields.email.errors.length > 0 && 'border-red-500',
+            )}
+            key={fields.email.id}
+          />
+          {fields.email.errors && fields.email.errors.length > 0 && (
+            <FormStatus className="mt-1 text-sm" type="error">
+              {fields.email.errors[0]}
+            </FormStatus>
+          )}
           <div className="flex justify-end gap-4">
             <Button
               disabled={isPending}
