@@ -1,3 +1,4 @@
+import { unstable_cacheTag as cacheTag } from 'next/cache';
 import { cache } from 'react';
 
 import { client } from '~/client';
@@ -331,6 +332,8 @@ export const getProductPricingAndRelatedProducts = cache(
 export const getContentfulProductData = cache(
   async (sku: string, categories: Array<{ node: { name: string; path: string } }> | null = []) => {
     'use cache';
+
+    cacheTag(`contentful:${sku}`);
 
     const contentfulData = await contentfulClient.getEntries({
       content_type: categories?.some((category) => category.node.path.includes('parts-accessories'))

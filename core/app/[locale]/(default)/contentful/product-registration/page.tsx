@@ -1,3 +1,5 @@
+import { unstable_cacheTag as cacheTag } from 'next/cache';
+
 import CookiePreferencesCta from '~/components/cookie-preferences-cta';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { productFinishedGoodsFieldsSchema } from '~/contentful/schema';
@@ -7,6 +9,8 @@ import { ProductRegistrationForm } from './_components/product-registration-form
 
 async function getProductOptions() {
   'use cache';
+
+  cacheTag('contentful:productFinishedGoods');
 
   const productsData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',

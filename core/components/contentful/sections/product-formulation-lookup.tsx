@@ -1,5 +1,6 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { unstable_cacheTag as cacheTag } from 'next/cache';
 
 import { productFinishedGoodsFieldsSchema, productFormulationLookup } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
@@ -8,6 +9,8 @@ import { ProductFormulationLookupClient } from './product-formulation-lookup-cli
 
 async function getProductOptions() {
   'use cache';
+
+  cacheTag('contentful:productFinishedGoods');
 
   const productsData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',
@@ -34,6 +37,8 @@ async function getProductOptions() {
 
 async function getProductFields(sku: string) {
   'use cache';
+
+  cacheTag(`contentful:${sku}`);
 
   const productData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',
