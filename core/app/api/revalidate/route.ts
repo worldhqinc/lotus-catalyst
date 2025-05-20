@@ -1,32 +1,39 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
-export function GET(request: NextRequest) {
-  const secret = request.headers.get('X-Revalidate-Secret');
-  const id = request.nextUrl.searchParams.get('id');
-  const contentType = request.nextUrl.searchParams.get('contentType');
-  const path = request.nextUrl.searchParams.get('path');
-  const sku = request.nextUrl.searchParams.get('sku');
+const revalidateSchema = z.object({
+  entityId: z.string(),
+  contentType: z.string(),
+  pageSlug: z.string(),
+  sku: z.string(),
+});
+
+export async function POST(request: NextRequest) {
+  const secret = request.headers.get('X-Webhook-Secret');
 
   if (secret !== process.env.CONTENTFUL_WEBHOOK_SECRET) {
-    return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
+    return NextResponse.json({ message: 'Invalid webhook secret' }, { status: 401 });
   }
 
-  if (!path) {
-    return NextResponse.json({ message: 'Path parameter is required' }, { status: 400 });
+  const result = revalidateSchema.safeParse(await request.json());
+
+  if (!result.success) {
+    return NextResponse.json({ message: 'Invalid request body' }, { status: 400 });
   }
+
+  const { entityId, contentType, pageSlug, sku } = result.data;
 
   try {
-    revalidatePath(path);
+    revalidatePath(pageSlug);
 
-    revalidateTag(`contentful:${id}`);
+    revalidateTag(`contentful:${entityId}`);
     revalidateTag(`contentful:${sku}`);
     revalidateTag(`contentful:${contentType}`);
-    revalidateTag(`contentful:${contentType}:${path}`);
+    revalidateTag(`contentful:${contentType}:${pageSlug}`);
 
     return NextResponse.json({
       revalidated: true,
-      message: `Path ${path} revalidated successfully`,
       timestamp: new Date().toISOString(),
     });
   } catch (err) {
