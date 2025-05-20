@@ -8,31 +8,31 @@ const schema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   email: z.string().email('Please enter a valid Email address'),
-  productType: z
-    .string()
-    .min(1, 'Please select a Product type')
-    .refine((val) => val !== 'null', 'Please select a valid Product type'),
   modelNumber: z
     .string()
     .min(1, 'Please select a Model number')
     .refine((val) => val !== 'null', 'Please select a valid Model number'),
-  subscribe: z.boolean().optional().nullable(),
+  subscribe: z.string().optional().nullable(),
 });
 
 interface FormState {
   errors: Record<string, string[]> | null;
   success: boolean;
-  formData?: Record<string, string | boolean | null>;
+  formData?: Record<string, string | null>;
 }
 
 export async function submitForm(state: FormState, formData: FormData): Promise<FormState> {
-  const submission = schema.safeParse({
+  const formValues = {
     firstName: formData.get('firstName'),
     lastName: formData.get('lastName'),
     email: formData.get('email'),
     productType: formData.get('productType'),
     modelNumber: formData.get('modelNumber'),
     subscribe: formData.get('subscribe'),
+  };
+
+  const submission = schema.safeParse({
+    ...formValues,
   });
 
   if (!submission.success) {
@@ -51,22 +51,16 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     return {
       errors,
       success: false,
-      formData: Object.fromEntries(
-        Array.from(formData.entries()).map(([key, value]) => [
-          key,
-          value instanceof File ? value.name : value.toString(),
-        ]),
-      ),
+      formData: formValues,
     };
   }
 
   try {
     const registrationResponse = await klaviyoProductRegistrationSubmission(
       submission.data.email,
-      // submission.data.firstName,
-      // submission.data.lastName,
-      // submission.data.productType,
-      // submission.data.modelNumber,
+      submission.data.firstName,
+      submission.data.lastName,
+      submission.data.modelNumber,
     );
 
     if (!registrationResponse.ok) {
@@ -79,11 +73,11 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
       return {
         errors: { general: ['Something went wrong, please try again.'] },
         success: false,
-        formData: submission.data,
+        formData: formValues,
       };
     }
 
-    if (submission.data.subscribe) {
+    if (submission.data.subscribe === 'on') {
       const newsletterResponse = await klaviyoNewsletterSignup(
         submission.data.email,
         'Product Registration',
@@ -99,7 +93,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
         return {
           errors: { general: ['Something went wrong, please try again.'] },
           success: false,
-          formData: submission.data,
+          formData: formValues,
         };
       }
     }
@@ -107,7 +101,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     return {
       errors: null,
       success: true,
-      formData: submission.data,
+      formData: formValues,
     };
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -116,7 +110,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     return {
       errors: { general: ['Something went wrong, please try again.'] },
       success: false,
-      formData: submission.data,
+      formData: formValues,
     };
   }
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
-import { useActionState, useEffect, useRef } from 'react';
+import { type ChangeEvent, useActionState, useEffect, useRef, useState } from 'react';
 
 import { Checkbox } from '@/vibes/soul/form/checkbox';
 import { FormStatus } from '@/vibes/soul/form/form-status';
@@ -17,12 +17,19 @@ import { submitForm } from '../_actions/submit-form';
 interface FormState {
   errors: Record<string, string[]> | null;
   success: boolean;
-  formData?: Record<string, string | boolean | null>;
+  formData?: Record<string, string | null>;
 }
 
 interface Props {
   modelNumberOptions: Array<{ label: string; value: string }>;
-  productTypeOptions: Array<{ label: string; value: string }>;
+}
+
+interface FormValues {
+  firstName: string;
+  lastName: string;
+  email: string;
+  modelNumber: string;
+  subscribe: string;
 }
 
 const getErrorsOrUndefined = (
@@ -32,20 +39,7 @@ const getErrorsOrUndefined = (
   return errors?.[fieldName] || undefined;
 };
 
-const getFormValue = (
-  formData: Record<string, string | boolean | null> | undefined,
-  key: string,
-): string => {
-  if (!formData) return '';
-
-  const value = formData[key];
-
-  if (typeof value === 'boolean') return value ? 'on' : 'off';
-
-  return value ?? '';
-};
-
-export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions }: Props) {
+export function ProductRegistrationForm({ modelNumberOptions }: Props) {
   const initialState: FormState = {
     errors: null,
     success: false,
@@ -58,13 +52,50 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
     initialState,
   );
 
+  const [formValues, setFormValues] = useState<FormValues>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    modelNumber: '',
+    subscribe: 'off',
+  });
+
   useEffect(() => {
     if (formState.success) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       toast.success('Thank you for registering your product!');
-      formRef.current?.reset();
+      setFormValues({
+        firstName: '',
+        lastName: '',
+        email: '',
+        modelNumber: '',
+        subscribe: 'off',
+      });
     }
   }, [formState.success]);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleCheckboxChange = (checked: boolean) => {
+    setFormValues((prev) => ({
+      ...prev,
+      subscribe: checked ? 'on' : 'off',
+    }));
+  };
 
   // Force select components to re-render when form state changes
   const formDataKey = JSON.stringify(formState.formData);
@@ -86,11 +117,12 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
                   First name<span className="text-contrast-400">*</span>
                 </Label>
                 <Input
-                  defaultValue={getFormValue(formState.formData, 'firstName')}
                   errors={getErrorsOrUndefined(formState.errors, 'firstName')}
                   id="firstName"
                   name="firstName"
+                  onChange={handleInputChange}
                   type="text"
+                  value={formValues.firstName}
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1">
@@ -98,11 +130,12 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
                   Last name<span className="text-contrast-400">*</span>
                 </Label>
                 <Input
-                  defaultValue={getFormValue(formState.formData, 'lastName')}
                   errors={getErrorsOrUndefined(formState.errors, 'lastName')}
                   id="lastName"
                   name="lastName"
+                  onChange={handleInputChange}
                   type="text"
+                  value={formValues.lastName}
                 />
               </div>
             </div>
@@ -111,11 +144,13 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
                 Email address<span className="text-contrast-400">*</span>
               </Label>
               <Input
-                defaultValue={getFormValue(formState.formData, 'email')}
+                data-1p-ignore
                 errors={getErrorsOrUndefined(formState.errors, 'email')}
                 id="email"
                 name="email"
+                onChange={handleInputChange}
                 type="email"
+                value={formValues.email}
               />
             </div>
           </div>
@@ -123,48 +158,32 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
             <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">Your Product</h2>
             <div className="flex flex-col gap-4 md:flex-row">
               <div className="flex flex-1 flex-col gap-1">
-                <Label className="text-foreground text-sm font-medium" htmlFor="productType">
-                  Product type<span className="text-contrast-400">*</span>
-                </Label>
-                <Select
-                  aria-label="Select a product type"
-                  className="flex-1"
-                  defaultValue={getFormValue(formState.formData, 'productType')}
-                  errors={getErrorsOrUndefined(formState.errors, 'productType')}
-                  id="productType"
-                  key={`productType-${formDataKey}`}
-                  name="productType"
-                  options={productTypeOptions}
-                  placeholder="Select a product type"
-                />
-              </div>
-              <div className="flex flex-1 flex-col gap-1">
                 <Label className="text-foreground text-sm font-medium" htmlFor="modelNumber">
                   Model number<span className="text-contrast-400">*</span>
                 </Label>
                 <Select
                   aria-label="Select a model number"
                   className="flex-1"
-                  defaultValue={getFormValue(formState.formData, 'modelNumber')}
                   errors={getErrorsOrUndefined(formState.errors, 'modelNumber')}
                   id="modelNumber"
                   key={`modelNumber-${formDataKey}`}
                   name="modelNumber"
+                  onValueChange={(value) => handleSelectChange('modelNumber', value)}
                   options={modelNumberOptions}
                   placeholder="Select a model number"
+                  value={formValues.modelNumber}
                 />
               </div>
             </div>
           </div>
-          <div>
-            <div className="flex gap-4">
-              <Checkbox
-                defaultChecked={getFormValue(formState.formData, 'subscribe') === 'on'}
-                id="subscribe"
-                name="subscribe"
-              />
-              <Label htmlFor="subscribe">Yes! Please add me to your mailing list.</Label>
-            </div>
+          <div className="flex gap-4">
+            <Checkbox
+              checked={formValues.subscribe === 'on'}
+              id="subscribe"
+              name="subscribe"
+              onCheckedChange={handleCheckboxChange}
+            />
+            <Label htmlFor="subscribe">Yes! Please add me to your mailing list.</Label>
           </div>
           <Button className="md:self-start" disabled={isPending} size="medium" type="submit">
             {isPending ? <Loader2 className="mr-2 animate-spin" size={16} /> : 'Submit'}
@@ -172,18 +191,16 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
           {formState.errors?.general ? (
             <FormStatus type="error">{formState.errors.general.join(', ')}</FormStatus>
           ) : null}
-          <div>
-            <p className="text-xs leading-[26px]">
-              Lotus Cooking needs the contact information you provide to us to contact you about our
-              products and services. You may unsubscribe from these communications at any time. For
-              information on how to unsubscribe, as well as our privacy practices and commitment to
-              protecting your privacy, please review our{' '}
-              <Link className="text-primary" href="/privacy-policy">
-                Privacy Policy
-              </Link>
-              .
-            </p>
-          </div>
+          <p className="text-xs leading-[26px]">
+            Lotus Cooking needs the contact information you provide to us to contact you about our
+            products and services. You may unsubscribe from these communications at any time. For
+            information on how to unsubscribe, as well as our privacy practices and commitment to
+            protecting your privacy, please review our{' '}
+            <Link className="text-primary" href="/privacy-policy">
+              Privacy Policy
+            </Link>
+            .
+          </p>
         </form>
       </div>
     </div>

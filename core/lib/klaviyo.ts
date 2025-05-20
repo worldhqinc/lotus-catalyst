@@ -50,20 +50,11 @@ export async function klaviyoNewsletterSignup(email: string, source: string) {
 
 export async function klaviyoProductRegistrationSubmission(
   email: string,
-  // firstName: string,
-  // lastName: string,
-  // productType: string,
-  // modelNumber: string,
+  firstName: string,
+  lastName: string,
+  modelNumber: string,
 ) {
-  // TODO move this to a follow up API call
-  // properties: {
-  //   first_name: firstName,
-  //   last_name: lastName,
-  //   product_type: productType,
-  //   model_number: modelNumber,
-  // },
-
-  return await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs', {
+  return await fetch('https://a.klaviyo.com/api/profile-import', {
     method: 'POST',
     headers: {
       accept: 'application/vnd.api+json',
@@ -73,32 +64,16 @@ export async function klaviyoProductRegistrationSubmission(
     },
     body: JSON.stringify({
       data: {
-        type: 'profile-subscription-bulk-create-job',
+        type: 'profile',
         attributes: {
-          custom_source: 'Product Registration',
-          profiles: {
-            data: [
-              {
-                type: 'profile',
-                attributes: {
-                  email,
-                  subscriptions: {
-                    email: {
-                      marketing: {
-                        consent: 'SUBSCRIBED',
-                      },
-                    },
-                  },
-                },
-              },
-            ],
-          },
+          email,
+          first_name: firstName,
+          last_name: lastName,
         },
-        relationships: {
-          list: {
-            data: {
-              type: 'list',
-              id: process.env.KLAVIYO_PRODUCT_REGISTRATION_LIST_ID,
+        meta: {
+          patch_properties: {
+            append: {
+              product_registration_model_number: modelNumber,
             },
           },
         },

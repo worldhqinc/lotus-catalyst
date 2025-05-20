@@ -1,7 +1,7 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
-import { useActionState, useEffect, useRef, useState } from 'react';
+import { type ChangeEvent, useActionState, useEffect, useRef, useState } from 'react';
 
 import { FormStatus } from '@/vibes/soul/form/form-status';
 import { Input } from '@/vibes/soul/form/input';
@@ -27,14 +27,6 @@ const getErrorsOrUndefined = (
   return errors?.[fieldName] || undefined;
 };
 
-const getFormValue = (formData: Record<string, string | null> | undefined, key: string): string => {
-  if (!formData) return '';
-
-  const value = formData[key];
-
-  return value ?? '';
-};
-
 export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
   const initialState: FormState = {
     errors: null,
@@ -50,7 +42,25 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
   );
   const [formFields, setFormFields] = useState<TicketField[]>(fields);
 
+  const [formValues, setFormValues] = useState<Record<string, string>>(
+    fields.reduce((acc, field) => ({ ...acc, [field.id.toString()]: '' }), { email: '' }),
+  );
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const handleSelectChange = (field: TicketField, value: string) => {
+    setFormValues((prev) => ({
+      ...prev,
+      [field.id.toString()]: value,
+    }));
+
     setFormFields((prevFields) => {
       return prevFields.map((f) => {
         if (
@@ -89,9 +99,16 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
           }}
         />,
       );
+      setFormValues(
+        fields.reduce((acc, field) => ({ ...acc, [field.id.toString()]: '' }), { email: '' }),
+      );
+      setFormFields(fields);
       formRef.current?.reset();
     }
-  }, [formState.success]);
+  }, [formState.success, fields]);
+
+  // Force select components to re-render when form state changes
+  const formDataKey = JSON.stringify(formState.formData);
 
   return (
     <form
@@ -111,12 +128,14 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
           Email Address<span className="text-contrast-400">*</span>
         </Label>
         <Input
-          defaultValue={getFormValue(formState.formData, 'email')}
+          data-1p-ignore
           errors={getErrorsOrUndefined(formState.errors, 'email')}
           id="email"
           name="email"
+          onChange={handleInputChange}
           required
           type="email"
+          value={formValues.email}
         />
       </div>
       {formFields.map(
@@ -132,9 +151,9 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
               ) : null}
               {field.custom_field_options ? (
                 <Select
-                  defaultValue={getFormValue(formState.formData, field.id.toString())}
                   errors={getErrorsOrUndefined(formState.errors, field.id.toString())}
                   id={field.id.toString()}
+                  key={`${field.id}-${formDataKey}`}
                   name={field.id.toString()}
                   onValueChange={(value) => handleSelectChange(field, value)}
                   options={field.custom_field_options.map((option) => ({
@@ -142,15 +161,17 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
                     value: option.value,
                   }))}
                   required={field.required}
+                  value={formValues[field.id.toString()]}
                 />
               ) : (
                 <Input
-                  defaultValue={getFormValue(formState.formData, field.id.toString())}
                   errors={getErrorsOrUndefined(formState.errors, field.id.toString())}
                   id={field.id.toString()}
                   name={field.id.toString()}
+                  onChange={handleInputChange}
                   required={field.required}
                   type="text"
+                  value={formValues[field.id.toString()]}
                 />
               )}
             </div>

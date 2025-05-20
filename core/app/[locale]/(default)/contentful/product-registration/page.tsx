@@ -18,27 +18,6 @@ async function getProductOptions() {
     limit: 1000,
   });
 
-  const productTypeOptions: Array<{ label: string; value: string }> = Array.from(
-    new Set(
-      productsData.items
-        .map((item) => {
-          const fields = productFinishedGoodsFieldsSchema
-            .pick({
-              webCategory: true,
-            })
-            .parse(item.fields);
-
-          return fields.webCategory[0];
-        })
-        .filter((category): category is string => category !== undefined),
-    ),
-  ).map((category) => ({
-    label: category,
-    value: category,
-  }));
-
-  productTypeOptions.unshift({ label: 'Select a product type', value: 'null' });
-
   const modelNumberOptions: Array<{ label: string; value: string }> = Array.from(
     new Set(
       productsData.items.map((item) => {
@@ -59,13 +38,12 @@ async function getProductOptions() {
   modelNumberOptions.unshift({ label: 'Select a model number', value: 'null' });
 
   return {
-    productTypeOptions,
     modelNumberOptions,
   };
 }
 
 export default async function ProductRegistration() {
-  const { productTypeOptions, modelNumberOptions } = await getProductOptions();
+  const { modelNumberOptions } = await getProductOptions();
 
   return (
     <div>
@@ -74,10 +52,7 @@ export default async function ProductRegistration() {
           <h1 className="font-heading text-4xl uppercase md:text-6xl">Product Registration</h1>
         </div>
       </div>
-      <ProductRegistrationForm
-        modelNumberOptions={modelNumberOptions}
-        productTypeOptions={productTypeOptions}
-      />
+      <ProductRegistrationForm modelNumberOptions={modelNumberOptions} />
       <CookiePreferencesNotice
         message={
           <div className="flex flex-col items-center justify-center pt-10 pb-20">
