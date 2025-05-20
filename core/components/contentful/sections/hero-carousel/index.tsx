@@ -13,7 +13,9 @@ interface Props {
   data: heroCarousel;
 }
 
-type Slide = ComponentProps<typeof Slideshow>['slides'][number];
+type Slide = ComponentProps<typeof Slideshow>['slides'][number] & {
+  invertText?: boolean;
+};
 
 export function HeroCarousel({ data }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -40,6 +42,7 @@ export function HeroCarousel({ data }: Props) {
         title,
         description,
         showDescription: Boolean(description),
+        invertText: Boolean(fields.invertTextColor),
         image: imageFile
           ? {
               alt: title,
@@ -120,6 +123,13 @@ export function HeroCarousel({ data }: Props) {
 
       // Update content opacities - each slide starts at 50% opacity and increases to 100% as it reaches the top
       slides.forEach((content, idx) => {
+        // First slide should always be fully visible
+        if (idx === 0) {
+          content.setAttribute('style', 'opacity: 1');
+
+          return;
+        }
+
         // Calculate how close this specific slide is to being at the top of the viewport
         const slidePosition = containerTop + idx * vh;
         const distanceFromTop = Math.max(0, slidePosition - scrollY);
@@ -235,11 +245,21 @@ export function HeroCarousel({ data }: Props) {
                   </div>
                   <div className="absolute inset-0 left-0">
                     <div className="mx-auto flex h-full max-w-[var(--section-max-width-2xl,1536px)] flex-col justify-center px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-16">
-                      <h1 className="font-heading text-surface-foreground m-0 max-w-lg text-6xl uppercase">
+                      <h1
+                        className={clsx(
+                          'font-heading m-0 max-w-lg text-6xl uppercase',
+                          slide.invertText ? 'text-white' : 'text-surface-foreground',
+                        )}
+                      >
                         {slide.title}
                       </h1>
                       {Boolean(slide.showDescription && slide.description) && (
-                        <p className="text-contrast-400 mt-4 max-w-lg text-xl @xl:mt-6">
+                        <p
+                          className={clsx(
+                            'mt-4 max-w-lg text-xl @xl:mt-6',
+                            slide.invertText ? 'text-white' : 'text-contrast-400',
+                          )}
+                        >
                           {slide.description}
                         </p>
                       )}
