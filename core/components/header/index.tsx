@@ -1,5 +1,6 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { unstable_cacheTag as cacheTag } from 'next/cache';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { cache } from 'react';
 
@@ -173,6 +174,10 @@ export const Header = async () => {
   });
 
   const streamablePromoCode = Streamable.from(async () => {
+    'use cache';
+
+    cacheTag('contentful:4cNmVukXww5ocaDTQ0agTX');
+
     const entry = await contentfulClient.getEntry('4cNmVukXww5ocaDTQ0agTX');
     const subtitle = entry.fields.subtitle;
     const subtitleRichTextDocument =
