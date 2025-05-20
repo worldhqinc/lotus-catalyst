@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: false
 ---
 # Development Workflow Guide
@@ -24,3 +24,4 @@ alwaysApply: false
 - ESLint configuration is shared via [packages/eslint-config-catalyst](mdc:packages/eslint-config-catalyst)
 - TypeScript configuration is extended from root [tsconfig.json](mdc:tsconfig.json)
 - Follow security guidelines in [SECURITY.md](mdc:SECURITY.md)
+- Use zod for parsing responses and types
