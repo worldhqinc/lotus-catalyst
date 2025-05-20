@@ -1,4 +1,5 @@
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { documentToHtmlString, type Options } from '@contentful/rich-text-html-renderer';
+import { type Block, BLOCKS, type Inline } from '@contentful/rich-text-types';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { SearchParams } from 'nuqs';
@@ -12,6 +13,55 @@ import { Image } from '~/components/image';
 import { carouselProductSchema } from '~/contentful/schema';
 
 import { getPageBySlug } from '../../[...rest]/page-data';
+
+interface ContentfulImageDetails {
+  image?: {
+    width: number;
+    height: number;
+  };
+}
+
+interface ContentfulFile {
+  url: string;
+  details: ContentfulImageDetails;
+}
+
+interface ContentfulAsset {
+  fields: {
+    title: string;
+    file: ContentfulFile;
+  };
+}
+
+function isEmbeddedAsset(
+  node: Block | Inline,
+): node is Block & { data: { target: ContentfulAsset } } {
+  return node.nodeType === BLOCKS.EMBEDDED_ASSET;
+}
+
+const options = {
+  renderNode: {
+    'embedded-asset-block': (node: Block | Inline): string => {
+      if (!isEmbeddedAsset(node)) return '';
+
+      const { url, details } = node.data.target.fields.file;
+      const { width, height } = details.image || {};
+      const alt = node.data.target.fields.title || '';
+
+      return `
+        <div class="my-4 overflow-hidden">
+          <Image
+            src="https:${url}"
+            alt="${alt}"
+            width="${width || 'auto'}"
+            height="${height || 'auto'}"
+            class="h-auto w-full aspect-4/3 rounded-lg object-cover"
+          />
+        </div>
+      `;
+    },
+  },
+} satisfies Options;
 
 interface Props {
   params: Promise<{ locale: string; slug: string[] }>;
@@ -39,7 +89,7 @@ export default async function FeaturePage({ params }: Props) {
   const page = await getPageBySlug('feature', ['features', ...slug]);
   const { fields } = page;
 
-  const storyHtml = fields.story ? documentToHtmlString(fields.story) : '';
+  const storyHtml = fields.story ? documentToHtmlString(fields.story, options) : '';
 
   const productCarousel = fields.productCarousel
     ? carouselProductSchema.parse(fields.productCarousel)
