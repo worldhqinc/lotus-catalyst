@@ -3715,7 +3715,7 @@
         "id": "heroSlide",
         "type": "ContentType",
         "createdAt": "2025-04-11T15:59:21.909Z",
-        "updatedAt": "2025-04-17T18:12:39.143Z",
+        "updatedAt": "2025-05-20T14:51:30.974Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3723,8 +3723,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-17T18:12:39.143Z",
+        "publishedVersion": 5,
+        "publishedAt": "2025-05-20T14:51:30.974Z",
         "firstPublishedAt": "2025-04-11T15:59:22.157Z",
         "createdBy": {
           "sys": {
@@ -3737,16 +3737,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 2,
-        "version": 4,
+        "publishedCounter": 3,
+        "version": 6,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/heroSlide"
@@ -3783,6 +3783,17 @@
           "name": "Subhead",
           "type": "Symbol",
           "localized": true,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "invertTextColor",
+          "name": "Invert Text Color",
+          "type": "Boolean",
+          "localized": false,
           "required": false,
           "validations": [
           ],
@@ -4181,7 +4192,7 @@
         "id": "heroSection",
         "type": "ContentType",
         "createdAt": "2025-04-21T14:33:30.959Z",
-        "updatedAt": "2025-05-16T20:20:13.259Z",
+        "updatedAt": "2025-05-20T03:01:16.475Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4189,8 +4200,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 18,
-        "publishedAt": "2025-05-16T20:20:13.259Z",
+        "publishedVersion": 20,
+        "publishedAt": "2025-05-20T03:01:16.475Z",
         "firstPublishedAt": "2025-04-21T14:35:44.484Z",
         "createdBy": {
           "sys": {
@@ -4206,8 +4217,8 @@
             "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 9,
-        "version": 19,
+        "publishedCounter": 10,
+        "version": 21,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -4288,6 +4299,17 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Asset"
+        },
+        {
+          "id": "wistiaId",
+          "name": "Wistia ID",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
         }
       ]
     },
@@ -5956,7 +5978,7 @@
         "id": "highlights",
         "type": "ContentType",
         "createdAt": "2025-04-22T20:14:20.088Z",
-        "updatedAt": "2025-05-19T19:59:11.925Z",
+        "updatedAt": "2025-05-20T15:12:06.108Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -5964,8 +5986,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 5,
-        "publishedAt": "2025-05-19T19:59:11.925Z",
+        "publishedVersion": 7,
+        "publishedAt": "2025-05-20T15:12:06.108Z",
         "firstPublishedAt": "2025-04-22T20:14:20.540Z",
         "createdBy": {
           "sys": {
@@ -5981,8 +6003,8 @@
             "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 3,
-        "version": 6,
+        "publishedCounter": 4,
+        "version": 8,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -6062,6 +6084,18 @@
           ],
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "image",
+          "name": "Image",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
         },
         {
           "id": "cta",
