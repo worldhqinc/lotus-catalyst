@@ -54,12 +54,14 @@ export function BlockProductFeaturesAccordion({
         </h2>
       </div>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <WistiaPlayer
-          activeId={activeItem}
-          anchorIds={accordionItems.map((item) => item.sys.id)}
-          wistiaMediaId={wistiaMediaId}
-          wistiaMediaSegments={wistiaMediaSegments}
-        />
+        <div className="relative aspect-3/4 overflow-hidden rounded-lg">
+          <WistiaPlayer
+            activeId={activeItem}
+            anchorIds={accordionItems.map((item) => item.sys.id)}
+            wistiaMediaId={wistiaMediaId}
+            wistiaMediaSegments={wistiaMediaSegments}
+          />
+        </div>
         <Carousel className="md:hidden" setApi={setApi}>
           <CarouselContent>
             {accordionItems.map((item) => (

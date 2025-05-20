@@ -133,7 +133,6 @@ export function WistiaPlayer({
       id: wistiaMediaId,
       options: {
         autoplay: true,
-        loop: pageType !== 'product',
         playsinline: true,
       },
       onReady(video: Window['wistiaVideo']) {
@@ -145,6 +144,13 @@ export function WistiaPlayer({
 
         video.bind('play', () => setIsPlaying(true));
         video.bind('pause', () => setIsPlaying(false));
+
+        if (pageType !== 'product') {
+          video.bind('end', () => {
+            video.time(0);
+            video.play();
+          });
+        }
       },
     });
 

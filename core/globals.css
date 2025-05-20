@@ -38,6 +38,38 @@
     }
   }
 
+  .wistia_responsive_padding {
+    position: static !important;
+    padding: 0 !important;
+
+    div {
+      padding: 0 !important;
+    }
+
+    .wistia_responsive_wrapper {
+      position: absolute !important;
+      inset: 0 !important;
+      pointer-events: none !important;
+    }
+
+    .wistia-player-control {
+      position: static !important;
+    }
+
+    .w-chrome {
+      height: 100% !important;
+    }
+
+    video {
+      position: absolute !important;
+      inset: 0 !important;
+      height: 100% !important;
+      width: 100% !important;
+      object-fit: cover !important;
+      border-radius: 0 !important;
+    }
+  }
+
   .w-bottom-bar {
     @apply !hidden;
   }
