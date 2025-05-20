@@ -76,12 +76,14 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
           <div>
             <div className="mb-6 flex items-center justify-between">
               <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">About You</h2>
-              <p className="text-md text-contrast-400">Required Fields *</p>
+              <p className="text-foreground text-sm">
+                Required Fields <span className="text-contrast-400">*</span>
+              </p>
             </div>
             <div className="flex flex-col gap-4 md:flex-row">
               <div className="flex flex-1 flex-col gap-1">
                 <Label className="text-foreground text-sm font-medium" htmlFor="firstName">
-                  First name*
+                  First name<span className="text-contrast-400">*</span>
                 </Label>
                 <Input
                   defaultValue={getFormValue(formState.formData, 'firstName')}
@@ -93,7 +95,7 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
               </div>
               <div className="flex flex-1 flex-col gap-1">
                 <Label className="text-foreground text-sm font-medium" htmlFor="lastName">
-                  Last name*
+                  Last name<span className="text-contrast-400">*</span>
                 </Label>
                 <Input
                   defaultValue={getFormValue(formState.formData, 'lastName')}
@@ -106,7 +108,7 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
             </div>
             <div className="mt-4 flex flex-col gap-1">
               <Label className="text-foreground text-sm font-medium" htmlFor="email">
-                Email address*
+                Email address<span className="text-contrast-400">*</span>
               </Label>
               <Input
                 defaultValue={getFormValue(formState.formData, 'email')}
@@ -122,7 +124,7 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
             <div className="flex flex-col gap-4 md:flex-row">
               <div className="flex flex-1 flex-col gap-1">
                 <Label className="text-foreground text-sm font-medium" htmlFor="productType">
-                  Product type*
+                  Product type<span className="text-contrast-400">*</span>
                 </Label>
                 <Select
                   aria-label="Select a product type"
@@ -138,7 +140,7 @@ export function ProductRegistrationForm({ modelNumberOptions, productTypeOptions
               </div>
               <div className="flex flex-1 flex-col gap-1">
                 <Label className="text-foreground text-sm font-medium" htmlFor="modelNumber">
-                  Model number*
+                  Model number<span className="text-contrast-400">*</span>
                 </Label>
                 <Select
                   aria-label="Select a model number"

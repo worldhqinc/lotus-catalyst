@@ -53,13 +53,13 @@
       "invalidCredentials": "Your email address or password is incorrect. Try signing in again or reset your password",
       "somethingWentWrong": "Something went wrong. Please try again later.",
       "CreateAccount": {
-        "title": "New customer?",
+        "title": "New customer",
         "accountBenefits": "Create an account",
-        "fastCheckout": "Check out faster",
-        "multipleAddresses": "Save multiple shipping addresses",
-        "ordersHistory": "Access your order history",
-        "ordersTracking": "Track orders",
-        "wishlists": "Save items to wishlist",
+        "fastCheckout": "Faster checkout",
+        "multipleAddresses": "Address book for multiple recipients",
+        "ordersHistory": "Detailed order history",
+        "ordersTracking": "Real-time order tracking",
+        "wishlists": "Save-and-share wishlist",
         "cta": "Create account"
       },
       "ForgotPassword": {

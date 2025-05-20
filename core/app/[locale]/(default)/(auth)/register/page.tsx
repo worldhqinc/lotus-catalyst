@@ -56,9 +56,9 @@ export default async function Register({ params }: Props) {
         title: t('AccountBenefits.title'),
         items: [
           t('AccountBenefits.fastCheckout'),
-          t('AccountBenefits.multipleAddresses'),
-          t('AccountBenefits.ordersHistory'),
           t('AccountBenefits.ordersTracking'),
+          t('AccountBenefits.ordersHistory'),
+          t('AccountBenefits.multipleAddresses'),
           t('AccountBenefits.wishlists'),
         ],
       }}
