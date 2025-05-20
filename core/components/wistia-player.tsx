@@ -11,13 +11,16 @@ import { Image } from '~/components/image';
 declare global {
   interface Window {
     _wq?: unknown[];
-    wistiaVideo: {
-      time: (seconds: number) => void;
-      play: () => void;
-      pause: () => void;
-      bind: (event: string, callback: (time: number) => void) => void;
-      unbind: (event: string) => void;
-    };
+    wistiaVideos: Record<
+      string,
+      {
+        time: (seconds: number) => void;
+        play: () => void;
+        pause: () => void;
+        bind: (event: string, callback: (time: number) => void) => void;
+        unbind: (event: string) => void;
+      }
+    >;
   }
 }
 
@@ -45,6 +48,13 @@ export function WistiaPlayer({
   const [isPlaying, setIsPlaying] = useState(false);
 
   const videoSegments = useRef<Record<string, VideoSegment>>({});
+
+  // Get current video instance
+  const getVideo = useCallback(() => {
+    if (!wistiaMediaId) return null;
+
+    return window.wistiaVideos[wistiaMediaId];
+  }, [wistiaMediaId]);
 
   // Setup video segments
   useEffect(() => {
@@ -81,9 +91,9 @@ export function WistiaPlayer({
 
   // Function to play the current segment
   const playCurrentSegment = useCallback(() => {
-    if (!('wistiaVideo' in window)) return;
+    const video = getVideo();
 
-    const video = window.wistiaVideo;
+    if (!video) return;
 
     if (pageType !== 'product') {
       video.play();
@@ -110,33 +120,42 @@ export function WistiaPlayer({
 
     // Play the video segment
     video.play();
-  }, [getCurrentSegment, pageType]);
+  }, [getCurrentSegment, getVideo, pageType]);
 
   const handlePlay = useCallback(() => {
-    if (!('wistiaVideo' in window)) return;
-    window.wistiaVideo.play();
+    const video = getVideo();
+
+    if (!video) return;
+    video.play();
     setIsPlaying(true);
-  }, []);
+  }, [getVideo]);
 
   const handlePause = useCallback(() => {
-    if (!('wistiaVideo' in window)) return;
-    window.wistiaVideo.pause();
+    const video = getVideo();
+
+    if (!video) return;
+    video.pause();
     setIsPlaying(false);
-  }, []);
+  }, [getVideo]);
 
   // Load Wistia scripts when component mounts
   useEffect(() => {
+    if (!wistiaMediaId) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    window.wistiaVideos = window.wistiaVideos || {};
+
     // eslint-disable-next-line no-underscore-dangle
     window._wq = window._wq || [];
     // eslint-disable-next-line no-underscore-dangle
     window._wq.push({
       id: wistiaMediaId,
       options: {
-        autoplay: true,
+        autoplay: pageType !== 'tutorial',
         playsinline: true,
       },
-      onReady(video: Window['wistiaVideo']) {
-        window.wistiaVideo = video;
+      onReady(video: Window['wistiaVideos'][string]) {
+        window.wistiaVideos[wistiaMediaId] = video;
 
         if (videoInitializedRef.current) {
           playCurrentSegment();
@@ -155,20 +174,25 @@ export function WistiaPlayer({
     });
 
     return () => {
-      if ('wistiaVideo' in window) {
+      const video = getVideo();
+
+      if (video) {
         try {
-          window.wistiaVideo.unbind('timechange');
-          window.wistiaVideo.unbind('play');
-          window.wistiaVideo.unbind('pause');
+          video.unbind('timechange');
+          video.unbind('play');
+          video.unbind('pause');
         } catch {
           // Do nothing
         }
       }
     };
-  }, [wistiaMediaId, playCurrentSegment, pageType]);
+  }, [wistiaMediaId, playCurrentSegment, pageType, getVideo]);
 
   // Set up Intersection Observer to play video when it's in view
   useEffect(() => {
+    // Don't set up intersection observer for tutorial videos at all
+    if (pageType === 'tutorial') return;
+
     const videoContainer = videoContainerRef.current;
 
     if (!videoContainer) return;
@@ -181,18 +205,18 @@ export function WistiaPlayer({
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
+        const video = getVideo();
+
+        if (!video) return;
+
         if (entry.isIntersecting) {
-          const wistiaVideoAvailable = 'wistiaVideo' in window;
-
-          if (wistiaVideoAvailable) {
-            if (!videoInitializedRef.current) {
-              videoInitializedRef.current = true;
-            }
-
-            playCurrentSegment();
+          if (!videoInitializedRef.current) {
+            videoInitializedRef.current = true;
           }
-        } else if ('wistiaVideo' in window) {
-          window.wistiaVideo.pause();
+
+          playCurrentSegment();
+        } else {
+          video.pause();
         }
       });
     }, options);
@@ -200,18 +224,18 @@ export function WistiaPlayer({
     observer.observe(videoContainer);
 
     return () => observer.unobserve(videoContainer);
-  }, [getCurrentSegment, playCurrentSegment, pageType]);
+  }, [getCurrentSegment, playCurrentSegment, pageType, getVideo]);
 
   // Update segment when active item changes
   useEffect(() => {
     if (pageType !== 'product') return;
 
-    const hasWistiaVideo = 'wistiaVideo' in window;
+    const video = getVideo();
 
-    if (videoInitializedRef.current && hasWistiaVideo) {
+    if (videoInitializedRef.current && video) {
       playCurrentSegment();
     }
-  }, [activeId, playCurrentSegment, pageType]);
+  }, [activeId, playCurrentSegment, pageType, getVideo]);
 
   const renderWistiaImage = () => {
     if (!wistiaMediaId) return null;

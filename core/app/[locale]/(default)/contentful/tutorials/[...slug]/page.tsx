@@ -87,7 +87,7 @@ export default async function FeaturePage({ params }: Props) {
       {/* Story Content */}
       <SectionLayout containerSize="md">
         {fields.wistiaMediaId ? (
-          <div className="mb-8">
+          <div className="tutorial-video relative isolate mb-8 aspect-4/3 h-auto w-full overflow-hidden rounded-lg">
             <WistiaPlayer pageType="tutorial" wistiaMediaId={fields.wistiaMediaId} />
           </div>
         ) : null}

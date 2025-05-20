@@ -60,6 +60,17 @@
       height: 100% !important;
     }
 
+    [data-handle='bigPlayButton'],
+    [data-handle='bigPauseButton'],
+    [data-handle='playPauseNotifier'],
+    [data-handle='playPauseLoading'] {
+      display: none !important;
+    }
+
+    .w-bottom-bar {
+      @apply !hidden;
+    }
+
     video {
       position: absolute !important;
       inset: 0 !important;
@@ -70,8 +81,11 @@
     }
   }
 
-  .w-bottom-bar {
-    @apply !hidden;
+  .tutorial-video {
+    [data-handle='clickForSoundButton'],
+    [data-handle='click-for-sound-backdrop'] {
+      display: inline !important;
+    }
   }
 
   /* Global focus ring color override */

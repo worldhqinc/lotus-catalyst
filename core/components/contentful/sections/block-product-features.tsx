@@ -34,7 +34,7 @@ export function BlockProductFeatures({
             <Fragment key={sys.id}>
               {alternate ? (
                 <div>
-                  <div className="relative aspect-square overflow-hidden rounded-lg">
+                  <div className="relative isolate aspect-square overflow-hidden rounded-lg">
                     {fields.wistiaId ? (
                       <div className="absolute inset-0 h-full w-full">
                         <WistiaPlayer
