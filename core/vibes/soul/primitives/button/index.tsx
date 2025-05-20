@@ -61,7 +61,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
         aria-busy={loading}
         className={clsx(
-          'relative z-0 inline-flex h-fit items-center justify-center overflow-hidden border text-center font-[family-name:var(--button-font-family,var(--font-family-body))] leading-normal transition-all duration-200 select-none focus-visible:outline-none',
+          'relative z-0 inline-flex h-fit items-center justify-center overflow-hidden border text-center font-[family-name:var(--button-font-family,var(--font-family-body))] leading-normal transition-all duration-200 select-none focus-visible:outline-none disabled:pointer-events-none disabled:opacity-30',
           {
             primary:
               'hover:bg-primary-highlight focus-visible:ring-primary disabled:border-disabled disabled:bg-disabled border-[var(--button-primary-border,hsl(var(--primary)))] bg-[var(--button-primary-background,hsl(var(--primary)))] text-[var(--button-primary-text,hsl(var(--background)))] focus-visible:ring-2 focus-visible:ring-offset-2',
@@ -82,11 +82,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             circle: 'rounded-full',
             link: 'rounded-none',
           }[shape],
-          disabled && 'cursor-not-allowed',
+          loading && 'pointer-events-none',
           variant !== 'link' ? 'font-medium' : 'font-normal',
           className,
         )}
-        disabled={disabled || loading}
+        disabled={disabled}
         ref={ref}
         type={type}
       >
