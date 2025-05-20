@@ -1,18 +1,16 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { unstable_cacheTag as cacheTag } from 'next/cache';
 
 import { productFinishedGoodsFieldsSchema, productFormulationLookup } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
 
 import { ProductFormulationLookupClient } from './product-formulation-lookup-client';
 
-export async function ProductFormulationLookup({
-  title,
-  disclaimer,
-  selectedSku = '',
-}: productFormulationLookup['fields'] & { selectedSku?: string }) {
-  const disclaimerRichText = disclaimer ? await richTextFromMarkdown(disclaimer) : null;
-  const disclaimerHtml = disclaimerRichText ? documentToHtmlString(disclaimerRichText) : '';
+async function getProductOptions() {
+  'use cache';
+
+  cacheTag('contentful:productFinishedGoods');
 
   const productsData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',
@@ -34,16 +32,37 @@ export async function ProductFormulationLookup({
     };
   });
 
+  return productOptions;
+}
+
+async function getProductFields(sku: string) {
+  'use cache';
+
+  cacheTag(`contentful:${sku}`);
+
+  const productData = await contentfulClient.getEntries({
+    content_type: 'productFinishedGoods',
+    'fields.bcProductReference': sku,
+    limit: 1,
+  });
+
+  return productFinishedGoodsFieldsSchema.parse(productData.items[0]?.fields);
+}
+
+export async function ProductFormulationLookup({
+  title,
+  disclaimer,
+  selectedSku = '',
+}: productFormulationLookup['fields'] & { selectedSku?: string }) {
+  const disclaimerRichText = disclaimer ? await richTextFromMarkdown(disclaimer) : null;
+  const disclaimerHtml = disclaimerRichText ? documentToHtmlString(disclaimerRichText) : '';
+
+  const productOptions = await getProductOptions();
+
   let selectedProductFields = null;
 
   if (selectedSku) {
-    const res = await contentfulClient.getEntries({
-      content_type: 'productFinishedGoods',
-      'fields.bcProductReference': selectedSku,
-      limit: 1,
-    });
-
-    selectedProductFields = productFinishedGoodsFieldsSchema.parse(res.items[0]?.fields);
+    selectedProductFields = await getProductFields(selectedSku);
   }
 
   return (

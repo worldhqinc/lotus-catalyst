@@ -1,3 +1,4 @@
+import { unstable_cacheTag as cacheTag } from 'next/cache';
 import { cache } from 'react';
 
 import { client } from '~/client';
@@ -328,28 +329,31 @@ export const getProductPricingAndRelatedProducts = cache(
   },
 );
 
-export const getContentfulProductData = async (
-  sku: string,
-  categories: Array<{ node: { name: string; path: string } }> | null = [],
-) => {
-  const contentfulData = await contentfulClient.getEntries({
-    content_type: categories?.some((category) => category.node.path.includes('parts-accessories'))
-      ? 'productPartsAndAccessories'
-      : 'productFinishedGoods',
-    'fields.bcProductReference': sku,
-    include: 4,
-  });
+export const getContentfulProductData = cache(
+  async (sku: string, categories: Array<{ node: { name: string; path: string } }> | null = []) => {
+    'use cache';
 
-  if (contentfulData.items.length === 0) {
-    return null;
-  }
+    cacheTag(`contentful:${sku}`);
 
-  if (
-    contentfulData.items[0] &&
-    contentfulData.items[0].sys.contentType.sys.id === 'productPartsAndAccessories'
-  ) {
-    return productPartsAndAccessoriesSchema.parse(contentfulData.items[0]);
-  }
+    const contentfulData = await contentfulClient.getEntries({
+      content_type: categories?.some((category) => category.node.path.includes('parts-accessories'))
+        ? 'productPartsAndAccessories'
+        : 'productFinishedGoods',
+      'fields.bcProductReference': sku,
+      include: 4,
+    });
 
-  return productFinishedGoodsSchema.parse(contentfulData.items[0]);
-};
+    if (contentfulData.items.length === 0) {
+      return null;
+    }
+
+    if (
+      contentfulData.items[0] &&
+      contentfulData.items[0].sys.contentType.sys.id === 'productPartsAndAccessories'
+    ) {
+      return productPartsAndAccessoriesSchema.parse(contentfulData.items[0]);
+    }
+
+    return productFinishedGoodsSchema.parse(contentfulData.items[0]);
+  },
+);

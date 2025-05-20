@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { SearchParams } from 'nuqs';
 
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
+import { routing } from '~/i18n/routing';
 
 import { getPageBySlug } from './page-data';
 
@@ -15,6 +16,10 @@ function shouldShowSpecialLayout(rest: string[]): boolean {
 interface Props {
   params: Promise<{ locale: string; rest: string[] }>;
   searchParams: Promise<SearchParams>;
+}
+
+export async function generateStaticParams() {
+  return Promise.resolve(routing.locales.map((locale) => ({ locale })));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

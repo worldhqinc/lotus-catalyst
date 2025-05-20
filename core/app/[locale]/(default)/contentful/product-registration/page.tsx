@@ -1,3 +1,5 @@
+import { unstable_cacheTag as cacheTag } from 'next/cache';
+
 import CookiePreferencesCta from '~/components/cookie-preferences-cta';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { productFinishedGoodsFieldsSchema } from '~/contentful/schema';
@@ -5,7 +7,11 @@ import { contentfulClient } from '~/lib/contentful';
 
 import { ProductRegistrationForm } from './_components/product-registration-form';
 
-export default async function ProductRegistration() {
+async function getProductOptions() {
+  'use cache';
+
+  cacheTag('contentful:productFinishedGoods');
+
   const productsData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',
     select: ['fields.bcProductReference', 'fields.webCategory'],
@@ -30,6 +36,12 @@ export default async function ProductRegistration() {
   productOptions = Array.from(
     new Map(productOptions.map((item) => [item.value, item])).values(),
   ).filter((item) => item.value !== '');
+
+  return productOptions;
+}
+
+export default async function ProductRegistration() {
+  const productOptions = await getProductOptions();
 
   return (
     <div>
