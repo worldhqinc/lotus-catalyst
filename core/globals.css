@@ -94,6 +94,24 @@
   }
 }
 
+@layer components {
+  .policy-table table {
+    @apply outline-contrast-200 my-6 w-full border-collapse overflow-hidden rounded text-base outline outline-offset-[-1px];
+  }
+  .policy-table th {
+    @apply bg-contrast-100 border-contrast-200 border px-4 py-3 text-left text-xs font-medium;
+  }
+  .policy-table th b {
+    @apply text-surface-foreground font-medium;
+  }
+  .policy-table td {
+    @apply border-contrast-200 border !px-4 !py-3 text-left text-xs;
+  }
+  .policy-table table p:first-child {
+    @apply text-contrast-400;
+  }
+}
+
 @layer utilities {
   .prose {
     :where(h1):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
