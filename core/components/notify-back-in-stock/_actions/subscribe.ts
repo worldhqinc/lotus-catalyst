@@ -23,7 +23,7 @@ export const subscribe = async (
 
   const klaviyoResponse = await klaviyoBackInStockSubscription(
     submission.value.email,
-    submission.value.productId,
+    submission.value.sku,
   );
 
   if (!klaviyoResponse.ok) {

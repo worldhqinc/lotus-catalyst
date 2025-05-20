@@ -22,7 +22,7 @@ type Action<State, Payload> = (
 
 export default function NotifyBackInStockModal({
   action,
-  productId,
+  sku,
   buttonLabel = 'Notify me',
   buttonClassName,
   buttonSize = 'medium',
@@ -36,7 +36,7 @@ export default function NotifyBackInStockModal({
     },
     FormData
   >;
-  productId: string;
+  sku: string;
   buttonLabel?: string;
   buttonClassName?: string;
   buttonSize?: 'small' | 'medium';
@@ -129,7 +129,7 @@ export default function NotifyBackInStockModal({
                   available.
                 </p>
                 <form {...getFormProps(form)} action={formAction} className="space-y-4">
-                  <input name="productId" type="hidden" value={productId} />
+                  <input name="sku" type="hidden" value={sku} />
                   <Label htmlFor="email">Email</Label>
                   <Input
                     {...getInputProps(fields.email, { type: 'email' })}

@@ -73,6 +73,7 @@ export interface ProductDetailFormProps<F extends Field> {
   fields: F[];
   action: ProductDetailFormAction<F>;
   productId: string;
+  sku: string;
   ctaLabel?: string;
   emptySelectPlaceholder?: string;
   ctaDisabled?: boolean;
@@ -85,6 +86,7 @@ export function ProductDetailForm<F extends Field>({
   action,
   fields,
   productId,
+  sku,
   ctaLabel = 'Add to cart',
   emptySelectPlaceholder = 'Select an option',
   ctaDisabled = false,
@@ -197,7 +199,7 @@ export function ProductDetailForm<F extends Field>({
               value={quantityControl.value}
             /> */}
             {ctaDisabled ? (
-              <NotifyBackInStock productId={productId} />
+              <NotifyBackInStock sku={sku} />
             ) : (
               <>
                 <input name={formFields.quantity.name} type="hidden" value="1" />
