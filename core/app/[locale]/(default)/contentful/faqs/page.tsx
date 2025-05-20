@@ -2,7 +2,7 @@ import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { Metadata } from 'next';
 
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
-import { faqListSchema, faqSchema } from '~/contentful/schema';
+import { categoryFaqFieldsSchema, faqListSchema, faqSchema } from '~/contentful/schema';
 
 import { getPageBySlug } from '../[...rest]/page-data';
 
@@ -24,7 +24,8 @@ interface ContentfulEntry {
 interface FaqCategory {
   category: string;
   id: string;
-  faqCategory: string | undefined;
+  faqCategory: string;
+  faqParentCategory: string;
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -45,20 +46,15 @@ export default async function FaqsPage({ searchParams }: { searchParams: { searc
       ?.filter((entry: ContentfulEntry) => entry.sys.contentType.sys.id === 'faqList')
       .map((entry: ContentfulEntry) => {
         const data = faqListSchema.parse(entry);
-        const firstFaq = data.fields.faqReference[0];
-        const faqData = firstFaq ? faqSchema.parse(firstFaq) : undefined;
-        const categoryName = faqData?.fields.faqCategory[0]?.fields.faqCategoryName ?? undefined;
-        const faqCategory = typeof categoryName === 'string' ? categoryName : undefined;
+        const categoryFields = categoryFaqFieldsSchema.parse(data.fields.faqCategory.fields);
 
         return {
           category: data.fields.faqParentCategory,
           id: data.sys.id,
-          faqCategory,
+          faqCategory: categoryFields.faqCategoryName,
+          faqParentCategory: data.fields.faqParentCategory,
         } satisfies FaqCategory;
       }) || [];
-
-  // Gets the first FAQ category to use as the header
-  const faqCategoryHeader = faqCategories[0]?.faqCategory || '';
 
   // Filters the page content based on search term
   const filteredPageContent = page.fields.pageContent?.filter((entry: ContentfulEntry) => {
@@ -102,7 +98,7 @@ export default async function FaqsPage({ searchParams }: { searchParams: { searc
         <div className="grid lg:grid-cols-12 lg:gap-8">
           <div className="sticky top-16 space-y-4 bg-white py-8 lg:top-32 lg:col-span-3 lg:max-h-max lg:space-y-8 lg:py-0">
             <FaqSearch />
-            <FaqSidebar categories={faqCategories} faqCategoryHeader={faqCategoryHeader} />
+            <FaqSidebar categories={faqCategories} />
           </div>
           <div className="lg:col-span-7 lg:col-start-5 [&_>div]:flex [&_>div]:flex-col [&_>div]:gap-12">
             <PageContentEntries pageContent={filteredPageContent} searchParams={searchParams} />
