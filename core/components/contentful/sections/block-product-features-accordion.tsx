@@ -8,6 +8,7 @@ import {
   type CarouselApi,
   CarouselContent,
   CarouselItem,
+  CarouselScrollbar,
 } from '@/vibes/soul/primitives/carousel';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { WistiaPlayer } from '~/components/wistia-player';
@@ -61,20 +62,18 @@ export function BlockProductFeaturesAccordion({
         />
         <Carousel className="md:hidden" setApi={setApi}>
           <CarouselContent>
-            {accordionItems.map((item, index) => (
+            {accordionItems.map((item) => (
               <CarouselItem className="w-full space-y-6" key={item.sys.id}>
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="text-xl leading-[120%] font-medium tracking-[1.8px] uppercase">
-                    {item.fields.title}
-                  </h3>
-                  <p className="text-contrast-400 min-w-9 text-sm leading-[150%]">
-                    {index + 1} of {accordionItems.length}
-                  </p>
-                </div>
+                <h3 className="text-xl leading-[120%] font-medium tracking-[1.8px] uppercase">
+                  {item.fields.title}
+                </h3>
                 <p className="text-surface-foreground">{item.fields.detail}</p>
               </CarouselItem>
             ))}
           </CarouselContent>
+          <div className="mt-8 flex w-full justify-end">
+            <CarouselScrollbar colorScheme="light" label="Scroll" />
+          </div>
         </Carousel>
         <Accordion
           className="hidden md:block"
