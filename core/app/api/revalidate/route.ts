@@ -4,9 +4,9 @@ import { z } from 'zod';
 
 const revalidateSchema = z.object({
   entityId: z.string(),
-  contentType: z.string(),
-  pageSlug: z.string(),
-  sku: z.string(),
+  contentType: z.string().optional(),
+  pageSlug: z.string().optional(),
+  sku: z.string().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -25,12 +25,25 @@ export async function POST(request: NextRequest) {
   const { entityId, contentType, pageSlug, sku } = result.data;
 
   try {
-    revalidatePath(pageSlug);
+    if (pageSlug) {
+      revalidatePath(pageSlug);
+    }
 
-    revalidateTag(`contentful:${entityId}`);
-    revalidateTag(`contentful:${sku}`);
-    revalidateTag(`contentful:${contentType}`);
-    revalidateTag(`contentful:${contentType}:${pageSlug}`);
+    if (entityId) {
+      revalidateTag(`contentful:${entityId}`);
+    }
+
+    if (sku) {
+      revalidateTag(`contentful:${sku}`);
+    }
+
+    if (contentType) {
+      revalidateTag(`contentful:${contentType}`);
+    }
+
+    if (contentType && pageSlug) {
+      revalidateTag(`contentful:${contentType}:${pageSlug}`);
+    }
 
     return NextResponse.json({
       revalidated: true,
