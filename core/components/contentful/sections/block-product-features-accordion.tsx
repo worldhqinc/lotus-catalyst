@@ -1,8 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from '@/vibes/soul/primitives/carousel';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { WistiaPlayer } from '~/components/wistia-player';
 import { accordionItemSchema, blockProductFeaturesAccordion } from '~/contentful/schema';
@@ -13,8 +19,31 @@ export function BlockProductFeaturesAccordion({
   wistiaMediaId,
   wistiaMediaSegments,
 }: blockProductFeaturesAccordion['fields']) {
-  const accordionItems = items?.map((item) => accordionItemSchema.parse(item)) ?? [];
+  const accordionItems = useMemo(
+    () => items?.map((item) => accordionItemSchema.parse(item)) ?? [],
+    [items],
+  );
   const [activeItem, setActiveItem] = useState<string | undefined>(accordionItems[0]?.sys.id);
+  const [api, setApi] = useState<CarouselApi>();
+
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      const index = api.selectedScrollSnap();
+      const newActiveItem = accordionItems[index]?.sys.id;
+
+      if (newActiveItem) {
+        setActiveItem(newActiveItem);
+      }
+    };
+
+    api.on('select', onSelect);
+
+    return () => {
+      api.off('select', onSelect);
+    };
+  }, [api, accordionItems]);
 
   return (
     <SectionLayout containerClassName="bg-white py-24" containerSize="2xl">
@@ -30,7 +59,25 @@ export function BlockProductFeaturesAccordion({
           wistiaMediaId={wistiaMediaId}
           wistiaMediaSegments={wistiaMediaSegments}
         />
+        <Carousel className="md:hidden" setApi={setApi}>
+          <CarouselContent>
+            {accordionItems.map((item, index) => (
+              <CarouselItem className="w-full space-y-6" key={item.sys.id}>
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-xl leading-[120%] font-medium tracking-[1.8px] uppercase">
+                    {item.fields.title}
+                  </h3>
+                  <p className="text-contrast-400 min-w-9 text-sm leading-[150%]">
+                    {index + 1} of {accordionItems.length}
+                  </p>
+                </div>
+                <p className="text-surface-foreground">{item.fields.detail}</p>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
         <Accordion
+          className="hidden md:block"
           collapsible
           defaultValue={accordionItems[0]?.sys.id}
           onValueChange={(value) => {
