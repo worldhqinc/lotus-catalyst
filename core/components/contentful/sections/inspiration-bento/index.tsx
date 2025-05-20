@@ -150,7 +150,7 @@ export async function InspirationBento({
       )}
       <div className="mt-8 grid gap-8 lg:grid-cols-2">
         {video ? (
-          <figure className="bg-surface-image relative aspect-[3/4] h-full w-full overflow-hidden rounded-lg lg:aspect-auto">
+          <figure className="bg-surface-image relative aspect-3/4 h-full w-full overflow-hidden rounded-lg lg:aspect-auto">
             <WistiaPlayer anchorIds={[]} pageType="page" wistiaMediaId={video} />
           </figure>
         ) : null}

@@ -106,7 +106,7 @@ export const ProductStickyHeader = forwardRef<
   return (
     <header
       className={clsx(
-        'bg-contrast-100 fixed top-[var(--site-header-height,0px)] left-0 z-10 hidden w-full items-center justify-between px-6 py-3 shadow-md transition-opacity sm:flex @xl:px-12',
+        'bg-contrast-100 fixed top-[var(--site-header-height,0px)] left-0 z-30 hidden w-full items-center justify-between px-6 py-3 shadow-md transition-opacity sm:flex @xl:px-12',
         showStickyHeader ? 'opacity-100' : 'pointer-events-none opacity-0',
       )}
       ref={ref}

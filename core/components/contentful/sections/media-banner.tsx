@@ -21,7 +21,7 @@ export function MediaBanner({ image, wistiaId }: mediaBanner['fields']) {
     );
   } else if (wistiaId) {
     mediaElement = (
-      <figure className="bg-surface-image absolute inset-0 h-full w-full after:absolute after:inset-0 after:bg-black after:opacity-30 [&_.wistia_responsive_padding]:!p-0 [&_div]:rounded-none [&_div.wistia_responsive_wrapper]:pointer-events-none [&_div.wistia_responsive_wrapper]:!absolute [&_div:not(.wistia-player-control)]:!static [&_video]:!absolute [&_video]:inset-0 [&_video]:h-full [&_video]:w-full [&_video]:rounded-none [&_video]:!object-cover">
+      <figure className="bg-surface-image absolute inset-0 h-full w-full after:absolute after:inset-0 after:bg-black after:opacity-30">
         <WistiaPlayer pageType="page" wistiaMediaId={wistiaId} />
       </figure>
     );
