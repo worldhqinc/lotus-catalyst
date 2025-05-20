@@ -159,7 +159,7 @@ export function ProductCard({
           )}
           {!!sku && !inStock && (
             <div className="pointer-events-none absolute inset-0 z-10">
-              <div className="flex size-full items-end justify-center p-4 transition-opacity duration-500 group-hover:opacity-100">
+              <div className="flex size-full items-end justify-center p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                 <NotifyBackInStock
                   buttonClassName="pointer-events-auto w-full"
                   sku={sku}
@@ -224,7 +224,7 @@ export function ProductCard({
           </Link>
         )}
       </div>
-      {!inStock && <NotifyBackInStock productId={id} textCta={true} />}
+      {!inStock && !!sku && <NotifyBackInStock sku={sku} textCta={true} />}
       {showCompare && (
         <div className="mt-0.5 shrink-0">
           <Compare
