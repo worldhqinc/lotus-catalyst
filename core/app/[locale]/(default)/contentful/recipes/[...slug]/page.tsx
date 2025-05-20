@@ -53,10 +53,10 @@ const renderIngredientsList = (lists: IngredientsListEntry[] = []) => {
 
     return (
       <div key={list.sys.id}>
-        <h3 className="mt-8 text-base font-semibold">{sectionTitle}</h3>
-        <ul className="mt-8 grid grid-cols-2 gap-x-8 gap-y-8">
+        <h3 className="mt-8 text-xl font-medium">{sectionTitle}</h3>
+        <ul className="mt-8 space-y-6 gap-x-8 md:columns-2">
           {items.map((item) => (
-            <li className="text-contrast-500 text-sm" key={item}>
+            <li className="text-contrast-400 text-xl" key={item}>
               {item}
             </li>
           ))}
@@ -227,7 +227,7 @@ export default async function RecipePage({ params }: Props) {
           </div>
         </SectionLayout>
         {/* Ingredients Section */}
-        <SectionLayout className="mx-auto max-w-2xl">
+        <SectionLayout className="mx-auto max-w-2xl [&_>div]:pb-0">
           <h2 className="text-2xl font-medium uppercase">Ingredients</h2>
           {fields.numberOfServings ? (
             <p className="text-primary mt-8 text-2xl font-medium uppercase">
@@ -238,7 +238,7 @@ export default async function RecipePage({ params }: Props) {
         </SectionLayout>
 
         {fields.products?.length ? (
-          <SectionLayout className="mx-auto max-w-2xl">
+          <SectionLayout className="mx-auto max-w-2xl [&_>div]:pb-0">
             <hr className="border-border mb-12" />
             <h2 className="text-surface-foreground text-2xl font-medium uppercase">
               What You'll Need
@@ -266,30 +266,38 @@ export default async function RecipePage({ params }: Props) {
         ) : null}
 
         {/* Directions Section */}
-        <SectionLayout className="mx-auto max-w-2xl">
-          <h2 className="text-2xl font-medium uppercase">Directions</h2>
-          <div
-            className="prose text-contrast-500 mt-4 max-w-none"
-            dangerouslySetInnerHTML={{ __html: directionsHtml }}
-          />
-        </SectionLayout>
+        {directionsHtml ? (
+          <SectionLayout className="mx-auto max-w-2xl [&_>div]:pb-0">
+            <h2 className="text-2xl font-medium uppercase">Directions</h2>
+            <div
+              className="prose text-contrast-400 mt-4 max-w-none"
+              dangerouslySetInnerHTML={{ __html: directionsHtml }}
+            />
+          </SectionLayout>
+        ) : null}
+
         {/* Variations Section */}
-        <SectionLayout className="mx-auto max-w-2xl">
-          <h2 className="text-primary text-2xl font-medium uppercase">Variations</h2>
-          <div
-            className="prose text-contrast-500 mt-4 max-w-none"
-            dangerouslySetInnerHTML={{ __html: variationsHtml }}
-          />
-        </SectionLayout>
+        {variationsHtml ? (
+          <SectionLayout className="mx-auto max-w-2xl [&_>div]:pb-0">
+            <h2 className="text-primary text-2xl font-medium uppercase">Variations</h2>
+            <div
+              className="prose text-contrast-400 mt-4 max-w-none"
+              dangerouslySetInnerHTML={{ __html: variationsHtml }}
+            />
+          </SectionLayout>
+        ) : null}
+
         {/* Pro Tip Section */}
-        <SectionLayout className="mx-auto max-w-2xl">
-          <h2 className="text-primary text-2xl font-medium uppercase">Pro Tip</h2>
-          <div
-            className="prose text-contrast-500 mt-4 max-w-none"
-            dangerouslySetInnerHTML={{ __html: proTipHtml }}
-          />
-          <hr className="border-border mt-12" />
-        </SectionLayout>
+        {proTipHtml ? (
+          <SectionLayout className="mx-auto max-w-2xl [&_>div]:pb-0">
+            <h2 className="text-primary text-2xl font-medium uppercase">Pro Tip</h2>
+            <div
+              className="prose text-contrast-400 mt-4 max-w-none"
+              dangerouslySetInnerHTML={{ __html: proTipHtml }}
+            />
+            <hr className="border-border mt-12" />
+          </SectionLayout>
+        ) : null}
       </div>
 
       {/* Recipe Carousel Section */}
