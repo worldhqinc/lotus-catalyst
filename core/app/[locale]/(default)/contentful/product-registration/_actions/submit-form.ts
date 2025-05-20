@@ -63,10 +63,10 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
   try {
     const registrationResponse = await klaviyoProductRegistrationSubmission(
       submission.data.email,
-      submission.data.firstName,
-      submission.data.lastName,
-      submission.data.productType,
-      submission.data.modelNumber,
+      // submission.data.firstName,
+      // submission.data.lastName,
+      // submission.data.productType,
+      // submission.data.modelNumber,
     );
 
     if (!registrationResponse.ok) {
