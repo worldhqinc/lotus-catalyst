@@ -96,6 +96,7 @@ function getGridColumnsClass(productCount: number): string {
   return 'grid-cols-2 md:grid-cols-4';
 }
 
+// eslint-disable-next-line complexity
 export default async function RecipePage({ params }: Props) {
   const { slug } = await params;
   const headersList = await headers();
