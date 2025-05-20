@@ -2,14 +2,15 @@
 
 import { getFormProps, getInputProps, SubmissionResult, useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
+import * as Dialog from '@radix-ui/react-dialog';
 import { clsx } from 'clsx';
+import { XIcon } from 'lucide-react';
 import { useActionState, useEffect, useState } from 'react';
 
 import { FormStatus } from '@/vibes/soul/form/form-status';
 import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
 import { Button } from '@/vibes/soul/primitives/button';
-import { Modal } from '@/vibes/soul/primitives/modal';
 import { toast } from '@/vibes/soul/primitives/toaster';
 
 import { schema } from '../schema';
@@ -72,74 +73,98 @@ export default function NotifyBackInStockModal({
   }, [lastResult, successMessage]);
 
   return (
-    <>
-      {textCta ? (
-        <div className="flex items-center">
-          Coming soon{' '}
-          <Button
-            className="text-contrast-400 text-md underline"
-            onClick={() => setModalOpen(true)}
-            size="medium"
-            type="button"
-            variant="link"
-          >
-            Notify me!
-          </Button>
-        </div>
-      ) : (
-        <Button
-          className={clsx(buttonClassName, 'w-full')}
-          onClick={() => setModalOpen(true)}
-          size={buttonSize}
-          type="button"
-          variant="secondary"
-        >
-          {buttonLabel}
-        </Button>
-      )}
-      <Modal
-        className="w-[90%] @lg:w-120"
-        isOpen={modalOpen}
-        key={`notify-back-in-stock-modal-${productId}`}
-        setOpen={setModalOpen}
-        title="Notify me when available"
-      >
-        <p className="mb-6 text-sm text-gray-500">
-          Enter your email address below to receive an update when this item becomes available.
-        </p>
-        <form {...getFormProps(form)} action={formAction} className="space-y-4">
-          <input name="productId" type="hidden" value={productId} />
-          <Label htmlFor="email">Email</Label>
-          <Input
-            {...getInputProps(fields.email, { type: 'email' })}
-            className={clsx(
-              fields.email.errors && fields.email.errors.length > 0 && 'border-red-500',
-            )}
-            key={fields.email.id}
-          />
-          {fields.email.errors && fields.email.errors.length > 0 && (
-            <FormStatus className="mt-1 text-sm" type="error">
-              {fields.email.errors[0]}
-            </FormStatus>
-          )}
-          <div className="flex justify-end gap-4">
+    <Dialog.Root onOpenChange={setModalOpen} open={modalOpen}>
+      <Dialog.Trigger asChild>
+        {textCta ? (
+          <div className="flex items-center">
+            Coming soon{' '}
             <Button
-              disabled={isPending}
-              onClick={handleModalClose}
+              className="text-contrast-400 text-md underline"
+              size="medium"
               type="button"
-              variant="tertiary"
+              variant="link"
             >
-              Cancel
-            </Button>
-            <Button disabled={isPending} loading={isPending} type="submit">
-              Notify me
+              Notify me!
             </Button>
           </div>
-          {form.status === 'success' && errorMessage ? (
-            <FormStatus type="error">{errorMessage}</FormStatus>
-          ) : null}
-        </form>
-      </Modal>
-    </>
+        ) : (
+          <Button
+            className={clsx(buttonClassName, 'w-full')}
+            size={buttonSize}
+            type="button"
+            variant="secondary"
+          >
+            {buttonLabel}
+          </Button>
+        )}
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay className="@container fixed inset-0 z-51 flex items-center justify-center bg-[var(--modal-overlay-background,hsl(var(--foreground)/50%))]">
+          <Dialog.Content
+            className={clsx(
+              'mx-3 my-10 max-h-[90%] w-[90%] max-w-3xl overflow-y-auto rounded-2xl bg-[var(--modal-background,hsl(var(--background)))] @lg:w-120',
+              'transition ease-out',
+              'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-200 data-[state=open]:duration-200',
+              'data-[state=closed]:slide-out-to-bottom-16 data-[state=open]:slide-in-from-bottom-16 focus:outline-hidden',
+            )}
+          >
+            <div className="flex flex-col">
+              <div className="flex min-h-10 flex-row items-center pt-6 pl-5">
+                <Dialog.Title asChild>
+                  <h1 className="flex-1 pr-4 text-base leading-none font-semibold">
+                    Notify me when available
+                  </h1>
+                </Dialog.Title>
+                <div className="flex items-center justify-center pr-3">
+                  <Dialog.Close asChild>
+                    <Button shape="circle" size="x-small" variant="ghost">
+                      <XIcon size={20} />
+                    </Button>
+                  </Dialog.Close>
+                </div>
+              </div>
+              <div className="my-6 flex-1 px-6">
+                <p className="mb-6 text-sm text-gray-500">
+                  Enter your email address below to receive an update when this item becomes
+                  available.
+                </p>
+                <form {...getFormProps(form)} action={formAction} className="space-y-4">
+                  <input name="productId" type="hidden" value={productId} />
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    {...getInputProps(fields.email, { type: 'email' })}
+                    className={clsx(
+                      fields.email.errors && fields.email.errors.length > 0 && 'border-red-500',
+                    )}
+                    key={fields.email.id}
+                  />
+                  {fields.email.errors && fields.email.errors.length > 0 && (
+                    <FormStatus className="mt-1 text-sm" type="error">
+                      {fields.email.errors[0]}
+                    </FormStatus>
+                  )}
+                  <div className="flex justify-end gap-4">
+                    <Button
+                      disabled={isPending}
+                      onClick={handleModalClose}
+                      type="button"
+                      variant="tertiary"
+                    >
+                      Cancel
+                    </Button>
+                    <Button disabled={isPending} loading={isPending} type="submit">
+                      Notify me
+                    </Button>
+                  </div>
+                  {form.status === 'success' && errorMessage ? (
+                    <FormStatus type="error">{errorMessage}</FormStatus>
+                  ) : null}
+                </form>
+              </div>
+            </div>
+          </Dialog.Content>
+        </Dialog.Overlay>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }
