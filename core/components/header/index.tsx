@@ -176,7 +176,7 @@ export const Header = async () => {
   const streamablePromoCode = Streamable.from(async () => {
     'use cache';
 
-    cacheTag('contentful:4cNmVukXww5ocaDTQ0agTX');
+    cacheTag('contentful');
 
     const entry = await contentfulClient.getEntry('4cNmVukXww5ocaDTQ0agTX');
     const subtitle = entry.fields.subtitle;

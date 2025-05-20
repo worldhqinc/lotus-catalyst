@@ -10,7 +10,7 @@ import { ProductRegistrationForm } from './_components/product-registration-form
 async function getProductOptions() {
   'use cache';
 
-  cacheTag('contentful:productFinishedGoods');
+  cacheTag('contentful');
 
   const productsData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',

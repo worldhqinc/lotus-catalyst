@@ -10,7 +10,7 @@ import { ProductFormulationLookupClient } from './product-formulation-lookup-cli
 async function getProductOptions() {
   'use cache';
 
-  cacheTag('contentful:productFinishedGoods');
+  cacheTag('contentful');
 
   const productsData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',
@@ -38,7 +38,7 @@ async function getProductOptions() {
 async function getProductFields(sku: string) {
   'use cache';
 
-  cacheTag(`contentful:${sku}`);
+  cacheTag('contentful');
 
   const productData = await contentfulClient.getEntries({
     content_type: 'productFinishedGoods',

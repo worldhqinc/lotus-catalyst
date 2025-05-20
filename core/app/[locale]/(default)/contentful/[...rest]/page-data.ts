@@ -26,7 +26,7 @@ export const getPageBySlug = cache(
   async <T extends ContentType>(contentType: T, rest: string[]): Promise<ParsedPageData<T>> => {
     'use cache';
 
-    cacheTag(`contentful:${contentType}:${rest.join('/')}`);
+    cacheTag('contentful');
 
     const response = await contentfulClient.getEntries({
       content_type: contentType,

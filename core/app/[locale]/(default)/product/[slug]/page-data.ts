@@ -333,7 +333,7 @@ export const getContentfulProductData = cache(
   async (sku: string, categories: Array<{ node: { name: string; path: string } }> | null = []) => {
     'use cache';
 
-    cacheTag(`contentful:${sku}`);
+    cacheTag('contentful');
 
     const contentfulData = await contentfulClient.getEntries({
       content_type: categories?.some((category) => category.node.path.includes('parts-accessories'))
