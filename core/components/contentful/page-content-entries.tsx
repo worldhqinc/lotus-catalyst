@@ -227,7 +227,7 @@ export function PageContentEntries({
   searchParams: SearchParams;
 }) {
   return (
-    <div>
+    <div data-page-content>
       {Array.isArray(pageContent) &&
         pageContent.map((entry) => {
           const contentType = entry.sys.contentType.sys.id;

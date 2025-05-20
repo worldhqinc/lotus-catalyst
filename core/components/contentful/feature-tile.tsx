@@ -1,10 +1,26 @@
-import { CircleSlash2, HelpCircle, Microwave } from 'lucide-react';
+import {
+  ChevronUp,
+  CircleGauge,
+  CircleSlash2,
+  Fingerprint,
+  Flame,
+  Heater,
+  HelpCircle,
+  Microwave,
+  Thermometer,
+} from 'lucide-react';
 
 import type { featureTile } from '~/contentful/schema';
 
 const IconMap = {
+  'chevron-up': ChevronUp,
+  'circle-gauge': CircleGauge,
   'circle-slash-2': CircleSlash2,
+  flame: Flame,
+  fingerprint: Fingerprint,
+  heater: Heater,
   microwave: Microwave,
+  thermometer: Thermometer,
 } as const;
 
 type IconKey = keyof typeof IconMap;

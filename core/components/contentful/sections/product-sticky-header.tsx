@@ -89,6 +89,20 @@ export const ProductStickyHeader = forwardRef<
     return () => window.removeEventListener('scroll', onScroll);
   }, [detailFormRef]);
 
+  const scrollToFeatures = () => {
+    const firstPageContent = document.querySelector('[data-page-content]');
+
+    if (firstPageContent) {
+      const elementPosition = firstPageContent.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - 146;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
     <header
       className={clsx(
@@ -107,20 +121,18 @@ export const ProductStickyHeader = forwardRef<
         >
           {contentful?.fields.webProductName}
         </span>
-        <a
+        <button
           className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
-          href="#overview"
-          style={{ scrollBehavior: 'smooth' }}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           Overview
-        </a>
-        <a
+        </button>
+        <button
           className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
-          href="#features"
-          style={{ scrollBehavior: 'smooth' }}
+          onClick={scrollToFeatures}
         >
           Features
-        </a>
+        </button>
         {/* <a
             className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
             href="#reviews"
