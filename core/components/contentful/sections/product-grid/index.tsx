@@ -92,7 +92,11 @@ interface DropdownRefinementFilterProps {
 
 function DropdownRefinementFilter({ attribute, label }: DropdownRefinementFilterProps) {
   const { items, refine } = useRefinementList({ attribute });
-  const [selectedValue, setSelectedValue] = useState('all');
+  const { indexUiState } = useInstantSearch();
+  const refinements = indexUiState.refinementList?.[attribute] ?? [];
+
+  // Determine the selected value based on actual refinements
+  const selectedValue = refinements.length === 0 ? 'all' : refinements[0];
 
   const options = [
     { label: `All ${label ?? attribute}`, value: 'all' },
@@ -103,8 +107,6 @@ function DropdownRefinementFilter({ attribute, label }: DropdownRefinementFilter
   ];
 
   const handleValueChange = (value: string) => {
-    setSelectedValue(value);
-
     if (value === 'all') {
       items.forEach((item) => {
         if (item.isRefined) {
@@ -130,7 +132,12 @@ function DropdownRefinementFilter({ attribute, label }: DropdownRefinementFilter
 }
 
 function ClearFilters() {
-  const { setIndexUiState } = useInstantSearch();
+  const { setIndexUiState, indexUiState } = useInstantSearch();
+  const hasRefinements = Object.keys(indexUiState.refinementList ?? {}).length > 0;
+
+  if (!hasRefinements) {
+    return null;
+  }
 
   const handleClearFilters = () => {
     setIndexUiState((uiState) => ({
@@ -143,7 +150,7 @@ function ClearFilters() {
     <Button
       className="text-contrast-400 text-sm"
       onClick={handleClearFilters}
-      size="small"
+      size="medium"
       variant="link"
     >
       Clear
