@@ -11,8 +11,7 @@ import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { ProductCard } from '@/vibes/soul/primitives/product-card';
 import Tabs from '@/vibes/soul/primitives/tabs';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
-import { useSearch } from '~/context/search-context';
-import { usePathname, useRouter } from '~/i18n/routing';
+import { useRouter } from '~/i18n/routing';
 
 import { PostCard as PostGridPostCard } from '../../../../../components/contentful/sections/post-grid';
 import {
