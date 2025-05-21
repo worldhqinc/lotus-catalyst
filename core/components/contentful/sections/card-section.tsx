@@ -1,3 +1,5 @@
+import { ArrowRight } from 'lucide-react';
+
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
@@ -47,7 +49,7 @@ export function CardSection({
   if (variant === 'simple') {
     return (
       <SectionLayout containerClassName="py-16">
-        <div className="grid gap-8 text-white md:grid-cols-2">
+        <div className="grid gap-6 text-white md:grid-cols-2">
           {cards.map((card, index) => {
             const validCta = card.fields.cta ? ctaSchema.parse(card.fields.cta) : null;
             const mediaUrl = card.fields.image?.fields.file.url;
@@ -55,11 +57,11 @@ export function CardSection({
 
             return (
               <div
-                className="bg-surface-image relative isolate flex aspect-square flex-col justify-end overflow-hidden rounded-lg p-8"
+                className="bg-surface-image relative isolate flex aspect-4/3 flex-col justify-end overflow-hidden rounded-lg p-8"
                 key={`${card.sys.id}-${index}`}
               >
                 {card.fields.image && (
-                  <figure className="absolute inset-0 -z-10 after:absolute after:inset-0 after:bg-black after:opacity-30">
+                  <figure className="absolute inset-0 -z-10">
                     <Image
                       alt={card.fields.image.fields.title ?? ''}
                       className="h-full w-full object-cover object-center"
@@ -68,13 +70,22 @@ export function CardSection({
                     />
                   </figure>
                 )}
-                <div className="top absolute inset-0 bg-gradient-to-b from-black/0 from-70% to-black/50" />
-                <div className="relative flex flex-col items-start">
-                  <h3 className="font-medium">{card.fields.title}</h3>
-                  <p className="max-w-md">{card.fields.subtitle}</p>
+                <div className="top absolute inset-0 bg-gradient-to-b from-transparent to-black/60 lg:from-60%" />
+                <div className="relative flex flex-wrap items-start gap-4 md:items-end md:justify-between">
+                  <div className="space-y-1">
+                    <h3 className="text-xl">{card.fields.title}</h3>
+                    <p className="max-w-xs">{card.fields.subtitle}</p>
+                  </div>
                   {validCta ? (
-                    <ButtonLink className="mt-8" href={getLinkHref(validCta.fields)} size="medium">
-                      {validCta.fields.text}
+                    <ButtonLink
+                      className="hover:text-foreground bg-transparent text-white"
+                      href={getLinkHref(validCta.fields)}
+                      shape="circle"
+                      size="medium"
+                      variant="tertiary"
+                    >
+                      <ArrowRight size={20} />
+                      <span className="sr-only">{validCta.fields.text}</span>
                     </ButtonLink>
                   ) : null}
                 </div>
