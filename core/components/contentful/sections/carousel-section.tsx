@@ -8,7 +8,7 @@ export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSe
   const validCarousel = carouselProductSchema.parse(carousel);
 
   return (
-    <SectionLayout className="bg-contrast-100" containerClassName="py-16">
+    <SectionLayout containerClassName="py-16">
       <div className="mb-8 flex flex-col items-center">
         <h2 className="font-heading text-icon-primary max-w-4xl text-center text-4xl uppercase md:text-6xl">
           {heading}
