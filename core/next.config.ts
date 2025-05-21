@@ -106,9 +106,6 @@ export default async (): Promise<NextConfig> => {
         'vibes',
       ],
     },
-    generateBuildId: () => {
-      return `build-${Date.now()}`;
-    },
     // default URL generation in BigCommerce uses trailing slash
     trailingSlash: process.env.TRAILING_SLASH !== 'false',
     // eslint-disable-next-line @typescript-eslint/require-await
