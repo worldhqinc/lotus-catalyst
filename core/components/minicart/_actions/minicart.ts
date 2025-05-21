@@ -256,7 +256,8 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
       title: item.name,
       subtitle: item.brand || '',
       price: item.listPrice.value,
-      originalPrice: item.originalPrice.value,
+      originalPrice:
+        item.originalPrice.value > item.listPrice.value ? item.originalPrice.value : undefined,
       quantity: item.quantity,
       productEntityId: item.productEntityId,
       variantEntityId: item.variantEntityId,
