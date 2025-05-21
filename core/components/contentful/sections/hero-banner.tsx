@@ -36,6 +36,82 @@ function SimpleHeroBanner({
   );
 }
 
+function StackedHeroBanner({
+  description,
+  invertText,
+  isPageHeader,
+  mediaElement,
+  primary,
+  secondary,
+  secondaryDescription,
+  secondaryTitle,
+  title,
+}: {
+  description?: string | null;
+  invertText?: boolean | null;
+  isPageHeader?: boolean | null;
+  mediaElement: React.ReactNode;
+  primary: cta | null;
+  secondary: cta | null;
+  secondaryDescription?: string | null;
+  secondaryTitle?: string | null;
+  title: string;
+}) {
+  return (
+    <section className="relative isolate h-auto overflow-hidden bg-[#F6F2EF] lg:h-screen">
+      <div className="grid h-full grid-cols-[minmax(var(--container-padding),1fr)_minmax(0,calc((var(--container-max-width)/2)))_minmax(0,calc((var(--container-max-width)/2)))_minmax(var(--container-padding),1fr)] gap-y-8 lg:gap-0">
+        <div
+          className={clsx(
+            'justify-space-between col-span-2 col-start-2 flex h-full w-full flex-col gap-8 pt-8 lg:col-start-2 lg:col-end-3 lg:py-16',
+          )}
+        >
+          <div className="space-y-6">
+            {isPageHeader ? (
+              <h1
+                className={clsx(
+                  'font-heading max-w-xl text-4xl uppercase md:text-6xl',
+                  invertText ? 'text-white' : 'text-surface-foreground',
+                )}
+              >
+                {title}
+              </h1>
+            ) : (
+              <h2
+                className={clsx(
+                  'font-heading max-w-xl text-4xl uppercase md:text-6xl',
+                  invertText ? 'text-white' : 'text-surface-foreground',
+                )}
+              >
+                {title}
+              </h2>
+            )}
+            {description ? (
+              <p
+                className={clsx(
+                  'max-w-lg text-xl',
+                  invertText ? 'text-white' : 'text-contrast-400',
+                )}
+              >
+                {description}
+              </p>
+            ) : null}
+          </div>
+          {primary || secondary ? <HeroBannerCTAs primary={primary} secondary={secondary} /> : null}
+          <HeroBannerSecondary
+            className="mt-auto"
+            invertText={invertText}
+            secondaryDescription={secondaryDescription}
+            secondaryTitle={secondaryTitle}
+          />
+        </div>
+        <div className="relative col-span-2 col-start-2 aspect-video lg:col-start-3 lg:col-end-4 lg:aspect-auto">
+          {mediaElement}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function LeftAlignedHeroBanner({
   description,
   invertText,
@@ -60,14 +136,10 @@ function LeftAlignedHeroBanner({
   variant: string;
 }) {
   return (
-    <SectionLayout className="bg-contrast-200 relative isolate">
+    <SectionLayout className="relative isolate h-screen [&_>div]:h-full">
+      <div className="absolute inset-0 -z-10 bg-linear-to-l from-transparent to-black/50" />
       {mediaElement}
-      <div
-        className={clsx(
-          'flex w-full flex-col gap-8 py-20',
-          variant === 'left-aligned' ? '' : 'lg:py-40',
-        )}
-      >
+      <div className={clsx('flex h-full w-full flex-col justify-center gap-8')}>
         {isPageHeader ? (
           <h1
             className={clsx(
@@ -123,7 +195,7 @@ function CenteredHeroBanner({
   title: string;
 }) {
   return (
-    <SectionLayout className="bg-contrast-200 relative isolate h-[90vh]">
+    <SectionLayout className="bg-contrast-200 relative isolate h-[calc(100vh-(var(--site-header-height)+48px))]">
       {mediaElement}
       <div className="flex w-full flex-col items-center justify-center gap-8 py-20 lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
         {isPageHeader ? (
@@ -189,7 +261,7 @@ export async function HeroBanner({
     mediaElement = (
       <video
         autoPlay
-        className="absolute inset-0 -z-10 h-full w-full object-cover"
+        className="absolute inset-0 -z-20 h-full w-full object-cover"
         loop
         muted
         src={absoluteMediaUrl}
@@ -199,7 +271,12 @@ export async function HeroBanner({
     mediaElement = (
       <Image
         alt={title}
-        className="absolute inset-0 -z-10 h-full w-full object-cover"
+        className={clsx(
+          'absolute inset-0 -z-20 h-full w-full',
+          variant === 'stack'
+            ? 'object-contain object-[bottom_left] lg:min-w-[2440px]'
+            : 'object-cover',
+        )}
         fill
         src={absoluteMediaUrl ?? ''}
       />
@@ -235,6 +312,22 @@ export async function HeroBanner({
         secondaryTitle={secondaryTitle}
         title={title}
         variant={variant}
+      />
+    );
+  }
+
+  if (variant === 'stack') {
+    return (
+      <StackedHeroBanner
+        description={description}
+        invertText={invertText}
+        isPageHeader={isPageHeader}
+        mediaElement={mediaElement}
+        primary={primary}
+        secondary={secondary}
+        secondaryDescription={secondaryDescription}
+        secondaryTitle={secondaryTitle}
+        title={title}
       />
     );
   }
@@ -298,10 +391,12 @@ function HeroBannerCTAs({
 }
 
 function HeroBannerSecondary({
+  className,
   invertText,
   secondaryDescription,
   secondaryTitle,
 }: {
+  className?: string | null;
   invertText?: boolean | null;
   secondaryDescription?: string | null;
   secondaryTitle?: string | null;
@@ -309,9 +404,14 @@ function HeroBannerSecondary({
   if (!secondaryTitle && !secondaryDescription) return null;
 
   return (
-    <div className="flex flex-col items-start gap-4 pt-20">
+    <div className={clsx('flex flex-col items-start gap-4', className)}>
       {!!secondaryTitle && (
-        <h2 className={clsx('text-3xl', invertText ? 'text-white' : 'text-surface-foreground')}>
+        <h2
+          className={clsx(
+            'text-xl font-medium',
+            invertText ? 'text-white' : 'text-surface-foreground',
+          )}
+        >
           {secondaryTitle}
         </h2>
       )}

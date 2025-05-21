@@ -70,7 +70,15 @@ export function AltProductCarousel({
     const { id } = parsed.sys;
     const fields = parsed.fields;
     const file = fields.featuredImage ? assetSchema.parse(fields.featuredImage).fields.file : null;
-    const image = file ? { src: ensureImageUrl(file.url), alt: fields.webProductName } : undefined;
+    const carouselFile = fields.carouselImage
+      ? assetSchema.parse(fields.carouselImage).fields.file
+      : null;
+    const image = file
+      ? {
+          src: carouselFile ? ensureImageUrl(carouselFile.url) : ensureImageUrl(file.url),
+          alt: fields.webProductName,
+        }
+      : undefined;
     const href = fields.pageSlug ? `/${fields.pageSlug}` : '#';
     const priceValue = fields.salePrice ?? fields.price;
     const priceNumber = parseFloat(priceValue ?? '0.00');
@@ -88,12 +96,12 @@ export function AltProductCarousel({
 
   return (
     <section className="@container">
-      <div className="relative mx-auto px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
-        <Carousel hideOverflow={false}>
+      <div className="relative mx-auto px-4 @xl:px-6 @4xl:px-8">
+        <Carousel hideOverflow={false} opts={{ dragFree: true }}>
           <CarouselContent className="-ml-4 flex @2xl:-ml-5">
             {items.map((product, index) => (
               <CarouselItem
-                className="basis-full pl-4 @md:basis-1/2 @lg:basis-1/3 @2xl:basis-1/4 @2xl:pl-5"
+                className="basis-full pl-4 @md:basis-1/2 @lg:basis-1/3 @2xl:basis-[30%] @2xl:pl-6"
                 key={`${product.id}-${index}`}
               >
                 <div className="flex flex-col items-start gap-3">
@@ -110,9 +118,16 @@ export function AltProductCarousel({
                     </div>
                   </Link>
                   <div className="flex w-full items-center justify-between pt-2">
-                    <span className="text-icon-primary truncate text-lg font-medium">
-                      {product.title}
-                    </span>
+                    <div className="flex flex-col gap-1">
+                      <h3 className="text-icon-primary truncate text-lg font-medium">
+                        {product.title}
+                      </h3>
+                      {product.subtitle !== undefined && (
+                        <p className="text-icon-secondary w-full truncate text-sm">
+                          {product.subtitle}
+                        </p>
+                      )}
+                    </div>
                     <ButtonLink
                       aria-label={`View ${product.title}`}
                       className="bg-transparent"
@@ -121,14 +136,9 @@ export function AltProductCarousel({
                       size="medium"
                       variant="tertiary"
                     >
-                      <ArrowRight className="size-6" />
+                      <ArrowRight className="size-6" strokeWidth={1.5} />
                     </ButtonLink>
                   </div>
-                  {product.subtitle !== undefined && (
-                    <p className="text-icon-secondary w-full truncate text-sm">
-                      {product.subtitle}
-                    </p>
-                  )}
                   <span className="text-icon-primary text-base font-medium">{product.price}</span>
                 </div>
               </CarouselItem>

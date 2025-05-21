@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-19T12:47:36.532Z",
+        "updatedAt": "2025-05-21T18:24:06.569Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 407,
-        "publishedAt": "2025-05-19T12:47:36.532Z",
+        "publishedVersion": 411,
+        "publishedAt": "2025-05-21T18:24:06.569Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -34,16 +34,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 204,
-        "version": 408,
+        "publishedCounter": 206,
+        "version": 412,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "6VGBdQsJwrG5UjbxzxdXJw"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/productFinishedGoods"
@@ -662,6 +662,18 @@
             ],
             "linkType": "Entry"
           }
+        },
+        {
+          "id": "carouselImage",
+          "name": "Carousel Image",
+          "type": "Link",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Asset"
         }
       ],
       "metadata": {
@@ -4988,7 +5000,7 @@
         "id": "heroBanner",
         "type": "ContentType",
         "createdAt": "2025-04-21T23:44:18.865Z",
-        "updatedAt": "2025-05-15T20:09:47.501Z",
+        "updatedAt": "2025-05-21T18:35:35.525Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4996,8 +5008,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 26,
-        "publishedAt": "2025-05-15T20:09:47.501Z",
+        "publishedVersion": 28,
+        "publishedAt": "2025-05-21T18:35:35.525Z",
         "firstPublishedAt": "2025-04-21T23:45:16.956Z",
         "createdBy": {
           "sys": {
@@ -5013,8 +5025,8 @@
             "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 13,
-        "version": 27,
+        "publishedCounter": 14,
+        "version": 29,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -5038,8 +5050,9 @@
             {
               "in": [
                 "left-aligned",
+                "left-aligned-lowercase",
                 "simple",
-                "left-aligned-lowercase"
+                "stack"
               ]
             }
           ],

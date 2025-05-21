@@ -68,7 +68,7 @@ export function InlineEmailForm({
     >
       <div
         className={clsx(
-          'bg-background focus-within:border-primary relative border-b text-base transition-colors duration-200 focus:outline-hidden',
+          'bg-background focus-within:border-primary relative border-b text-base transition-colors duration-200 focus:outline-hidden focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none @4xl:text-xl',
           errors.length ? 'border-error' : 'border-contrast-200',
           inputContainerClassName,
         )}
@@ -76,7 +76,7 @@ export function InlineEmailForm({
         <input
           {...getInputProps(fields.email, { type: 'email' })}
           className={clsx(
-            'placeholder-contrast-gray-500 text-foreground placeholder:font-heading h-14 w-full bg-transparent pr-16 placeholder:font-normal focus:outline-hidden @4xl:placeholder:text-xl',
+            'placeholder-contrast-gray-500 text-foreground font-heading placeholder:font-heading h-14 w-full bg-transparent pr-16 placeholder:font-normal focus:outline-hidden focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-hidden focus-visible:outline-none @4xl:placeholder:text-xl',
             inputClassName,
           )}
           data-1p-ignore
@@ -86,7 +86,7 @@ export function InlineEmailForm({
         <div className="absolute top-1/2 right-0 -translate-y-1/2 pr-2">
           <Button
             aria-label={submitLabel}
-            className="bg-transparent"
+            className="hover:bg-contrast-100/50 bg-transparent"
             loading={isPending}
             shape="circle"
             size="small"

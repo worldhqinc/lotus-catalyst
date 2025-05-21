@@ -13,7 +13,7 @@ export function NewsletterForm({
   inputPlaceholder,
 }: z.infer<typeof newsletterFormSchema>['fields']) {
   return (
-    <section className="bg-primary text-background relative isolate overflow-hidden py-16 text-center">
+    <section className="bg-primary text-background @container relative isolate overflow-hidden py-16 text-center">
       <Image
         alt="Lotus Pattern"
         className="absolute inset-0 top-1/2 left-1/2 -z-10 h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover"
@@ -23,7 +23,7 @@ export function NewsletterForm({
         width={2560}
       />
       <div className="container mx-auto px-4">
-        <h2 className="mx-auto mb-4 max-w-xl font-serif text-5xl uppercase">{title}</h2>
+        <h2 className="font-heading mx-auto mb-4 max-w-xl text-5xl uppercase">{title}</h2>
         <p className="mx-auto mb-16 max-w-2xl">{description}</p>
         <div className="mx-auto max-w-md">
           <InlineEmailForm
