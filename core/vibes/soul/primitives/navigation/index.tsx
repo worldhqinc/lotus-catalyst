@@ -646,26 +646,9 @@ export const Navigation = forwardRef(function Navigation(
             linksPosition === 'center' ? 'flex-1' : 'flex-1 @4xl:flex-none',
           )}
         >
-          <Dialog.Root onOpenChange={setIsSearchOpen} open={isSearchOpen}>
-            <Dialog.Trigger asChild>
-              <button
-                aria-label={openSearchPopupLabel}
-                className={navButtonClassName}
-                onPointerEnter={(e) => e.preventDefault()}
-                onPointerLeave={(e) => e.preventDefault()}
-                onPointerMove={(e) => e.preventDefault()}
-              >
-                <Search size={24} strokeWidth={1} />
-              </button>
-            </Dialog.Trigger>
-            <Dialog.Portal>
-              <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50" />
-              <Dialog.Content className="fixed inset-0 z-50 flex h-screen w-screen flex-col bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out">
-                <Dialog.Title className="sr-only">Search</Dialog.Title>
-                <AlgoliaSearch closeSearch={handleCloseSearch} />
-              </Dialog.Content>
-            </Dialog.Portal>
-          </Dialog.Root>
+          <Link aria-label="Search" className={navButtonClassName} href="/search">
+            <Search size={24} strokeWidth={1} />
+          </Link>
           <Link
             aria-label={accountLabel}
             className={clsx(navButtonClassName, 'hidden @4xl:inline-block')}
