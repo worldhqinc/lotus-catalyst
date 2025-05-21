@@ -1,6 +1,13 @@
 import { z } from 'zod';
 import { BLOCKS } from '@contentful/rich-text-types';
 
+// Utility to filter unpublished references in arrays
+function filterUnpublished<T extends { sys?: { publishedVersion?: number | null } }>(
+  arr: T[],
+): T[] {
+  return arr.filter((item) => item?.sys?.publishedVersion);
+}
+
 // ========================================
 // Base Schemas
 // ========================================
@@ -192,6 +199,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -235,6 +243,11 @@ export const productFinishedGoodsFieldsSchema = z.object({
       ),
     )
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
   featuredImage: z
     .object({
       metadata: z.object({
@@ -347,6 +360,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -402,6 +416,23 @@ export const productFinishedGoodsFieldsSchema = z.object({
   archive: z.boolean().nullish(),
   productFormulationInformation: z.record(z.string(), z.unknown()).nullish(),
   badge: z.string().nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+  outOfBoxNetWeight: z.string().optional().nullable(),
+  outOfBoxDepth: z.string().optional().nullable(),
+  outOfBoxWidth: z.string().optional().nullable(),
+  outOfBoxHeight: z.string().optional().nullable(),
+  outOfBoxSizeUom: z.string().optional().nullable(),
+  outOfBoxWeightUom: z.string().optional().nullable(),
+  metaTitle: z.string().optional().nullable(),
+  metaDescription: z.string().optional().nullable(),
+  factoryRecertifiedProduct: z.boolean().optional().nullable(),
+  archive: z.boolean().optional().nullable(),
+  productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
+  badge: z.string().optional().nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
   additionalImages: z
     .array(
       z
@@ -526,7 +557,13 @@ export const productFinishedGoodsFieldsSchema = z.object({
         }),
       ),
     )
+<<<<<<< HEAD
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
   faqs: z
     .array(
       z
@@ -585,6 +622,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -628,6 +666,11 @@ export const productFinishedGoodsFieldsSchema = z.object({
       ),
     )
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
   featureCallout: z
     .object({
       metadata: z.object({
@@ -764,6 +807,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -807,6 +851,11 @@ export const productFinishedGoodsFieldsSchema = z.object({
       ),
     )
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
   carouselImage: z
     .object({
       metadata: z.object({
@@ -908,6 +957,7 @@ export const carouselRecipeFieldsSchema = z.object({
   carouselTitle: z.string(),
   recipes: z
     .array(
+<<<<<<< HEAD
       z
         .object({
           metadata: z
@@ -1006,6 +1056,47 @@ export const carouselRecipeFieldsSchema = z.object({
         }),
       ),
     ),
+=======
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional().nullable(),
+          revision: z.number(),
+          locale: z.string().optional().nullable(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .transform(filterUnpublished),
+>>>>>>> 379eda25 (Filter unpublished)
   cta: z
     .object({
       metadata: z.object({
@@ -1127,6 +1218,7 @@ export type categoryFaq = z.infer<typeof categoryFaqSchema>;
 export const carouselProductFieldsSchema = z.object({
   internalName: z.string(),
   carouselTitle: z.string(),
+<<<<<<< HEAD
   subtitle: z.string().nullish(),
   products: z
     .array(
@@ -1228,6 +1320,50 @@ export const carouselProductFieldsSchema = z.object({
         }),
       ),
     ),
+=======
+  subtitle: z.string().optional().nullable(),
+  products: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional().nullable(),
+          revision: z.number(),
+          locale: z.string().optional().nullable(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .transform(filterUnpublished),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const carouselProductSchema = z.object({
@@ -1406,6 +1542,7 @@ export const recipeFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -1449,6 +1586,11 @@ export const recipeFieldsSchema = z.object({
       ),
     )
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
   products: z
     .array(
       z
@@ -1507,6 +1649,7 @@ export const recipeFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -1550,6 +1693,11 @@ export const recipeFieldsSchema = z.object({
       ),
     )
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
   recipeDirections: z
     .object({
       nodeType: z.literal(BLOCKS.DOCUMENT),
@@ -1773,7 +1921,13 @@ export const recipeFieldsSchema = z.object({
         }),
       ),
     )
+<<<<<<< HEAD
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
   videoFeature: z
     .object({
       metadata: z.object({
@@ -1901,6 +2055,7 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -1944,6 +2099,11 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
       ),
     )
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
   relatedPartsAndAccessories: z
     .array(
       z
@@ -2002,6 +2162,7 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -2045,6 +2206,11 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
       ),
     )
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
   featuredImage: z
     .object({
       metadata: z.object({
@@ -2235,7 +2401,13 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
         }),
       ),
     )
+<<<<<<< HEAD
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
   pageContentEntries: z
     .array(
       z
@@ -2294,6 +2466,7 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -2338,6 +2511,12 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
     )
     .nullish(),
   shortDescription: z.string().nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+  shortDescription: z.string().optional().nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const productPartsAndAccessoriesSchema = z.object({
@@ -2596,6 +2775,7 @@ export const pageStandardFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -2639,6 +2819,11 @@ export const pageStandardFieldsSchema = z.object({
       ),
     )
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const pageStandardSchema = z.object({
@@ -2662,6 +2847,7 @@ export const megaMenuFieldsSchema = z.object({
   menuName: z.string(),
   menuReference: z
     .array(
+<<<<<<< HEAD
       z
         .object({
           metadata: z
@@ -2760,6 +2946,47 @@ export const megaMenuFieldsSchema = z.object({
         }),
       ),
     ),
+=======
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional().nullable(),
+          revision: z.number(),
+          locale: z.string().optional().nullable(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .transform(filterUnpublished),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const megaMenuSchema = z.object({
@@ -2820,6 +3047,7 @@ export const faqListFieldsSchema = z.object({
   }),
   faqReference: z
     .array(
+<<<<<<< HEAD
       z
         .object({
           metadata: z
@@ -2918,6 +3146,47 @@ export const faqListFieldsSchema = z.object({
         }),
       ),
     ),
+=======
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional().nullable(),
+          revision: z.number(),
+          locale: z.string().optional().nullable(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .transform(filterUnpublished),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const faqListSchema = z.object({
@@ -2997,6 +3266,7 @@ export const blockProductFeaturesFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -3041,6 +3311,12 @@ export const blockProductFeaturesFieldsSchema = z.object({
     )
     .nullish(),
   alternate: z.boolean().nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+  alternate: z.boolean().optional().nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const blockProductFeaturesSchema = z.object({
@@ -3120,6 +3396,7 @@ export const blockProductFeaturesAccordionFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -3163,6 +3440,11 @@ export const blockProductFeaturesAccordionFieldsSchema = z.object({
       ),
     )
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
   media: z
     .array(
       z
@@ -3287,9 +3569,17 @@ export const blockProductFeaturesAccordionFieldsSchema = z.object({
         }),
       ),
     )
+<<<<<<< HEAD
     .nullish(),
   wistiaMediaId: z.string().nullish(),
   wistiaMediaSegments: z.array(z.string()).nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+  wistiaMediaId: z.string().optional().nullable(),
+  wistiaMediaSegments: z.array(z.string()).optional().nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const blockProductFeaturesAccordionSchema = z.object({
@@ -3571,6 +3861,7 @@ export const inspirationBentoFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -3615,6 +3906,12 @@ export const inspirationBentoFieldsSchema = z.object({
     )
     .nullish(),
   variant: z.string().nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+  variant: z.string().optional().nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const inspirationBentoSchema = z.object({
@@ -3959,6 +4256,7 @@ export const heroCarouselFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -4003,6 +4301,12 @@ export const heroCarouselFieldsSchema = z.object({
     )
     .nullish(),
   vertical: z.boolean().nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+  vertical: z.boolean().optional().nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const heroCarouselSchema = z.object({
@@ -4416,6 +4720,7 @@ export type heroSection = z.infer<typeof heroSectionSchema>;
 // Schema for guidingPrinciplesSection
 export const guidingPrinciplesSectionFieldsSchema = z.object({
   sectionTitle: z.string(),
+<<<<<<< HEAD
   sectionDescription: z.string().nullish(),
   principles: z
     .array(
@@ -4517,6 +4822,50 @@ export const guidingPrinciplesSectionFieldsSchema = z.object({
         }),
       ),
     ),
+=======
+  sectionDescription: z.string().optional().nullable(),
+  principles: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional().nullable(),
+          revision: z.number(),
+          locale: z.string().optional().nullable(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .transform(filterUnpublished),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const guidingPrinciplesSectionSchema = z.object({
@@ -4693,6 +5042,7 @@ export const ctaSectionFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -4737,6 +5087,12 @@ export const ctaSectionFieldsSchema = z.object({
     )
     .nullish(),
   variant: z.string().nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+  variant: z.string().optional().nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const ctaSectionSchema = z.object({
@@ -5263,6 +5619,7 @@ export const featureGridFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -5306,6 +5663,11 @@ export const featureGridFieldsSchema = z.object({
       ),
     )
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const featureGridSchema = z.object({
@@ -5548,7 +5910,13 @@ export const testimonialsFieldsSchema = z.object({
         }),
       ),
     )
+<<<<<<< HEAD
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const testimonialsSchema = z.object({
@@ -5678,6 +6046,7 @@ export const featureItemFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -5721,6 +6090,11 @@ export const featureItemFieldsSchema = z.object({
       ),
     )
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const featureItemSchema = z.object({
@@ -5802,6 +6176,7 @@ export const productBentoFieldsSchema = z.object({
         })
         .nullish(),
     )
+<<<<<<< HEAD
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -5845,6 +6220,11 @@ export const productBentoFieldsSchema = z.object({
       ),
     )
     .nullish(),
+=======
+    .transform(filterUnpublished)
+    .optional()
+    .nullable(),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const productBentoSchema = z.object({
@@ -6126,6 +6506,7 @@ export const featureTilesFieldsSchema = z.object({
   internalName: z.string(),
   items: z
     .array(
+<<<<<<< HEAD
       z
         .object({
           metadata: z
@@ -6224,6 +6605,47 @@ export const featureTilesFieldsSchema = z.object({
         }),
       ),
     ),
+=======
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional().nullable(),
+          revision: z.number(),
+          locale: z.string().optional().nullable(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .transform(filterUnpublished),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const featureTilesSchema = z.object({
@@ -6312,6 +6734,7 @@ export type pageHeaderSupport = z.infer<typeof pageHeaderSupportSchema>;
 
 // Schema for productSupportLinks
 export const productSupportLinksFieldsSchema = z.object({
+<<<<<<< HEAD
   title: z.string().nullish(),
   links: z
     .array(
@@ -6413,6 +6836,50 @@ export const productSupportLinksFieldsSchema = z.object({
         }),
       ),
     ),
+=======
+  title: z.string().optional().nullable(),
+  links: z
+    .array(
+      z.object({
+        metadata: z.object({
+          tags: z.array(z.unknown()),
+          concepts: z.array(z.unknown()),
+        }),
+        sys: z.object({
+          space: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('Space'),
+              id: z.string(),
+            }),
+          }),
+          id: z.string(),
+          type: z.literal('Entry'),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
+          environment: z.object({
+            sys: z.object({
+              id: z.string(),
+              type: z.literal('Link'),
+              linkType: z.literal('Environment'),
+            }),
+          }),
+          publishedVersion: z.number().optional().nullable(),
+          revision: z.number(),
+          locale: z.string().optional().nullable(),
+          contentType: z.object({
+            sys: z.object({
+              type: z.literal('Link'),
+              linkType: z.literal('ContentType'),
+              id: z.string(),
+            }),
+          }),
+        }),
+        fields: z.record(z.string(), z.unknown()),
+      }),
+    )
+    .transform(filterUnpublished),
+>>>>>>> 379eda25 (Filter unpublished)
 });
 
 export const productSupportLinksSchema = z.object({
