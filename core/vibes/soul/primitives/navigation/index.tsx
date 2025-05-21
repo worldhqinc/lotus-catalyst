@@ -25,12 +25,10 @@ import { Price } from '@/vibes/soul/primitives/price-label';
 import * as SidePanel from '@/vibes/soul/primitives/side-panel';
 import CookiePreferencesCta from '~/components/cookie-preferences-cta';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
-import AlgoliaSearch from '~/components/header/algolia-search';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { Minicart } from '~/components/minicart';
 import { CartItem } from '~/components/minicart/_actions/minicart';
-import { useSearch } from '~/context/search-context';
 import { usePathname, useRouter } from '~/i18n/routing';
 
 import { LogoLotus } from '../logo-lotus';
@@ -399,27 +397,22 @@ export const Navigation = forwardRef(function Navigation(
     currencyAction,
     cartLabel = 'Cart',
     accountLabel = 'Profile',
-    openSearchPopupLabel = 'Open search popup',
     mobileMenuTriggerLabel = 'Toggle navigation',
   }: Props,
   ref: Ref<HTMLDivElement>,
 ) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMinicartDrawerOpen, setIsMinicartDrawerOpen] = useState(false);
-  const [value, setValue] = useState('');
-  const { isSearchOpen, setIsSearchOpen } = useSearch();
 
   const pathname = usePathname();
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
-    setIsSearchOpen(false);
     setIsMinicartDrawerOpen(false);
-    setValue('');
-  }, [pathname, setIsSearchOpen]);
+  }, [pathname]);
 
   useEffect(() => {
-    if (isSearchOpen || isMobileMenuOpen || isMinicartDrawerOpen) {
+    if (isMobileMenuOpen || isMinicartDrawerOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -428,23 +421,17 @@ export const Navigation = forwardRef(function Navigation(
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isSearchOpen, isMobileMenuOpen, isMinicartDrawerOpen]);
+  }, [isMobileMenuOpen, isMinicartDrawerOpen]);
 
   useEffect(() => {
     function handleScroll() {
-      setIsSearchOpen(false);
       setIsMobileMenuOpen(false);
-      setValue('');
     }
 
     window.addEventListener('scroll', handleScroll);
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [setIsSearchOpen]);
-
-  const handleCloseSearch = () => {
-    setIsSearchOpen(false);
-  };
+  }, []);
 
   const prevCartCountRef = useRef<number | null | undefined>(undefined);
 
@@ -476,12 +463,7 @@ export const Navigation = forwardRef(function Navigation(
         isFloating ? 'shadow-md' : 'shadow-none',
       )}
       delayDuration={0}
-      onValueChange={(newValue) => {
-        setIsSearchOpen(false);
-        setValue(newValue);
-      }}
       ref={ref}
-      value={value}
     >
       <div className="container flex items-center justify-between gap-1 bg-[var(--nav-background,hsl(var(--background)))] py-2 @4xl:py-4">
         {/* Logo */}
@@ -646,26 +628,9 @@ export const Navigation = forwardRef(function Navigation(
             linksPosition === 'center' ? 'flex-1' : 'flex-1 @4xl:flex-none',
           )}
         >
-          <Dialog.Root onOpenChange={setIsSearchOpen} open={isSearchOpen}>
-            <Dialog.Trigger asChild>
-              <button
-                aria-label={openSearchPopupLabel}
-                className={navButtonClassName}
-                onPointerEnter={(e) => e.preventDefault()}
-                onPointerLeave={(e) => e.preventDefault()}
-                onPointerMove={(e) => e.preventDefault()}
-              >
-                <Search size={24} strokeWidth={1} />
-              </button>
-            </Dialog.Trigger>
-            <Dialog.Portal>
-              <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50" />
-              <Dialog.Content className="fixed inset-0 z-50 flex h-screen w-screen flex-col bg-[var(--nav-search-background,hsl(var(--background)))] shadow-xl ring-1 ring-[var(--nav-search-border,hsl(var(--foreground)/5%))] transition-all duration-200 ease-in-out">
-                <Dialog.Title className="sr-only">Search</Dialog.Title>
-                <AlgoliaSearch closeSearch={handleCloseSearch} />
-              </Dialog.Content>
-            </Dialog.Portal>
-          </Dialog.Root>
+          <Link aria-label="Search" className={navButtonClassName} href="/search">
+            <Search size={24} strokeWidth={1} />
+          </Link>
           <Link
             aria-label={accountLabel}
             className={clsx(navButtonClassName, 'hidden @4xl:inline-block')}

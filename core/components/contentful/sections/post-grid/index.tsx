@@ -131,7 +131,7 @@ export function PostCard({
   return (
     <article className="group relative flex flex-col">
       {image.src ? (
-        <figure className="bg-surface-image aspect-square w-full overflow-hidden rounded-lg">
+        <figure className="bg-surface-image aspect-4/3 w-full overflow-hidden rounded-lg">
           <Image
             alt={image.alt}
             className="h-full w-full object-cover"
@@ -141,11 +141,11 @@ export function PostCard({
           />
         </figure>
       ) : (
-        <figure className="bg-surface-image aspect-square w-full rounded-lg" />
+        <figure className="bg-surface-image aspect-4/3 w-full rounded-lg" />
       )}
       <div className="flex flex-1 flex-col gap-2 py-4">
         <h3 className="font-heading text-3xl">{title}</h3>
-        {subtitle ? <p className="text-contrast-400 text-sm">{subtitle}</p> : null}
+        {subtitle ? <p className="text-contrast-400 line-clamp-2 text-sm">{subtitle}</p> : null}
       </div>
       <div className="flex flex-wrap gap-2 pb-2">
         {categories.map((cat) => (

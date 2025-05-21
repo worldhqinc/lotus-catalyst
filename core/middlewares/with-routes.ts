@@ -386,7 +386,7 @@ export const withRoutes: MiddlewareFactory = () => {
           '/register',
           '/change-password',
           '/maintenance',
-          // '/search',
+          '/search',
           '/wishlist',
         ];
 

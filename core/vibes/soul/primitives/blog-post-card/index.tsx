@@ -49,7 +49,7 @@ export function BlogPostCard({ blogPost, className }: Props) {
       </div>
 
       <div className="text-lg leading-snug font-medium">{title}</div>
-      <p className="text-contrast-400 mt-1.5 mb-3 line-clamp-3 text-sm font-normal">{content}</p>
+      <p className="text-contrast-400 mt-1.5 mb-3 line-clamp-2 text-sm font-normal">{content}</p>
       <div className="text-sm">
         <time dateTime={date}>
           {new Date(date).toLocaleDateString('en-US', {

@@ -186,7 +186,7 @@ export function ProductCard({
               {subtitle != null && subtitle !== '' && (
                 <span
                   className={clsx(
-                    'mb-2 block text-sm leading-6 font-normal',
+                    'mb-2 line-clamp-2 block text-sm leading-6 font-normal',
                     {
                       light: 'text-contrast-400',
                       dark: 'text-[var(--product-card-dark-subtitle,hsl(var(--background)/75%))]',
