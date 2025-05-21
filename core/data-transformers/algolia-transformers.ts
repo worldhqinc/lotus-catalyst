@@ -7,6 +7,8 @@ export interface ProductGridHit {
   sku: string;
   title: string;
   subtitle: string;
+  categories: string[];
+  productLines: string[];
   price: Price;
   badge: string;
   newFlag: boolean;
@@ -27,10 +29,12 @@ export interface PostGridHit {
 export function transformProductHit(hit: ProductGridHit) {
   return {
     id: hit.objectID,
+    href: hit.href,
     sku: hit.sku,
     title: hit.title,
     subtitle: hit.subtitle,
-    href: hit.href,
+    categories: hit.categories,
+    productLines: hit.productLines,
     price: hit.price,
     badge: hit.badge,
     newFlag: hit.newFlag,
@@ -43,10 +47,10 @@ export function transformPostHit(hit: PostGridHit) {
   return {
     id: hit.objectID,
     href: hit.href,
-    image: hit.image,
     title: hit.title,
     subtitle: hit.subtitle,
     categories: hit.categories,
+    image: hit.image,
   };
 }
 

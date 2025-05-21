@@ -2,7 +2,13 @@
 
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { useState } from 'react';
-import { Configure, InstantSearch, useInfiniteHits, useInstantSearch } from 'react-instantsearch';
+import {
+  Configure,
+  InstantSearch,
+  useInfiniteHits,
+  useInstantSearch,
+  useRefinementList,
+} from 'react-instantsearch';
 
 import { Select } from '@/vibes/soul/form/select';
 import { Button } from '@/vibes/soul/primitives/button';
@@ -77,6 +83,72 @@ function ResultCount() {
   const hitCount = results.nbHits;
 
   return <span className="text-contrast-400">{hitCount} items</span>;
+}
+
+interface DropdownRefinementFilterProps {
+  attribute: string;
+  label?: string;
+}
+
+function DropdownRefinementFilter({ attribute, label }: DropdownRefinementFilterProps) {
+  const { items, refine } = useRefinementList({ attribute });
+  const [selectedValue, setSelectedValue] = useState('all');
+
+  const options = [
+    { label: `All ${label ?? attribute}`, value: 'all' },
+    ...items.map((item) => ({
+      label: `${item.label} (${item.count})`,
+      value: item.value,
+    })),
+  ];
+
+  const handleValueChange = (value: string) => {
+    setSelectedValue(value);
+
+    if (value === 'all') {
+      items.forEach((item) => {
+        if (item.isRefined) {
+          refine(item.value);
+        }
+      });
+    } else {
+      refine(value);
+    }
+  };
+
+  return (
+    <div className="flex max-w-max flex-col items-start @2xl:max-w-none">
+      <Select
+        name={attribute}
+        onValueChange={handleValueChange}
+        options={options}
+        value={selectedValue}
+        variant="rectangle"
+      />
+    </div>
+  );
+}
+
+function ClearFilters() {
+  const { setIndexUiState } = useInstantSearch();
+
+  const handleClearFilters = () => {
+    setIndexUiState((uiState) => ({
+      ...uiState,
+      refinementList: {},
+    }));
+  };
+
+  return (
+    <Button
+      className="text-contrast-400 text-sm"
+      onClick={handleClearFilters}
+      size="small"
+      variant="link"
+    >
+      Clear
+    </Button>
+  );
 }
 
 const baseIndex = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? '';
@@ -174,6 +246,13 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
                   variant="rectangle"
                 />
               </div>
+            )}
+            {type === 'accessories' && (
+              <>
+                {/* <DropdownRefinementFilter attribute="productLines" label="Product Lines" /> */}
+                <DropdownRefinementFilter attribute="categories" label="Categories" />
+                <ClearFilters />
+              </>
             )}
           </div>
           <ResultCount />
