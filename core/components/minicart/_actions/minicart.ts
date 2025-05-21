@@ -19,7 +19,10 @@ const GetMinicartQuery = graphql(`
           physicalItems {
             name
             brand
-            imageUrl
+            image {
+              altText
+              url: urlTemplate(lossy: true)
+            }
             entityId
             quantity
             productEntityId
@@ -36,7 +39,10 @@ const GetMinicartQuery = graphql(`
           digitalItems {
             name
             brand
-            imageUrl
+            image {
+              altText
+              url: urlTemplate(lossy: true)
+            }
             entityId
             quantity
             productEntityId
@@ -261,12 +267,7 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
       quantity: item.quantity,
       productEntityId: item.productEntityId,
       variantEntityId: item.variantEntityId,
-      image: item.imageUrl
-        ? {
-            src: item.imageUrl,
-            alt: item.name,
-          }
-        : undefined,
+      image: item.image ? { src: item.image.url, alt: item.image.altText } : undefined,
       relatedProducts: relatedProductsMap.get(item.productEntityId),
     }),
   );

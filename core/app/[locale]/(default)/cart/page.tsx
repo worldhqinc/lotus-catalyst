@@ -143,7 +143,7 @@ export default async function Cart({ params, searchParams }: Props) {
       }),
       basePrice:
         basePrice && currentPrice && basePrice !== currentPrice
-          ? format.number(basePrice, {
+          ? format.number(basePrice * item.quantity, {
               style: 'currency',
               currency: prices.basePrice?.currencyCode,
             })

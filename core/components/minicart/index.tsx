@@ -199,10 +199,10 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
               </div>
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-end gap-2">
-                  <span>${item.price.toFixed(2)}</span>
+                  <span>${(item.price * item.quantity).toFixed(2)}</span>
                   {!!item.originalPrice && (
                     <span className="text-contrast-400 text-sm line-through sm:text-base">
-                      ${item.originalPrice.toFixed(2)}
+                      ${(item.originalPrice * item.quantity).toFixed(2)}
                     </span>
                   )}
                 </div>
