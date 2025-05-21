@@ -118,20 +118,13 @@ const GROUP_CONFIG: GroupConfig[] = [
 
 function GroupTabContent({ group }: { group: GroupConfig }) {
   const { items } = useHits();
-  const { setIsSearchOpen } = useSearch();
-  const currentPath = usePathname();
 
-  if (items.length === 0) return null;
-
-  const handleClick = (path: string) => {
-    // Remove trailing slashes and normalize paths for comparison
-    const normalizedCurrentPath = currentPath.replace(/\/$/, '');
-    const normalizedPath = path.replace(/\/$/, '');
-
-    if (normalizedPath === normalizedCurrentPath) {
-      setIsSearchOpen(false);
-    }
-  };
+  if (items.length === 0)
+    return (
+      <div className="py-10 text-xl">
+        <p>No results found.</p>
+      </div>
+    );
 
   return (
     <div className="py-12 first:mt-8">
@@ -139,13 +132,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
         <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
           {group.label}
         </h2>
-        <ButtonLink
-          href={group.href}
-          onClick={() => handleClick(group.href)}
-          shape="link"
-          size="link"
-          variant="link"
-        >
+        <ButtonLink href={group.href} shape="link" size="link" variant="link">
           <span className="flex items-center gap-2 text-base font-normal">
             View more <ArrowRight size={20} strokeWidth={1.5} />
           </span>
@@ -154,7 +141,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
       <Hits
         classNames={{ list: 'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-8' }}
         // @ts-expect-error - hit is a ProductGridHit | PostGridHit
-        hitComponent={(props) => group.card({ ...props, onItemClick: handleClick })}
+        hitComponent={(props) => group.card({ ...props })}
       />
     </div>
   );
