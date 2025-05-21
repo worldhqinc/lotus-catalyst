@@ -14,7 +14,7 @@ export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSe
           {heading}
         </h2>
         {subtitle ? (
-          <p className="text-icon-secondary mt-8 max-w-xl text-center">{subtitle}</p>
+          <p className="text-icon-secondary mt-8 max-w-xl text-center text-xl">{subtitle}</p>
         ) : null}
       </div>
       <AltProductCarousel

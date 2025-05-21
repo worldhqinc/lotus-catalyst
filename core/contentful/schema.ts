@@ -807,6 +807,56 @@ export const productFinishedGoodsFieldsSchema = z.object({
       ),
     )
     .nullish(),
+  carouselImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
+            id: z.string(),
+          }),
+        }),
+        id: z.string(),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+        environment: z.object({
+          sys: z.object({
+            id: z.string(),
+            type: z.literal('Link'),
+            linkType: z.literal('Environment'),
+          }),
+        }),
+        publishedVersion: z.number().nullish(),
+        revision: z.number(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
+      }),
+      fields: z.object({
+        title: z.string().nullish(),
+        description: z.string().nullish(),
+        file: z.object({
+          url: z.string(),
+          details: z.object({
+            size: z.number(),
+            image: z
+              .object({
+                width: z.number(),
+                height: z.number(),
+              })
+              .nullish(),
+          }),
+          fileName: z.string(),
+          contentType: z.string(),
+        }),
+      }),
+    })
+    .nullish(),
 });
 
 export const productFinishedGoodsSchema = z.object({

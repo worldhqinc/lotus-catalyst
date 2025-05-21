@@ -70,7 +70,15 @@ export function AltProductCarousel({
     const { id } = parsed.sys;
     const fields = parsed.fields;
     const file = fields.featuredImage ? assetSchema.parse(fields.featuredImage).fields.file : null;
-    const image = file ? { src: ensureImageUrl(file.url), alt: fields.webProductName } : undefined;
+    const carouselFile = fields.carouselImage
+      ? assetSchema.parse(fields.carouselImage).fields.file
+      : null;
+    const image = file
+      ? {
+          src: carouselFile ? ensureImageUrl(carouselFile.url) : ensureImageUrl(file.url),
+          alt: fields.webProductName,
+        }
+      : undefined;
     const href = fields.pageSlug ? `/${fields.pageSlug}` : '#';
     const priceValue = fields.salePrice ?? fields.price;
     const priceNumber = parseFloat(priceValue ?? '0.00');
@@ -110,9 +118,16 @@ export function AltProductCarousel({
                     </div>
                   </Link>
                   <div className="flex w-full items-center justify-between pt-2">
-                    <span className="text-icon-primary truncate text-lg font-medium">
-                      {product.title}
-                    </span>
+                    <div className="flex flex-col gap-1">
+                      <h3 className="text-icon-primary truncate text-lg font-medium">
+                        {product.title}
+                      </h3>
+                      {product.subtitle !== undefined && (
+                        <p className="text-icon-secondary w-full truncate text-sm">
+                          {product.subtitle}
+                        </p>
+                      )}
+                    </div>
                     <ButtonLink
                       aria-label={`View ${product.title}`}
                       className="bg-transparent"
@@ -121,14 +136,9 @@ export function AltProductCarousel({
                       size="medium"
                       variant="tertiary"
                     >
-                      <ArrowRight className="size-6" />
+                      <ArrowRight className="size-6" strokeWidth={1.5} />
                     </ButtonLink>
                   </div>
-                  {product.subtitle !== undefined && (
-                    <p className="text-icon-secondary w-full truncate text-sm">
-                      {product.subtitle}
-                    </p>
-                  )}
                   <span className="text-icon-primary text-base font-medium">{product.price}</span>
                 </div>
               </CarouselItem>
