@@ -28,7 +28,7 @@ export function Highlights({
         <h2 className="text-icon-primary text-4xl">{title}</h2>
       </div>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="bg-primary relative isolate overflow-hidden rounded-lg p-4 lg:p-8 xl:aspect-square">
+        <div className="bg-primary relative isolate overflow-hidden rounded-lg p-4 lg:p-8 xl:aspect-4/3">
           <Image
             alt="Lotus Pattern"
             className="absolute inset-0 -z-10 h-full w-full object-cover"
@@ -39,7 +39,9 @@ export function Highlights({
           />
           <div className="flex h-full flex-col gap-4">
             <div className="flex h-full flex-col justify-between gap-2">
-              <p className="text-background font-heading text-4xl lg:text-5xl">“{quoteText}”</p>
+              <p className="text-background font-heading text-4xl lg:text-5xl lg:leading-[120%]">
+                “{quoteText}”
+              </p>
               <div className="mt-auto flex flex-col pt-5">
                 {quoteAuthorImage ? (
                   <div className="bg-surface-image mb-8 aspect-square w-20 overflow-hidden rounded-full">
@@ -58,7 +60,7 @@ export function Highlights({
             </div>
           </div>
         </div>
-        <div className="bg-contrast-200 relative isolate flex aspect-square h-full w-full flex-col justify-end overflow-hidden rounded-lg p-4 lg:p-8">
+        <div className="bg-contrast-200 relative isolate flex aspect-square h-full w-full flex-col justify-end overflow-hidden rounded-lg p-4 lg:aspect-4/3 lg:p-8">
           {image && (
             <Image
               alt={image.fields.title || ''}
