@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Link } from '~/components/link';
-import { categoryFaqFieldsSchema, faqFieldsSchema, faqListFieldsSchema } from '~/contentful/schema';
+import { faqFieldsSchema, faqListFieldsSchema } from '~/contentful/schema';
 
 interface FaqListProps {
   id?: string;
@@ -14,12 +14,7 @@ interface FaqListProps {
 
 type FaqListFields = z.infer<typeof faqListFieldsSchema>;
 
-export function FaqList({
-  faqParentCategory,
-  faqReference,
-  faqCategory,
-  id,
-}: FaqListFields & FaqListProps) {
+export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields & FaqListProps) {
   // Filters out FAQs with unpublished or invalid categories
   const validFaqs = faqReference.filter(() => {
     try {
@@ -32,8 +27,7 @@ export function FaqList({
   if (validFaqs.length === 0) return null;
 
   // Get the faqCategory name from the categoryFaq content type
-  const categoryFields = categoryFaqFieldsSchema.parse(faqCategory.fields);
-  const categoryName = categoryFields.faqCategoryName;
+  const categoryName = faqParentCategory;
 
   return (
     <SectionLayout
@@ -73,6 +67,7 @@ export function FaqList({
                   value={faq.sys.id}
                 >
                   <div
+                    className="[&_a]:text-primary"
                     dangerouslySetInnerHTML={{
                       __html: documentToHtmlString(fields.answer),
                     }}

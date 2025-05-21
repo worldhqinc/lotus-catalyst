@@ -22,17 +22,14 @@ export function FaqSidebar({ categories }: FaqSidebarProps) {
   const pathname = usePathname();
 
   // Group categories by faqCategory
-  const groupedCategories = categories.reduce(
-    (acc, category) => {
-      const group = acc[category.faqCategory] || [];
+  const groupedCategories = categories.reduce<Record<string, FaqCategory[]>>((acc, category) => {
+    const group = acc[category.faqCategory] || [];
 
-      return {
-        ...acc,
-        [category.faqCategory]: [...group, category],
-      };
-    },
-    {} as Record<string, FaqCategory[]>,
-  );
+    return {
+      ...acc,
+      [category.faqCategory]: [...group, category],
+    };
+  }, {});
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -101,29 +98,34 @@ export function FaqSidebar({ categories }: FaqSidebarProps) {
           const isCategoryActive = categoryGroup.some(({ id }) => id === activeCategory);
 
           return (
-            <div key={faqCategory} className="w-full">
-              <div className={clsx(
-                'relative py-2.5 pl-3 after:absolute after:top-0 after:left-0 after:h-full after:w-0.75',
-                isCategoryActive ? 'after:bg-primary' : 'after:bg-transparent'
-              )}>
+            <div className="w-full" key={faqCategory}>
+              <div
+                className={clsx(
+                  'relative py-2.5 pl-3 after:absolute after:top-0 after:left-0 after:h-full after:w-0.75',
+                  isCategoryActive ? 'after:bg-primary' : 'after:bg-transparent',
+                )}
+              >
                 <h3 className="leading-[150%] font-medium tracking-[0.64px] uppercase">
                   {faqCategory}
                 </h3>
               </div>
-              {categoryGroup.map(({ faqParentCategory, id }) => (
-                <button
-                  className={clsx(
-                    'py-2 pl-6 text-sm transition-colors',
-                    activeCategory === id
-                      ? 'text-foreground font-medium'
-                      : 'text-contrast-400 hover:text-foreground',
-                  )}
-                  key={id}
-                  onClick={() => handleClick(id)}
-                >
-                  {faqParentCategory}
-                </button>
-              ))}
+              <ul className="flex flex-col items-start">
+                {categoryGroup.map(({ faqParentCategory, id }) => (
+                  <li key={id}>
+                    <button
+                      className={clsx(
+                        'py-2 pl-3 text-sm transition-colors',
+                        activeCategory === id
+                          ? 'text-foreground font-medium'
+                          : 'text-contrast-400 hover:text-foreground',
+                      )}
+                      onClick={() => handleClick(id)}
+                    >
+                      {faqParentCategory}
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
           );
         })}
