@@ -35,6 +35,13 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     ...formValues,
   });
 
+  const formDataFormatted = Object.fromEntries(
+    Object.entries(formValues).map(([key, value]) => [
+      key,
+      value instanceof Object ? JSON.stringify(value) : (value?.toString() ?? null),
+    ]),
+  );
+
   if (!submission.success) {
     const errors = submission.error.errors.reduce<Record<string, string[]>>((acc, error) => {
       const field = error.path[0]?.toString() ?? '';
@@ -51,7 +58,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     return {
       errors,
       success: false,
-      formData: formValues,
+      formData: formDataFormatted,
     };
   }
 
@@ -73,7 +80,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
       return {
         errors: { general: ['Something went wrong, please try again.'] },
         success: false,
-        formData: formValues,
+        formData: formDataFormatted,
       };
     }
 
@@ -93,7 +100,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
         return {
           errors: { general: ['Something went wrong, please try again.'] },
           success: false,
-          formData: formValues,
+          formData: formDataFormatted,
         };
       }
     }
@@ -101,7 +108,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     return {
       errors: null,
       success: true,
-      formData: formValues,
+      formData: formDataFormatted,
     };
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -110,7 +117,7 @@ export async function submitForm(state: FormState, formData: FormData): Promise<
     return {
       errors: { general: ['Something went wrong, please try again.'] },
       success: false,
-      formData: formValues,
+      formData: formDataFormatted,
     };
   }
 }
