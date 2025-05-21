@@ -182,7 +182,7 @@ function SearchComponent() {
   const formStyles =
     '[&_form]:flex [&_form]:gap-4 [&_form_button.ais-SearchBox-submit]:hidden [&_form_button.ais-SearchBox-reset]:hidden';
   const inputStyles =
-    '[&_input]:flex-1 [&_input]:min-h-12 text-icon-primary text-lg [&_input]:focus-within:outline-0 [&_input::-webkit-search-cancel-button]:appearance-none';
+    '[&_input]:flex-1 [&_input]:min-h-10 pl-2 text-icon-primary text-lg [&_input]:pl-6 [&_input]:focus-within:outline-0 [&_input::-webkit-search-cancel-button]:appearance-none';
 
   return (
     <SectionLayout className="overflow-y-auto" containerClassName="!py-8" containerSize="2xl">
