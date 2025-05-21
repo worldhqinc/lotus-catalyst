@@ -87,7 +87,6 @@ const GROUP_CONFIG: GroupConfig[] = [
     card: ({ hit, sendEvent, onItemClick }) => (
       <PostGridPostCard
         key={hit.objectID}
-        // @ts-expect-error - hit is a PostGridHit
         {...transformPostHit(hit)}
         onClick={() => {
           sendEvent('click', hit, 'Recipe Clicked');
@@ -104,7 +103,6 @@ const GROUP_CONFIG: GroupConfig[] = [
     card: ({ hit, sendEvent, onItemClick }) => (
       <PostGridPostCard
         key={hit.objectID}
-        // @ts-expect-error - hit is a PostGridHit
         {...transformPostHit(hit)}
         onClick={() => {
           sendEvent('click', hit, 'Feature Clicked');
