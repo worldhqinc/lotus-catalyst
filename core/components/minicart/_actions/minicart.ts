@@ -24,11 +24,11 @@ const GetMinicartQuery = graphql(`
             quantity
             productEntityId
             variantEntityId
-            extendedListPrice {
+            originalPrice {
               currencyCode
               value
             }
-            extendedSalePrice {
+            listPrice {
               currencyCode
               value
             }
@@ -41,11 +41,11 @@ const GetMinicartQuery = graphql(`
             quantity
             productEntityId
             variantEntityId
-            extendedListPrice {
+            originalPrice {
               currencyCode
               value
             }
-            extendedSalePrice {
+            listPrice {
               currencyCode
               value
             }
@@ -255,11 +255,8 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
       id: item.entityId,
       title: item.name,
       subtitle: item.brand || '',
-      price: item.extendedSalePrice.value / item.quantity,
-      originalPrice:
-        item.extendedSalePrice.value / item.quantity < item.extendedListPrice.value / item.quantity
-          ? item.extendedListPrice.value / item.quantity
-          : undefined,
+      price: item.listPrice.value,
+      originalPrice: item.originalPrice.value,
       quantity: item.quantity,
       productEntityId: item.productEntityId,
       variantEntityId: item.variantEntityId,
