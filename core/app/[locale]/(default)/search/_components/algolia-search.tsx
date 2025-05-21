@@ -2,7 +2,7 @@
 
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { clsx } from 'clsx';
-import { ArrowRight, Search, X } from 'lucide-react';
+import { ArrowRight, Search } from 'lucide-react';
 import { Configure, Hits, Index, InstantSearch, SearchBox, useHits } from 'react-instantsearch';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';

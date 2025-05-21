@@ -29,7 +29,6 @@ import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { Minicart } from '~/components/minicart';
 import { CartItem } from '~/components/minicart/_actions/minicart';
-import { useSearch } from '~/context/search-context';
 import { usePathname, useRouter } from '~/i18n/routing';
 
 import { LogoLotus } from '../logo-lotus';
@@ -398,27 +397,22 @@ export const Navigation = forwardRef(function Navigation(
     currencyAction,
     cartLabel = 'Cart',
     accountLabel = 'Profile',
-    openSearchPopupLabel = 'Open search popup',
     mobileMenuTriggerLabel = 'Toggle navigation',
   }: Props,
   ref: Ref<HTMLDivElement>,
 ) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMinicartDrawerOpen, setIsMinicartDrawerOpen] = useState(false);
-  const [value, setValue] = useState('');
-  const { isSearchOpen, setIsSearchOpen } = useSearch();
 
   const pathname = usePathname();
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
-    setIsSearchOpen(false);
     setIsMinicartDrawerOpen(false);
-    setValue('');
-  }, [pathname, setIsSearchOpen]);
+  }, [pathname]);
 
   useEffect(() => {
-    if (isSearchOpen || isMobileMenuOpen || isMinicartDrawerOpen) {
+    if (isMobileMenuOpen || isMinicartDrawerOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -427,23 +421,17 @@ export const Navigation = forwardRef(function Navigation(
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isSearchOpen, isMobileMenuOpen, isMinicartDrawerOpen]);
+  }, [isMobileMenuOpen, isMinicartDrawerOpen]);
 
   useEffect(() => {
     function handleScroll() {
-      setIsSearchOpen(false);
       setIsMobileMenuOpen(false);
-      setValue('');
     }
 
     window.addEventListener('scroll', handleScroll);
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [setIsSearchOpen]);
-
-  const handleCloseSearch = () => {
-    setIsSearchOpen(false);
-  };
+  }, []);
 
   const prevCartCountRef = useRef<number | null | undefined>(undefined);
 
@@ -475,12 +463,7 @@ export const Navigation = forwardRef(function Navigation(
         isFloating ? 'shadow-md' : 'shadow-none',
       )}
       delayDuration={0}
-      onValueChange={(newValue) => {
-        setIsSearchOpen(false);
-        setValue(newValue);
-      }}
       ref={ref}
-      value={value}
     >
       <div className="container flex items-center justify-between gap-1 bg-[var(--nav-background,hsl(var(--background)))] py-2 @4xl:py-4">
         {/* Logo */}
