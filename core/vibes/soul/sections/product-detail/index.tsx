@@ -103,19 +103,6 @@ export function ProductDetail<F extends Field>({
                         contentful.fields.featuredImage && {
                           src: ensureImageUrl(contentful.fields.featuredImage.fields.file.url),
                           alt: contentful.fields.featuredImage.fields.title ?? '',
-                          tags: contentful.fields.featuredImage.metadata.tags
-                            .map((tag) => {
-                              if (typeof tag === 'object' && tag !== null && 'sys' in tag) {
-                                const sys = tag.sys;
-
-                                if (isSysObject(sys)) {
-                                  return sys.id ?? null;
-                                }
-                              }
-
-                              return null;
-                            })
-                            .filter((id): id is string => id !== null),
                         }
                       }
                       images={(contentful.fields.additionalImages ?? []).map((image) => {

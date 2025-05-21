@@ -10,7 +10,7 @@ import { Slideshow } from '~/vibes/soul/sections/slideshow';
 
 export interface ProductGalleryProps {
   badge?: string | null;
-  featuredImage?: { alt: string; src: string; tags?: string[] } | null;
+  featuredImage?: { alt: string; src: string } | null;
   images: Array<{ alt: string; src: string; tags?: string[] }>;
   tiles?: featureTiles | null;
   className?: string;
