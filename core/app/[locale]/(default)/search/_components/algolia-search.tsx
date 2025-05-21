@@ -178,7 +178,7 @@ function GroupTabs() {
   return <Tabs className="mt-8" content={content} showAll={true} triggers={triggers} />;
 }
 
-function SearchComponent() {
+function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) {
   const formStyles =
     '[&_form]:flex [&_form]:gap-4 [&_form_button.ais-SearchBox-submit]:hidden [&_form_button.ais-SearchBox-reset]:hidden';
   const inputStyles =
@@ -192,6 +192,7 @@ function SearchComponent() {
         </span>
         <SearchBox
           className={clsx('flex-1', formStyles, inputStyles)}
+          defaultValue={initialSearchTerm}
           placeholder="Search Products"
         />
       </div>
@@ -200,14 +201,19 @@ function SearchComponent() {
   );
 }
 
-export default function AlgoliaSearch() {
+export default function AlgoliaSearch({ initialSearchTerm }: { initialSearchTerm?: string }) {
   return (
     <InstantSearch
       future={{ preserveSharedStateOnUnmount: true }}
       indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
+      initialUiState={{
+        [process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? '']: {
+          query: initialSearchTerm,
+        },
+      }}
       searchClient={searchClient}
     >
-      <SearchComponent />
+      <SearchComponent initialSearchTerm={initialSearchTerm} />
     </InstantSearch>
   );
 }
