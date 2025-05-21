@@ -824,6 +824,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
     )
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
@@ -835,38 +836,25 @@ export const productFinishedGoodsFieldsSchema = z.object({
             concepts: z.array(z.unknown()),
           }),
 <<<<<<< HEAD
+=======
+    .optional()
+    .nullable(),
+  carouselImage: z
+    .object({
+      metadata: z.object({
+        tags: z.array(z.unknown()),
+        concepts: z.array(z.unknown()),
+      }),
+      sys: z.object({
+        space: z.object({
+>>>>>>> bf25d84f (wip alt product carousel, wip stacked hero banner)
           sys: z.object({
-            space: z.object({
-              sys: z.object({
-                type: z.literal('Link'),
-                linkType: z.literal('Space'),
-                id: z.string(),
-              }),
-            }),
+            type: z.literal('Link'),
+            linkType: z.literal('Space'),
             id: z.string(),
-            type: z.union([z.literal('Entry'), z.literal('Link')]),
-            createdAt: z.string().datetime(),
-            updatedAt: z.string().datetime(),
-            environment: z.object({
-              sys: z.object({
-                id: z.string(),
-                type: z.literal('Link'),
-                linkType: z.literal('Environment'),
-              }),
-            }),
-            publishedVersion: z.number().nullish(),
-            revision: z.number(),
-            locale: z.string().nullish(),
-            contentType: z.object({
-              sys: z.object({
-                type: z.literal('Link'),
-                linkType: z.literal('ContentType'),
-                id: z.string(),
-              }),
-            }),
           }),
-          fields: z.record(z.string(), z.unknown()),
         }),
+<<<<<<< HEAD
       ),
     )
     .nullish(),
@@ -920,6 +908,10 @@ export const productFinishedGoodsFieldsSchema = z.object({
 <<<<<<< HEAD
         id: z.string(),
         type: z.union([z.literal('Asset'), z.literal('Link')]),
+=======
+        id: z.string(),
+        type: z.literal('Asset'),
+>>>>>>> bf25d84f (wip alt product carousel, wip stacked hero banner)
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -929,6 +921,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
+<<<<<<< HEAD
         publishedVersion: z.number().nullish(),
         revision: z.number(),
         locale: z.string().nullish(),
@@ -937,6 +930,16 @@ export const productFinishedGoodsFieldsSchema = z.object({
       fields: z.object({
         title: z.string().nullish(),
         description: z.string().nullish(),
+=======
+        publishedVersion: z.number().optional().nullable(),
+        revision: z.number(),
+        locale: z.string().optional().nullable(),
+        contentType: z.undefined().optional().nullable(),
+      }),
+      fields: z.object({
+        title: z.string().optional().nullable(),
+        description: z.string().optional().nullable(),
+>>>>>>> bf25d84f (wip alt product carousel, wip stacked hero banner)
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -946,18 +949,28 @@ export const productFinishedGoodsFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
+<<<<<<< HEAD
               .nullish(),
+=======
+              .optional()
+              .nullable(),
+>>>>>>> bf25d84f (wip alt product carousel, wip stacked hero banner)
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
+<<<<<<< HEAD
 =======
       ),
     )
 >>>>>>> 9a39f171 (Fix)
     .nullish(),
+=======
+    .optional()
+    .nullable(),
+>>>>>>> bf25d84f (wip alt product carousel, wip stacked hero banner)
 });
 
 export const productFinishedGoodsSchema = z.object({
