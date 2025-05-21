@@ -23,7 +23,7 @@ export function NewsletterForm({
         width={2560}
       />
       <div className="container mx-auto px-4">
-        <h2 className="mx-auto mb-4 max-w-xl font-serif text-5xl uppercase">{title}</h2>
+        <h2 className="font-heading mx-auto mb-4 max-w-xl text-5xl uppercase">{title}</h2>
         <p className="mx-auto mb-16 max-w-2xl">{description}</p>
         <div className="mx-auto max-w-md">
           <InlineEmailForm

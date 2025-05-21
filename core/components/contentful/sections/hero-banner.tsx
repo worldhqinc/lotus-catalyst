@@ -60,14 +60,9 @@ function LeftAlignedHeroBanner({
   variant: string;
 }) {
   return (
-    <SectionLayout className="bg-contrast-200 relative isolate">
+    <SectionLayout className="bg-contrast-200 relative isolate h-screen [&_>div]:h-full">
       {mediaElement}
-      <div
-        className={clsx(
-          'flex w-full flex-col gap-8 py-20',
-          variant === 'left-aligned' ? '' : 'lg:py-40',
-        )}
-      >
+      <div className={clsx('flex h-full w-full flex-col justify-center gap-8')}>
         {isPageHeader ? (
           <h1
             className={clsx(
@@ -189,7 +184,7 @@ export async function HeroBanner({
     mediaElement = (
       <video
         autoPlay
-        className="absolute inset-0 -z-10 h-full w-full object-cover"
+        className="absolute inset-0 -z-20 h-full w-full object-cover"
         loop
         muted
         src={absoluteMediaUrl}
@@ -199,7 +194,7 @@ export async function HeroBanner({
     mediaElement = (
       <Image
         alt={title}
-        className="absolute inset-0 -z-10 h-full w-full object-cover"
+        className="absolute inset-0 -z-20 h-full w-full object-cover"
         fill
         src={absoluteMediaUrl ?? ''}
       />
