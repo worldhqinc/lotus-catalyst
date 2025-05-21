@@ -42,6 +42,7 @@ hooks:
         ./scripts/setup_env_vars.sh
         pnpm install
         NODE_OPTIONS="--max-old-space-size=8192" pnpm build
+        ./scripts/setup_mounts.sh
     deploy: |
         set -eu
         ./scripts/setup_mounts.sh
