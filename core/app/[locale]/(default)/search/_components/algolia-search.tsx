@@ -5,7 +5,6 @@ import { clsx } from 'clsx';
 import { ArrowRight, Search, X } from 'lucide-react';
 import { Configure, Hits, Index, InstantSearch, SearchBox, useHits } from 'react-instantsearch';
 
-import { Button } from '@/vibes/soul/primitives/button';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { ProductCard } from '@/vibes/soul/primitives/product-card';
 import Tabs from '@/vibes/soul/primitives/tabs';
@@ -13,22 +12,18 @@ import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { useSearch } from '~/context/search-context';
 import { usePathname } from '~/i18n/routing';
 
+import { PostCard as PostGridPostCard } from '../../../../../components/contentful/sections/post-grid';
 import {
   PostGridHit,
   ProductGridHit,
   transformPostHit,
   transformProductHit,
-} from '../../data-transformers/algolia-transformers';
-import { PostCard as PostGridPostCard } from '../contentful/sections/post-grid';
+} from '../../../../../data-transformers/algolia-transformers';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? '',
   process.env.NEXT_PUBLIC_ALGOLIA_API_KEY ?? '',
 );
-
-interface SearchComponentProps {
-  closeSearch?: () => void;
-}
 
 interface HitProps {
   hit: ProductGridHit | PostGridHit;
@@ -183,7 +178,7 @@ function GroupTabs() {
   return <Tabs className="mt-8" content={content} showAll={true} triggers={triggers} />;
 }
 
-function SearchComponent({ closeSearch }: SearchComponentProps) {
+function SearchComponent() {
   const formStyles =
     '[&_form]:flex [&_form]:gap-4 [&_form_button.ais-SearchBox-submit]:hidden [&_form_button.ais-SearchBox-reset]:hidden';
   const inputStyles =
@@ -199,29 +194,20 @@ function SearchComponent({ closeSearch }: SearchComponentProps) {
           className={clsx('flex-1', formStyles, inputStyles)}
           placeholder="Search Products"
         />
-        <Button
-          className="border-none md:border-solid"
-          onClick={closeSearch}
-          shape="circle"
-          size="small"
-          variant="tertiary"
-        >
-          <X size={20} strokeWidth={1.5} />
-        </Button>
       </div>
       <GroupTabs />
     </SectionLayout>
   );
 }
 
-export default function AlgoliaSearch({ closeSearch }: SearchComponentProps) {
+export default function AlgoliaSearch() {
   return (
     <InstantSearch
       future={{ preserveSharedStateOnUnmount: true }}
       indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
       searchClient={searchClient}
     >
-      <SearchComponent closeSearch={closeSearch} />
+      <SearchComponent />
     </InstantSearch>
   );
 }

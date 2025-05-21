@@ -25,7 +25,6 @@ import { Price } from '@/vibes/soul/primitives/price-label';
 import * as SidePanel from '@/vibes/soul/primitives/side-panel';
 import CookiePreferencesCta from '~/components/cookie-preferences-cta';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
-import AlgoliaSearch from '~/components/header/algolia-search';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { Minicart } from '~/components/minicart';
