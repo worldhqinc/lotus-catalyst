@@ -105,10 +105,27 @@ export function ProductDetail<F extends Field>({
                           alt: contentful.fields.featuredImage.fields.title ?? '',
                         }
                       }
-                      images={(contentful.fields.additionalImages ?? []).map((image) => ({
-                        src: ensureImageUrl(image.fields.file.url),
-                        alt: image.fields.title ?? '',
-                      }))}
+                      images={(contentful.fields.additionalImages ?? []).map((image) => {
+                        const tags = image.metadata.tags
+                          .map((tag) => {
+                            if (typeof tag === 'object' && tag !== null && 'sys' in tag) {
+                              const sys = tag.sys;
+
+                              if (isSysObject(sys)) {
+                                return sys.id ?? null;
+                              }
+                            }
+
+                            return null;
+                          })
+                          .filter((id): id is string => id !== null);
+
+                        return {
+                          src: ensureImageUrl(image.fields.file.url),
+                          alt: image.fields.title ?? '',
+                          tags,
+                        };
+                      })}
                       tiles={
                         'featureTiles' in contentful.fields
                           ? featureTilesSchema.parse(contentful.fields.featureTiles)
@@ -366,4 +383,8 @@ function ProductDetailSkeleton() {
       </div>
     </section>
   );
+}
+
+function isSysObject(value: unknown): value is { id?: string } {
+  return typeof value === 'object' && value !== null && 'id' in value;
 }

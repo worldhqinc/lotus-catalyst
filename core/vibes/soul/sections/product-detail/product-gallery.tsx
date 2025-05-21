@@ -11,7 +11,7 @@ import { Slideshow } from '~/vibes/soul/sections/slideshow';
 export interface ProductGalleryProps {
   badge?: string | null;
   featuredImage?: { alt: string; src: string } | null;
-  images: Array<{ alt: string; src: string }>;
+  images: Array<{ alt: string; src: string; tags?: string[] }>;
   tiles?: featureTiles | null;
   className?: string;
 }
@@ -46,7 +46,10 @@ export function ProductGallery({
         {/* First row of images (up to 2) */}
         {images.slice(0, 2).map((image, idx) => (
           <div
-            className={clsx('bg-surface-image relative aspect-square overflow-hidden rounded-lg')}
+            className={clsx(
+              'bg-surface-image relative aspect-square overflow-hidden rounded-lg',
+              image.tags?.includes('fullWidth') ? 'col-span-2' : '',
+            )}
             key={idx}
           >
             <Image
@@ -69,7 +72,10 @@ export function ProductGallery({
         {/* Remaining images  */}
         {images.slice(2, images.length).map((image, idx) => (
           <div
-            className={clsx('bg-surface-image relative aspect-square overflow-hidden rounded-lg')}
+            className={clsx(
+              'bg-surface-image relative aspect-square overflow-hidden rounded-lg',
+              image.tags?.includes('fullWidth') ? 'col-span-2' : '',
+            )}
             key={idx + 2}
           >
             <Image
