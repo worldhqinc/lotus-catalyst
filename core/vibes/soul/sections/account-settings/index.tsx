@@ -48,6 +48,11 @@ export function AccountSettingsSection({
       </header>
       <div className="flex flex-col gap-y-24 @xl:flex-row">
         <div className="flex w-full flex-col @xl:max-w-lg">
+          <div className="mb-6 flex justify-end">
+            <p className="text-foreground text-sm">
+              Required Fields <span className="text-contrast-400">*</span>
+            </p>
+          </div>
           <div className="pb-12">
             <UpdateAccountForm
               account={account}

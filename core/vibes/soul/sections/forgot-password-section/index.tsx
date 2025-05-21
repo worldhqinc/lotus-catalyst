@@ -23,6 +23,11 @@ export function ForgotPasswordSection({
             <h1 className="mb-2 text-2xl leading-[120%] @xl:text-4xl">{title}</h1>
             <p className="text-contrast-400 leading-8 @4xl:text-xl">{subtitle}</p>
           </div>
+          <div className="flex justify-end">
+            <p className="text-foreground text-sm">
+              Required Fields <span className="text-contrast-400">*</span>
+            </p>
+          </div>
           <ForgotPasswordForm action={action} emailLabel={emailLabel} submitLabel={submitLabel} />
         </div>
       </div>

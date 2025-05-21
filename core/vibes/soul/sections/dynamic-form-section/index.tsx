@@ -44,6 +44,7 @@ export function DynamicFormSection<F extends Field>({
             action={action}
             fields={fields}
             isRegisterForm={isRegisterForm}
+            required={true}
             submitLabel={submitLabel}
           />
         </div>

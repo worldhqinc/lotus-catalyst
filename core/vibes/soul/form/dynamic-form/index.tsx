@@ -52,6 +52,7 @@ export interface DynamicFormProps<F extends Field> {
   submitValue?: string;
   onCancel?: (e: MouseEvent<HTMLButtonElement>) => void;
   isRegisterForm?: boolean;
+  required?: boolean;
 }
 
 export function DynamicForm<F extends Field>({
@@ -64,12 +65,13 @@ export function DynamicForm<F extends Field>({
   submitValue,
   isRegisterForm = false,
   onCancel,
+  required = false,
 }: DynamicFormProps<F>) {
   const [{ lastResult, fields }, formAction] = useActionState(action, {
     fields: defaultFields,
     lastResult: null,
   });
-  const dynamicSchema = schema(fields);
+  const dynamicSchema = schema(fields, required);
   const defaultValue = fields
     .flatMap((f) => (Array.isArray(f) ? f : [f]))
     .reduce<z.infer<typeof dynamicSchema>>(
@@ -199,6 +201,7 @@ function DynamicFormField({
         <div className="flex flex-col gap-1">
           <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
             {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
           </Label>
           <NumberInput
             {...getInputProps(formField, { type: 'number' })}
@@ -215,6 +218,7 @@ function DynamicFormField({
         <div className="flex flex-col gap-1">
           <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
             {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
           </Label>
           <Input
             {...getInputProps(formField, { type: 'text' })}
@@ -229,6 +233,7 @@ function DynamicFormField({
         <div className="flex flex-col gap-1">
           <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
             {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
           </Label>
           <Textarea
             {...getInputProps(formField, { type: 'text' })}
@@ -244,6 +249,7 @@ function DynamicFormField({
         <div className="flex flex-col gap-1">
           <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
             {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
           </Label>
           <Input
             {...getInputProps(formField, { type: 'password' })}
@@ -258,6 +264,7 @@ function DynamicFormField({
         <div className="flex flex-col gap-1">
           <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
             {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
           </Label>
           <Input
             {...getInputProps(formField, { type: 'email' })}
@@ -300,6 +307,7 @@ function DynamicFormField({
         <div className="flex flex-col gap-1">
           <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
             {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
           </Label>
           <Select
             errors={formField.errors}
@@ -387,6 +395,7 @@ function DynamicFormField({
         <div className="flex flex-col gap-1">
           <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
             {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
           </Label>
           <DatePicker
             disabledDays={

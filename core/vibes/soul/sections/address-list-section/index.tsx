@@ -167,6 +167,11 @@ export function AddressListSection<A extends Address, F extends Field>({
         {showNewAddressForm && (
           <div className="border-contrast-200 border-b py-6">
             <div className="max-w-[480px] space-y-4">
+              <div className="mb-6 flex justify-end">
+                <p className="text-foreground text-sm">
+                  Required Fields <span className="text-contrast-400">*</span>
+                </p>
+              </div>
               <DynamicForm
                 action={(_prevState, formData) => {
                   setShowNewAddressForm(false);
@@ -223,6 +228,11 @@ export function AddressListSection<A extends Address, F extends Field>({
             <div className="border-contrast-200 border-b py-6" key={address.id}>
               {activeAddressIds.includes(address.id) ? (
                 <div className="max-w-[480px] space-y-4">
+                  <div className="mb-6 flex justify-end">
+                    <p className="text-foreground text-sm">
+                      Required Fields <span className="text-contrast-400">*</span>
+                    </p>
+                  </div>
                   <DynamicForm
                     action={(_prevState, formData) => {
                       setActiveAddressIds((prev) => prev.filter((id) => id !== address.id));
