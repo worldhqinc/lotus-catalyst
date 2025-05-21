@@ -3,6 +3,8 @@
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { clsx } from 'clsx';
 import { ArrowRight, Search } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useRef } from 'react';
 import { Configure, Hits, Index, InstantSearch, SearchBox, useHits } from 'react-instantsearch';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
@@ -10,7 +12,7 @@ import { ProductCard } from '@/vibes/soul/primitives/product-card';
 import Tabs from '@/vibes/soul/primitives/tabs';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { useSearch } from '~/context/search-context';
-import { usePathname } from '~/i18n/routing';
+import { usePathname, useRouter } from '~/i18n/routing';
 
 import { PostCard as PostGridPostCard } from '../../../../../components/contentful/sections/post-grid';
 import {
@@ -179,10 +181,48 @@ function GroupTabs() {
 }
 
 function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const formStyles =
     '[&_form]:flex [&_form]:gap-4 [&_form_button.ais-SearchBox-submit]:hidden [&_form_button.ais-SearchBox-reset]:hidden';
   const inputStyles =
     '[&_input]:flex-1 [&_input]:min-h-10 pl-2 text-icon-primary text-lg [&_input]:focus-within:pl-6 [&_input]:focus-within:outline-0 [&_input::-webkit-search-cancel-button]:appearance-none';
+
+  const updateSearchParams = useCallback(
+    (value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      if (value) {
+        params.set('term', value);
+      } else {
+        params.delete('term');
+      }
+
+      router.push(`/search?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams],
+  );
+
+  const handleSearchChange = useCallback(
+    (event: React.FormEvent<HTMLDivElement>) => {
+      const input = event.currentTarget.querySelector('input');
+
+      if (!input) return;
+
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        updateSearchParams(input.value);
+      }, 300);
+    },
+    [updateSearchParams],
+  );
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   return (
     <SectionLayout className="overflow-y-auto" containerClassName="!py-8" containerSize="2xl">
@@ -193,7 +233,12 @@ function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) 
         <SearchBox
           className={clsx('flex-1', formStyles, inputStyles)}
           defaultValue={initialSearchTerm}
+          onInput={handleSearchChange}
           placeholder="Search Products"
+          translations={{
+            submitButtonTitle: 'Submit your search query',
+            resetButtonTitle: 'Clear your search query',
+          }}
         />
       </div>
       <GroupTabs />
