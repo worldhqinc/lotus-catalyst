@@ -34,18 +34,6 @@ interface ContentfulSchema {
   contentTypes: ContentfulContentType[];
 }
 
-// Helper functions for unpublished reference filtering
-function filterUnpublished<T extends { sys?: { publishedVersion?: number | null } }>(
-  arr: T[],
-): T[] {
-  return arr.filter((item) => item?.sys?.publishedVersion);
-}
-function singleReferenceOrNull<T extends { sys?: { publishedVersion?: number | null } }>(
-  val: T | null | undefined,
-): T | null {
-  return val?.sys?.publishedVersion ? val : null;
-}
-
 // Helper to create base field schema based on Contentful field type
 function createBaseFieldSchema(field: Partial<ContentfulField>): z.ZodTypeAny {
   switch (field.type) {
@@ -87,7 +75,14 @@ function createBaseFieldSchema(field: Partial<ContentfulField>): z.ZodTypeAny {
             : createBaseFieldSchema({ type: field.items.type });
         // If this is an array of references, add the transform
         if (field.items.type === 'Link') {
-          return z.array(itemSchema).transform(filterUnpublished);
+          // Make all fields in the reference schema deeply optional to allow incomplete objects
+          const partialItemSchema =
+            itemSchema instanceof z.ZodObject ? deepPartial(itemSchema) : itemSchema;
+          // After filtering, re-validate with the strict schema to enforce type contracts
+          return z
+            .array(partialItemSchema.optional())
+            .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+            .pipe(z.array(itemSchema)); // itemSchema is the strict version
         }
         return z.array(itemSchema);
       }
@@ -95,7 +90,7 @@ function createBaseFieldSchema(field: Partial<ContentfulField>): z.ZodTypeAny {
     case 'Link': {
       // For single references, return null if unpublished
       const linkSchema = createLinkSchema(field.linkType);
-      return linkSchema.transform(singleReferenceOrNull);
+      return linkSchema.transform((val) => (val?.sys?.publishedVersion ? val : null));
     }
     default:
       return z.unknown();
@@ -113,7 +108,7 @@ function createLinkSchema(linkType?: string): z.ZodTypeAny {
       }),
     }),
     id: z.string(),
-    type: z.union([z.literal('Entry'), z.literal('Asset')]),
+    type: z.union([z.literal('Entry'), z.literal('Asset'), z.literal('Link')]),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
     environment: z.object({
@@ -125,7 +120,7 @@ function createLinkSchema(linkType?: string): z.ZodTypeAny {
     }),
     publishedVersion: z.number().optional(),
     revision: z.number(),
-    locale: z.string().optional(),
+    locale: makeNullish(z.string()),
     contentType: z
       .object({
         sys: z.object({
@@ -141,18 +136,18 @@ function createLinkSchema(linkType?: string): z.ZodTypeAny {
     concepts: z.array(z.unknown()),
   });
   const assetFieldsSchema = z.object({
-    title: z.string().optional(),
-    description: z.string().optional(),
+    title: makeNullish(z.string()),
+    description: makeNullish(z.string()),
     file: z.object({
       url: z.string(),
       details: z.object({
         size: z.number(),
-        image: z
-          .object({
+        image: makeNullish(
+          z.object({
             width: z.number(),
             height: z.number(),
-          })
-          .optional(),
+          }),
+        ),
       }),
       fileName: z.string(),
       contentType: z.string(),
@@ -165,15 +160,15 @@ function createLinkSchema(linkType?: string): z.ZodTypeAny {
   if (linkType === 'Asset') {
     return linkedItemBaseSchema.extend({
       sys: detailedSysSchema.extend({
-        type: z.literal('Asset'),
-        contentType: z.undefined().optional(),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
+        contentType: makeNullish(z.undefined()),
       }),
       fields: assetFieldsSchema,
     });
   } else if (linkType === 'Entry') {
     return linkedItemBaseSchema.extend({
       sys: detailedSysSchema.extend({
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -188,14 +183,14 @@ function createLinkSchema(linkType?: string): z.ZodTypeAny {
     return z.union([
       linkedItemBaseSchema.extend({
         sys: detailedSysSchema.extend({
-          type: z.literal('Asset'),
-          contentType: z.undefined().optional(),
+          type: z.union([z.literal('Asset'), z.literal('Link')]),
+          contentType: makeNullish(z.undefined()),
         }),
         fields: assetFieldsSchema,
       }),
       linkedItemBaseSchema.extend({
         sys: detailedSysSchema.extend({
-          type: z.literal('Entry'),
+          type: z.union([z.literal('Entry'), z.literal('Link')]),
           contentType: z
             .object({
               sys: z.object({
@@ -247,12 +242,6 @@ const RICH_TEXT_SCHEMA_NAME = 'RichTextNodeSchema';
 // ========================================
 // Helper functions for transforms
 // ========================================
-const filterUnpublishedHelper = `// Utility to filter unpublished references in arrays\nfunction filterUnpublished<T extends { sys?: { publishedVersion?: number | null } }>(arr: T[]): T[] {\n  return arr.filter((item) => item?.sys?.publishedVersion);\n}`;
-const singleReferenceTransformHelper = `// Utility to return null for unpublished single references\nfunction singleReferenceOrNull<T extends { sys?: { publishedVersion?: number | null } }>(val: T | null | undefined): T | null {\n  return val?.sys?.publishedVersion ? val : null;\n}`;
-
-// --- Trackers for helper emission ---
-let usesFilterUnpublished = false;
-let usesSingleReferenceTransform = false;
 
 // Helper to convert a field schema to a string representation (Simplified for recursion)
 function zodToString(schema: any, indentationLevel = 0): string {
@@ -272,12 +261,10 @@ function zodToString(schema: any, indentationLevel = 0): string {
           fnStr.includes('filterUnpublished') ||
           (fnStr.includes('publishedVersion') && fnStr.includes('filter'))
         ) {
-          usesFilterUnpublished = true;
-          return `${zodToString(schema._def.schema, indentationLevel)}.transform(filterUnpublished)`;
+          return `${zodToString(schema._def.schema, indentationLevel)}.transform(arr => arr.filter(item => item?.sys?.publishedVersion))`;
         }
         if (fnStr.includes('publishedVersion') && fnStr.includes('val ?')) {
-          usesSingleReferenceTransform = true;
-          return `${zodToString(schema._def.schema, indentationLevel)}.transform(singleReferenceOrNull)`;
+          return `${zodToString(schema._def.schema, indentationLevel)}.transform(val => val?.sys?.publishedVersion ? val : null)`;
         }
       }
       return zodToString(schema._def.schema, indentationLevel);
@@ -313,7 +300,21 @@ function zodToString(schema: any, indentationLevel = 0): string {
       const optionalTypeString = schema._def.innerType
         ? zodToString(schema._def.innerType, indentationLevel)
         : 'z.unknown()';
-      return `${optionalTypeString}.optional().nullable()`;
+      // Avoid double .nullish()
+      if (optionalTypeString.endsWith('.nullish()')) {
+        return optionalTypeString;
+      }
+      return `${optionalTypeString}.nullish()`;
+    }
+    case 'ZodNullable': {
+      const nullableTypeString = schema._def.innerType
+        ? zodToString(schema._def.innerType, indentationLevel)
+        : 'z.unknown()';
+      // Avoid double .nullish()
+      if (nullableTypeString.endsWith('.nullish()')) {
+        return nullableTypeString;
+      }
+      return `${nullableTypeString}.nullish()`;
     }
     case 'ZodRecord': {
       const keyTypeString =
@@ -347,6 +348,18 @@ function zodToString(schema: any, indentationLevel = 0): string {
       return 'z.never()';
     case 'ZodUndefined':
       return 'z.undefined()';
+    case 'ZodPipeline': {
+      // ZodPipeline has input and output types
+      const inputTypeString =
+        schema._def.in instanceof z.ZodType
+          ? zodToString(schema._def.in, indentationLevel)
+          : 'z.unknown()';
+      const outputTypeString =
+        schema._def.out instanceof z.ZodType
+          ? zodToString(schema._def.out, indentationLevel)
+          : 'z.unknown()';
+      return `${inputTypeString}.pipe(${outputTypeString})`;
+    }
     default:
       console.warn(`Unhandled Zod type: ${schema._def.typeName}`);
       return 'z.unknown()';
@@ -383,7 +396,6 @@ export type ${key} = z.infer<typeof ${key}Schema>;`;
 const schemaCode = `import { z } from 'zod';
 import { BLOCKS } from '@contentful/rich-text-types';
 
-${usesFilterUnpublished ? filterUnpublishedHelper + '\n\n' : ''}${usesSingleReferenceTransform ? singleReferenceTransformHelper + '\n\n' : ''}
 // ========================================
 // Base Schemas
 // ========================================
@@ -429,7 +441,7 @@ const sysEntrySchema = sysBaseSchema.extend({
 });
 
 const sysAssetSchema = sysBaseSchema.extend({
-    type: z.literal('Asset'),
+    type: z.union([z.literal('Asset'), z.literal('Link')]),
     publishedVersion: z.number().optional().nullable(),
 });
 
@@ -511,3 +523,40 @@ const outputPath = resolve(__dirname, '../contentful/schema.ts');
 writeFileSync(outputPath, schemaCode);
 
 console.log('Successfully generated Contentful schemas!');
+
+// Utility to make a Zod schema deeply partial (all nested fields optional)
+function deepPartial<T extends z.ZodTypeAny>(schema: T): T {
+  if (schema instanceof z.ZodOptional || schema instanceof z.ZodNullable) {
+    // Already optional or nullish, do not wrap again
+    return schema;
+  }
+  if (schema instanceof z.ZodObject) {
+    const shape = schema.shape;
+    const newShape: any = {};
+    for (const key in shape) {
+      newShape[key] = deepPartial(shape[key]);
+    }
+    return (z.object(newShape) as any).partial();
+  }
+  if (schema instanceof z.ZodArray) {
+    return z.array(deepPartial(schema.element)) as any;
+  }
+  if (schema instanceof z.ZodUnion) {
+    return z.union(schema.options.map(deepPartial)) as any;
+  }
+  return schema;
+}
+
+// Utility to make a Zod schema nullish only if not already optional or nullable
+function makeNullish<T extends z.ZodTypeAny>(schema: T): T {
+  if (
+    schema instanceof z.ZodOptional ||
+    schema instanceof z.ZodNullable ||
+    (schema._def && schema._def.typeName === 'ZodOptional') ||
+    (schema._def && schema._def.typeName === 'ZodNullable')
+  ) {
+    return schema;
+  }
+  // @ts-ignore
+  return schema.nullish();
+}
