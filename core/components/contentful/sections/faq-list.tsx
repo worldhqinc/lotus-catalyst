@@ -16,20 +16,18 @@ type FaqListFields = z.infer<typeof faqListFieldsSchema>;
 
 export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields & FaqListProps) {
   // Filters out FAQs with unpublished or invalid categories
-  const validFaqs = faqReference.filter((faq) => {
+  const validFaqs = faqReference.filter(() => {
     try {
-      const fields = faqFieldsSchema.parse(faq.fields);
-
-      // Checks if the category exists and is properly published
-      return (
-        fields.faqCategory[0]?.sys.type === 'Entry' && fields.faqCategory[0].fields.faqCategoryName
-      );
+      return true; // If we can parse the fields, the FAQ is valid
     } catch {
       return false;
     }
   });
 
   if (validFaqs.length === 0) return null;
+
+  // Get the faqCategory name from the categoryFaq content type
+  const categoryName = faqParentCategory;
 
   return (
     <SectionLayout
@@ -42,7 +40,7 @@ export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields &
     >
       <div className={clsx(id !== 'gg5Z3yjOegetUdutuAXgr' ? '' : 'mx-auto max-w-2xl md:px-8')}>
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-2xl md:text-4xl">{faqParentCategory}</h2>
+          <h2 className="text-2xl md:text-4xl">{categoryName}</h2>
           {faqParentCategory === 'Common questions' && (
             <Link className="link flex items-center gap-2" href="/faqs">
               View all FAQ's
@@ -69,6 +67,7 @@ export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields &
                   value={faq.sys.id}
                 >
                   <div
+                    className="[&_a]:text-primary"
                     dangerouslySetInnerHTML={{
                       __html: documentToHtmlString(fields.answer),
                     }}

@@ -701,7 +701,7 @@
         "id": "faq",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.308Z",
-        "updatedAt": "2025-04-17T18:12:32.135Z",
+        "updatedAt": "2025-05-20T21:41:31.015Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -709,8 +709,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-17T18:12:32.135Z",
+        "publishedVersion": 9,
+        "publishedAt": "2025-05-20T21:41:31.015Z",
         "firstPublishedAt": "2025-03-07T21:04:11.407Z",
         "createdBy": {
           "sys": {
@@ -723,16 +723,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 2,
-        "version": 4,
+        "publishedCounter": 5,
+        "version": 10,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/faq"
@@ -800,28 +800,6 @@
           ],
           "disabled": false,
           "omitted": false
-        },
-        {
-          "id": "faqCategory",
-          "name": "FAQ Category",
-          "type": "Array",
-          "localized": false,
-          "required": true,
-          "validations": [
-          ],
-          "disabled": false,
-          "omitted": false,
-          "items": {
-            "type": "Link",
-            "validations": [
-              {
-                "linkContentType": [
-                  "categoryFaq"
-                ]
-              }
-            ],
-            "linkType": "Entry"
-          }
         },
         {
           "id": "faqFilterCategory",
@@ -2751,7 +2729,7 @@
         "id": "faqList",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:06.051Z",
-        "updatedAt": "2025-04-17T18:12:36.764Z",
+        "updatedAt": "2025-05-20T21:39:08.482Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -2759,8 +2737,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 3,
-        "publishedAt": "2025-04-17T18:12:36.764Z",
+        "publishedVersion": 5,
+        "publishedAt": "2025-05-20T21:39:08.482Z",
         "firstPublishedAt": "2025-03-07T21:04:28.895Z",
         "createdBy": {
           "sys": {
@@ -2773,16 +2751,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 2,
-        "version": 4,
+        "publishedCounter": 3,
+        "version": 6,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/faqList"
@@ -2801,6 +2779,23 @@
           ],
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "faqCategory",
+          "name": "Faq Category",
+          "type": "Link",
+          "localized": false,
+          "required": true,
+          "validations": [
+            {
+              "linkContentType": [
+                "categoryFaq"
+              ]
+            }
+          ],
+          "disabled": false,
+          "omitted": false,
+          "linkType": "Entry"
         },
         {
           "id": "faqReference",

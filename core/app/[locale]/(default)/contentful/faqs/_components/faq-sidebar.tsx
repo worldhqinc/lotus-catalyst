@@ -9,17 +9,27 @@ import { usePathname } from '~/i18n/routing';
 interface FaqCategory {
   category: string;
   id: string;
-  faqCategory?: string;
+  faqCategory: string;
+  faqParentCategory: string;
 }
 
 interface FaqSidebarProps {
   categories: FaqCategory[];
-  faqCategoryHeader: string;
 }
 
-export function FaqSidebar({ categories, faqCategoryHeader }: FaqSidebarProps) {
+export function FaqSidebar({ categories }: FaqSidebarProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(categories[0]?.id ?? null);
   const pathname = usePathname();
+
+  // Group categories by faqCategory
+  const groupedCategories = categories.reduce<Record<string, FaqCategory[]>>((acc, category) => {
+    const group = acc[category.faqCategory] || [];
+
+    return {
+      ...acc,
+      [category.faqCategory]: [...group, category],
+    };
+  }, {});
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -67,24 +77,9 @@ export function FaqSidebar({ categories, faqCategoryHeader }: FaqSidebarProps) {
     const element = document.getElementById(id);
 
     if (element) {
-      let headerOffset;
-
-      if (window.innerWidth < 1024) {
-        headerOffset = 250;
-      } else {
-        headerOffset = 160;
-      }
-
+      const headerOffset = window.innerWidth < 1024 ? 250 : 160;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.scrollY - headerOffset;
-
-      window.addEventListener('resize', () => {
-        if (window.innerWidth < 1024) {
-          headerOffset = 250;
-        } else {
-          headerOffset = 160;
-        }
-      });
 
       window.scrollTo({
         top: offsetPosition,
@@ -98,32 +93,49 @@ export function FaqSidebar({ categories, faqCategoryHeader }: FaqSidebarProps) {
   return (
     <>
       <div className="hidden lg:flex lg:flex-col lg:items-start lg:justify-start">
-        <div className="after:bg-primary relative py-2.5 pl-3 after:absolute after:top-0 after:left-0 after:h-full after:w-0.75">
-          <h3 className="leading-[150%] font-medium tracking-[0.64px] uppercase">
-            {faqCategoryHeader}
-          </h3>
-        </div>
-        {categories.map(({ category, id }) => (
-          <button
-            className={clsx(
-              'py-2 pl-3 text-sm transition-colors',
-              activeCategory === id
-                ? 'text-foreground font-medium'
-                : 'text-contrast-400 hover:text-foreground',
-            )}
-            key={id}
-            onClick={() => handleClick(id)}
-          >
-            {category}
-          </button>
-        ))}
+        {Object.entries(groupedCategories).map(([faqCategory, categoryGroup]) => {
+          // Check if any faqParentCategory in this group is active
+          const isCategoryActive = categoryGroup.some(({ id }) => id === activeCategory);
+
+          return (
+            <div className="w-full" key={faqCategory}>
+              <div
+                className={clsx(
+                  'relative py-2.5 pl-3 after:absolute after:top-0 after:left-0 after:h-full after:w-0.75',
+                  isCategoryActive ? 'after:bg-primary' : 'after:bg-transparent',
+                )}
+              >
+                <h3 className="leading-[150%] font-medium tracking-[0.64px] uppercase">
+                  {faqCategory}
+                </h3>
+              </div>
+              <ul className="flex flex-col items-start">
+                {categoryGroup.map(({ faqParentCategory, id }) => (
+                  <li key={id}>
+                    <button
+                      className={clsx(
+                        'py-2 pl-3 text-sm transition-colors',
+                        activeCategory === id
+                          ? 'text-foreground font-medium'
+                          : 'text-contrast-400 hover:text-foreground',
+                      )}
+                      onClick={() => handleClick(id)}
+                    >
+                      {faqParentCategory}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </div>
       <Select
         className="lg:hidden"
         name="faq-category-select"
         onValueChange={(value: string) => handleClick(value)}
-        options={categories.map(({ category, id }) => ({
-          label: category,
+        options={categories.map(({ faqParentCategory, id }) => ({
+          label: faqParentCategory,
           value: id,
         }))}
         value={activeCategory ?? ''}
