@@ -149,7 +149,7 @@ export type SchemaRawShape = Record<
   | z.ZodOptional<z.ZodArray<z.ZodString>>
 >;
 
-function getFieldSchema(field: Field) {
+function getFieldSchema(field: Field, allRequired = false) {
   let fieldSchema:
     | z.ZodString
     | z.ZodNumber
@@ -164,7 +164,7 @@ function getFieldSchema(field: Field) {
 
       if (field.min != null) fieldSchema = fieldSchema.min(field.min);
       if (field.max != null) fieldSchema = fieldSchema.max(field.max);
-      if (field.required !== true) fieldSchema = fieldSchema.optional();
+      if (!allRequired && field.required !== true) fieldSchema = fieldSchema.optional();
 
       break;
 
@@ -179,34 +179,34 @@ function getFieldSchema(field: Field) {
         })
         .trim();
 
-      if (field.required !== true) fieldSchema = fieldSchema.optional();
+      if (!allRequired && field.required !== true) fieldSchema = fieldSchema.optional();
 
       break;
 
     case 'email':
       fieldSchema = z.string().email({ message: 'Please enter a valid email.' }).trim();
 
-      if (field.required !== true) fieldSchema = fieldSchema.optional();
+      if (!allRequired && field.required !== true) fieldSchema = fieldSchema.optional();
 
       break;
 
     case 'checkbox-group':
       fieldSchema = z.string().array();
 
-      if (field.required === true) fieldSchema = fieldSchema.nonempty();
+      if (allRequired || field.required === true) fieldSchema = fieldSchema.nonempty();
 
       break;
 
     default:
       fieldSchema = z.string();
 
-      if (field.required !== true) fieldSchema = fieldSchema.optional();
+      if (!allRequired && field.required !== true) fieldSchema = fieldSchema.optional();
   }
 
   return fieldSchema;
 }
 
-export function schema(fields: Array<Field | FieldGroup<Field>>) {
+export function schema(fields: Array<Field | FieldGroup<Field>>, allRequired = false) {
   const shape: SchemaRawShape = {};
   let passwordFieldName: string | undefined;
   let confirmPasswordFieldName: string | undefined;
@@ -214,13 +214,13 @@ export function schema(fields: Array<Field | FieldGroup<Field>>) {
   fields.forEach((field) => {
     if (Array.isArray(field)) {
       field.forEach((f) => {
-        shape[f.name] = getFieldSchema(f);
+        shape[f.name] = getFieldSchema(f, allRequired);
 
         if (f.type === 'password') passwordFieldName = f.name;
         if (f.type === 'confirm-password') confirmPasswordFieldName = f.name;
       });
     } else {
-      shape[field.name] = getFieldSchema(field);
+      shape[field.name] = getFieldSchema(field, allRequired);
 
       if (field.type === 'password') passwordFieldName = field.name;
       if (field.type === 'confirm-password') confirmPasswordFieldName = field.name;

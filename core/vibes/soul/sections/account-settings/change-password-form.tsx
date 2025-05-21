@@ -6,6 +6,7 @@ import { ReactNode, useActionState, useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
 
 import { Input } from '@/vibes/soul/form/input';
+import { Label } from '@/vibes/soul/form/label';
 import { Button } from '@/vibes/soul/primitives/button';
 
 import { changePasswordSchema } from './schema';
@@ -48,25 +49,43 @@ export function ChangePasswordForm({
 
   return (
     <form {...getFormProps(form)} action={formAction} className="space-y-5">
-      <Input
-        {...getInputProps(fields.currentPassword, { type: 'password' })}
-        errors={fields.currentPassword.errors}
-        key={fields.currentPassword.id}
-        label={currentPasswordLabel}
-      />
-      <Input
-        {...getInputProps(fields.password, { type: 'password' })}
-        errors={fields.password.errors}
-        key={fields.password.id}
-        label={newPasswordLabel}
-      />
-      <Input
-        {...getInputProps(fields.confirmPassword, { type: 'password' })}
-        className="mb-6"
-        errors={fields.confirmPassword.errors}
-        key={fields.confirmPassword.id}
-        label={confirmPasswordLabel}
-      />
+      <div className="flex flex-col gap-1">
+        <Label className="text-foreground text-sm font-medium" htmlFor={fields.currentPassword.id}>
+          {currentPasswordLabel}
+          <span className="text-contrast-400">*</span>
+        </Label>
+        <Input
+          {...getInputProps(fields.currentPassword, { type: 'password' })}
+          errors={fields.currentPassword.errors}
+          key={fields.currentPassword.id}
+          required
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <Label className="text-foreground text-sm font-medium" htmlFor={fields.password.id}>
+          {newPasswordLabel}
+          <span className="text-contrast-400">*</span>
+        </Label>
+        <Input
+          {...getInputProps(fields.password, { type: 'password' })}
+          errors={fields.password.errors}
+          key={fields.password.id}
+          required
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <Label className="text-foreground text-sm font-medium" htmlFor={fields.confirmPassword.id}>
+          {confirmPasswordLabel}
+          <span className="text-contrast-400">*</span>
+        </Label>
+        <Input
+          {...getInputProps(fields.confirmPassword, { type: 'password' })}
+          className="mb-6"
+          errors={fields.confirmPassword.errors}
+          key={fields.confirmPassword.id}
+          required
+        />
+      </div>
       <SubmitButton>{submitLabel}</SubmitButton>
     </form>
   );

@@ -7,6 +7,7 @@ import { useFormStatus } from 'react-dom';
 
 import { FormStatus } from '@/vibes/soul/form/form-status';
 import { Input } from '@/vibes/soul/form/input';
+import { Label } from '@/vibes/soul/form/label';
 import { Button } from '@/vibes/soul/primitives/button';
 
 import { schema } from './schema';
@@ -42,12 +43,18 @@ export function ForgotPasswordForm({
 
   return (
     <form {...getFormProps(form)} action={formAction} className="flex grow flex-col gap-8">
-      <Input
-        {...getInputProps(fields.email, { type: 'text' })}
-        errors={fields.email.errors}
-        key={fields.email.id}
-        label={emailLabel}
-      />
+      <div className="flex flex-col gap-1">
+        <Label className="text-foreground text-sm font-medium" htmlFor={fields.email.id}>
+          {emailLabel}
+          <span className="text-contrast-400">*</span>
+        </Label>
+        <Input
+          {...getInputProps(fields.email, { type: 'text' })}
+          errors={fields.email.errors}
+          key={fields.email.id}
+          required
+        />
+      </div>
       <SubmitButton>{submitLabel}</SubmitButton>
       {form.errors?.map((error, index) => (
         <FormStatus key={index} type="error">

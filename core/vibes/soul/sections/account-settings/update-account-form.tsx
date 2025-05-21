@@ -6,6 +6,7 @@ import { useActionState, useEffect, useOptimistic, useTransition } from 'react';
 import { z } from 'zod';
 
 import { Input } from '@/vibes/soul/form/input';
+import { Label } from '@/vibes/soul/form/label';
 import { Button } from '@/vibes/soul/primitives/button';
 import { toast } from '@/vibes/soul/primitives/toaster';
 
@@ -95,32 +96,56 @@ export function UpdateAccountForm({
       }}
       className="space-y-5"
     >
-      <div className="flex gap-5">
+      <div className="flex flex-col gap-5 md:flex-row">
+        <div className="flex flex-1 flex-col gap-1">
+          <Label className="text-foreground text-sm font-medium" htmlFor={fields.firstName.id}>
+            {firstNameLabel}
+            <span className="text-contrast-400">*</span>
+          </Label>
+          <Input
+            {...getInputProps(fields.firstName, { type: 'text' })}
+            errors={fields.firstName.errors}
+            key={fields.firstName.id}
+            required
+          />
+        </div>
+        <div className="flex flex-1 flex-col gap-1">
+          <Label className="text-foreground text-sm font-medium" htmlFor={fields.lastName.id}>
+            {lastNameLabel}
+            <span className="text-contrast-400">*</span>
+          </Label>
+          <Input
+            {...getInputProps(fields.lastName, { type: 'text' })}
+            errors={fields.lastName.errors}
+            key={fields.lastName.id}
+            required
+          />
+        </div>
+      </div>
+      <div className="flex flex-col gap-1">
+        <Label className="text-foreground text-sm font-medium" htmlFor={fields.email.id}>
+          {emailLabel}
+          <span className="text-contrast-400">*</span>
+        </Label>
         <Input
-          {...getInputProps(fields.firstName, { type: 'text' })}
-          errors={fields.firstName.errors}
-          key={fields.firstName.id}
-          label={firstNameLabel}
-        />
-        <Input
-          {...getInputProps(fields.lastName, { type: 'text' })}
-          errors={fields.lastName.errors}
-          key={fields.lastName.id}
-          label={lastNameLabel}
+          {...getInputProps(fields.email, { type: 'text' })}
+          errors={fields.email.errors}
+          key={fields.email.id}
+          required
         />
       </div>
-      <Input
-        {...getInputProps(fields.email, { type: 'text' })}
-        errors={fields.email.errors}
-        key={fields.email.id}
-        label={emailLabel}
-      />
-      <Input
-        {...getInputProps(fields.company, { type: 'text' })}
-        errors={fields.company.errors}
-        key={fields.company.id}
-        label={companyLabel}
-      />
+      <div className="flex flex-col gap-1">
+        <Label className="text-foreground text-sm font-medium" htmlFor={fields.company.id}>
+          {companyLabel}
+          <span className="text-contrast-400">*</span>
+        </Label>
+        <Input
+          {...getInputProps(fields.company, { type: 'text' })}
+          errors={fields.company.errors}
+          key={fields.company.id}
+          required
+        />
+      </div>
       <Button loading={pending} name="intent" size="medium" type="submit" value="update">
         {submitLabel}
       </Button>

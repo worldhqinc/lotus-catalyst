@@ -22,6 +22,7 @@ import { CheckboxGroup } from '@/vibes/soul/form/checkbox-group';
 import { DatePicker } from '@/vibes/soul/form/date-picker';
 import { FormStatus } from '@/vibes/soul/form/form-status';
 import { Input } from '@/vibes/soul/form/input';
+import { Label } from '@/vibes/soul/form/label';
 import { NumberInput } from '@/vibes/soul/form/number-input';
 import { RadioGroup } from '@/vibes/soul/form/radio-group';
 import { Select } from '@/vibes/soul/form/select';
@@ -51,6 +52,7 @@ export interface DynamicFormProps<F extends Field> {
   submitValue?: string;
   onCancel?: (e: MouseEvent<HTMLButtonElement>) => void;
   isRegisterForm?: boolean;
+  required?: boolean;
 }
 
 export function DynamicForm<F extends Field>({
@@ -63,12 +65,13 @@ export function DynamicForm<F extends Field>({
   submitValue,
   isRegisterForm = false,
   onCancel,
+  required = false,
 }: DynamicFormProps<F>) {
   const [{ lastResult, fields }, formAction] = useActionState(action, {
     fields: defaultFields,
     lastResult: null,
   });
-  const dynamicSchema = schema(fields);
+  const dynamicSchema = schema(fields, required);
   const defaultValue = fields
     .flatMap((f) => (Array.isArray(f) ? f : [f]))
     .reduce<z.infer<typeof dynamicSchema>>(
@@ -103,7 +106,7 @@ export function DynamicForm<F extends Field>({
           {fields.map((field, index) => {
             if (Array.isArray(field)) {
               return (
-                <div className="flex flex-col gap-4 md:flex-row" key={index}>
+                <div className="flex flex-col gap-4 lg:flex-row lg:[&_>*]:flex-1" key={index}>
                   {field.map((f) => {
                     const groupFormField = formFields[f.name];
 
@@ -195,55 +198,80 @@ function DynamicFormField({
   switch (field.type) {
     case 'number':
       return (
-        <NumberInput
-          {...getInputProps(formField, { type: 'number' })}
-          decrementLabel={field.decrementLabel}
-          errors={formField.errors}
-          incrementLabel={field.incrementLabel}
-          key={field.name}
-          label={field.label}
-        />
+        <div className="flex flex-col gap-1">
+          <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
+            {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
+          </Label>
+          <NumberInput
+            {...getInputProps(formField, { type: 'number' })}
+            decrementLabel={field.decrementLabel}
+            errors={formField.errors}
+            incrementLabel={field.incrementLabel}
+            key={field.name}
+          />
+        </div>
       );
 
     case 'text':
       return (
-        <Input
-          {...getInputProps(formField, { type: 'text' })}
-          errors={formField.errors}
-          key={field.name}
-          label={field.label}
-        />
+        <div className="flex flex-col gap-1">
+          <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
+            {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
+          </Label>
+          <Input
+            {...getInputProps(formField, { type: 'text' })}
+            errors={formField.errors}
+            key={field.name}
+          />
+        </div>
       );
 
     case 'textarea':
       return (
-        <Textarea
-          {...getInputProps(formField, { type: 'text' })}
-          errors={formField.errors}
-          key={field.name}
-          label={field.label}
-        />
+        <div className="flex flex-col gap-1">
+          <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
+            {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
+          </Label>
+          <Textarea
+            {...getInputProps(formField, { type: 'text' })}
+            errors={formField.errors}
+            key={field.name}
+          />
+        </div>
       );
 
     case 'password':
     case 'confirm-password':
       return (
-        <Input
-          {...getInputProps(formField, { type: 'password' })}
-          errors={formField.errors}
-          key={field.name}
-          label={field.label}
-        />
+        <div className="flex flex-col gap-1">
+          <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
+            {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
+          </Label>
+          <Input
+            {...getInputProps(formField, { type: 'password' })}
+            errors={formField.errors}
+            key={field.name}
+          />
+        </div>
       );
 
     case 'email':
       return (
-        <Input
-          {...getInputProps(formField, { type: 'email' })}
-          errors={formField.errors}
-          key={field.name}
-          label={field.label}
-        />
+        <div className="flex flex-col gap-1">
+          <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
+            {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
+          </Label>
+          <Input
+            {...getInputProps(formField, { type: 'email' })}
+            errors={formField.errors}
+            key={field.name}
+          />
+        </div>
       );
 
     case 'checkbox':
@@ -276,18 +304,23 @@ function DynamicFormField({
 
     case 'select':
       return (
-        <Select
-          errors={formField.errors}
-          key={field.name}
-          label={field.label}
-          name={formField.name}
-          onBlur={controls.blur}
-          onFocus={controls.focus}
-          onValueChange={controls.change}
-          options={field.options}
-          required={formField.required}
-          value={typeof controls.value === 'string' ? controls.value : ''}
-        />
+        <div className="flex flex-col gap-1">
+          <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
+            {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
+          </Label>
+          <Select
+            errors={formField.errors}
+            key={field.name}
+            name={formField.name}
+            onBlur={controls.blur}
+            onFocus={controls.focus}
+            onValueChange={controls.change}
+            options={field.options}
+            required={formField.required}
+            value={typeof controls.value === 'string' ? controls.value : ''}
+          />
+        </div>
       );
 
     case 'radio-group':
@@ -359,27 +392,33 @@ function DynamicFormField({
 
     case 'date':
       return (
-        <DatePicker
-          disabledDays={
-            field.minDate != null && field.maxDate != null
-              ? {
-                  before: new Date(field.minDate),
-                  after: new Date(field.maxDate),
-                }
-              : undefined
-          }
-          errors={formField.errors}
-          key={field.name}
-          label={field.label}
-          name={formField.name}
-          onBlur={controls.blur}
-          onFocus={controls.focus}
-          onSelect={(date) =>
-            controls.change(date ? Intl.DateTimeFormat().format(date) : undefined)
-          }
-          required={formField.required}
-          selected={typeof controls.value === 'string' ? new Date(controls.value) : undefined}
-        />
+        <div className="flex flex-col gap-1">
+          <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
+            {field.label}
+            {field.required && <span className="text-contrast-400">*</span>}
+          </Label>
+          <DatePicker
+            disabledDays={
+              field.minDate != null && field.maxDate != null
+                ? {
+                    before: new Date(field.minDate),
+                    after: new Date(field.maxDate),
+                  }
+                : undefined
+            }
+            errors={formField.errors}
+            key={field.name}
+            label={field.label}
+            name={formField.name}
+            onBlur={controls.blur}
+            onFocus={controls.focus}
+            onSelect={(date) =>
+              controls.change(date ? Intl.DateTimeFormat().format(date) : undefined)
+            }
+            required={formField.required}
+            selected={typeof controls.value === 'string' ? new Date(controls.value) : undefined}
+          />
+        </div>
       );
   }
 }
