@@ -35,6 +35,7 @@ interface ContentfulSchema {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 // Helper functions for unpublished reference filtering
 function filterUnpublished<T extends { sys?: { publishedVersion?: number | null } }>(
@@ -49,6 +50,8 @@ function singleReferenceOrNull<T extends { sys?: { publishedVersion?: number | n
 }
 
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
 // Helper to create base field schema based on Contentful field type
 function createBaseFieldSchema(field: Partial<ContentfulField>): z.ZodTypeAny {
   switch (field.type) {
@@ -91,6 +94,9 @@ function createBaseFieldSchema(field: Partial<ContentfulField>): z.ZodTypeAny {
         // If this is an array of references, add the transform
         if (field.items.type === 'Link') {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
           // Make all fields in the reference schema deeply optional to allow incomplete objects
           const partialItemSchema =
             itemSchema instanceof z.ZodObject ? deepPartial(itemSchema) : itemSchema;
@@ -99,9 +105,12 @@ function createBaseFieldSchema(field: Partial<ContentfulField>): z.ZodTypeAny {
             .array(partialItemSchema.optional())
             .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
             .pipe(z.array(itemSchema)); // itemSchema is the strict version
+<<<<<<< HEAD
 =======
           return z.array(itemSchema).transform(filterUnpublished);
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
         }
         return z.array(itemSchema);
       }
@@ -110,10 +119,14 @@ function createBaseFieldSchema(field: Partial<ContentfulField>): z.ZodTypeAny {
       // For single references, return null if unpublished
       const linkSchema = createLinkSchema(field.linkType);
 <<<<<<< HEAD
+<<<<<<< HEAD
       return linkSchema.transform((val) => (val?.sys?.publishedVersion ? val : null));
 =======
       return linkSchema.transform(singleReferenceOrNull);
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+      return linkSchema.transform((val) => (val?.sys?.publishedVersion ? val : null));
+>>>>>>> 9a39f171 (Fix)
     }
     default:
       return z.unknown();
@@ -132,10 +145,14 @@ function createLinkSchema(linkType?: string): z.ZodTypeAny {
     }),
     id: z.string(),
 <<<<<<< HEAD
+<<<<<<< HEAD
     type: z.union([z.literal('Entry'), z.literal('Asset'), z.literal('Link')]),
 =======
     type: z.union([z.literal('Entry'), z.literal('Asset')]),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    type: z.union([z.literal('Entry'), z.literal('Asset'), z.literal('Link')]),
+>>>>>>> 9a39f171 (Fix)
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
     environment: z.object({
@@ -148,10 +165,14 @@ function createLinkSchema(linkType?: string): z.ZodTypeAny {
     publishedVersion: z.number().optional(),
     revision: z.number(),
 <<<<<<< HEAD
+<<<<<<< HEAD
     locale: makeNullish(z.string()),
 =======
     locale: z.string().optional(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    locale: makeNullish(z.string()),
+>>>>>>> 9a39f171 (Fix)
     contentType: z
       .object({
         sys: z.object({
@@ -168,16 +189,22 @@ function createLinkSchema(linkType?: string): z.ZodTypeAny {
   });
   const assetFieldsSchema = z.object({
 <<<<<<< HEAD
+<<<<<<< HEAD
     title: makeNullish(z.string()),
     description: makeNullish(z.string()),
 =======
     title: z.string().optional(),
     description: z.string().optional(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    title: makeNullish(z.string()),
+    description: makeNullish(z.string()),
+>>>>>>> 9a39f171 (Fix)
     file: z.object({
       url: z.string(),
       details: z.object({
         size: z.number(),
+<<<<<<< HEAD
 <<<<<<< HEAD
         image: makeNullish(
           z.object({
@@ -193,6 +220,14 @@ function createLinkSchema(linkType?: string): z.ZodTypeAny {
           })
           .optional(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+        image: makeNullish(
+          z.object({
+            width: z.number(),
+            height: z.number(),
+          }),
+        ),
+>>>>>>> 9a39f171 (Fix)
       }),
       fileName: z.string(),
       contentType: z.string(),
@@ -206,12 +241,17 @@ function createLinkSchema(linkType?: string): z.ZodTypeAny {
     return linkedItemBaseSchema.extend({
       sys: detailedSysSchema.extend({
 <<<<<<< HEAD
+<<<<<<< HEAD
         type: z.union([z.literal('Asset'), z.literal('Link')]),
         contentType: makeNullish(z.undefined()),
 =======
         type: z.literal('Asset'),
         contentType: z.undefined().optional(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
+        contentType: makeNullish(z.undefined()),
+>>>>>>> 9a39f171 (Fix)
       }),
       fields: assetFieldsSchema,
     });
@@ -219,10 +259,14 @@ function createLinkSchema(linkType?: string): z.ZodTypeAny {
     return linkedItemBaseSchema.extend({
       sys: detailedSysSchema.extend({
 <<<<<<< HEAD
+<<<<<<< HEAD
         type: z.union([z.literal('Entry'), z.literal('Link')]),
 =======
         type: z.literal('Entry'),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
+>>>>>>> 9a39f171 (Fix)
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -238,22 +282,31 @@ function createLinkSchema(linkType?: string): z.ZodTypeAny {
       linkedItemBaseSchema.extend({
         sys: detailedSysSchema.extend({
 <<<<<<< HEAD
+<<<<<<< HEAD
           type: z.union([z.literal('Asset'), z.literal('Link')]),
           contentType: makeNullish(z.undefined()),
 =======
           type: z.literal('Asset'),
           contentType: z.undefined().optional(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+          type: z.union([z.literal('Asset'), z.literal('Link')]),
+          contentType: makeNullish(z.undefined()),
+>>>>>>> 9a39f171 (Fix)
         }),
         fields: assetFieldsSchema,
       }),
       linkedItemBaseSchema.extend({
         sys: detailedSysSchema.extend({
 <<<<<<< HEAD
+<<<<<<< HEAD
           type: z.union([z.literal('Entry'), z.literal('Link')]),
 =======
           type: z.literal('Entry'),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+          type: z.union([z.literal('Entry'), z.literal('Link')]),
+>>>>>>> 9a39f171 (Fix)
           contentType: z
             .object({
               sys: z.object({
@@ -306,6 +359,7 @@ const RICH_TEXT_SCHEMA_NAME = 'RichTextNodeSchema';
 // Helper functions for transforms
 // ========================================
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 const filterUnpublishedHelper = `// Utility to filter unpublished references in arrays\nfunction filterUnpublished<T extends { sys?: { publishedVersion?: number | null } }>(arr: T[]): T[] {\n  return arr.filter((item) => item?.sys?.publishedVersion);\n}`;
 const singleReferenceTransformHelper = `// Utility to return null for unpublished single references\nfunction singleReferenceOrNull<T extends { sys?: { publishedVersion?: number | null } }>(val: T | null | undefined): T | null {\n  return val?.sys?.publishedVersion ? val : null;\n}`;
@@ -314,6 +368,8 @@ const singleReferenceTransformHelper = `// Utility to return null for unpublishe
 let usesFilterUnpublished = false;
 let usesSingleReferenceTransform = false;
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
 
 // Helper to convert a field schema to a string representation (Simplified for recursion)
 function zodToString(schema: any, indentationLevel = 0): string {
@@ -334,6 +390,7 @@ function zodToString(schema: any, indentationLevel = 0): string {
           (fnStr.includes('publishedVersion') && fnStr.includes('filter'))
         ) {
 <<<<<<< HEAD
+<<<<<<< HEAD
           return `${zodToString(schema._def.schema, indentationLevel)}.transform(arr => arr.filter(item => item?.sys?.publishedVersion))`;
         }
         if (fnStr.includes('publishedVersion') && fnStr.includes('val ?')) {
@@ -346,6 +403,12 @@ function zodToString(schema: any, indentationLevel = 0): string {
           usesSingleReferenceTransform = true;
           return `${zodToString(schema._def.schema, indentationLevel)}.transform(singleReferenceOrNull)`;
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+          return `${zodToString(schema._def.schema, indentationLevel)}.transform(arr => arr.filter(item => item?.sys?.publishedVersion))`;
+        }
+        if (fnStr.includes('publishedVersion') && fnStr.includes('val ?')) {
+          return `${zodToString(schema._def.schema, indentationLevel)}.transform(val => val?.sys?.publishedVersion ? val : null)`;
+>>>>>>> 9a39f171 (Fix)
         }
       }
       return zodToString(schema._def.schema, indentationLevel);
@@ -477,7 +540,6 @@ export type ${key} = z.infer<typeof ${key}Schema>;`;
 const schemaCode = `import { z } from 'zod';
 import { BLOCKS } from '@contentful/rich-text-types';
 
-${usesFilterUnpublished ? filterUnpublishedHelper + '\n\n' : ''}${usesSingleReferenceTransform ? singleReferenceTransformHelper + '\n\n' : ''}
 // ========================================
 // Base Schemas
 // ========================================

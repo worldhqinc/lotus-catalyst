@@ -1,13 +1,6 @@
 import { z } from 'zod';
 import { BLOCKS } from '@contentful/rich-text-types';
 
-// Utility to filter unpublished references in arrays
-function filterUnpublished<T extends { sys?: { publishedVersion?: number | null } }>(
-  arr: T[],
-): T[] {
-  return arr.filter((item) => item?.sys?.publishedVersion);
-}
-
 // ========================================
 // Base Schemas
 // ========================================
@@ -200,6 +193,9 @@ export const productFinishedGoodsFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -243,11 +239,14 @@ export const productFinishedGoodsFieldsSchema = z.object({
       ),
     )
     .nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
   featuredImage: z
     .object({
       metadata: z.object({
@@ -361,6 +360,9 @@ export const productFinishedGoodsFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -416,6 +418,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
   archive: z.boolean().nullish(),
   productFormulationInformation: z.record(z.string(), z.unknown()).nullish(),
   badge: z.string().nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
@@ -433,6 +436,8 @@ export const productFinishedGoodsFieldsSchema = z.object({
   productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
   badge: z.string().optional().nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
   additionalImages: z
     .array(
       z
@@ -558,12 +563,16 @@ export const productFinishedGoodsFieldsSchema = z.object({
       ),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
     .nullish(),
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    .nullish(),
+>>>>>>> 9a39f171 (Fix)
   faqs: z
     .array(
       z
@@ -623,6 +632,9 @@ export const productFinishedGoodsFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -666,11 +678,14 @@ export const productFinishedGoodsFieldsSchema = z.object({
       ),
     )
     .nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
   featureCallout: z
     .object({
       metadata: z.object({
@@ -808,6 +823,9 @@ export const productFinishedGoodsFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -816,6 +834,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
             tags: z.array(z.unknown()),
             concepts: z.array(z.unknown()),
           }),
+<<<<<<< HEAD
           sys: z.object({
             space: z.object({
               sys: z.object({
@@ -864,12 +883,41 @@ export const productFinishedGoodsFieldsSchema = z.object({
       }),
       sys: z.object({
         space: z.object({
+=======
+>>>>>>> 9a39f171 (Fix)
           sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('Space'),
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
             id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
           }),
+          fields: z.record(z.string(), z.unknown()),
         }),
+<<<<<<< HEAD
         id: z.string(),
         type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
@@ -905,6 +953,10 @@ export const productFinishedGoodsFieldsSchema = z.object({
         }),
       }),
     })
+=======
+      ),
+    )
+>>>>>>> 9a39f171 (Fix)
     .nullish(),
 });
 
@@ -958,6 +1010,9 @@ export const carouselRecipeFieldsSchema = z.object({
   recipes: z
     .array(
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
       z
         .object({
           metadata: z
@@ -1013,6 +1068,7 @@ export const carouselRecipeFieldsSchema = z.object({
           fields: z.record(z.string(), z.unknown()).nullish(),
         })
         .nullish(),
+<<<<<<< HEAD
     )
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
@@ -1097,6 +1153,51 @@ export const carouselRecipeFieldsSchema = z.object({
     )
     .transform(filterUnpublished),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    ),
+>>>>>>> 9a39f171 (Fix)
   cta: z
     .object({
       metadata: z.object({
@@ -1219,6 +1320,7 @@ export const carouselProductFieldsSchema = z.object({
   internalName: z.string(),
   carouselTitle: z.string(),
 <<<<<<< HEAD
+<<<<<<< HEAD
   subtitle: z.string().nullish(),
   products: z
     .array(
@@ -1322,48 +1424,114 @@ export const carouselProductFieldsSchema = z.object({
     ),
 =======
   subtitle: z.string().optional().nullable(),
+=======
+  subtitle: z.string().nullish(),
+>>>>>>> 9a39f171 (Fix)
   products: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
+<<<<<<< HEAD
     .transform(filterUnpublished),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    ),
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const carouselProductSchema = z.object({
@@ -1543,6 +1711,9 @@ export const recipeFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -1586,11 +1757,14 @@ export const recipeFieldsSchema = z.object({
       ),
     )
     .nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
   products: z
     .array(
       z
@@ -1650,6 +1824,9 @@ export const recipeFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -1693,11 +1870,14 @@ export const recipeFieldsSchema = z.object({
       ),
     )
     .nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
   recipeDirections: z
     .object({
       nodeType: z.literal(BLOCKS.DOCUMENT),
@@ -1922,12 +2102,16 @@ export const recipeFieldsSchema = z.object({
       ),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
     .nullish(),
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    .nullish(),
+>>>>>>> 9a39f171 (Fix)
   videoFeature: z
     .object({
       metadata: z.object({
@@ -2056,6 +2240,9 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -2099,11 +2286,14 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
       ),
     )
     .nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
   relatedPartsAndAccessories: z
     .array(
       z
@@ -2163,6 +2353,9 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -2206,11 +2399,14 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
       ),
     )
     .nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
   featuredImage: z
     .object({
       metadata: z.object({
@@ -2402,12 +2598,16 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
       ),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
     .nullish(),
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    .nullish(),
+>>>>>>> 9a39f171 (Fix)
   pageContentEntries: z
     .array(
       z
@@ -2467,6 +2667,9 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -2511,12 +2714,15 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
     )
     .nullish(),
   shortDescription: z.string().nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
   shortDescription: z.string().optional().nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const productPartsAndAccessoriesSchema = z.object({
@@ -2776,6 +2982,9 @@ export const pageStandardFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -2819,11 +3028,14 @@ export const pageStandardFieldsSchema = z.object({
       ),
     )
     .nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const pageStandardSchema = z.object({
@@ -2848,6 +3060,9 @@ export const megaMenuFieldsSchema = z.object({
   menuReference: z
     .array(
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
       z
         .object({
           metadata: z
@@ -2903,6 +3118,7 @@ export const megaMenuFieldsSchema = z.object({
           fields: z.record(z.string(), z.unknown()).nullish(),
         })
         .nullish(),
+<<<<<<< HEAD
     )
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
@@ -2987,6 +3203,51 @@ export const megaMenuFieldsSchema = z.object({
     )
     .transform(filterUnpublished),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    ),
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const megaMenuSchema = z.object({
@@ -3048,6 +3309,9 @@ export const faqListFieldsSchema = z.object({
   faqReference: z
     .array(
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
       z
         .object({
           metadata: z
@@ -3103,6 +3367,7 @@ export const faqListFieldsSchema = z.object({
           fields: z.record(z.string(), z.unknown()).nullish(),
         })
         .nullish(),
+<<<<<<< HEAD
     )
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
@@ -3187,6 +3452,51 @@ export const faqListFieldsSchema = z.object({
     )
     .transform(filterUnpublished),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    ),
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const faqListSchema = z.object({
@@ -3267,6 +3577,9 @@ export const blockProductFeaturesFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -3311,12 +3624,15 @@ export const blockProductFeaturesFieldsSchema = z.object({
     )
     .nullish(),
   alternate: z.boolean().nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
   alternate: z.boolean().optional().nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const blockProductFeaturesSchema = z.object({
@@ -3397,6 +3713,9 @@ export const blockProductFeaturesAccordionFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -3440,11 +3759,14 @@ export const blockProductFeaturesAccordionFieldsSchema = z.object({
       ),
     )
     .nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
   media: z
     .array(
       z
@@ -3570,6 +3892,7 @@ export const blockProductFeaturesAccordionFieldsSchema = z.object({
       ),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
     .nullish(),
   wistiaMediaId: z.string().nullish(),
   wistiaMediaSegments: z.array(z.string()).nullish(),
@@ -3580,6 +3903,11 @@ export const blockProductFeaturesAccordionFieldsSchema = z.object({
   wistiaMediaId: z.string().optional().nullable(),
   wistiaMediaSegments: z.array(z.string()).optional().nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    .nullish(),
+  wistiaMediaId: z.string().nullish(),
+  wistiaMediaSegments: z.array(z.string()).nullish(),
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const blockProductFeaturesAccordionSchema = z.object({
@@ -3862,6 +4190,9 @@ export const inspirationBentoFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -3906,12 +4237,15 @@ export const inspirationBentoFieldsSchema = z.object({
     )
     .nullish(),
   variant: z.string().nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
   variant: z.string().optional().nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const inspirationBentoSchema = z.object({
@@ -4257,6 +4591,9 @@ export const heroCarouselFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -4301,12 +4638,15 @@ export const heroCarouselFieldsSchema = z.object({
     )
     .nullish(),
   vertical: z.boolean().nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
   vertical: z.boolean().optional().nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const heroCarouselSchema = z.object({
@@ -4721,6 +5061,7 @@ export type heroSection = z.infer<typeof heroSectionSchema>;
 export const guidingPrinciplesSectionFieldsSchema = z.object({
   sectionTitle: z.string(),
 <<<<<<< HEAD
+<<<<<<< HEAD
   sectionDescription: z.string().nullish(),
   principles: z
     .array(
@@ -4824,48 +5165,114 @@ export const guidingPrinciplesSectionFieldsSchema = z.object({
     ),
 =======
   sectionDescription: z.string().optional().nullable(),
+=======
+  sectionDescription: z.string().nullish(),
+>>>>>>> 9a39f171 (Fix)
   principles: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
+<<<<<<< HEAD
     .transform(filterUnpublished),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    ),
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const guidingPrinciplesSectionSchema = z.object({
@@ -5043,6 +5450,9 @@ export const ctaSectionFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -5087,12 +5497,15 @@ export const ctaSectionFieldsSchema = z.object({
     )
     .nullish(),
   variant: z.string().nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
   variant: z.string().optional().nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const ctaSectionSchema = z.object({
@@ -5620,6 +6033,9 @@ export const featureGridFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -5663,11 +6079,14 @@ export const featureGridFieldsSchema = z.object({
       ),
     )
     .nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const featureGridSchema = z.object({
@@ -5911,12 +6330,16 @@ export const testimonialsFieldsSchema = z.object({
       ),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
     .nullish(),
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    .nullish(),
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const testimonialsSchema = z.object({
@@ -6047,6 +6470,9 @@ export const featureItemFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -6090,11 +6516,14 @@ export const featureItemFieldsSchema = z.object({
       ),
     )
     .nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const featureItemSchema = z.object({
@@ -6177,6 +6606,9 @@ export const productBentoFieldsSchema = z.object({
         .nullish(),
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
       z.array(
@@ -6220,11 +6652,14 @@ export const productBentoFieldsSchema = z.object({
       ),
     )
     .nullish(),
+<<<<<<< HEAD
 =======
     .transform(filterUnpublished)
     .optional()
     .nullable(),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const productBentoSchema = z.object({
@@ -6507,6 +6942,9 @@ export const featureTilesFieldsSchema = z.object({
   items: z
     .array(
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9a39f171 (Fix)
       z
         .object({
           metadata: z
@@ -6562,6 +7000,7 @@ export const featureTilesFieldsSchema = z.object({
           fields: z.record(z.string(), z.unknown()).nullish(),
         })
         .nullish(),
+<<<<<<< HEAD
     )
     .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
     .pipe(
@@ -6646,6 +7085,51 @@ export const featureTilesFieldsSchema = z.object({
     )
     .transform(filterUnpublished),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    ),
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const featureTilesSchema = z.object({
@@ -6734,6 +7218,7 @@ export type pageHeaderSupport = z.infer<typeof pageHeaderSupportSchema>;
 
 // Schema for productSupportLinks
 export const productSupportLinksFieldsSchema = z.object({
+<<<<<<< HEAD
 <<<<<<< HEAD
   title: z.string().nullish(),
   links: z
@@ -6838,48 +7323,114 @@ export const productSupportLinksFieldsSchema = z.object({
     ),
 =======
   title: z.string().optional().nullable(),
+=======
+  title: z.string().nullish(),
+>>>>>>> 9a39f171 (Fix)
   links: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
+<<<<<<< HEAD
     .transform(filterUnpublished),
 >>>>>>> 379eda25 (Filter unpublished)
+=======
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    ),
+>>>>>>> 9a39f171 (Fix)
 });
 
 export const productSupportLinksSchema = z.object({
