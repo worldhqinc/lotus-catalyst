@@ -46,7 +46,7 @@ const sysEntrySchema = sysBaseSchema.extend({
 });
 
 const sysAssetSchema = sysBaseSchema.extend({
-  type: z.literal('Asset'),
+  type: z.union([z.literal('Asset'), z.literal('Link')]),
   publishedVersion: z.number().optional().nullable(),
 });
 
@@ -117,65 +117,124 @@ export const productFinishedGoodsFieldsSchema = z.object({
   productName: z.string(),
   modelNumber: z.string(),
   bcProductReference: z.string(),
-  pageSlug: z.string().optional().nullable(),
-  newFlag: z.boolean().optional().nullable(),
+  pageSlug: z.string().nullish(),
+  newFlag: z.boolean().nullish(),
   webProductName: z.string(),
-  webProductNameDescriptor: z.string().optional().nullable(),
+  webProductNameDescriptor: z.string().nullish(),
   webCategory: z.array(z.string()),
-  webProductLine: z.array(z.string()).optional().nullable(),
-  webFeature: z.array(z.string()).optional().nullable(),
-  webTemperature: z.string().optional().nullable(),
-  webSize: z.string().optional().nullable(),
-  webSizeLabel: z.string().optional().nullable(),
-  webFinish: z.array(z.string()).optional().nullable(),
-  webPower: z.string().optional().nullable(),
-  webBullets: z.array(z.string()).optional().nullable(),
-  webWhatsIncluded: z.array(z.string()).optional().nullable(),
-  shortDescription: z.string().optional().nullable(),
-  wattage: z.string().optional().nullable(),
-  warranty: z.string().optional().nullable(),
+  webProductLine: z.array(z.string()).nullish(),
+  webFeature: z.array(z.string()).nullish(),
+  webTemperature: z.string().nullish(),
+  webSize: z.string().nullish(),
+  webSizeLabel: z.string().nullish(),
+  webFinish: z.array(z.string()).nullish(),
+  webPower: z.string().nullish(),
+  webBullets: z.array(z.string()).nullish(),
+  webWhatsIncluded: z.array(z.string()).nullish(),
+  shortDescription: z.string().nullish(),
+  wattage: z.string().nullish(),
+  warranty: z.string().nullish(),
   docs: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
   featuredImage: z
     .object({
       metadata: z.object({
@@ -191,7 +250,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -201,14 +260,14 @@ export const productFinishedGoodsFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -218,170 +277,357 @@ export const productFinishedGoodsFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
-  price: z.string().optional().nullable(),
-  salePrice: z.string().optional().nullable(),
-  saleMessage: z.string().optional().nullable(),
-  inventoryQuantity: z.number().int().optional().nullable(),
+    .nullish(),
+  price: z.string().nullish(),
+  salePrice: z.string().nullish(),
+  saleMessage: z.string().nullish(),
+  inventoryQuantity: z.number().int().nullish(),
   partsAccessories: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
-  outOfBoxNetWeight: z.string().optional().nullable(),
-  outOfBoxDepth: z.string().optional().nullable(),
-  outOfBoxWidth: z.string().optional().nullable(),
-  outOfBoxHeight: z.string().optional().nullable(),
-  outOfBoxSizeUom: z.string().optional().nullable(),
-  outOfBoxWeightUom: z.string().optional().nullable(),
-  metaTitle: z.string().optional().nullable(),
-  metaDescription: z.string().optional().nullable(),
-  factoryRecertifiedProduct: z.boolean().optional().nullable(),
-  archive: z.boolean().optional().nullable(),
-  productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
-  badge: z.string().optional().nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
+  outOfBoxNetWeight: z.string().nullish(),
+  outOfBoxDepth: z.string().nullish(),
+  outOfBoxWidth: z.string().nullish(),
+  outOfBoxHeight: z.string().nullish(),
+  outOfBoxSizeUom: z.string().nullish(),
+  outOfBoxWeightUom: z.string().nullish(),
+  metaTitle: z.string().nullish(),
+  metaDescription: z.string().nullish(),
+  factoryRecertifiedProduct: z.boolean().nullish(),
+  archive: z.boolean().nullish(),
+  productFormulationInformation: z.record(z.string(), z.unknown()).nullish(),
+  badge: z.string().nullish(),
   additionalImages: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Asset'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.undefined().optional().nullable(),
-        }),
-        fields: z.object({
-          title: z.string().optional().nullable(),
-          description: z.string().optional().nullable(),
-          file: z.object({
-            url: z.string(),
-            details: z.object({
-              size: z.number(),
-              image: z
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
                 .object({
-                  width: z.number(),
-                  height: z.number(),
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
                 })
-                .optional()
-                .nullable(),
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Asset'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z.undefined().nullish(),
+            })
+            .nullish(),
+          fields: z
+            .object({
+              title: z.string().nullish(),
+              description: z.string().nullish(),
+              file: z
+                .object({
+                  url: z.string().nullish(),
+                  details: z
+                    .object({
+                      size: z.number().nullish(),
+                      image: z
+                        .object({
+                          width: z.number(),
+                          height: z.number(),
+                        })
+                        .nullish(),
+                    })
+                    .nullish(),
+                  fileName: z.string().nullish(),
+                  contentType: z.string().nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+        })
+        .nullish(),
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
             }),
-            fileName: z.string(),
-            contentType: z.string(),
+            id: z.string(),
+            type: z.union([z.literal('Asset'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.undefined().nullish(),
+          }),
+          fields: z.object({
+            title: z.string().nullish(),
+            description: z.string().nullish(),
+            file: z.object({
+              url: z.string(),
+              details: z.object({
+                size: z.number(),
+                image: z
+                  .object({
+                    width: z.number(),
+                    height: z.number(),
+                  })
+                  .nullish(),
+              }),
+              fileName: z.string(),
+              contentType: z.string(),
+            }),
           }),
         }),
-      }),
+      ),
     )
-    .optional()
-    .nullable(),
+    .nullish(),
   faqs: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
   featureCallout: z
     .object({
       metadata: z.object({
@@ -397,7 +643,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -407,9 +653,9 @@ export const productFinishedGoodsFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -420,8 +666,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   featureTiles: z
     .object({
       metadata: z.object({
@@ -437,7 +682,7 @@ export const productFinishedGoodsFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -447,9 +692,9 @@ export const productFinishedGoodsFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -460,50 +705,108 @@ export const productFinishedGoodsFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   pageContentEntries: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
 });
 
 export const productFinishedGoodsSchema = z.object({
@@ -530,7 +833,7 @@ export const faqFieldsSchema = z.object({
     data: z.record(z.string(), z.unknown()),
     content: z.array(RichTextNodeSchema),
   }),
-  faqFilterCategory: z.string().optional().nullable(),
+  faqFilterCategory: z.string().nullish(),
 });
 
 export const faqSchema = z.object({
@@ -553,45 +856,106 @@ export type faq = z.infer<typeof faqSchema>;
 export const carouselRecipeFieldsSchema = z.object({
   internalName: z.string(),
   carouselTitle: z.string(),
-  recipes: z.array(
-    z.object({
-      metadata: z.object({
-        tags: z.array(z.unknown()),
-        concepts: z.array(z.unknown()),
-      }),
-      sys: z.object({
-        space: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('Space'),
-            id: z.string(),
+  recipes: z
+    .array(
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
           }),
-        }),
-        id: z.string(),
-        type: z.literal('Entry'),
-        createdAt: z.string().datetime(),
-        updatedAt: z.string().datetime(),
-        environment: z.object({
           sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
             id: z.string(),
-            type: z.literal('Link'),
-            linkType: z.literal('Environment'),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
           }),
+          fields: z.record(z.string(), z.unknown()),
         }),
-        publishedVersion: z.number().optional().nullable(),
-        revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('ContentType'),
-            id: z.string(),
-          }),
-        }),
-      }),
-      fields: z.record(z.string(), z.unknown()),
-    }),
-  ),
+      ),
+    ),
   cta: z
     .object({
       metadata: z.object({
@@ -607,7 +971,7 @@ export const carouselRecipeFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -617,9 +981,9 @@ export const carouselRecipeFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -630,8 +994,7 @@ export const carouselRecipeFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const carouselRecipeSchema = z.object({
@@ -668,7 +1031,7 @@ export const categoryFaqFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -678,9 +1041,9 @@ export const categoryFaqFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -691,8 +1054,7 @@ export const categoryFaqFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const categoryFaqSchema = z.object({
@@ -715,46 +1077,107 @@ export type categoryFaq = z.infer<typeof categoryFaqSchema>;
 export const carouselProductFieldsSchema = z.object({
   internalName: z.string(),
   carouselTitle: z.string(),
-  subtitle: z.string().optional().nullable(),
-  products: z.array(
-    z.object({
-      metadata: z.object({
-        tags: z.array(z.unknown()),
-        concepts: z.array(z.unknown()),
-      }),
-      sys: z.object({
-        space: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('Space'),
-            id: z.string(),
+  subtitle: z.string().nullish(),
+  products: z
+    .array(
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
           }),
-        }),
-        id: z.string(),
-        type: z.literal('Entry'),
-        createdAt: z.string().datetime(),
-        updatedAt: z.string().datetime(),
-        environment: z.object({
           sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
             id: z.string(),
-            type: z.literal('Link'),
-            linkType: z.literal('Environment'),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
           }),
+          fields: z.record(z.string(), z.unknown()),
         }),
-        publishedVersion: z.number().optional().nullable(),
-        revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('ContentType'),
-            id: z.string(),
-          }),
-        }),
-      }),
-      fields: z.record(z.string(), z.unknown()),
-    }),
-  ),
+      ),
+    ),
 });
 
 export const carouselProductSchema = z.object({
@@ -779,7 +1202,7 @@ export const recipeFieldsSchema = z.object({
   pageSlug: z.string(),
   metaTitle: z.string(),
   metaDescription: z.string(),
-  shortDescription: z.string().optional().nullable(),
+  shortDescription: z.string().nullish(),
   author: z
     .object({
       metadata: z.object({
@@ -795,7 +1218,7 @@ export const recipeFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -805,9 +1228,9 @@ export const recipeFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -818,9 +1241,8 @@ export const recipeFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
-  cookTime: z.string().optional().nullable(),
+    .nullish(),
+  cookTime: z.string().nullish(),
   featuredImage: z.object({
     metadata: z.object({
       tags: z.array(z.unknown()),
@@ -835,7 +1257,7 @@ export const recipeFieldsSchema = z.object({
         }),
       }),
       id: z.string(),
-      type: z.literal('Asset'),
+      type: z.union([z.literal('Asset'), z.literal('Link')]),
       createdAt: z.string().datetime(),
       updatedAt: z.string().datetime(),
       environment: z.object({
@@ -845,14 +1267,14 @@ export const recipeFieldsSchema = z.object({
           linkType: z.literal('Environment'),
         }),
       }),
-      publishedVersion: z.number().optional().nullable(),
+      publishedVersion: z.number().nullish(),
       revision: z.number(),
-      locale: z.string().optional().nullable(),
-      contentType: z.undefined().optional().nullable(),
+      locale: z.string().nullish(),
+      contentType: z.undefined().nullish(),
     }),
     fields: z.object({
-      title: z.string().optional().nullable(),
-      description: z.string().optional().nullable(),
+      title: z.string().nullish(),
+      description: z.string().nullish(),
       file: z.object({
         url: z.string(),
         details: z.object({
@@ -862,129 +1284,243 @@ export const recipeFieldsSchema = z.object({
               width: z.number(),
               height: z.number(),
             })
-            .optional()
-            .nullable(),
+            .nullish(),
         }),
         fileName: z.string(),
         contentType: z.string(),
       }),
     }),
   }),
-  intro: z.string().optional().nullable(),
-  mealTypeCategory: z.array(z.string()).optional().nullable(),
-  occasionCategory: z.array(z.string()).optional().nullable(),
-  ingredientsCategory: z.array(z.string()).optional().nullable(),
-  applianceTypeCategory: z.array(z.string()).optional().nullable(),
-  numberOfServings: z.string().optional().nullable(),
-  numberOfIngredients: z.string().optional().nullable(),
+  intro: z.string().nullish(),
+  mealTypeCategory: z.array(z.string()).nullish(),
+  occasionCategory: z.array(z.string()).nullish(),
+  ingredientsCategory: z.array(z.string()).nullish(),
+  applianceTypeCategory: z.array(z.string()).nullish(),
+  numberOfServings: z.string().nullish(),
+  numberOfIngredients: z.string().nullish(),
   ingredientsLists: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
   products: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
   recipeDirections: z
     .object({
       nodeType: z.literal(BLOCKS.DOCUMENT),
       data: z.record(z.string(), z.unknown()),
       content: z.array(RichTextNodeSchema),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   variations: z
     .object({
       nodeType: z.literal(BLOCKS.DOCUMENT),
       data: z.record(z.string(), z.unknown()),
       content: z.array(RichTextNodeSchema),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   testKitchenTips: z
     .object({
       nodeType: z.literal(BLOCKS.DOCUMENT),
       data: z.record(z.string(), z.unknown()),
       content: z.array(RichTextNodeSchema),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   productCarousel: z
     .object({
       metadata: z.object({
@@ -1000,7 +1536,7 @@ export const recipeFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -1010,9 +1546,9 @@ export const recipeFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -1023,8 +1559,7 @@ export const recipeFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   recipeCarousel: z
     .object({
       metadata: z.object({
@@ -1040,7 +1575,7 @@ export const recipeFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -1050,9 +1585,9 @@ export const recipeFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -1063,62 +1598,132 @@ export const recipeFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   additionalImages: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Asset'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.undefined().optional().nullable(),
-        }),
-        fields: z.object({
-          title: z.string().optional().nullable(),
-          description: z.string().optional().nullable(),
-          file: z.object({
-            url: z.string(),
-            details: z.object({
-              size: z.number(),
-              image: z
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
                 .object({
-                  width: z.number(),
-                  height: z.number(),
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
                 })
-                .optional()
-                .nullable(),
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Asset'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z.undefined().nullish(),
+            })
+            .nullish(),
+          fields: z
+            .object({
+              title: z.string().nullish(),
+              description: z.string().nullish(),
+              file: z
+                .object({
+                  url: z.string().nullish(),
+                  details: z
+                    .object({
+                      size: z.number().nullish(),
+                      image: z
+                        .object({
+                          width: z.number(),
+                          height: z.number(),
+                        })
+                        .nullish(),
+                    })
+                    .nullish(),
+                  fileName: z.string().nullish(),
+                  contentType: z.string().nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+        })
+        .nullish(),
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
             }),
-            fileName: z.string(),
-            contentType: z.string(),
+            id: z.string(),
+            type: z.union([z.literal('Asset'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.undefined().nullish(),
+          }),
+          fields: z.object({
+            title: z.string().nullish(),
+            description: z.string().nullish(),
+            file: z.object({
+              url: z.string(),
+              details: z.object({
+                size: z.number(),
+                image: z
+                  .object({
+                    width: z.number(),
+                    height: z.number(),
+                  })
+                  .nullish(),
+              }),
+              fileName: z.string(),
+              contentType: z.string(),
+            }),
           }),
         }),
-      }),
+      ),
     )
-    .optional()
-    .nullable(),
+    .nullish(),
   videoFeature: z
     .object({
       metadata: z.object({
@@ -1134,7 +1739,7 @@ export const recipeFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -1144,9 +1749,9 @@ export const recipeFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -1157,8 +1762,7 @@ export const recipeFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const recipeSchema = z.object({
@@ -1181,98 +1785,216 @@ export type recipe = z.infer<typeof recipeSchema>;
 export const productPartsAndAccessoriesFieldsSchema = z.object({
   productName: z.string(),
   pageSlug: z.string(),
-  modelNumber: z.string().optional().nullable(),
+  modelNumber: z.string().nullish(),
   bcProductReference: z.string(),
-  newFlag: z.boolean().optional().nullable(),
+  newFlag: z.boolean().nullish(),
   webProductName: z.string(),
-  webProductNameDescriptor: z.string().optional().nullable(),
-  webProductLine: z.array(z.string()).optional().nullable(),
-  webCategory: z.array(z.string()).optional().nullable(),
-  webFinish: z.array(z.string()).optional().nullable(),
+  webProductNameDescriptor: z.string().nullish(),
+  webProductLine: z.array(z.string()).nullish(),
+  webCategory: z.array(z.string()).nullish(),
+  webFinish: z.array(z.string()).nullish(),
   associatedFinishedGoods: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
   relatedPartsAndAccessories: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
   featuredImage: z
     .object({
       metadata: z.object({
@@ -1288,7 +2010,7 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -1298,14 +2020,14 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -1315,129 +2037,257 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
-  productFormulationInformation: z.record(z.string(), z.unknown()).optional().nullable(),
-  price: z.string().optional().nullable(),
-  salePrice: z.string().optional().nullable(),
-  saleMessage: z.string().optional().nullable(),
-  inventoryQuantity: z.number().int().optional().nullable(),
-  outOfBoxNetWeight: z.string().optional().nullable(),
-  outOfBoxDepth: z.string().optional().nullable(),
-  outOfBoxWidth: z.string().optional().nullable(),
-  outOfBoxHeight: z.string().optional().nullable(),
-  outOfBoxSizeUom: z.string().optional().nullable(),
-  outOfBoxWeightUom: z.string().optional().nullable(),
+    .nullish(),
+  productFormulationInformation: z.record(z.string(), z.unknown()).nullish(),
+  price: z.string().nullish(),
+  salePrice: z.string().nullish(),
+  saleMessage: z.string().nullish(),
+  inventoryQuantity: z.number().int().nullish(),
+  outOfBoxNetWeight: z.string().nullish(),
+  outOfBoxDepth: z.string().nullish(),
+  outOfBoxWidth: z.string().nullish(),
+  outOfBoxHeight: z.string().nullish(),
+  outOfBoxSizeUom: z.string().nullish(),
+  outOfBoxWeightUom: z.string().nullish(),
   metaTitle: z.string(),
-  metaDescription: z.string().optional().nullable(),
-  archive: z.boolean().optional().nullable(),
+  metaDescription: z.string().nullish(),
+  archive: z.boolean().nullish(),
   factoryRecertifiedProduct: z.boolean(),
-  badge: z.string().optional().nullable(),
+  badge: z.string().nullish(),
   additionalImages: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Asset'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.undefined().optional().nullable(),
-        }),
-        fields: z.object({
-          title: z.string().optional().nullable(),
-          description: z.string().optional().nullable(),
-          file: z.object({
-            url: z.string(),
-            details: z.object({
-              size: z.number(),
-              image: z
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
                 .object({
-                  width: z.number(),
-                  height: z.number(),
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
                 })
-                .optional()
-                .nullable(),
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Asset'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z.undefined().nullish(),
+            })
+            .nullish(),
+          fields: z
+            .object({
+              title: z.string().nullish(),
+              description: z.string().nullish(),
+              file: z
+                .object({
+                  url: z.string().nullish(),
+                  details: z
+                    .object({
+                      size: z.number().nullish(),
+                      image: z
+                        .object({
+                          width: z.number(),
+                          height: z.number(),
+                        })
+                        .nullish(),
+                    })
+                    .nullish(),
+                  fileName: z.string().nullish(),
+                  contentType: z.string().nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+        })
+        .nullish(),
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
             }),
-            fileName: z.string(),
-            contentType: z.string(),
+            id: z.string(),
+            type: z.union([z.literal('Asset'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.undefined().nullish(),
+          }),
+          fields: z.object({
+            title: z.string().nullish(),
+            description: z.string().nullish(),
+            file: z.object({
+              url: z.string(),
+              details: z.object({
+                size: z.number(),
+                image: z
+                  .object({
+                    width: z.number(),
+                    height: z.number(),
+                  })
+                  .nullish(),
+              }),
+              fileName: z.string(),
+              contentType: z.string(),
+            }),
           }),
         }),
-      }),
+      ),
     )
-    .optional()
-    .nullable(),
+    .nullish(),
   pageContentEntries: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
-  shortDescription: z.string().optional().nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
+  shortDescription: z.string().nullish(),
 });
 
 export const productPartsAndAccessoriesSchema = z.object({
@@ -1459,8 +2309,8 @@ export type productPartsAndAccessories = z.infer<typeof productPartsAndAccessori
 // Schema for ingredientsList
 export const ingredientsListFieldsSchema = z.object({
   ingredientsListName: z.string(),
-  sectionTitle: z.string().optional().nullable(),
-  listOfIngredients: z.array(z.string()).optional().nullable(),
+  sectionTitle: z.string().nullish(),
+  listOfIngredients: z.array(z.string()).nullish(),
 });
 
 export const ingredientsListSchema = z.object({
@@ -1497,7 +2347,7 @@ export const authorFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -1507,14 +2357,14 @@ export const authorFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -1524,16 +2374,14 @@ export const authorFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const authorSchema = z.object({
@@ -1570,7 +2418,7 @@ export const supportDocumentFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -1580,14 +2428,14 @@ export const supportDocumentFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -1597,19 +2445,17 @@ export const supportDocumentFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
-  documentType: z.string().optional().nullable(),
+    .nullish(),
+  documentType: z.string().nullish(),
   url: z.string(),
-  modelNumber: z.string().optional().nullable(),
+  modelNumber: z.string().nullish(),
 });
 
 export const supportDocumentSchema = z.object({
@@ -1632,8 +2478,8 @@ export type supportDocument = z.infer<typeof supportDocumentSchema>;
 export const pageStandardFieldsSchema = z.object({
   pageName: z.string(),
   metaTitleSeo: z.string(),
-  metaDescription: z.string().optional().nullable(),
-  metaKeywordsSeo: z.string().optional().nullable(),
+  metaDescription: z.string().nullish(),
+  metaKeywordsSeo: z.string().nullish(),
   pageSlug: z.string(),
   optionalPageDescription: z
     .object({
@@ -1641,50 +2487,108 @@ export const pageStandardFieldsSchema = z.object({
       data: z.record(z.string(), z.unknown()),
       content: z.array(RichTextNodeSchema),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   pageContent: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
 });
 
 export const pageStandardSchema = z.object({
@@ -1706,45 +2610,106 @@ export type pageStandard = z.infer<typeof pageStandardSchema>;
 // Schema for megaMenu
 export const megaMenuFieldsSchema = z.object({
   menuName: z.string(),
-  menuReference: z.array(
-    z.object({
-      metadata: z.object({
-        tags: z.array(z.unknown()),
-        concepts: z.array(z.unknown()),
-      }),
-      sys: z.object({
-        space: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('Space'),
-            id: z.string(),
+  menuReference: z
+    .array(
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
           }),
-        }),
-        id: z.string(),
-        type: z.literal('Entry'),
-        createdAt: z.string().datetime(),
-        updatedAt: z.string().datetime(),
-        environment: z.object({
           sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
             id: z.string(),
-            type: z.literal('Link'),
-            linkType: z.literal('Environment'),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
           }),
+          fields: z.record(z.string(), z.unknown()),
         }),
-        publishedVersion: z.number().optional().nullable(),
-        revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('ContentType'),
-            id: z.string(),
-          }),
-        }),
-      }),
-      fields: z.record(z.string(), z.unknown()),
-    }),
-  ),
+      ),
+    ),
 });
 
 export const megaMenuSchema = z.object({
@@ -1780,7 +2745,7 @@ export const faqListFieldsSchema = z.object({
         }),
       }),
       id: z.string(),
-      type: z.literal('Entry'),
+      type: z.union([z.literal('Entry'), z.literal('Link')]),
       createdAt: z.string().datetime(),
       updatedAt: z.string().datetime(),
       environment: z.object({
@@ -1790,9 +2755,9 @@ export const faqListFieldsSchema = z.object({
           linkType: z.literal('Environment'),
         }),
       }),
-      publishedVersion: z.number().optional().nullable(),
+      publishedVersion: z.number().nullish(),
       revision: z.number(),
-      locale: z.string().optional().nullable(),
+      locale: z.string().nullish(),
       contentType: z.object({
         sys: z.object({
           type: z.literal('Link'),
@@ -1803,45 +2768,106 @@ export const faqListFieldsSchema = z.object({
     }),
     fields: z.record(z.string(), z.unknown()),
   }),
-  faqReference: z.array(
-    z.object({
-      metadata: z.object({
-        tags: z.array(z.unknown()),
-        concepts: z.array(z.unknown()),
-      }),
-      sys: z.object({
-        space: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('Space'),
-            id: z.string(),
+  faqReference: z
+    .array(
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
           }),
-        }),
-        id: z.string(),
-        type: z.literal('Entry'),
-        createdAt: z.string().datetime(),
-        updatedAt: z.string().datetime(),
-        environment: z.object({
           sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
             id: z.string(),
-            type: z.literal('Link'),
-            linkType: z.literal('Environment'),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
           }),
+          fields: z.record(z.string(), z.unknown()),
         }),
-        publishedVersion: z.number().optional().nullable(),
-        revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('ContentType'),
-            id: z.string(),
-          }),
-        }),
-      }),
-      fields: z.record(z.string(), z.unknown()),
-    }),
-  ),
+      ),
+    ),
 });
 
 export const faqListSchema = z.object({
@@ -1865,47 +2891,106 @@ export const blockProductFeaturesFieldsSchema = z.object({
   heading: z.string(),
   items: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
-  alternate: z.boolean().optional().nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
+  alternate: z.boolean().nullish(),
 });
 
 export const blockProductFeaturesSchema = z.object({
@@ -1929,102 +3014,232 @@ export const blockProductFeaturesAccordionFieldsSchema = z.object({
   heading: z.string(),
   items: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
   media: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Asset'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.undefined().optional().nullable(),
-        }),
-        fields: z.object({
-          title: z.string().optional().nullable(),
-          description: z.string().optional().nullable(),
-          file: z.object({
-            url: z.string(),
-            details: z.object({
-              size: z.number(),
-              image: z
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
                 .object({
-                  width: z.number(),
-                  height: z.number(),
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
                 })
-                .optional()
-                .nullable(),
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Asset'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z.undefined().nullish(),
+            })
+            .nullish(),
+          fields: z
+            .object({
+              title: z.string().nullish(),
+              description: z.string().nullish(),
+              file: z
+                .object({
+                  url: z.string().nullish(),
+                  details: z
+                    .object({
+                      size: z.number().nullish(),
+                      image: z
+                        .object({
+                          width: z.number(),
+                          height: z.number(),
+                        })
+                        .nullish(),
+                    })
+                    .nullish(),
+                  fileName: z.string().nullish(),
+                  contentType: z.string().nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+        })
+        .nullish(),
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
             }),
-            fileName: z.string(),
-            contentType: z.string(),
+            id: z.string(),
+            type: z.union([z.literal('Asset'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.undefined().nullish(),
+          }),
+          fields: z.object({
+            title: z.string().nullish(),
+            description: z.string().nullish(),
+            file: z.object({
+              url: z.string(),
+              details: z.object({
+                size: z.number(),
+                image: z
+                  .object({
+                    width: z.number(),
+                    height: z.number(),
+                  })
+                  .nullish(),
+              }),
+              fileName: z.string(),
+              contentType: z.string(),
+            }),
           }),
         }),
-      }),
+      ),
     )
-    .optional()
-    .nullable(),
-  wistiaMediaId: z.string().optional().nullable(),
-  wistiaMediaSegments: z.array(z.string()).optional().nullable(),
+    .nullish(),
+  wistiaMediaId: z.string().nullish(),
+  wistiaMediaSegments: z.array(z.string()).nullish(),
 });
 
 export const blockProductFeaturesAccordionSchema = z.object({
@@ -2061,7 +3276,7 @@ export const ctaFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2071,14 +3286,14 @@ export const ctaFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -2088,16 +3303,14 @@ export const ctaFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   internalReference: z
     .object({
       metadata: z.object({
@@ -2113,7 +3326,7 @@ export const ctaFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2123,9 +3336,9 @@ export const ctaFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -2136,8 +3349,7 @@ export const ctaFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   mediaReference: z
     .object({
       metadata: z.object({
@@ -2153,7 +3365,7 @@ export const ctaFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2163,14 +3375,14 @@ export const ctaFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -2180,17 +3392,15 @@ export const ctaFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
-  externalLink: z.string().optional().nullable(),
+    .nullish(),
+  externalLink: z.string().nullish(),
 });
 
 export const ctaSchema = z.object({
@@ -2211,8 +3421,8 @@ export type cta = z.infer<typeof ctaSchema>;
 
 // Schema for inspirationBento
 export const inspirationBentoFieldsSchema = z.object({
-  heading: z.string().optional().nullable(),
-  subheading: z.string().optional().nullable(),
+  heading: z.string().nullish(),
+  subheading: z.string().nullish(),
   cta: z
     .object({
       metadata: z.object({
@@ -2228,7 +3438,7 @@ export const inspirationBentoFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2238,9 +3448,9 @@ export const inspirationBentoFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -2251,52 +3461,110 @@ export const inspirationBentoFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
-  video: z.string().optional().nullable(),
+    .nullish(),
+  video: z.string().nullish(),
   inspirationCards: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
-  variant: z.string().optional().nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
+  variant: z.string().nullish(),
 });
 
 export const inspirationBentoSchema = z.object({
@@ -2318,7 +3586,7 @@ export type inspirationBento = z.infer<typeof inspirationBentoSchema>;
 // Schema for inspirationCard
 export const inspirationCardFieldsSchema = z.object({
   title: z.string(),
-  subtitle: z.string().optional().nullable(),
+  subtitle: z.string().nullish(),
   image: z
     .object({
       metadata: z.object({
@@ -2334,7 +3602,7 @@ export const inspirationCardFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2344,14 +3612,14 @@ export const inspirationCardFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -2361,16 +3629,14 @@ export const inspirationCardFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   contentReference: z
     .object({
       metadata: z.object({
@@ -2386,7 +3652,7 @@ export const inspirationCardFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2396,9 +3662,9 @@ export const inspirationCardFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -2409,8 +3675,7 @@ export const inspirationCardFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   cta: z
     .object({
       metadata: z.object({
@@ -2426,7 +3691,7 @@ export const inspirationCardFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2436,9 +3701,9 @@ export const inspirationCardFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -2449,8 +3714,7 @@ export const inspirationCardFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const inspirationCardSchema = z.object({
@@ -2472,7 +3736,7 @@ export type inspirationCard = z.infer<typeof inspirationCardSchema>;
 // Schema for tutorial
 export const tutorialFieldsSchema = z.object({
   title: z.string(),
-  subtitle: z.string().optional().nullable(),
+  subtitle: z.string().nullish(),
   featuredImage: z
     .object({
       metadata: z.object({
@@ -2488,7 +3752,7 @@ export const tutorialFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2498,14 +3762,14 @@ export const tutorialFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -2515,19 +3779,17 @@ export const tutorialFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
-  categories: z.array(z.string()).optional().nullable(),
-  pageSlug: z.string().optional().nullable(),
-  content: z.string().optional().nullable(),
+    .nullish(),
+  categories: z.array(z.string()).nullish(),
+  pageSlug: z.string().nullish(),
+  content: z.string().nullish(),
   productCarousel: z
     .object({
       metadata: z.object({
@@ -2543,7 +3805,7 @@ export const tutorialFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2553,9 +3815,9 @@ export const tutorialFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -2566,9 +3828,8 @@ export const tutorialFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
-  wistiaMediaId: z.string().optional().nullable(),
+    .nullish(),
+  wistiaMediaId: z.string().nullish(),
 });
 
 export const tutorialSchema = z.object({
@@ -2589,50 +3850,109 @@ export type tutorial = z.infer<typeof tutorialSchema>;
 
 // Schema for heroCarousel
 export const heroCarouselFieldsSchema = z.object({
-  internalName: z.string().optional().nullable(),
+  internalName: z.string().nullish(),
   heroSlides: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
-  vertical: z.boolean().optional().nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
+  vertical: z.boolean().nullish(),
 });
 
 export const heroCarouselSchema = z.object({
@@ -2668,7 +3988,7 @@ export const heroSlideFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2678,14 +3998,14 @@ export const heroSlideFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -2695,20 +4015,18 @@ export const heroSlideFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   headline: z.string(),
-  subhead: z.string().optional().nullable(),
-  invertTextColor: z.boolean().optional().nullable(),
-  ctaLabel: z.string().optional().nullable(),
+  subhead: z.string().nullish(),
+  invertTextColor: z.boolean().nullish(),
+  ctaLabel: z.string().nullish(),
   ctaLink: z
     .object({
       metadata: z.object({
@@ -2724,7 +4042,7 @@ export const heroSlideFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2734,9 +4052,9 @@ export const heroSlideFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -2747,8 +4065,7 @@ export const heroSlideFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const heroSlideSchema = z.object({
@@ -2769,9 +4086,9 @@ export type heroSlide = z.infer<typeof heroSlideSchema>;
 
 // Schema for newsletterForm
 export const newsletterFormFieldsSchema = z.object({
-  title: z.string().optional().nullable(),
-  description: z.string().optional().nullable(),
-  inputPlaceholder: z.string().optional().nullable(),
+  title: z.string().nullish(),
+  description: z.string().nullish(),
+  inputPlaceholder: z.string().nullish(),
 });
 
 export const newsletterFormSchema = z.object({
@@ -2793,7 +4110,7 @@ export type newsletterForm = z.infer<typeof newsletterFormSchema>;
 // Schema for postGrid
 export const postGridFieldsSchema = z.object({
   title: z.string(),
-  subtitle: z.string().optional().nullable(),
+  subtitle: z.string().nullish(),
   type: z.string(),
 });
 
@@ -2830,7 +4147,7 @@ export const featureFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2840,14 +4157,14 @@ export const featureFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -2857,19 +4174,17 @@ export const featureFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
-  categories: z.array(z.string()).optional().nullable(),
+    .nullish(),
+  categories: z.array(z.string()).nullish(),
   title: z.string(),
-  subtitle: z.string().optional().nullable(),
+  subtitle: z.string().nullish(),
   pageSlug: z.string(),
   story: z
     .object({
@@ -2877,8 +4192,7 @@ export const featureFieldsSchema = z.object({
       data: z.record(z.string(), z.unknown()),
       content: z.array(RichTextNodeSchema),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   productCarousel: z
     .object({
       metadata: z.object({
@@ -2894,7 +4208,7 @@ export const featureFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2904,9 +4218,9 @@ export const featureFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -2917,8 +4231,7 @@ export const featureFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const featureSchema = z.object({
@@ -2941,7 +4254,7 @@ export type feature = z.infer<typeof featureSchema>;
 export const heroSectionFieldsSchema = z.object({
   heroTitle: z.string(),
   heroTagline: z.string(),
-  type: z.string().optional().nullable(),
+  type: z.string().nullish(),
   cta: z
     .object({
       metadata: z.object({
@@ -2957,7 +4270,7 @@ export const heroSectionFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -2967,9 +4280,9 @@ export const heroSectionFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -2980,8 +4293,7 @@ export const heroSectionFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   image: z
     .object({
       metadata: z.object({
@@ -2997,7 +4309,7 @@ export const heroSectionFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -3007,14 +4319,14 @@ export const heroSectionFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -3024,17 +4336,15 @@ export const heroSectionFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
-  wistiaId: z.string().optional().nullable(),
+    .nullish(),
+  wistiaId: z.string().nullish(),
 });
 
 export const heroSectionSchema = z.object({
@@ -3056,46 +4366,107 @@ export type heroSection = z.infer<typeof heroSectionSchema>;
 // Schema for guidingPrinciplesSection
 export const guidingPrinciplesSectionFieldsSchema = z.object({
   sectionTitle: z.string(),
-  sectionDescription: z.string().optional().nullable(),
-  principles: z.array(
-    z.object({
-      metadata: z.object({
-        tags: z.array(z.unknown()),
-        concepts: z.array(z.unknown()),
-      }),
-      sys: z.object({
-        space: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('Space'),
-            id: z.string(),
+  sectionDescription: z.string().nullish(),
+  principles: z
+    .array(
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
           }),
-        }),
-        id: z.string(),
-        type: z.literal('Entry'),
-        createdAt: z.string().datetime(),
-        updatedAt: z.string().datetime(),
-        environment: z.object({
           sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
             id: z.string(),
-            type: z.literal('Link'),
-            linkType: z.literal('Environment'),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
           }),
+          fields: z.record(z.string(), z.unknown()),
         }),
-        publishedVersion: z.number().optional().nullable(),
-        revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('ContentType'),
-            id: z.string(),
-          }),
-        }),
-      }),
-      fields: z.record(z.string(), z.unknown()),
-    }),
-  ),
+      ),
+    ),
 });
 
 export const guidingPrinciplesSectionSchema = z.object({
@@ -3133,7 +4504,7 @@ export const culinaryPassionSectionFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -3143,14 +4514,14 @@ export const culinaryPassionSectionFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -3160,16 +4531,14 @@ export const culinaryPassionSectionFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const culinaryPassionSectionSchema = z.object({
@@ -3212,53 +4581,112 @@ export type guidingPrinciple = z.infer<typeof guidingPrincipleSchema>;
 
 // Schema for ctaSection
 export const ctaSectionFieldsSchema = z.object({
-  sectionTitle: z.string().optional().nullable(),
-  sectionSubtitle: z.string().optional().nullable(),
-  buttonText: z.string().optional().nullable(),
-  buttonLink: z.string().optional().nullable(),
+  sectionTitle: z.string().nullish(),
+  sectionSubtitle: z.string().nullish(),
+  buttonText: z.string().nullish(),
+  buttonLink: z.string().nullish(),
   ctaList: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
-  variant: z.string().optional().nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
+  variant: z.string().nullish(),
 });
 
 export const ctaSectionSchema = z.object({
@@ -3280,13 +4708,13 @@ export type ctaSection = z.infer<typeof ctaSectionSchema>;
 // Schema for communitySection
 export const communitySectionFieldsSchema = z.object({
   sectionTitle: z.string(),
-  sectionDescription: z.string().optional().nullable(),
+  sectionDescription: z.string().nullish(),
   signUpLabel: z.string(),
-  signUpDescription: z.string().optional().nullable(),
+  signUpDescription: z.string().nullish(),
   signUpPlaceholder: z.string(),
-  socialLabel: z.string().optional().nullable(),
-  socialDescription: z.string().optional().nullable(),
-  socialLinks: z.array(z.string()).optional().nullable(),
+  socialLabel: z.string().nullish(),
+  socialDescription: z.string().nullish(),
+  socialLinks: z.array(z.string()).nullish(),
 });
 
 export const communitySectionSchema = z.object({
@@ -3308,7 +4736,7 @@ export type communitySection = z.infer<typeof communitySectionSchema>;
 // Schema for introSection
 export const introSectionFieldsSchema = z.object({
   title: z.string(),
-  subtitle: z.string().optional().nullable(),
+  subtitle: z.string().nullish(),
   image: z
     .object({
       metadata: z.object({
@@ -3324,7 +4752,7 @@ export const introSectionFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -3334,14 +4762,14 @@ export const introSectionFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -3351,16 +4779,14 @@ export const introSectionFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   cta: z
     .object({
       metadata: z.object({
@@ -3376,7 +4802,7 @@ export const introSectionFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -3386,9 +4812,9 @@ export const introSectionFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -3399,8 +4825,7 @@ export const introSectionFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const introSectionSchema = z.object({
@@ -3421,10 +4846,10 @@ export type introSection = z.infer<typeof introSectionSchema>;
 
 // Schema for heroBanner
 export const heroBannerFieldsSchema = z.object({
-  variant: z.string().optional().nullable(),
-  isPageHeader: z.boolean().optional().nullable(),
+  variant: z.string().nullish(),
+  isPageHeader: z.boolean().nullish(),
   title: z.string(),
-  description: z.string().optional().nullable(),
+  description: z.string().nullish(),
   image: z
     .object({
       metadata: z.object({
@@ -3440,7 +4865,7 @@ export const heroBannerFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -3450,14 +4875,14 @@ export const heroBannerFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -3467,16 +4892,14 @@ export const heroBannerFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   video: z
     .object({
       metadata: z.object({
@@ -3492,7 +4915,7 @@ export const heroBannerFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -3502,14 +4925,14 @@ export const heroBannerFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -3519,18 +4942,16 @@ export const heroBannerFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
-  wistiaId: z.string().optional().nullable(),
-  invertText: z.boolean().optional().nullable(),
+    .nullish(),
+  wistiaId: z.string().nullish(),
+  invertText: z.boolean().nullish(),
   primaryCta: z
     .object({
       metadata: z.object({
@@ -3546,7 +4967,7 @@ export const heroBannerFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -3556,9 +4977,9 @@ export const heroBannerFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -3569,8 +4990,7 @@ export const heroBannerFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   secondaryCta: z
     .object({
       metadata: z.object({
@@ -3586,7 +5006,7 @@ export const heroBannerFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -3596,9 +5016,9 @@ export const heroBannerFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -3609,13 +5029,12 @@ export const heroBannerFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
-  reviewQuote: z.string().optional().nullable(),
-  reviewSource: z.string().optional().nullable(),
-  reviewRating: z.number().int().optional().nullable(),
-  secondaryTitle: z.string().optional().nullable(),
-  secondaryDescription: z.string().optional().nullable(),
+    .nullish(),
+  reviewQuote: z.string().nullish(),
+  reviewSource: z.string().nullish(),
+  reviewRating: z.number().int().nullish(),
+  secondaryTitle: z.string().nullish(),
+  secondaryDescription: z.string().nullish(),
 });
 
 export const heroBannerSchema = z.object({
@@ -3637,7 +5056,7 @@ export type heroBanner = z.infer<typeof heroBannerSchema>;
 // Schema for carouselSection
 export const carouselSectionFieldsSchema = z.object({
   heading: z.string(),
-  subtitle: z.string().optional().nullable(),
+  subtitle: z.string().nullish(),
   carousel: z.object({
     metadata: z.object({
       tags: z.array(z.unknown()),
@@ -3652,7 +5071,7 @@ export const carouselSectionFieldsSchema = z.object({
         }),
       }),
       id: z.string(),
-      type: z.literal('Entry'),
+      type: z.union([z.literal('Entry'), z.literal('Link')]),
       createdAt: z.string().datetime(),
       updatedAt: z.string().datetime(),
       environment: z.object({
@@ -3662,9 +5081,9 @@ export const carouselSectionFieldsSchema = z.object({
           linkType: z.literal('Environment'),
         }),
       }),
-      publishedVersion: z.number().optional().nullable(),
+      publishedVersion: z.number().nullish(),
       revision: z.number(),
-      locale: z.string().optional().nullable(),
+      locale: z.string().nullish(),
       contentType: z.object({
         sys: z.object({
           type: z.literal('Link'),
@@ -3690,7 +5109,7 @@ export const carouselSectionFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -3700,9 +5119,9 @@ export const carouselSectionFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -3713,8 +5132,7 @@ export const carouselSectionFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const carouselSectionSchema = z.object({
@@ -3735,50 +5153,109 @@ export type carouselSection = z.infer<typeof carouselSectionSchema>;
 
 // Schema for featureGrid
 export const featureGridFieldsSchema = z.object({
-  title: z.string().optional().nullable(),
-  subheading: z.string().optional().nullable(),
+  title: z.string().nullish(),
+  subheading: z.string().nullish(),
   items: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
 });
 
 export const featureGridSchema = z.object({
@@ -3800,7 +5277,7 @@ export type featureGrid = z.infer<typeof featureGridSchema>;
 // Schema for cardSection
 export const cardSectionFieldsSchema = z.object({
   title: z.string(),
-  subtitle: z.string().optional().nullable(),
+  subtitle: z.string().nullish(),
   featuresCard: z.object({
     metadata: z.object({
       tags: z.array(z.unknown()),
@@ -3815,7 +5292,7 @@ export const cardSectionFieldsSchema = z.object({
         }),
       }),
       id: z.string(),
-      type: z.literal('Entry'),
+      type: z.union([z.literal('Entry'), z.literal('Link')]),
       createdAt: z.string().datetime(),
       updatedAt: z.string().datetime(),
       environment: z.object({
@@ -3825,9 +5302,9 @@ export const cardSectionFieldsSchema = z.object({
           linkType: z.literal('Environment'),
         }),
       }),
-      publishedVersion: z.number().optional().nullable(),
+      publishedVersion: z.number().nullish(),
       revision: z.number(),
-      locale: z.string().optional().nullable(),
+      locale: z.string().nullish(),
       contentType: z.object({
         sys: z.object({
           type: z.literal('Link'),
@@ -3852,7 +5329,7 @@ export const cardSectionFieldsSchema = z.object({
         }),
       }),
       id: z.string(),
-      type: z.literal('Entry'),
+      type: z.union([z.literal('Entry'), z.literal('Link')]),
       createdAt: z.string().datetime(),
       updatedAt: z.string().datetime(),
       environment: z.object({
@@ -3862,9 +5339,9 @@ export const cardSectionFieldsSchema = z.object({
           linkType: z.literal('Environment'),
         }),
       }),
-      publishedVersion: z.number().optional().nullable(),
+      publishedVersion: z.number().nullish(),
       revision: z.number(),
-      locale: z.string().optional().nullable(),
+      locale: z.string().nullish(),
       contentType: z.object({
         sys: z.object({
           type: z.literal('Link'),
@@ -3875,7 +5352,7 @@ export const cardSectionFieldsSchema = z.object({
     }),
     fields: z.record(z.string(), z.unknown()),
   }),
-  variant: z.string().optional().nullable(),
+  variant: z.string().nullish(),
 });
 
 export const cardSectionSchema = z.object({
@@ -3899,58 +5376,129 @@ export const testimonialsFieldsSchema = z.object({
   quote: z.string(),
   logos: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Asset'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.undefined().optional().nullable(),
-        }),
-        fields: z.object({
-          title: z.string().optional().nullable(),
-          description: z.string().optional().nullable(),
-          file: z.object({
-            url: z.string(),
-            details: z.object({
-              size: z.number(),
-              image: z
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
                 .object({
-                  width: z.number(),
-                  height: z.number(),
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
                 })
-                .optional()
-                .nullable(),
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Asset'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z.undefined().nullish(),
+            })
+            .nullish(),
+          fields: z
+            .object({
+              title: z.string().nullish(),
+              description: z.string().nullish(),
+              file: z
+                .object({
+                  url: z.string().nullish(),
+                  details: z
+                    .object({
+                      size: z.number().nullish(),
+                      image: z
+                        .object({
+                          width: z.number(),
+                          height: z.number(),
+                        })
+                        .nullish(),
+                    })
+                    .nullish(),
+                  fileName: z.string().nullish(),
+                  contentType: z.string().nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+        })
+        .nullish(),
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
             }),
-            fileName: z.string(),
-            contentType: z.string(),
+            id: z.string(),
+            type: z.union([z.literal('Asset'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.undefined().nullish(),
+          }),
+          fields: z.object({
+            title: z.string().nullish(),
+            description: z.string().nullish(),
+            file: z.object({
+              url: z.string(),
+              details: z.object({
+                size: z.number(),
+                image: z
+                  .object({
+                    width: z.number(),
+                    height: z.number(),
+                  })
+                  .nullish(),
+              }),
+              fileName: z.string(),
+              contentType: z.string(),
+            }),
           }),
         }),
-      }),
+      ),
     )
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const testimonialsSchema = z.object({
@@ -3972,7 +5520,7 @@ export type testimonials = z.infer<typeof testimonialsSchema>;
 // Schema for featureItem
 export const featureItemFieldsSchema = z.object({
   heading: z.string(),
-  description: z.string().optional().nullable(),
+  description: z.string().nullish(),
   image: z.object({
     metadata: z.object({
       tags: z.array(z.unknown()),
@@ -3987,7 +5535,7 @@ export const featureItemFieldsSchema = z.object({
         }),
       }),
       id: z.string(),
-      type: z.literal('Asset'),
+      type: z.union([z.literal('Asset'), z.literal('Link')]),
       createdAt: z.string().datetime(),
       updatedAt: z.string().datetime(),
       environment: z.object({
@@ -3997,14 +5545,14 @@ export const featureItemFieldsSchema = z.object({
           linkType: z.literal('Environment'),
         }),
       }),
-      publishedVersion: z.number().optional().nullable(),
+      publishedVersion: z.number().nullish(),
       revision: z.number(),
-      locale: z.string().optional().nullable(),
-      contentType: z.undefined().optional().nullable(),
+      locale: z.string().nullish(),
+      contentType: z.undefined().nullish(),
     }),
     fields: z.object({
-      title: z.string().optional().nullable(),
-      description: z.string().optional().nullable(),
+      title: z.string().nullish(),
+      description: z.string().nullish(),
       file: z.object({
         url: z.string(),
         details: z.object({
@@ -4014,57 +5562,115 @@ export const featureItemFieldsSchema = z.object({
               width: z.number(),
               height: z.number(),
             })
-            .optional()
-            .nullable(),
+            .nullish(),
         }),
         fileName: z.string(),
         contentType: z.string(),
       }),
     }),
   }),
-  wistiaId: z.string().optional().nullable(),
+  wistiaId: z.string().nullish(),
   products: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
 });
 
 export const featureItemSchema = z.object({
@@ -4086,50 +5692,109 @@ export type featureItem = z.infer<typeof featureItemSchema>;
 // Schema for productBento
 export const productBentoFieldsSchema = z.object({
   title: z.string(),
-  subtitle: z.string().optional().nullable(),
-  pageAnchor: z.string().optional().nullable(),
+  subtitle: z.string().nullish(),
+  pageAnchor: z.string().nullish(),
   products: z
     .array(
-      z.object({
-        metadata: z.object({
-          tags: z.array(z.unknown()),
-          concepts: z.array(z.unknown()),
-        }),
-        sys: z.object({
-          space: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('Space'),
-              id: z.string(),
-            }),
-          }),
-          id: z.string(),
-          type: z.literal('Entry'),
-          createdAt: z.string().datetime(),
-          updatedAt: z.string().datetime(),
-          environment: z.object({
-            sys: z.object({
-              id: z.string(),
-              type: z.literal('Link'),
-              linkType: z.literal('Environment'),
-            }),
-          }),
-          publishedVersion: z.number().optional().nullable(),
-          revision: z.number(),
-          locale: z.string().optional().nullable(),
-          contentType: z.object({
-            sys: z.object({
-              type: z.literal('Link'),
-              linkType: z.literal('ContentType'),
-              id: z.string(),
-            }),
-          }),
-        }),
-        fields: z.record(z.string(), z.unknown()),
-      }),
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
     )
-    .optional()
-    .nullable(),
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
+          }),
+          sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
+            id: z.string(),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
+          }),
+          fields: z.record(z.string(), z.unknown()),
+        }),
+      ),
+    )
+    .nullish(),
 });
 
 export const productBentoSchema = z.object({
@@ -4151,8 +5816,8 @@ export type productBento = z.infer<typeof productBentoSchema>;
 // Schema for highlights
 export const highlightsFieldsSchema = z.object({
   title: z.string(),
-  pageAnchor: z.string().optional().nullable(),
-  quoteText: z.string().optional().nullable(),
+  pageAnchor: z.string().nullish(),
+  quoteText: z.string().nullish(),
   quoteAuthorImage: z
     .object({
       metadata: z.object({
@@ -4168,7 +5833,7 @@ export const highlightsFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -4178,14 +5843,14 @@ export const highlightsFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -4195,18 +5860,16 @@ export const highlightsFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
-  quoteAuthorName: z.string().optional().nullable(),
-  quoteAuthorTitle: z.string().optional().nullable(),
+    .nullish(),
+  quoteAuthorName: z.string().nullish(),
+  quoteAuthorTitle: z.string().nullish(),
   image: z
     .object({
       metadata: z.object({
@@ -4222,7 +5885,7 @@ export const highlightsFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -4232,14 +5895,14 @@ export const highlightsFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -4249,16 +5912,14 @@ export const highlightsFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
   cta: z
     .object({
       metadata: z.object({
@@ -4274,7 +5935,7 @@ export const highlightsFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Entry'),
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -4284,9 +5945,9 @@ export const highlightsFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
+        locale: z.string().nullish(),
         contentType: z.object({
           sys: z.object({
             type: z.literal('Link'),
@@ -4297,8 +5958,7 @@ export const highlightsFieldsSchema = z.object({
       }),
       fields: z.record(z.string(), z.unknown()),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const highlightsSchema = z.object({
@@ -4358,7 +6018,7 @@ export const featureCalloutFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -4368,14 +6028,14 @@ export const featureCalloutFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -4385,16 +6045,14 @@ export const featureCalloutFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
+    .nullish(),
 });
 
 export const featureCalloutSchema = z.object({
@@ -4416,45 +6074,106 @@ export type featureCallout = z.infer<typeof featureCalloutSchema>;
 // Schema for featureTiles
 export const featureTilesFieldsSchema = z.object({
   internalName: z.string(),
-  items: z.array(
-    z.object({
-      metadata: z.object({
-        tags: z.array(z.unknown()),
-        concepts: z.array(z.unknown()),
-      }),
-      sys: z.object({
-        space: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('Space'),
-            id: z.string(),
+  items: z
+    .array(
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
           }),
-        }),
-        id: z.string(),
-        type: z.literal('Entry'),
-        createdAt: z.string().datetime(),
-        updatedAt: z.string().datetime(),
-        environment: z.object({
           sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
             id: z.string(),
-            type: z.literal('Link'),
-            linkType: z.literal('Environment'),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
           }),
+          fields: z.record(z.string(), z.unknown()),
         }),
-        publishedVersion: z.number().optional().nullable(),
-        revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('ContentType'),
-            id: z.string(),
-          }),
-        }),
-      }),
-      fields: z.record(z.string(), z.unknown()),
-    }),
-  ),
+      ),
+    ),
 });
 
 export const featureTilesSchema = z.object({
@@ -4499,7 +6218,7 @@ export type featureTile = z.infer<typeof featureTileSchema>;
 // Schema for productGrid
 export const productGridFieldsSchema = z.object({
   title: z.string(),
-  subtitle: z.string().optional().nullable(),
+  subtitle: z.string().nullish(),
   type: z.string(),
 });
 
@@ -4522,7 +6241,7 @@ export type productGrid = z.infer<typeof productGridSchema>;
 // Schema for pageHeaderSupport
 export const pageHeaderSupportFieldsSchema = z.object({
   title: z.string(),
-  lead: z.string().optional().nullable(),
+  lead: z.string().nullish(),
 });
 
 export const pageHeaderSupportSchema = z.object({
@@ -4543,46 +6262,107 @@ export type pageHeaderSupport = z.infer<typeof pageHeaderSupportSchema>;
 
 // Schema for productSupportLinks
 export const productSupportLinksFieldsSchema = z.object({
-  title: z.string().optional().nullable(),
-  links: z.array(
-    z.object({
-      metadata: z.object({
-        tags: z.array(z.unknown()),
-        concepts: z.array(z.unknown()),
-      }),
-      sys: z.object({
-        space: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('Space'),
-            id: z.string(),
+  title: z.string().nullish(),
+  links: z
+    .array(
+      z
+        .object({
+          metadata: z
+            .object({
+              tags: z.array(z.unknown()).nullish(),
+              concepts: z.array(z.unknown()).nullish(),
+            })
+            .nullish(),
+          sys: z
+            .object({
+              space: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Space').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              id: z.string().nullish(),
+              type: z.union([z.literal('Entry'), z.literal('Link')]).nullish(),
+              createdAt: z.string().datetime().nullish(),
+              updatedAt: z.string().datetime().nullish(),
+              environment: z
+                .object({
+                  sys: z
+                    .object({
+                      id: z.string().nullish(),
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('Environment').nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+              publishedVersion: z.number().nullish(),
+              revision: z.number().nullish(),
+              locale: z.string().nullish(),
+              contentType: z
+                .object({
+                  sys: z
+                    .object({
+                      type: z.literal('Link').nullish(),
+                      linkType: z.literal('ContentType').nullish(),
+                      id: z.string().nullish(),
+                    })
+                    .nullish(),
+                })
+                .nullish(),
+            })
+            .nullish(),
+          fields: z.record(z.string(), z.unknown()).nullish(),
+        })
+        .nullish(),
+    )
+    .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+    .pipe(
+      z.array(
+        z.object({
+          metadata: z.object({
+            tags: z.array(z.unknown()),
+            concepts: z.array(z.unknown()),
           }),
-        }),
-        id: z.string(),
-        type: z.literal('Entry'),
-        createdAt: z.string().datetime(),
-        updatedAt: z.string().datetime(),
-        environment: z.object({
           sys: z.object({
+            space: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('Space'),
+                id: z.string(),
+              }),
+            }),
             id: z.string(),
-            type: z.literal('Link'),
-            linkType: z.literal('Environment'),
+            type: z.union([z.literal('Entry'), z.literal('Link')]),
+            createdAt: z.string().datetime(),
+            updatedAt: z.string().datetime(),
+            environment: z.object({
+              sys: z.object({
+                id: z.string(),
+                type: z.literal('Link'),
+                linkType: z.literal('Environment'),
+              }),
+            }),
+            publishedVersion: z.number().nullish(),
+            revision: z.number(),
+            locale: z.string().nullish(),
+            contentType: z.object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            }),
           }),
+          fields: z.record(z.string(), z.unknown()),
         }),
-        publishedVersion: z.number().optional().nullable(),
-        revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.object({
-          sys: z.object({
-            type: z.literal('Link'),
-            linkType: z.literal('ContentType'),
-            id: z.string(),
-          }),
-        }),
-      }),
-      fields: z.record(z.string(), z.unknown()),
-    }),
-  ),
+      ),
+    ),
 });
 
 export const productSupportLinksSchema = z.object({
@@ -4603,7 +6383,7 @@ export type productSupportLinks = z.infer<typeof productSupportLinksSchema>;
 
 // Schema for supportLink
 export const supportLinkFieldsSchema = z.object({
-  supportType: z.string().optional().nullable(),
+  supportType: z.string().nullish(),
   title: z.string(),
   supportPageLink: z.object({
     metadata: z.object({
@@ -4619,7 +6399,7 @@ export const supportLinkFieldsSchema = z.object({
         }),
       }),
       id: z.string(),
-      type: z.literal('Entry'),
+      type: z.union([z.literal('Entry'), z.literal('Link')]),
       createdAt: z.string().datetime(),
       updatedAt: z.string().datetime(),
       environment: z.object({
@@ -4629,9 +6409,9 @@ export const supportLinkFieldsSchema = z.object({
           linkType: z.literal('Environment'),
         }),
       }),
-      publishedVersion: z.number().optional().nullable(),
+      publishedVersion: z.number().nullish(),
       revision: z.number(),
-      locale: z.string().optional().nullable(),
+      locale: z.string().nullish(),
       contentType: z.object({
         sys: z.object({
           type: z.literal('Link'),
@@ -4642,7 +6422,7 @@ export const supportLinkFieldsSchema = z.object({
     }),
     fields: z.record(z.string(), z.unknown()),
   }),
-  subHeading: z.string().optional().nullable(),
+  subHeading: z.string().nullish(),
 });
 
 export const supportLinkSchema = z.object({
@@ -4663,8 +6443,8 @@ export type supportLink = z.infer<typeof supportLinkSchema>;
 
 // Schema for productFormulationLookup
 export const productFormulationLookupFieldsSchema = z.object({
-  title: z.string().optional().nullable(),
-  disclaimer: z.string().optional().nullable(),
+  title: z.string().nullish(),
+  disclaimer: z.string().nullish(),
 });
 
 export const productFormulationLookupSchema = z.object({
@@ -4700,7 +6480,7 @@ export const mediaBannerFieldsSchema = z.object({
           }),
         }),
         id: z.string(),
-        type: z.literal('Asset'),
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
         createdAt: z.string().datetime(),
         updatedAt: z.string().datetime(),
         environment: z.object({
@@ -4710,14 +6490,14 @@ export const mediaBannerFieldsSchema = z.object({
             linkType: z.literal('Environment'),
           }),
         }),
-        publishedVersion: z.number().optional().nullable(),
+        publishedVersion: z.number().nullish(),
         revision: z.number(),
-        locale: z.string().optional().nullable(),
-        contentType: z.undefined().optional().nullable(),
+        locale: z.string().nullish(),
+        contentType: z.undefined().nullish(),
       }),
       fields: z.object({
-        title: z.string().optional().nullable(),
-        description: z.string().optional().nullable(),
+        title: z.string().nullish(),
+        description: z.string().nullish(),
         file: z.object({
           url: z.string(),
           details: z.object({
@@ -4727,17 +6507,15 @@ export const mediaBannerFieldsSchema = z.object({
                 width: z.number(),
                 height: z.number(),
               })
-              .optional()
-              .nullable(),
+              .nullish(),
           }),
           fileName: z.string(),
           contentType: z.string(),
         }),
       }),
     })
-    .optional()
-    .nullable(),
-  wistiaId: z.string().optional().nullable(),
+    .nullish(),
+  wistiaId: z.string().nullish(),
 });
 
 export const mediaBannerSchema = z.object({

@@ -4,7 +4,230 @@ import { readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { z } from 'zod';
 
-import { generateContentfulSchemas } from '../contentful/schema-generator';
+// ================= Contentful Schema Types & Generators =================
+
+// Types for Contentful content type definitions
+interface ContentfulField {
+  id: string;
+  name: string;
+  type: string;
+  localized: boolean;
+  required: boolean;
+  validations: any[];
+  items?: {
+    type: string;
+    validations: any[];
+    linkType?: string;
+  };
+  linkType?: string;
+}
+
+interface ContentfulContentType {
+  sys: {
+    id: string;
+  };
+  name: string;
+  fields: ContentfulField[];
+}
+
+interface ContentfulSchema {
+  contentTypes: ContentfulContentType[];
+}
+
+// Helper to create base field schema based on Contentful field type
+function createBaseFieldSchema(field: Partial<ContentfulField>): z.ZodTypeAny {
+  switch (field.type) {
+    case 'Symbol':
+    case 'Text':
+      return z.string();
+    case 'Integer':
+      return z.number().int();
+    case 'Number':
+      return z.number();
+    case 'Boolean':
+      return z.boolean();
+    case 'Date':
+      return z.string().datetime();
+    case 'Object':
+      return z.record(z.unknown());
+    case 'RichText': {
+      const simplifiedRichTextNode: z.ZodType<any> = z.lazy(() =>
+        z.object({
+          nodeType: z.string(),
+          data: z.record(z.unknown()),
+          content: z.array(z.any()).optional(),
+          marks: z.array(z.any()).optional(),
+          value: z.string().optional(),
+        }),
+      );
+      const simplifiedRichTextSchema = z.object({
+        nodeType: z.literal(BLOCKS.DOCUMENT),
+        data: z.record(z.unknown()),
+        content: z.array(simplifiedRichTextNode),
+      });
+      return simplifiedRichTextSchema;
+    }
+    case 'Array':
+      if (field.items) {
+        const itemSchema =
+          field.items.type === 'Link'
+            ? createLinkSchema(field.items.linkType)
+            : createBaseFieldSchema({ type: field.items.type });
+        // If this is an array of references, add the transform
+        if (field.items.type === 'Link') {
+          // Make all fields in the reference schema deeply optional to allow incomplete objects
+          const partialItemSchema =
+            itemSchema instanceof z.ZodObject ? deepPartial(itemSchema) : itemSchema;
+          // After filtering, re-validate with the strict schema to enforce type contracts
+          return z
+            .array(partialItemSchema.optional())
+            .transform((arr) => arr.filter((item) => item?.sys?.publishedVersion))
+            .pipe(z.array(itemSchema)); // itemSchema is the strict version
+        }
+        return z.array(itemSchema);
+      }
+      return z.array(z.unknown());
+    case 'Link': {
+      // For single references, return null if unpublished
+      const linkSchema = createLinkSchema(field.linkType);
+      return linkSchema.transform((val) => (val?.sys?.publishedVersion ? val : null));
+    }
+    default:
+      return z.unknown();
+  }
+}
+
+// Helper to create link schema
+function createLinkSchema(linkType?: string): z.ZodTypeAny {
+  const detailedSysSchema = z.object({
+    space: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('Space'),
+        id: z.string(),
+      }),
+    }),
+    id: z.string(),
+    type: z.union([z.literal('Entry'), z.literal('Asset'), z.literal('Link')]),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime(),
+    environment: z.object({
+      sys: z.object({
+        id: z.string(),
+        type: z.literal('Link'),
+        linkType: z.literal('Environment'),
+      }),
+    }),
+    publishedVersion: z.number().optional(),
+    revision: z.number(),
+    locale: makeNullish(z.string()),
+    contentType: z
+      .object({
+        sys: z.object({
+          type: z.literal('Link'),
+          linkType: z.literal('ContentType'),
+          id: z.string(),
+        }),
+      })
+      .optional(),
+  });
+  const metadataSchema = z.object({
+    tags: z.array(z.unknown()),
+    concepts: z.array(z.unknown()),
+  });
+  const assetFieldsSchema = z.object({
+    title: makeNullish(z.string()),
+    description: makeNullish(z.string()),
+    file: z.object({
+      url: z.string(),
+      details: z.object({
+        size: z.number(),
+        image: makeNullish(
+          z.object({
+            width: z.number(),
+            height: z.number(),
+          }),
+        ),
+      }),
+      fileName: z.string(),
+      contentType: z.string(),
+    }),
+  });
+  const linkedItemBaseSchema = z.object({
+    metadata: metadataSchema,
+    sys: detailedSysSchema,
+  });
+  if (linkType === 'Asset') {
+    return linkedItemBaseSchema.extend({
+      sys: detailedSysSchema.extend({
+        type: z.union([z.literal('Asset'), z.literal('Link')]),
+        contentType: makeNullish(z.undefined()),
+      }),
+      fields: assetFieldsSchema,
+    });
+  } else if (linkType === 'Entry') {
+    return linkedItemBaseSchema.extend({
+      sys: detailedSysSchema.extend({
+        type: z.union([z.literal('Entry'), z.literal('Link')]),
+        contentType: z.object({
+          sys: z.object({
+            type: z.literal('Link'),
+            linkType: z.literal('ContentType'),
+            id: z.string(),
+          }),
+        }),
+      }),
+      fields: z.record(z.unknown()),
+    });
+  } else {
+    return z.union([
+      linkedItemBaseSchema.extend({
+        sys: detailedSysSchema.extend({
+          type: z.union([z.literal('Asset'), z.literal('Link')]),
+          contentType: makeNullish(z.undefined()),
+        }),
+        fields: assetFieldsSchema,
+      }),
+      linkedItemBaseSchema.extend({
+        sys: detailedSysSchema.extend({
+          type: z.union([z.literal('Entry'), z.literal('Link')]),
+          contentType: z
+            .object({
+              sys: z.object({
+                type: z.literal('Link'),
+                linkType: z.literal('ContentType'),
+                id: z.string(),
+              }),
+            })
+            .optional(),
+        }),
+        fields: z.record(z.unknown()),
+      }),
+    ]);
+  }
+}
+
+function createContentTypeSchema(contentType: ContentfulContentType): Record<string, z.ZodTypeAny> {
+  const fieldSchemas: Record<string, z.ZodTypeAny> = {};
+  for (const field of contentType.fields) {
+    let fieldSchema = createBaseFieldSchema(field);
+    if (!field.required) {
+      fieldSchema = fieldSchema.optional();
+    }
+    fieldSchemas[field.id] = fieldSchema;
+  }
+  return fieldSchemas;
+}
+
+function generateContentfulSchemas(
+  contentfulSchema: ContentfulSchema,
+): Record<string, Record<string, z.ZodTypeAny>> {
+  const schemas: Record<string, Record<string, z.ZodTypeAny>> = {};
+  for (const contentType of contentfulSchema.contentTypes) {
+    schemas[contentType.sys.id] = createContentTypeSchema(contentType);
+  }
+  return schemas;
+}
 
 // Read the schema.json file
 const contentfulJsonPath = resolve(__dirname, '../contentful/schema.json');
@@ -16,6 +239,10 @@ const fieldSchemasMap = generateContentfulSchemas(contentfulSchema);
 // Name for the known recursive Rich Text schema
 const RICH_TEXT_SCHEMA_NAME = 'RichTextNodeSchema';
 
+// ========================================
+// Helper functions for transforms
+// ========================================
+
 // Helper to convert a field schema to a string representation (Simplified for recursion)
 function zodToString(schema: any, indentationLevel = 0): string {
   if (!schema?._def) return 'z.unknown()';
@@ -23,14 +250,25 @@ function zodToString(schema: any, indentationLevel = 0): string {
   const indent = '  '.repeat(indentationLevel);
   const nextIndent = '  '.repeat(indentationLevel + 1);
 
-  // --- Type Handling (Simplified Lazy Handling) ---
   switch (schema._def.typeName) {
     case 'ZodLazy':
-      // Directly return the predefined name. Assumes this is the Rich Text schema.
-      // This prevents recursion during string generation.
       return RICH_TEXT_SCHEMA_NAME;
-    case 'ZodEffects':
+    case 'ZodEffects': {
+      const effect = schema._def.effect;
+      if (effect && effect.type === 'transform') {
+        const fnStr = effect.transform.toString();
+        if (
+          fnStr.includes('filterUnpublished') ||
+          (fnStr.includes('publishedVersion') && fnStr.includes('filter'))
+        ) {
+          return `${zodToString(schema._def.schema, indentationLevel)}.transform(arr => arr.filter(item => item?.sys?.publishedVersion))`;
+        }
+        if (fnStr.includes('publishedVersion') && fnStr.includes('val ?')) {
+          return `${zodToString(schema._def.schema, indentationLevel)}.transform(val => val?.sys?.publishedVersion ? val : null)`;
+        }
+      }
       return zodToString(schema._def.schema, indentationLevel);
+    }
     case 'ZodString':
       return schema._def.checks?.some((c: any) => c.kind === 'datetime')
         ? 'z.string().datetime()'
@@ -62,7 +300,21 @@ function zodToString(schema: any, indentationLevel = 0): string {
       const optionalTypeString = schema._def.innerType
         ? zodToString(schema._def.innerType, indentationLevel)
         : 'z.unknown()';
-      return `${optionalTypeString}.optional().nullable()`;
+      // Avoid double .nullish()
+      if (optionalTypeString.endsWith('.nullish()')) {
+        return optionalTypeString;
+      }
+      return `${optionalTypeString}.nullish()`;
+    }
+    case 'ZodNullable': {
+      const nullableTypeString = schema._def.innerType
+        ? zodToString(schema._def.innerType, indentationLevel)
+        : 'z.unknown()';
+      // Avoid double .nullish()
+      if (nullableTypeString.endsWith('.nullish()')) {
+        return nullableTypeString;
+      }
+      return `${nullableTypeString}.nullish()`;
     }
     case 'ZodRecord': {
       const keyTypeString =
@@ -96,11 +348,49 @@ function zodToString(schema: any, indentationLevel = 0): string {
       return 'z.never()';
     case 'ZodUndefined':
       return 'z.undefined()';
+    case 'ZodPipeline': {
+      // ZodPipeline has input and output types
+      const inputTypeString =
+        schema._def.in instanceof z.ZodType
+          ? zodToString(schema._def.in, indentationLevel)
+          : 'z.unknown()';
+      const outputTypeString =
+        schema._def.out instanceof z.ZodType
+          ? zodToString(schema._def.out, indentationLevel)
+          : 'z.unknown()';
+      return `${inputTypeString}.pipe(${outputTypeString})`;
+    }
     default:
       console.warn(`Unhandled Zod type: ${schema._def.typeName}`);
       return 'z.unknown()';
   }
 }
+
+// Generate the string for all content type schemas and set tracker flags
+const contentTypeSchemasString = Object.entries(fieldSchemasMap)
+  .map(([key, fields]) => {
+    const fieldsSchemaString = zodToString(z.object(fields), 1);
+    return `
+// Schema for ${key}
+export const ${key}FieldsSchema = ${fieldsSchemaString};
+
+export const ${key}Schema = z.object({
+  metadata: metadataSchema,
+  sys: sysEntrySchema.extend({
+    contentType: z.object({
+      sys: z.object({
+        type: z.literal('Link'),
+        linkType: z.literal('ContentType'),
+        id: z.literal('${key}'),
+      }),
+    }),
+  }),
+  fields: ${key}FieldsSchema,
+});
+
+export type ${key} = z.infer<typeof ${key}Schema>;`;
+  })
+  .join('\n\n');
 
 // Convert schemas to TypeScript code
 const schemaCode = `import { z } from 'zod';
@@ -151,7 +441,7 @@ const sysEntrySchema = sysBaseSchema.extend({
 });
 
 const sysAssetSchema = sysBaseSchema.extend({
-    type: z.literal('Asset'),
+    type: z.union([z.literal('Asset'), z.literal('Link')]),
     publishedVersion: z.number().optional().nullable(),
 });
 
@@ -199,33 +489,7 @@ export type RichTextNode = z.infer<typeof ${RICH_TEXT_SCHEMA_NAME}>;
 // Content Type Specific Schemas
 // ========================================
 
-${Object.entries(fieldSchemasMap)
-  .map(([key, fields]) => {
-    // Generate the string for the fields object schema using the simplified zodToString
-    const fieldsSchemaString = zodToString(z.object(fields), 1);
-
-    // Construct the full schema definition string for the content type
-    return `
-// Schema for ${key}
-export const ${key}FieldsSchema = ${fieldsSchemaString};
-
-export const ${key}Schema = z.object({
-  metadata: metadataSchema,
-  sys: sysEntrySchema.extend({
-    contentType: z.object({
-      sys: z.object({
-        type: z.literal('Link'),
-        linkType: z.literal('ContentType'),
-        id: z.literal('${key}'),
-      }),
-    }),
-  }),
-  fields: ${key}FieldsSchema,
-});
-
-export type ${key} = z.infer<typeof ${key}Schema>;`;
-  })
-  .join('\n\n')}
+${contentTypeSchemasString}
 
 // ========================================
 // Union Schema and Helper Object
@@ -259,3 +523,40 @@ const outputPath = resolve(__dirname, '../contentful/schema.ts');
 writeFileSync(outputPath, schemaCode);
 
 console.log('Successfully generated Contentful schemas!');
+
+// Utility to make a Zod schema deeply partial (all nested fields optional)
+function deepPartial<T extends z.ZodTypeAny>(schema: T): T {
+  if (schema instanceof z.ZodOptional || schema instanceof z.ZodNullable) {
+    // Already optional or nullish, do not wrap again
+    return schema;
+  }
+  if (schema instanceof z.ZodObject) {
+    const shape = schema.shape;
+    const newShape: any = {};
+    for (const key in shape) {
+      newShape[key] = deepPartial(shape[key]);
+    }
+    return (z.object(newShape) as any).partial();
+  }
+  if (schema instanceof z.ZodArray) {
+    return z.array(deepPartial(schema.element)) as any;
+  }
+  if (schema instanceof z.ZodUnion) {
+    return z.union(schema.options.map(deepPartial)) as any;
+  }
+  return schema;
+}
+
+// Utility to make a Zod schema nullish only if not already optional or nullable
+function makeNullish<T extends z.ZodTypeAny>(schema: T): T {
+  if (
+    schema instanceof z.ZodOptional ||
+    schema instanceof z.ZodNullable ||
+    (schema._def && schema._def.typeName === 'ZodOptional') ||
+    (schema._def && schema._def.typeName === 'ZodNullable')
+  ) {
+    return schema;
+  }
+  // @ts-ignore
+  return schema.nullish();
+}
