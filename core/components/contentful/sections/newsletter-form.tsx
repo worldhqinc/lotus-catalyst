@@ -13,7 +13,7 @@ export function NewsletterForm({
   inputPlaceholder,
 }: z.infer<typeof newsletterFormSchema>['fields']) {
   return (
-    <section className="bg-primary text-background relative isolate overflow-hidden py-16 text-center">
+    <section className="bg-primary text-background @container relative isolate overflow-hidden py-16 text-center">
       <Image
         alt="Lotus Pattern"
         className="absolute inset-0 top-1/2 left-1/2 -z-10 h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover"
