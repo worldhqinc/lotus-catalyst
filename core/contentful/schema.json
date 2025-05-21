@@ -4199,7 +4199,7 @@
         "id": "heroSection",
         "type": "ContentType",
         "createdAt": "2025-04-21T14:33:30.959Z",
-        "updatedAt": "2025-05-20T03:01:16.475Z",
+        "updatedAt": "2025-05-21T20:46:33.783Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4207,8 +4207,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 20,
-        "publishedAt": "2025-05-20T03:01:16.475Z",
+        "publishedVersion": 26,
+        "publishedAt": "2025-05-21T20:46:33.783Z",
         "firstPublishedAt": "2025-04-21T14:35:44.484Z",
         "createdBy": {
           "sys": {
@@ -4224,8 +4224,8 @@
             "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 10,
-        "version": 21,
+        "publishedCounter": 13,
+        "version": 27,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -4251,11 +4251,22 @@
           "omitted": false
         },
         {
+          "id": "heroEyebrow",
+          "name": "Hero Eyebrow",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
           "id": "heroTagline",
           "name": "Hero Tagline",
           "type": "Text",
           "localized": true,
-          "required": true,
+          "required": false,
           "validations": [
           ],
           "disabled": false,
@@ -4270,10 +4281,21 @@
           "validations": [
             {
               "in": [
-                "basic",
-                "white"
+                "hero_one",
+                "hero_two"
               ]
             }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "invertTextColor",
+          "name": "Invert Text Color",
+          "type": "Boolean",
+          "localized": false,
+          "required": false,
+          "validations": [
           ],
           "disabled": false,
           "omitted": false

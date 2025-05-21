@@ -4303,8 +4303,10 @@ export type feature = z.infer<typeof featureSchema>;
 // Schema for heroSection
 export const heroSectionFieldsSchema = z.object({
   heroTitle: z.string(),
-  heroTagline: z.string(),
+  heroEyebrow: z.string().nullish(),
+  heroTagline: z.string().nullish(),
   type: z.string().nullish(),
+  invertTextColor: z.boolean().nullish(),
   cta: z
     .object({
       metadata: z.object({

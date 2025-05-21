@@ -195,7 +195,7 @@ function CenteredHeroBanner({
   title: string;
 }) {
   return (
-    <SectionLayout className="bg-contrast-200 relative isolate h-[calc(100vh-(var(--site-header-height)+48px))]">
+    <SectionLayout className="bg-contrast-200 relative isolate h-[calc(100vh-(var(--site-header-height)+48px))] min-h-[480px] lg:min-h-[900px]">
       {mediaElement}
       <div className="flex w-full flex-col items-center justify-center gap-8 py-20 lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
         {isPageHeader ? (

@@ -27,7 +27,7 @@ export function Highlights({
       <div className="mb-12 flex flex-col items-center gap-4">
         <h2 className="text-icon-primary text-4xl">{title}</h2>
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="bg-primary relative isolate overflow-hidden rounded-lg p-4 lg:p-8 xl:aspect-square">
           <Image
             alt="Lotus Pattern"

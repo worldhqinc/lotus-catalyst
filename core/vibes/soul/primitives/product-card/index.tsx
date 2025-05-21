@@ -112,7 +112,7 @@ export function ProductCard({
             <Image
               alt={image.alt}
               className={clsx(
-                'w-full scale-100 object-cover transition-transform duration-500 ease-out select-none group-hover:scale-110',
+                'ease-quad w-full scale-100 object-cover transition-transform duration-200 select-none group-hover:scale-105',
                 {
                   light: 'bg-[var(--product-card-light-background,hsl(var(--contrast-100))]',
                   dark: 'bg-[var(--product-card-dark-background,hsl(var(--contrast-500))]',
@@ -126,7 +126,7 @@ export function ProductCard({
           ) : (
             <div
               className={clsx(
-                'pt-5 pl-5 text-4xl leading-[0.8] font-bold tracking-tighter break-words opacity-25 transition-transform duration-500 ease-out group-hover:scale-105 @xs:text-7xl',
+                'ease-quad pt-5 pl-5 text-4xl leading-[0.8] font-bold tracking-tighter break-words opacity-25 transition-transform duration-500 group-hover:scale-105 @xs:text-7xl',
                 {
                   light: 'text-[var(--product-card-light-title,hsl(var(--foreground)))]',
                   dark: 'text-[var(--product-card-dark-title,hsl(var(--background)))]',
@@ -275,7 +275,7 @@ function AddToBagForm({ sku }: { sku: string }) {
   return (
     <div
       className={clsx(
-        'flex size-full items-end justify-center p-4 transition-opacity duration-500 group-hover:opacity-100',
+        'ease-quad flex size-full items-end justify-center p-4 transition-opacity duration-200 group-hover:opacity-100',
         pending ? 'opacity-100' : 'opacity-0',
       )}
     >

@@ -1,3 +1,5 @@
+import { clsx } from 'clsx';
+
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
@@ -7,10 +9,12 @@ import { ensureImageUrl, getLinkHref } from '~/lib/utils';
 
 export function HeroSection({
   type,
+  heroEyebrow,
   heroTitle,
   heroTagline,
   cta,
   image,
+  invertTextColor,
   wistiaId,
 }: heroSection['fields']) {
   const imageUrl = image?.fields.file.url ?? '';
@@ -30,45 +34,32 @@ export function HeroSection({
     </figure>
   );
 
-  if (type === 'white') {
-    return (
-      <SectionLayout className="bg-contrast-200 relative isolate flex min-h-[80vh] items-center overflow-hidden text-center">
-        {mediaElement}
-        <div className="mx-auto max-w-2xl py-40">
-          <h1 className="font-heading mb-6 text-center text-6xl text-white uppercase sm:text-8xl">
-            {heroTitle}
-          </h1>
-          {heroTagline ? (
-            <p className="mx-auto mb-16 max-w-2xl text-center text-white">{heroTagline}</p>
-          ) : null}
-        </div>
-      </SectionLayout>
-    );
-  }
-
-  if (type === 'basic') {
-    const validCta = cta ? ctaSchema.parse(cta) : null;
-    const linkHref = validCta ? getLinkHref(validCta.fields) : '#';
-
-    return (
-      <SectionLayout className="relative isolate flex min-h-[80vh] items-center overflow-hidden text-center">
-        {mediaElement}
-        <h1 className="text-surface-foreground font-heading mx-auto mb-6 max-w-2xl text-center text-4xl uppercase sm:text-6xl">
-          {heroTitle}
-        </h1>
-        <p className="text-contrast-400 mx-auto mb-16 max-w-2xl text-center">{heroTagline}</p>
-        {validCta && <ButtonLink href={linkHref}>{validCta.fields.text}</ButtonLink>}
-      </SectionLayout>
-    );
-  }
+  const validCta = cta ? ctaSchema.parse(cta) : null;
+  const linkHref = validCta ? getLinkHref(validCta.fields) : '#';
 
   return (
-    <SectionLayout className="bg-surface-image relative isolate flex min-h-[80vh] items-center overflow-hidden py-20 text-center">
+    <SectionLayout className="bg-surface-image relative isolate flex h-[calc(100vh-(var(--site-header-height)+48px))] items-center overflow-hidden py-20 text-center lg:min-h-[900px]">
       {mediaElement}
-      <h1 className="text-icon-primary tracking-widest uppercase">{heroTitle}</h1>
-      <p className="text-icon-primary font-heading mt-4 text-3xl leading-tight md:text-5xl">
-        {heroTagline}
-      </p>
+      <div
+        className={clsx(
+          'mx-auto space-y-4',
+          invertTextColor && 'text-white',
+          type === 'hero_two' ? 'max-w-6xl' : 'max-w-4xl',
+        )}
+      >
+        <span className="tracking-widest uppercase">{heroEyebrow}</span>
+        <h1
+          className={clsx(
+            type === 'hero_two'
+              ? 'font-heading mt-4 text-3xl leading-tight md:text-5xl'
+              : 'font-heading mt-4 text-4xl leading-tight uppercase md:text-6xl',
+          )}
+        >
+          {heroTitle}
+        </h1>
+        <p className="text-lg leading-8 lg:text-xl lg:leading-8">{heroTagline}</p>
+        {validCta && <ButtonLink href={linkHref}>{validCta.fields.text}</ButtonLink>}
+      </div>
     </SectionLayout>
   );
 }
