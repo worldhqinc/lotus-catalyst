@@ -57,7 +57,7 @@ export function CardSection({
 
             return (
               <div
-                className="bg-surface-image relative isolate flex aspect-4/3 flex-col justify-end overflow-hidden rounded-lg p-8"
+                className="bg-surface-image relative isolate flex aspect-square flex-col justify-end overflow-hidden rounded-lg p-8 lg:aspect-4/3"
                 key={`${card.sys.id}-${index}`}
               >
                 {card.fields.image && (

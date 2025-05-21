@@ -23,6 +23,8 @@ import WeglotClient from '~/components/weglot-client';
 import { routing } from '~/i18n/routing';
 import { getToastNotification } from '~/lib/server-toast';
 
+import { SmoothScrolling } from './smooth-scrolling';
+
 const RootLayoutMetadataQuery = graphql(
   `
     query RootLayoutMetadataQuery {
@@ -120,21 +122,23 @@ export default async function RootLayout({ params, children }: Props) {
   return (
     <html className={clsx(fonts.map((f) => f.variable))} lang={locale}>
       <body className="font-body flex min-h-screen flex-col antialiased [&_[data-radix-popper-content-wrapper]]:!z-20">
-        <GoogleTagManager gtmId={`${process.env.NEXT_PUBLIC_GTM_ID}`} />
-        <NextIntlClientProvider>
-          <WeglotClient />
-          <NuqsAdapter>
-            {/* <AnalyticsProvider channelId={data.channel.entityId} settings={data.site.settings}> */}
-            <Providers>
-              {toastNotificationCookieData && (
-                <CookieNotifications {...toastNotificationCookieData} />
-              )}
-              {children}
-            </Providers>
-            {/* </AnalyticsProvider> */}
-          </NuqsAdapter>
-        </NextIntlClientProvider>
-        <VercelComponents />
+        <SmoothScrolling>
+          <GoogleTagManager gtmId={`${process.env.NEXT_PUBLIC_GTM_ID}`} />
+          <NextIntlClientProvider>
+            <WeglotClient />
+            <NuqsAdapter>
+              {/* <AnalyticsProvider channelId={data.channel.entityId} settings={data.site.settings}> */}
+              <Providers>
+                {toastNotificationCookieData && (
+                  <CookieNotifications {...toastNotificationCookieData} />
+                )}
+                {children}
+              </Providers>
+              {/* </AnalyticsProvider> */}
+            </NuqsAdapter>
+          </NextIntlClientProvider>
+          <VercelComponents />
+        </SmoothScrolling>
       </body>
     </html>
   );

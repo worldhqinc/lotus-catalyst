@@ -58,7 +58,7 @@ function StackedHeroBanner({
   title: string;
 }) {
   return (
-    <section className="bg-contrast-200 relative isolate h-auto overflow-hidden lg:h-screen">
+    <section className="relative isolate h-auto overflow-hidden bg-[#F6F2EF] lg:h-screen">
       <div className="grid h-full grid-cols-[minmax(var(--container-padding),1fr)_minmax(0,calc((var(--container-max-width)/2)))_minmax(0,calc((var(--container-max-width)/2)))_minmax(var(--container-padding),1fr)] gap-y-8 lg:gap-0">
         <div
           className={clsx(
@@ -136,7 +136,8 @@ function LeftAlignedHeroBanner({
   variant: string;
 }) {
   return (
-    <SectionLayout className="bg-contrast-200 relative isolate h-screen [&_>div]:h-full">
+    <SectionLayout className="relative isolate h-screen [&_>div]:h-full">
+      <div className="absolute inset-0 -z-10 bg-linear-to-l from-transparent to-black/50" />
       {mediaElement}
       <div className={clsx('flex h-full w-full flex-col justify-center gap-8')}>
         {isPageHeader ? (
@@ -194,7 +195,7 @@ function CenteredHeroBanner({
   title: string;
 }) {
   return (
-    <SectionLayout className="bg-contrast-200 relative isolate h-[90vh]">
+    <SectionLayout className="bg-contrast-200 relative isolate h-[calc(100vh-(var(--site-header-height)+48px))]">
       {mediaElement}
       <div className="flex w-full flex-col items-center justify-center gap-8 py-20 lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
         {isPageHeader ? (
