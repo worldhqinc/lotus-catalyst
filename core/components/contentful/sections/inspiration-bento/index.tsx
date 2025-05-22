@@ -148,7 +148,7 @@ export async function InspirationBento({
           {validCta ? <ContentfulCta cta={validCta} /> : null}
         </div>
       )}
-      <div className="mt-8 grid gap-8 lg:grid-cols-2">
+      <div className="mt-8 grid gap-4 lg:grid-cols-2 lg:gap-6">
         {video ? (
           <figure className="bg-surface-image relative aspect-3/4 h-full w-full overflow-hidden rounded-lg lg:aspect-auto">
             <WistiaPlayer anchorIds={[]} pageType="page" wistiaMediaId={video} />
@@ -157,7 +157,7 @@ export async function InspirationBento({
         {validCardsData?.length ? (
           <div
             className={clsx(
-              'grid grid-cols-1 gap-8 md:grid-cols-2',
+              'grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6',
               video ? 'lg:col-start-2' : 'lg:col-span-2',
             )}
           >

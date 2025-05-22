@@ -32,7 +32,7 @@ export function Card({ categories, image, pageSlug, recipeName, shortDescription
         {image && (
           <Image
             alt={recipeName}
-            className="h-full w-full object-cover"
+            className="ease-quad h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
             height={image.fields.file.details.image.height}
             src={ensureImageUrl(image.fields.file.url)}
             width={image.fields.file.details.image.width}
