@@ -41,7 +41,7 @@ export function SelectField({
   return (
     <div className={clsx('w-full', className)}>
       <Label
-        className={clsx(hideLabel && 'sr-only', 'text-foreground mb-2 text-sm font-medium')}
+        className={clsx(hideLabel && 'sr-only', 'text-foreground mb-1 text-sm font-medium')}
         colorScheme={colorScheme}
         htmlFor={id}
       >
