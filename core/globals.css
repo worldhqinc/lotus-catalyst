@@ -92,6 +92,10 @@
   :where(a, button, input, select, textarea):focus-visible {
     @apply ring-primary rounded ring-2 ring-offset-2 outline-none;
   }
+
+  *::selection {
+    @apply bg-primary text-white;
+  }
 }
 
 @layer components {

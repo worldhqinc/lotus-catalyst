@@ -3,7 +3,6 @@ import { clsx } from 'clsx';
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
-import { Carousel, CarouselContent, CarouselItem } from '@/vibes/soul/primitives/carousel';
 import { CursorPagination, CursorPaginationInfo } from '@/vibes/soul/primitives/cursor-pagination';
 import {
   type Product,
@@ -117,19 +116,14 @@ export function OrderList({
                       {viewDetailsLabel}
                     </ButtonLink>
                   </div>
-                  <div className="mt-6 overflow-hidden [mask-image:linear-gradient(to_right,_black_0%,_black_80%,_transparent_98%)]">
-                    <Carousel>
-                      <CarouselContent className="-ml-5 flex @2xl:-ml-5">
-                        {order.lineItems.map((lineItem) => (
-                          <CarouselItem
-                            className="basis-2/5 pl-5 @2xl:basis-1/4 @2xl:pl-5 @5xl:basis-1/5"
-                            key={lineItem.id}
-                          >
-                            <ProductCard product={lineItem} />
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-                    </Carousel>
+                  <div className="mt-8 overflow-hidden [mask-image:linear-gradient(to_right,_black_0%,_black_80%,_transparent_98%)]">
+                    <div className="grid min-w-[1024px] auto-cols-fr grid-flow-col grid-cols-6 gap-4 overflow-hidden">
+                      {order.lineItems.map((lineItem) => (
+                        <div className="min-w-36" key={lineItem.id}>
+                          <ProductCard aspectRatio="1:1" product={lineItem} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ))}

@@ -70,7 +70,7 @@ export function ProductCard({
   colorScheme = 'light',
   className,
   showCompare = false,
-  aspectRatio = '5:6',
+  aspectRatio = '1:1',
   compareLabel,
   compareParamName,
   imagePriority = false,
@@ -103,8 +103,8 @@ export function ProductCard({
               : 'relative overflow-hidden rounded-xl @md:rounded-2xl',
             ratioClass,
             {
-              light: 'bg-[var(--product-card-light-background,hsl(var(--contrast-100)))]',
-              dark: 'bg-[var(--product-card-dark-background,hsl(var(--contrast-500)))]',
+              light: 'bg-contrast-100',
+              dark: 'bg-contrast-100',
             }[colorScheme],
           )}
         >
@@ -114,8 +114,8 @@ export function ProductCard({
               className={clsx(
                 'ease-quad w-full scale-100 object-cover transition-transform duration-200 select-none group-hover:scale-105',
                 {
-                  light: 'bg-[var(--product-card-light-background,hsl(var(--contrast-100))]',
-                  dark: 'bg-[var(--product-card-dark-background,hsl(var(--contrast-500))]',
+                  light: 'bg-contrast-100',
+                  dark: 'bg-contrast-100',
                 }[colorScheme],
               )}
               fill
