@@ -48,12 +48,12 @@ export function BlockProductFeaturesAccordion({
 
   return (
     <SectionLayout containerClassName="bg-white py-24" containerSize="2xl">
-      <div className="mb-17 flex flex-col items-center">
+      <div className="mb-8 flex flex-col items-center lg:mb-16">
         <h2 className="text-surface-foreground max-w-4xl text-center text-2xl md:text-4xl">
           {heading}
         </h2>
       </div>
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="relative aspect-3/4 overflow-hidden rounded-lg">
           <WistiaPlayer
             activeId={activeItem}
@@ -65,7 +65,7 @@ export function BlockProductFeaturesAccordion({
         <Carousel className="md:hidden" setApi={setApi}>
           <CarouselContent>
             {accordionItems.map((item) => (
-              <CarouselItem className="w-full space-y-6" key={item.sys.id}>
+              <CarouselItem className="w-full space-y-4" key={item.sys.id}>
                 <h3 className="text-xl leading-[120%] font-medium tracking-[1.8px] uppercase">
                   {item.fields.title}
                 </h3>

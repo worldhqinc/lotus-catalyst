@@ -15,7 +15,7 @@ export function BlockProductFeatures({
 
   return (
     <SectionLayout containerClassName="bg-white py-24" containerSize="2xl">
-      <div className="mb-17 flex flex-col items-center">
+      <div className="mb-8 flex flex-col items-center lg:mb-16">
         <h2 className="text-surface-foreground max-w-4xl text-center text-2xl md:text-4xl">
           {heading}
         </h2>
@@ -23,8 +23,8 @@ export function BlockProductFeatures({
       <div
         className={
           alternate
-            ? 'grid grid-cols-1 gap-8 md:grid-cols-3'
-            : 'grid grid-cols-1 gap-8 md:grid-cols-2 md:grid-rows-2'
+            ? 'grid grid-cols-1 gap-4 md:grid-cols-3 lg:gap-6'
+            : 'grid grid-cols-1 gap-4 md:grid-cols-2 md:grid-rows-2 lg:gap-6'
         }
       >
         {parsedItems.map(({ sys, fields }, idx) => {
