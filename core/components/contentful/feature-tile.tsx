@@ -1,5 +1,5 @@
 import {
-  ChevronUp,
+  ChevronsUp,
   CircleGauge,
   CircleSlash2,
   Fingerprint,
@@ -13,7 +13,7 @@ import {
 import type { featureTile } from '~/contentful/schema';
 
 const IconMap = {
-  'chevron-up': ChevronUp,
+  'chevron-up': ChevronsUp,
   'circle-gauge': CircleGauge,
   'circle-slash-2': CircleSlash2,
   flame: Flame,
