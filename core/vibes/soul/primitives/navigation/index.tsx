@@ -662,8 +662,16 @@ export const Navigation = forwardRef(function Navigation(
           </Link>
           <Dialog.Root onOpenChange={setIsMinicartDrawerOpen} open={isMinicartDrawerOpen}>
             <Dialog.Portal>
-              <Dialog.Overlay className="bg-foreground/50 fixed inset-0 z-[1000000]" />
-              <Dialog.Content className="fixed inset-y-0 right-0 z-[1000000] w-full max-w-md bg-white shadow-xl">
+              <Dialog.Overlay
+                className="bg-foreground/50 fixed inset-0 z-[1000000]"
+                data-lenis-prevent
+              />
+              <Dialog.Content
+                className="fixed inset-y-0 right-0 z-[1000000] w-full max-w-md bg-white shadow-xl"
+                data-lenis-prevent
+                onCloseAutoFocus={(e) => e.preventDefault()}
+                onOpenAutoFocus={(e) => e.preventDefault()}
+              >
                 <Dialog.Title className="sr-only">Cart</Dialog.Title>
                 <Stream
                   fallback={
