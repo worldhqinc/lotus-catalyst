@@ -49,7 +49,10 @@ export const Banner = forwardRef(
   ) => {
     return (
       <div
-        className={clsx('bg-primary relative isolate overflow-hidden py-3 text-white', className)}
+        className={clsx(
+          'bg-primary relative isolate overflow-hidden py-2 text-sm text-white',
+          className,
+        )}
         ref={ref}
       >
         <Image
@@ -77,6 +80,7 @@ export const Banner = forwardRef(
               <li>
                 <div className="flex items-center gap-2">
                   <svg
+                    className="h-5 w-5"
                     fill="none"
                     height="24"
                     viewBox="0 0 24 24"

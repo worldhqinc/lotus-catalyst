@@ -300,7 +300,7 @@ export const LocaleSwitcher = ({
           title="Message to cookie opt out users"
           trigger={
             <button
-              className="flex items-center gap-1 p-0 text-base transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30"
+              className="flex items-center gap-1 p-0 text-sm transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30"
               type="button"
             >
               English
@@ -323,7 +323,7 @@ export const LocaleSwitcher = ({
         <div className="hidden @4xl:inline-block">
           <DropdownMenu.Root>
             <DropdownMenu.Trigger
-              className="nav-locale-button flex items-center gap-1 p-0 text-base transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30"
+              className="nav-locale-button flex items-center gap-1 p-0 text-sm transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30"
               disabled={isPending}
             >
               {getLocaleLabel(activeLocaleId)}
@@ -458,14 +458,13 @@ export const Navigation = forwardRef(function Navigation(
   return (
     <NavigationMenu.Root
       className={clsx(
-        'font-body @container relative w-full bg-white',
+        'font-body border-contrast-100 @container relative w-full border-b bg-white',
         className,
-        isFloating ? 'shadow-md' : 'shadow-none',
       )}
       delayDuration={0}
       ref={ref}
     >
-      <div className="container flex items-center justify-between gap-1 bg-[var(--nav-background,hsl(var(--background)))] py-2 @4xl:py-4">
+      <div className="container flex items-center justify-between gap-1 bg-[var(--nav-background,hsl(var(--background)))] py-2">
         {/* Logo */}
         <div
           className={clsx(
@@ -517,7 +516,7 @@ export const Navigation = forwardRef(function Navigation(
                     {item.groups != null && item.groups.length > 0 ? (
                       <button
                         className={clsx(
-                          '@4xl:after:bg-border @4xl:after:ease-quad hidden after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
+                          '@4xl:after:bg-border @4xl:after:ease-quad hidden after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-3 @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
                           pathname.includes('/shop/')
                             ? '@4xl:after:bg-primary @4xl:after:scale-x-100'
                             : 'after:scale-x-0',
@@ -528,7 +527,7 @@ export const Navigation = forwardRef(function Navigation(
                     ) : (
                       <Link
                         className={clsx(
-                          '@4xl:after:bg-border @4xl:after:ease-quad text-nowrap after:hover:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:p-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
+                          '@4xl:after:bg-border @4xl:after:ease-quad text-nowrap after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
                           pathname === item.href || pathname === `${item.href}/`
                             ? '@4xl:after:bg-primary @4xl:after:scale-x-100'
                             : 'after:scale-x-0',
@@ -545,7 +544,7 @@ export const Navigation = forwardRef(function Navigation(
                       onPointerEnter={(event) => event.preventDefault()}
                       onPointerLeave={(event) => event.preventDefault()}
                     >
-                      <div className="container m-auto grid grid-cols-3 justify-center gap-8 py-16">
+                      <div className="container m-auto grid grid-cols-2 justify-center gap-8 py-16 xl:grid-cols-3">
                         <div className="flex flex-col items-start gap-6">
                           {item.groups.map((group, columnIndex) => (
                             <ul className="flex flex-col gap-6" key={columnIndex}>
@@ -595,7 +594,7 @@ export const Navigation = forwardRef(function Navigation(
                             </NavigationMenu.Link>
                           </div>
                         </div>
-                        <div className="col-start-3">
+                        <div className="col-start-2 xl:col-start-3">
                           <Link className="group w-full" href="/shop/professional-series">
                             <div className="flex h-full flex-col">
                               <figure className="bg-surface-image aspect-[19/6] h-full min-h-[246px] w-full overflow-hidden rounded-lg">
