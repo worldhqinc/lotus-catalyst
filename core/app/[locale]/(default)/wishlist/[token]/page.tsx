@@ -1,3 +1,4 @@
+// import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
@@ -9,6 +10,7 @@ import { CursorPaginationInfo } from '@/vibes/soul/primitives/cursor-pagination'
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Wishlist, WishlistDetails } from '@/vibes/soul/sections/wishlist-details';
 import { addWishlistItemToCart } from '~/app/[locale]/(default)/account/wishlists/[id]/_actions/add-to-cart';
+// import { WishlistAnalyticsProvider } from '~/app/[locale]/(default)/account/wishlists/[id]/_components/wishlist-analytics-provider';
 import { ExistingResultType } from '~/client/util';
 import {
   WishlistShareButton,
@@ -73,12 +75,36 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   };
 }
 
+// const getAnalyticsData = async (token: string, searchParamsPromise: Promise<SearchParams>) => {
+//   const searchParamsParsed = searchParamsCache.parse(await searchParamsPromise);
+//   const wishlist = await getPublicWishlist(token, searchParamsParsed);
+
+//   if (!wishlist) {
+//     return [];
+//   }
+
+//   return removeEdgesAndNodes(wishlist.items)
+//     .map(({ product }) => product)
+//     .filter((product) => product !== null)
+//     .map((product) => {
+//       return {
+//         id: product.entityId,
+//         name: product.name,
+//         sku: product.sku,
+//         brand: product.brand?.name ?? '',
+//         price: product.prices?.price.value ?? 0,
+//         currency: product.prices?.price.currencyCode ?? '',
+//       };
+//     });
+// };
+
 export default async function PublicWishlist({ params, searchParams }: Props) {
   const { locale, token } = await params;
 
   setRequestLocale(locale);
 
   const t = await getTranslations('Wishlist');
+  const pwt = await getTranslations('PublicWishlist');
   const pt = await getTranslations('Product.ProductDetails');
   const wishlistActions = (wishlist?: Wishlist) => {
     if (!wishlist) {
@@ -115,15 +141,19 @@ export default async function PublicWishlist({ params, searchParams }: Props) {
   };
 
   return (
-    <SectionLayout>
-      <WishlistDetails
-        action={addWishlistItemToCart}
-        className="mt-8"
-        emptyStateText={t('emptyWishlist')}
-        headerActions={wishlistActions}
-        paginationInfo={Streamable.from(() => getPaginationInfo(token, searchParams))}
-        wishlist={Streamable.from(() => getWishlist(token, t, pt, searchParams))}
-      />
-    </SectionLayout>
+    <>
+      {/* <WishlistAnalyticsProvider data={Streamable.from(() => getAnalyticsData(token, searchParams))}> */}
+      <SectionLayout>
+        <WishlistDetails
+          action={addWishlistItemToCart}
+          className="mt-8"
+          emptyStateText={pwt('emptyWishlist')}
+          headerActions={wishlistActions}
+          paginationInfo={Streamable.from(() => getPaginationInfo(token, searchParams))}
+          wishlist={Streamable.from(() => getWishlist(token, t, pt, searchParams))}
+        />
+      </SectionLayout>
+      {/* // </WishlistAnalyticsProvider> */}
+    </>
   );
 }
