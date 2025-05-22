@@ -17,6 +17,7 @@ import { productOptionsTransformer } from '~/data-transformers/product-options-t
 import { getPreferredCurrencyCode } from '~/lib/currency';
 import { formatDimension, formatWeight } from '~/lib/unit-converter';
 import { isMobileUser } from '~/lib/user-agent';
+import { ensureImageUrl } from '~/lib/utils';
 
 import { addToCart } from './_actions/add-to-cart';
 // import { ProductAnalyticsProvider } from './_components/product-analytics-provider';
@@ -32,7 +33,6 @@ import {
   getProductPricingAndRelatedProducts,
   getStreamableProduct,
 } from './page-data';
-import { ensureImageUrl } from '~/lib/utils';
 
 interface Props {
   params: Promise<{ slug: string; locale: string }>;
