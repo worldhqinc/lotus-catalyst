@@ -6513,7 +6513,7 @@
         "id": "featureTile",
         "type": "ContentType",
         "createdAt": "2025-04-30T19:48:13.329Z",
-        "updatedAt": "2025-05-19T21:31:06.017Z",
+        "updatedAt": "2025-05-22T16:37:06.862Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -6521,8 +6521,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 7,
-        "publishedAt": "2025-05-19T21:31:06.017Z",
+        "publishedVersion": 9,
+        "publishedAt": "2025-05-22T16:37:06.862Z",
         "firstPublishedAt": "2025-04-30T19:48:13.670Z",
         "createdBy": {
           "sys": {
@@ -6538,8 +6538,8 @@
             "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 4,
-        "version": 8,
+        "publishedCounter": 5,
+        "version": 10,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -6573,6 +6573,7 @@
           "validations": [
             {
               "in": [
+                "chevron-up",
                 "circle-gauge",
                 "circle-slash-2",
                 "fingerprint",
