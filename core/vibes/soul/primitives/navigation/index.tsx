@@ -648,7 +648,12 @@ export const Navigation = forwardRef(function Navigation(
               {(currentDisplayCount) =>
                 currentDisplayCount != null &&
                 currentDisplayCount > 0 && (
-                  <span className="bg-primary absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full border border-white text-xs text-white">
+                  <span
+                    className={clsx(
+                      'bg-primary absolute flex items-center justify-center rounded-full border border-white text-xs text-white',
+                      currentDisplayCount > 9 ? 'top-0 right-0 h-6 w-6' : 'top-1 right-1 h-5 w-5',
+                    )}
+                  >
                     {currentDisplayCount}
                   </span>
                 )
