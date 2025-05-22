@@ -1,6 +1,6 @@
 'use client';
 
-import { Select } from '@/vibes/soul/form/select';
+import { SelectField } from '@/vibes/soul/form/select-field';
 import { Image } from '~/components/image';
 import type { featureItem, productFinishedGoods, supportDocument } from '~/contentful/schema';
 import { ensureImageUrl } from '~/lib/utils';
@@ -35,6 +35,11 @@ export function FeatureItem({
       })
       .filter((link) => link !== null) ?? [];
 
+  supportLinks.unshift({
+    label: 'Select a product',
+    value: '#',
+  });
+
   const handleSupportProductSelect = (value: string) => {
     const [, url] = value.split('|');
 
@@ -47,11 +52,14 @@ export function FeatureItem({
         <h3 className="text-4xl">{heading}</h3>
         {description ? <p className="text-contrast-400 mt-2">{description}</p> : null}
         {supportLinks.length > 0 ? (
-          <Select
+          <SelectField
             className="mt-12"
+            hideLabel
+            label="Select a product"
             name="support_product_select"
             onValueChange={handleSupportProductSelect}
             options={supportLinks}
+            value={supportLinks[0]?.value ?? ''}
           />
         ) : null}
       </div>

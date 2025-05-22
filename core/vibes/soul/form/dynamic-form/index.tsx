@@ -25,7 +25,7 @@ import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
 import { NumberInput } from '@/vibes/soul/form/number-input';
 import { RadioGroup } from '@/vibes/soul/form/radio-group';
-import { Select } from '@/vibes/soul/form/select';
+import { SelectField } from '@/vibes/soul/form/select-field';
 import { SwatchRadioGroup } from '@/vibes/soul/form/swatch-radio-group';
 import { Textarea } from '@/vibes/soul/form/textarea';
 import { Button, ButtonProps } from '@/vibes/soul/primitives/button';
@@ -304,23 +304,18 @@ function DynamicFormField({
 
     case 'select':
       return (
-        <div className="flex flex-col gap-1">
-          <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
-            {field.label}
-            {field.required && <span className="text-contrast-400">*</span>}
-          </Label>
-          <Select
-            errors={formField.errors}
-            key={field.name}
-            name={formField.name}
-            onBlur={controls.blur}
-            onFocus={controls.focus}
-            onValueChange={controls.change}
-            options={field.options}
-            required={formField.required}
-            value={typeof controls.value === 'string' ? controls.value : ''}
-          />
-        </div>
+        <SelectField
+          errors={formField.errors}
+          key={field.name}
+          label={field.label}
+          name={formField.name}
+          onBlur={controls.blur}
+          onFocus={controls.focus}
+          onValueChange={controls.change}
+          options={field.options}
+          required={formField.required}
+          value={typeof controls.value === 'string' ? controls.value : ''}
+        />
       );
 
     case 'radio-group':

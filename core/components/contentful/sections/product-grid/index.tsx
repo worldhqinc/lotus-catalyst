@@ -10,7 +10,7 @@ import {
   useRefinementList,
 } from 'react-instantsearch';
 
-import { Select } from '@/vibes/soul/form/select';
+import { SelectField } from '@/vibes/soul/form/select-field';
 import { Button } from '@/vibes/soul/primitives/button';
 import { ProductCard, ProductCardSkeleton } from '@/vibes/soul/primitives/product-card';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
@@ -120,11 +120,13 @@ function DropdownRefinementFilter({ attribute, label }: DropdownRefinementFilter
 
   return (
     <div className="flex max-w-max flex-col items-start @2xl:max-w-none">
-      <Select
+      <SelectField
+        hideLabel
+        label={label ?? ''}
         name={attribute}
         onValueChange={handleValueChange}
         options={options}
-        value={selectedValue}
+        value={selectedValue ?? ''}
         variant="rectangle"
       />
     </div>
@@ -153,7 +155,7 @@ function ClearFilters() {
       size="medium"
       variant="link"
     >
-      Clear
+      Clear filters
     </Button>
   );
 }
@@ -231,8 +233,10 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
       >
         <div className="flex w-full justify-between gap-4 pt-12 @2xl:flex-row @2xl:items-center">
           <div className="flex flex-col gap-4 @2xl:flex-row">
-            <div className="flex flex-col items-start">
-              <Select
+            <div className="flex flex-1 flex-col items-start">
+              <SelectField
+                hideLabel
+                label="Sort by"
                 name="sort"
                 onValueChange={(value) => setSortOption(value)}
                 options={sortOptions}
@@ -241,8 +245,10 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
               />
             </div>
             {type === 'all' && (
-              <div className="flex max-w-max flex-col items-start @2xl:max-w-none">
-                <Select
+              <div className="flex flex-1 flex-col items-start">
+                <SelectField
+                  hideLabel
+                  label="Filter by"
                   name="filter"
                   onValueChange={(value) => {
                     setFilterOption(value);

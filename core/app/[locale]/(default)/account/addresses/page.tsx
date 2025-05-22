@@ -110,7 +110,7 @@ export default async function Addresses({ params, searchParams }: Props) {
       countries={countries ?? []}
       deleteLabel={t('delete')}
       editLabel={t('edit')}
-      fields={fields}
+      fields={[...fields, { name: 'id', type: 'hidden', label: 'ID' }]}
       setDefaultLabel={t('setDefault')}
       showAddFormLabel={t('cta')}
     />

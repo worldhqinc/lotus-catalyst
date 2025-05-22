@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 
-import { Select } from '@/vibes/soul/form/select';
+import { SelectField } from '@/vibes/soul/form/select-field';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
@@ -206,9 +206,10 @@ export function ProductFormulationLookupClient({
       <div className="mx-auto max-w-3xl rounded bg-white p-12">
         <h2 className="mb-8 text-4xl">{title}</h2>
         <div className="mb-10">
-          <Select
-            aria-label="Select a product"
+          <SelectField
             className="flex-1"
+            hideLabel
+            label="Select a product"
             name="productSku"
             onValueChange={handleSelect}
             options={productOptions}

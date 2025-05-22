@@ -7,7 +7,7 @@ import { Checkbox } from '@/vibes/soul/form/checkbox';
 import { FormStatus } from '@/vibes/soul/form/form-status';
 import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
-import { Select } from '@/vibes/soul/form/select';
+import { SelectField } from '@/vibes/soul/form/select-field';
 import { Button } from '@/vibes/soul/primitives/button';
 import { toast } from '@/vibes/soul/primitives/toaster';
 import { Link } from '~/components/link';
@@ -158,19 +158,17 @@ export function ProductRegistrationForm({ modelNumberOptions }: Props) {
             <h2 className="mb-6 text-2xl font-medium tracking-[1.8px] uppercase">Your Product</h2>
             <div className="flex flex-col gap-4 md:flex-row">
               <div className="flex flex-1 flex-col gap-1">
-                <Label className="text-foreground text-sm font-medium" htmlFor="modelNumber">
-                  Model number<span className="text-contrast-400">*</span>
-                </Label>
-                <Select
-                  aria-label="Select a model number"
+                <SelectField
                   className="flex-1"
                   errors={getErrorsOrUndefined(formState.errors, 'modelNumber')}
                   id="modelNumber"
                   key={`modelNumber-${formDataKey}`}
+                  label="Model number"
                   name="modelNumber"
                   onValueChange={(value) => handleSelectChange('modelNumber', value)}
                   options={modelNumberOptions}
                   placeholder="Select a model number"
+                  required
                   value={formValues.modelNumber}
                 />
               </div>

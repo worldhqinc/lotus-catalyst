@@ -1,6 +1,6 @@
 'use client';
 
-import { Select } from '@/vibes/soul/form/select';
+import { Select } from '@/vibes/soul/primitives/select';
 import { usePathname, useRouter } from '~/i18n/routing';
 
 interface MenuLink {
@@ -48,7 +48,6 @@ export function SidebarMenuSelect({ links }: { links: MenuLink[] }) {
 
   return (
     <Select
-      name="sidebar-layout-link-select"
       onValueChange={(value) => {
         const option = options.find((opt) => opt.value === value);
 
@@ -58,7 +57,8 @@ export function SidebarMenuSelect({ links }: { links: MenuLink[] }) {
           router.push(value);
         }
       }}
-      options={options}
+      options={links.map((link) => ({ value: link.href, label: link.label }))}
+      position="popper"
       value={matchingLink}
     />
   );

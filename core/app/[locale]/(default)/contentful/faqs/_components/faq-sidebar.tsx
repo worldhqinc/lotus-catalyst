@@ -3,7 +3,7 @@
 import { clsx } from 'clsx';
 import { useEffect, useState } from 'react';
 
-import { Select } from '@/vibes/soul/form/select';
+import { SelectField } from '@/vibes/soul/form/select-field';
 import { usePathname } from '~/i18n/routing';
 
 interface FaqCategory {
@@ -130,14 +130,17 @@ export function FaqSidebar({ categories }: FaqSidebarProps) {
           );
         })}
       </div>
-      <Select
+      <SelectField
         className="lg:hidden"
+        hideLabel
+        label="Select a category"
         name="faq-category-select"
         onValueChange={(value: string) => handleClick(value)}
         options={categories.map(({ faqParentCategory, id }) => ({
           label: faqParentCategory,
           value: id,
         }))}
+        placeholder="Select a category"
         value={activeCategory ?? ''}
       />
     </>

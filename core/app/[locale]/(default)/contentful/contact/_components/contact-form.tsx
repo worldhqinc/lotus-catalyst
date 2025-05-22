@@ -6,7 +6,7 @@ import { type ChangeEvent, useActionState, useEffect, useRef, useState } from 'r
 import { FormStatus } from '@/vibes/soul/form/form-status';
 import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
-import { Select } from '@/vibes/soul/form/select';
+import { SelectField } from '@/vibes/soul/form/select-field';
 import { Button } from '@/vibes/soul/primitives/button';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { toast } from '@/vibes/soul/primitives/toaster';
@@ -142,18 +142,13 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
         (field) =>
           !field.hidden && (
             <div className="flex flex-col gap-1" key={field.id}>
-              <Label className="text-foreground text-sm font-medium" htmlFor={field.id.toString()}>
-                {field.title_in_portal}
-                {field.required ? <span className="text-contrast-400">*</span> : ''}
-              </Label>
-              {field.description ? (
-                <p className="text-contrast-400 text-xs">{field.description}</p>
-              ) : null}
               {field.custom_field_options ? (
-                <Select
+                <SelectField
+                  description={field.description}
                   errors={getErrorsOrUndefined(formState.errors, field.id.toString())}
                   id={field.id.toString()}
                   key={`${field.id}-${formDataKey}`}
+                  label={field.title_in_portal}
                   name={field.id.toString()}
                   onValueChange={(value) => handleSelectChange(field, value)}
                   options={field.custom_field_options.map((option) => ({
@@ -161,18 +156,30 @@ export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
                     value: option.value,
                   }))}
                   required={field.required}
-                  value={formValues[field.id.toString()]}
+                  value={formValues[field.id.toString()] ?? ''}
                 />
               ) : (
-                <Input
-                  errors={getErrorsOrUndefined(formState.errors, field.id.toString())}
-                  id={field.id.toString()}
-                  name={field.id.toString()}
-                  onChange={handleInputChange}
-                  required={field.required}
-                  type="text"
-                  value={formValues[field.id.toString()]}
-                />
+                <>
+                  <Label
+                    className="text-foreground text-sm font-medium"
+                    htmlFor={field.id.toString()}
+                  >
+                    {field.title_in_portal}
+                    {field.required ? <span className="text-contrast-400">*</span> : ''}
+                  </Label>
+                  {field.description ? (
+                    <p className="text-contrast-400 text-xs">{field.description}</p>
+                  ) : null}
+                  <Input
+                    errors={getErrorsOrUndefined(formState.errors, field.id.toString())}
+                    id={field.id.toString()}
+                    name={field.id.toString()}
+                    onChange={handleInputChange}
+                    required={field.required}
+                    type="text"
+                    value={formValues[field.id.toString()]}
+                  />
+                </>
               )}
             </div>
           ),
