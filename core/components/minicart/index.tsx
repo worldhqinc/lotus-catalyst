@@ -2,7 +2,7 @@
 
 import { parseWithZod } from '@conform-to/zod';
 import { Trash, X } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { startTransition, useActionState, useEffect, useOptimistic } from 'react';
 import { useFormStatus } from 'react-dom';
 import { z } from 'zod';
@@ -41,6 +41,7 @@ function CheckoutButton({ children }: { children: React.ReactNode }) {
 
 export function Minicart({ initialItems, onClose, cartHref }: Props) {
   const t = useTranslations('Minicart');
+  const format = useFormatter();
   const router = useRouter();
   const [{ items, lastResult }, formAction, isPending] = useActionState(minicartAction, {
     items: initialItems,
@@ -199,10 +200,18 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
               </div>
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-end gap-2">
-                  <span>${(item.price * item.quantity).toFixed(2)}</span>
+                  <span>
+                    {format.number(item.price * item.quantity, {
+                      style: 'currency',
+                      currency: item.currencyCode,
+                    })}
+                  </span>
                   {!!item.originalPrice && (
                     <span className="text-contrast-400 text-sm line-through sm:text-base">
-                      ${(item.originalPrice * item.quantity).toFixed(2)}
+                      {format.number(item.originalPrice * item.quantity, {
+                        style: 'currency',
+                        currency: item.currencyCode,
+                      })}
                     </span>
                   )}
                 </div>
@@ -242,16 +251,20 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
             {savings > 0 && (
               <div className="flex justify-between text-sm">
                 <span>{t('savings')}</span>
-                <span>${savings.toFixed(2)}</span>
+                <span>
+                  {format.number(savings, {
+                    style: 'currency',
+                    currency: optimisticItems[0]?.currencyCode || 'USD',
+                  })}
+                </span>
               </div>
             )}
             <div className="flex justify-between">
               <span>{t('subtotal')}</span>
               <span className="font-medium">
-                $
-                {subtotal.toLocaleString('en-US', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
+                {format.number(subtotal, {
+                  style: 'currency',
+                  currency: optimisticItems[0]?.currencyCode || 'USD',
                 })}
               </span>
             </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useFormatter } from 'next-intl';
 import { useMemo, useState } from 'react';
 
 import { Image } from '~/components/image';
@@ -23,6 +24,7 @@ export function CompleteKitchen({
   previousLabel = 'Previous products',
   addToCartButton,
 }: Props) {
+  const format = useFormatter();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const relatedProducts = useMemo(
@@ -90,10 +92,18 @@ export function CompleteKitchen({
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-end gap-2">
-                  <span>${product.price.toFixed(2)}</span>
+                  <span>
+                    {format.number(product.price, {
+                      style: 'currency',
+                      currency: product.currencyCode,
+                    })}
+                  </span>
                   {!!product.originalPrice && (
                     <span className="text-contrast-400 text-sm line-through sm:text-base">
-                      ${product.originalPrice.toFixed(2)}
+                      {format.number(product.originalPrice, {
+                        style: 'currency',
+                        currency: product.currencyCode,
+                      })}
                     </span>
                   )}
                 </div>

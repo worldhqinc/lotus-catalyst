@@ -9,6 +9,7 @@ import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { TAGS } from '~/client/tags';
 import { addToOrCreateCart, getCartId } from '~/lib/cart';
+import { getPreferredCurrencyCode } from '~/lib/currency';
 
 const GetMinicartQuery = graphql(`
   query GetMinicartQuery($cartId: String) {
@@ -128,6 +129,7 @@ export interface CartItem {
   quantity: number;
   productEntityId: number;
   variantEntityId: number | null;
+  currencyCode: string;
   image?: {
     src: string;
     alt: string;
@@ -138,6 +140,7 @@ export interface CartItem {
     subtitle?: string;
     price: number;
     originalPrice?: number;
+    currencyCode: string;
     image?: {
       src: string;
       alt: string;
@@ -210,6 +213,7 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
     ...cart.lineItems.digitalItems.map((item) => item.productEntityId),
   ]);
 
+  const currencyCode = await getPreferredCurrencyCode();
   const relatedProductsMap = new Map<number, CartItem['relatedProducts']>();
 
   await Promise.all(
@@ -219,7 +223,7 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
           document: GetProductRelatedQuery,
           variables: {
             entityId: productId,
-            currencyCode: 'USD',
+            currencyCode,
           },
           customerAccessToken,
           fetchOptions: { cache: 'no-store' },
@@ -245,6 +249,7 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
                 edge.node.prices.basePrice.value > edge.node.prices.price.value
                   ? edge.node.prices.basePrice.value
                   : undefined,
+              currencyCode: currencyCode || 'USD',
               image: edge.node.defaultImage
                 ? {
                     src: edge.node.defaultImage.url,
@@ -275,6 +280,7 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
       quantity: item.quantity,
       productEntityId: item.productEntityId,
       variantEntityId: item.variantEntityId,
+      currencyCode: item.listPrice.currencyCode,
       image: item.image ? { src: item.image.url, alt: item.image.altText } : undefined,
       relatedProducts: relatedProductsMap.get(item.productEntityId),
     }),
