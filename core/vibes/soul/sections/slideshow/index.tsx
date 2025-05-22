@@ -253,7 +253,7 @@ export function Slideshow({
                 {/* White Bar - Current Index Indicator / Progress Bar */}
                 <div
                   className={clsx(
-                    'fill-mode-forwards absolute size-2 bg-[var(--slideshow-pagination,hsl(var(--background)))] opacity-0',
+                    'fill-mode-forwards bg-contrast-200 absolute size-2 opacity-0',
                     'transition-all duration-300',
                     isPlaying ? 'running' : 'paused',
                     index === selectedIndex ? animationStyle : 'animate-out fade-out ease-out',
@@ -273,7 +273,7 @@ export function Slideshow({
                 />
                 {/* Grey Bar BG */}
                 <div
-                  className="size-2 bg-[var(--slideshow-pagination,hsl(var(--background)))] opacity-30 transition-all duration-300"
+                  className="bg-contrast-200 size-2 opacity-30 transition-all duration-300"
                   style={vertical ? { height: dimensionStyle } : { width: dimensionStyle }}
                 />
               </div>
