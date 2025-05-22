@@ -227,26 +227,34 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
 
         const edges = relatedResponse.data.site.product?.relatedProducts.edges || [];
 
+        const cartProductIds = new Set([
+          ...cart.lineItems.physicalItems.map((item) => item.productEntityId),
+          ...cart.lineItems.digitalItems.map((item) => item.productEntityId),
+        ]);
+
         relatedProductsMap.set(
           productId,
-          edges.map((edge: { node: RelatedProductNode }) => ({
-            id: edge.node.entityId.toString(),
-            title: edge.node.name,
-            subtitle: edge.node.brand?.name ?? undefined,
-            price: edge.node.prices?.price.value ?? 0,
-            originalPrice:
-              edge.node.prices?.basePrice?.value &&
-              edge.node.prices.basePrice.value > edge.node.prices.price.value
-                ? edge.node.prices.basePrice.value
+          edges
+            .map((edge: { node: RelatedProductNode }) => ({
+              id: edge.node.entityId.toString(),
+              title: edge.node.name,
+              subtitle: edge.node.brand?.name ?? undefined,
+              price: edge.node.prices?.price.value ?? 0,
+              originalPrice:
+                edge.node.prices?.basePrice?.value &&
+                edge.node.prices.basePrice.value > edge.node.prices.price.value
+                  ? edge.node.prices.basePrice.value
+                  : undefined,
+              image: edge.node.defaultImage
+                ? {
+                    src: edge.node.defaultImage.url,
+                    alt: edge.node.defaultImage.altText,
+                  }
                 : undefined,
-            image: edge.node.defaultImage
-              ? {
-                  src: edge.node.defaultImage.url,
-                  alt: edge.node.defaultImage.altText,
-                }
-              : undefined,
-            href: edge.node.path,
-          })),
+              href: edge.node.path,
+            }))
+            // Filter out products that are already in the cart
+            .filter((product) => !cartProductIds.has(Number(product.id))),
         );
       } catch (error) {
         // eslint-disable-next-line no-console
