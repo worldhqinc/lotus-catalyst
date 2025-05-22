@@ -10,10 +10,12 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const page = await getPageBySlug('pageStandard', ['policies', ...slug]);
+  const { fields } = page;
 
   return {
-    title: page.fields.metaTitleSeo,
-    description: page.fields.metaDescription,
+    title: fields.metaTitleSeo || fields.pageName,
+    description: fields.metaDescription,
+    keywords: fields.metaKeywordsSeo,
   };
 }
 

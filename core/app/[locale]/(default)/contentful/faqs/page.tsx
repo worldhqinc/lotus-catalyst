@@ -30,10 +30,12 @@ interface FaqCategory {
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPageBySlug('pageStandard', ['faqs']);
+  const { fields } = page;
 
   return {
-    title: page.fields.metaTitleSeo,
-    description: page.fields.metaDescription,
+    title: fields.metaTitleSeo || fields.pageName,
+    description: fields.metaDescription,
+    keywords: fields.metaKeywordsSeo,
   };
 }
 

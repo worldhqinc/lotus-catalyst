@@ -35,12 +35,12 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const page = await getPageBySlug('recipe', ['recipes', ...slug]);
-
   const { fields } = page;
 
   return {
-    title: fields.metaTitle || fields.recipeName,
+    title: fields.metaTitleSeo || fields.recipeName,
     description: fields.metaDescription,
+    keywords: fields.metaKeywordsSeo,
   };
 }
 

@@ -25,7 +25,6 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { rest } = await params;
   const page = await getPageBySlug('pageStandard', rest);
-
   const { fields } = page;
 
   return {
