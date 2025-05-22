@@ -29,6 +29,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: fields.metaTitleSeo || fields.title,
     description: fields.metaDescription,
     keywords: fields.metaKeywordsSeo,
+    openGraph: {
+      images: [
+        {
+          url: fields.featuredImage?.fields.file.url ?? '/images/lotus-social-share.jpg',
+          alt: fields.metaTitleSeo || fields.title,
+        },
+      ],
+    },
   };
 }
 
