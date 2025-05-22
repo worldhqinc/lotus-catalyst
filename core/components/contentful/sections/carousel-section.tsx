@@ -2,22 +2,11 @@ import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { AltProductCarousel } from '~/components/contentful/carousels/alt-product-carousel';
 import { carouselProductSchema, type carouselSection, ctaSchema } from '~/contentful/schema';
+import { getLinkHref } from '~/lib/utils';
 
 export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSection['fields']) {
   const validCta = cta ? ctaSchema.parse(cta) : null;
   const validCarousel = carouselProductSchema.parse(carousel);
-
-  const getHref = (ctaData: NonNullable<typeof validCta>) => {
-    if (typeof ctaData.fields.externalLink === 'string') {
-      return ctaData.fields.externalLink;
-    }
-
-    if (typeof ctaData.fields.internalReference?.fields.pageSlug === 'string') {
-      return ctaData.fields.internalReference.fields.pageSlug;
-    }
-
-    return '/';
-  };
 
   return (
     <SectionLayout containerClassName="py-16">
@@ -34,7 +23,7 @@ export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSe
         cta={
           validCta && (
             <div className="mt-8 text-center">
-              <ButtonLink href={getHref(validCta)}>{validCta.fields.text}</ButtonLink>
+              <ButtonLink href={getLinkHref(validCta.fields)}>{validCta.fields.text}</ButtonLink>
             </div>
           )
         }

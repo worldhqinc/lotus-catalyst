@@ -1,12 +1,16 @@
-import { Button } from '@/vibes/soul/primitives/button';
+import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
-import { guidingPrincipleSchema, guidingPrinciplesSection } from '~/contentful/schema';
+import { ctaSchema, guidingPrincipleSchema, guidingPrinciplesSection } from '~/contentful/schema';
+import { getLinkHref } from '~/lib/utils';
 
 export function GuidingPrinciplesSection({
   sectionTitle,
   sectionDescription,
   principles,
+  cta,
 }: guidingPrinciplesSection['fields']) {
+  const validCta = cta ? ctaSchema.parse(cta) : null;
+
   return (
     <SectionLayout>
       <h2 className="text-surface-foreground font-heading mx-auto max-w-4xl text-center text-4xl uppercase md:text-6xl">
@@ -34,9 +38,13 @@ export function GuidingPrinciplesSection({
           );
         })}
       </div>
-      <div className="flex justify-center pt-16">
-        <Button type="button">Shop our collection</Button>
-      </div>
+      {validCta ? (
+        <div className="flex justify-center pt-16">
+          <ButtonLink href={getLinkHref(validCta.fields)} variant="primary">
+            {validCta.fields.text}
+          </ButtonLink>
+        </div>
+      ) : null}
     </SectionLayout>
   );
 }
