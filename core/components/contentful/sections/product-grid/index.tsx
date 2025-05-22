@@ -232,8 +232,8 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
         searchClient={searchClient}
       >
         <div className="flex w-full justify-between gap-4 pt-12 @2xl:flex-row @2xl:items-center">
-          <div className="flex flex-col gap-4 @2xl:flex-row">
-            <div className="flex flex-1 flex-col items-start">
+          <div className="flex flex-col gap-4 @2xl:min-w-[268px] @2xl:flex-row">
+            <div className="flex min-w-[200px] flex-1 shrink-0 flex-col items-start">
               <SelectField
                 hideLabel
                 label="Sort by"
@@ -245,7 +245,7 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
               />
             </div>
             {type === 'all' && (
-              <div className="flex flex-1 flex-col items-start">
+              <div className="flex min-w-[200px] flex-1 shrink-0 flex-col items-start">
                 <SelectField
                   hideLabel
                   label="Filter by"
@@ -262,8 +262,9 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
             )}
             {type === 'accessories' && (
               <>
-                {/* <DropdownRefinementFilter attribute="productLines" label="Product Lines" /> */}
-                <DropdownRefinementFilter attribute="categories" label="Categories" />
+                <div className="flex min-w-[200px] flex-1 shrink-0 flex-col items-start">
+                  <DropdownRefinementFilter attribute="categories" label="Categories" />
+                </div>
                 <ClearFilters />
               </>
             )}

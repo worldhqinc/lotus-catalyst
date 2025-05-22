@@ -90,7 +90,7 @@ export function Select({
       <SelectPrimitive.Trigger
         aria-label={label}
         className={clsx(
-          'text-contrast-500 flex h-fit w-full items-center justify-between gap-3 border p-2 px-5 py-3 text-sm font-medium transition-colors select-none focus-visible:ring-2 focus-visible:outline-hidden',
+          'text-contrast-500 focus-visible:border-primary flex h-fit max-h-[46px] w-full items-center justify-between gap-3 border p-3 text-sm font-medium transition-colors select-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-hidden',
           variant === 'rectangle' ? 'rounded-lg' : 'rounded-full',
           {
             light:
