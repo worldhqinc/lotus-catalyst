@@ -21,8 +21,6 @@ export function HeroCarousel({ data }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isInView, setIsInView] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const isScrollingRef = useRef(false);
 
   const processedSlides = (data.fields.heroSlides || [])
     .map((slide) => {
@@ -83,92 +81,48 @@ export function HeroCarousel({ data }: Props) {
     if (!data.fields.vertical || !containerRef.current) return;
 
     const container = containerRef.current;
+    let startScrollY = 0;
+    let isLocked = false;
+    let lastScrollY = 0;
 
     // Handle scroll event
     const handleScroll = () => {
       const rect = container.getBoundingClientRect();
       const vh = window.innerHeight;
       const scrollY = window.scrollY;
-      const containerTop = container.offsetTop;
-      const containerHeight = rect.height;
+      const isScrollingUp = scrollY < lastScrollY;
 
-      // Calculate if we're at the end of the carousel
-      // User has scrolled to the point where the bottom of carousel is at or above bottom of viewport
-      const isAtEnd = scrollY >= containerTop + containerHeight - vh;
+      lastScrollY = scrollY;
 
-      // Show bullets only when:
-      // 1. First slide is sticky (top of carousel at or past top of viewport) AND
-      // 2. User hasn't scrolled past the carousel AND
-      // 3. User hasn't reached the bottom of the last slide
-      const isFirstSlideSticky = scrollY >= containerTop && rect.bottom > 0 && !isAtEnd;
+      // Calculate if we're in the carousel section
+      const isInCarousel = rect.top <= 0 && rect.bottom >= 0;
 
-      setIsInView(isFirstSlideSticky);
+      setIsInView(isInCarousel);
 
-      // If container is out of view, no need to calculate
-      if (rect.bottom < 0 || rect.top > vh) {
+      // If container is out of view, reset lock state
+      if (rect.top > vh) {
+        isLocked = false;
+
         return;
       }
 
-      // Calculate which slide should be active based on scroll position
-      const scrollProgress = Math.abs(rect.top) / (containerHeight - vh);
-      const slideIndex = Math.min(
-        Math.floor(scrollProgress * processedSlides.length),
-        processedSlides.length - 1,
-      );
-
-      setActiveIndex(slideIndex);
-
-      // Get all slides
-      const slides = Array.from(container.querySelectorAll('.slide-content'));
-
-      // Update content opacities - each slide starts at 50% opacity and increases to 100% as it reaches the top
-      slides.forEach((content, idx) => {
-        // First slide should always be fully visible
-        if (idx === 0) {
-          content.setAttribute('style', 'opacity: 1');
-
-          return;
-        }
-
-        // Calculate how close this specific slide is to being at the top of the viewport
-        const slidePosition = containerTop + idx * vh;
-        const distanceFromTop = Math.max(0, slidePosition - scrollY);
-        const viewportHeight = vh;
-
-        // Normalize to get a value between 0 and 1, where 0 means the slide is at the top
-        const normalizedDistance = Math.min(distanceFromTop / viewportHeight, 1);
-
-        // Calculate opacity: mostly hidden until almost at top, then quickly becomes fully visible
-        const opacity = 1 * (1 - normalizedDistance) ** 4;
-
-        content.setAttribute('style', `opacity: ${opacity}`);
-      });
-
-      // Mark that scrolling is happening
-      isScrollingRef.current = true;
-
-      // Clear any existing timeout
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
+      // When the carousel first enters the viewport from top or bottom, record the scroll position
+      if (!isLocked && (rect.top <= 0 || (isScrollingUp && rect.bottom >= vh))) {
+        isLocked = true;
+        startScrollY = scrollY;
       }
 
-      // Set a new timeout to detect when scrolling stops
-      scrollTimeoutRef.current = setTimeout(() => {
-        // Only apply snap if carousel is fully in view
-        if (isFirstSlideSticky) {
-          // Calculate the fractional part of the scroll progress to determine if we're between slides
-          const fractionalProgress = (scrollProgress * processedSlides.length) % 1;
-          const targetIndex =
-            fractionalProgress > 0.5
-              ? Math.ceil(scrollProgress * processedSlides.length)
-              : Math.floor(scrollProgress * processedSlides.length);
+      // Only calculate slide changes if the carousel is locked
+      if (isLocked) {
+        // Calculate scroll progress relative to when the carousel was locked
+        const scrollProgress = (scrollY - startScrollY) / vh;
+        const slideIndex = Math.min(
+          Math.max(0, Math.floor(scrollProgress)),
+          processedSlides.length - 1,
+        );
 
-          // Snap to the closest slide
-          scrollToSlide(Math.min(targetIndex, processedSlides.length - 1));
-        }
-
-        isScrollingRef.current = false;
-      }, 150); // Wait 150ms after last scroll event before snapping
+        setActiveIndex(slideIndex);
+      }
     };
 
     // Initial calculation
@@ -181,11 +135,6 @@ export function HeroCarousel({ data }: Props) {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
-
-      // Clear any remaining timeout on unmount
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
     };
   }, [data.fields.vertical, processedSlides.length]);
 
@@ -196,7 +145,7 @@ export function HeroCarousel({ data }: Props) {
         {/* Fixed navigation bullets */}
         <div
           className={clsx(
-            'fixed top-1/2 right-4 z-50 flex -translate-y-1/2 flex-col gap-2 transition-opacity duration-500',
+            'fixed bottom-16 left-1/2 z-50 flex -translate-x-1/2 gap-2 transition-opacity duration-500 md:top-1/2 md:right-8 md:bottom-auto md:left-auto md:-translate-x-0 md:-translate-y-1/2 md:flex-col xl:right-16',
             isInView ? 'opacity-100' : 'pointer-events-none opacity-0',
           )}
         >
@@ -219,17 +168,22 @@ export function HeroCarousel({ data }: Props) {
         <div
           className="relative"
           ref={containerRef}
-          style={{ height: `${processedSlides.length * 100}dvh` }}
+          style={{ height: `calc(${processedSlides.length * 100}dvh + 1000px)` }}
         >
-          {/* Content sections layer */}
-          <div className="relative z-10 h-full w-full">
-            {processedSlides.map((slide, idx) => (
-              <div className="sticky top-0 h-screen w-full" key={`content-${idx}`}>
+          {/* Fixed viewport container */}
+          <div className="sticky top-0 h-screen w-full">
+            {/* Content sections layer */}
+            <div className="relative h-full w-full">
+              {processedSlides.map((slide, idx) => (
                 <div
-                  className="slide-content absolute inset-0 h-full w-full transition-opacity duration-500"
-                  style={{ opacity: idx === 0 ? 1 : 0 }}
+                  className={clsx(
+                    'absolute inset-0 h-full w-full transition-all duration-500',
+                    idx === activeIndex ? 'z-10 opacity-100' : 'z-0 opacity-0',
+                  )}
+                  key={`content-${idx}`}
                 >
-                  <div className="bg-contrast-200 absolute inset-0 h-full w-full transition-opacity duration-500">
+                  <div className="absolute inset-0 z-15 bg-linear-to-l from-transparent to-black/50" />
+                  <div className="bg-contrast-200 absolute inset-0 z-10 h-full w-full">
                     {slide.image?.src != null && slide.image.src !== '' && (
                       <Image
                         alt={slide.image.alt}
@@ -243,11 +197,19 @@ export function HeroCarousel({ data }: Props) {
                       />
                     )}
                   </div>
-                  <div className="absolute inset-0 left-0">
-                    <div className="mx-auto flex h-full max-w-[var(--section-max-width-2xl,1536px)] flex-col justify-center px-4 py-10 @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-16">
+                  <div className="absolute inset-0 left-0 z-20">
+                    <div
+                      className={clsx(
+                        'ease-quad container mx-auto flex h-full flex-col justify-center py-10 transition-all duration-500',
+                        idx === activeIndex
+                          ? 'translate-y-0 opacity-100'
+                          : 'translate-y-10 opacity-0',
+                      )}
+                      style={{ transform: 'translateY(0)' }}
+                    >
                       <h1
                         className={clsx(
-                          'font-heading m-0 max-w-lg text-6xl uppercase',
+                          'font-heading m-0 max-w-lg text-4xl uppercase lg:text-6xl',
                           slide.invertText ? 'text-white' : 'text-surface-foreground',
                         )}
                       >
@@ -277,8 +239,8 @@ export function HeroCarousel({ data }: Props) {
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </>

@@ -42,7 +42,7 @@ export function ProductBento(props: productBento['fields']) {
         <h2 className="text-icon-primary max-w-sm text-center text-4xl">{props.title}</h2>
         <p className="text-icon-secondary max-w-lg text-center">{props.subtitle}</p>
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-6">
         {items.map((product, index) => {
           const colSpanClass = getColSpan(index);
           const mobileRatioMap: Record<'5:6' | '3:4' | '1:1', string> = {
