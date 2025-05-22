@@ -1,4 +1,12 @@
-import { CircleHelp, FileText, Heater, Package2, RefreshCw, SquarePen } from 'lucide-react';
+import {
+  CircleHelp,
+  FileText,
+  Heater,
+  MessageSquarePlus,
+  Package2,
+  RefreshCw,
+  SquarePen,
+} from 'lucide-react';
 
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Link } from '~/components/link';
@@ -29,6 +37,9 @@ export function ProductSupportLinks({ title, links }: productSupportLinks['field
 
       case 'use-and-care':
         return <Heater size={40} strokeWidth={1} />;
+
+      case 'contact-us':
+        return <MessageSquarePlus size={40} strokeWidth={1} />;
 
       default:
         return <CircleHelp size={40} strokeWidth={1} />;

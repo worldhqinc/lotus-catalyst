@@ -67,7 +67,7 @@ export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields &
                   value={faq.sys.id}
                 >
                   <div
-                    className="[&_a]:text-primary"
+                    className="prose prose-a:text-primary"
                     dangerouslySetInnerHTML={{
                       __html: documentToHtmlString(fields.answer),
                     }}

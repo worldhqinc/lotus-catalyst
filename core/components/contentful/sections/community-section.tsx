@@ -1,3 +1,4 @@
+import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
 import { Facebook, Instagram, Pinterest } from '@/vibes/soul/sections/footer/social-icons';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
@@ -56,16 +57,19 @@ export function CommunitySection({
                 );
 
               return (
-                <a
+                <ButtonLink
                   aria-label={`Follow us on ${link}`}
-                  className="text-icon-primary border-border inline-flex aspect-square min-w-12 items-center justify-center rounded-full border p-3 hover:opacity-75"
+                  className="p-3"
                   href={link}
                   key={link}
                   rel="noopener noreferrer"
+                  shape="circle"
+                  size="medium"
                   target="_blank"
+                  variant="tertiary"
                 >
                   <Icon />
-                </a>
+                </ButtonLink>
               );
             })}
           </div>

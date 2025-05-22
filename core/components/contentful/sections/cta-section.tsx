@@ -7,6 +7,7 @@ import { Link } from '~/components/link';
 import { DownloadableLink } from '~/components/link/downloadable-link';
 import { assetSchema, ctaSchema, ctaSection } from '~/contentful/schema';
 import { ensureImageUrl, getLinkHref } from '~/lib/utils';
+import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 
 export function CtaSection({
   sectionTitle,
@@ -92,12 +93,18 @@ export function CtaSection({
   }
 
   return (
-    <SectionLayout className="bg-contrast-200 py-24 text-center">
+    <SectionLayout className="bg-primary relative isolate overflow-hidden py-24 text-center text-white">
+      <Image
+        alt="Lotus Pattern"
+        className="absolute inset-0 top-1/2 left-1/2 -z-10 h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover"
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        src={BrandArtwork}
+      />
       {sectionTitle ? (
-        <h2 className="text-icon-primary font-heading mb-14 text-6xl uppercase">{sectionTitle}</h2>
+        <h2 className="font-heading mb-14 text-6xl uppercase">{sectionTitle}</h2>
       ) : null}
       {buttonLink ? (
-        <ButtonLink href={buttonLink} variant="primary">
+        <ButtonLink href={buttonLink} variant="tertiary">
           {buttonText}
         </ButtonLink>
       ) : null}
