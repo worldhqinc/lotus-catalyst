@@ -49,7 +49,7 @@ export function CardSection({
   if (variant === 'simple') {
     return (
       <SectionLayout containerClassName="py-16">
-        <div className="grid gap-6 text-white md:grid-cols-2">
+        <div className="grid gap-4 text-white md:grid-cols-2 lg:gap-6">
           {cards.map((card, index) => {
             const validCta = card.fields.cta ? ctaSchema.parse(card.fields.cta) : null;
             const mediaUrl = card.fields.image?.fields.file.url;
@@ -103,7 +103,7 @@ export function CardSection({
         <h2 className="font-heading text-icon-primary text-4xl uppercase md:text-6xl">{title}</h2>
         {subtitle ? <p className="text-icon-secondary mt-4 text-lg">{subtitle}</p> : null}
       </div>
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 lg:gap-6">
         {cards.map((card, index) => {
           const validCta = card.fields.cta ? ctaSchema.parse(card.fields.cta) : null;
           const mediaUrl = card.fields.image?.fields.file.url;

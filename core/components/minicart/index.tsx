@@ -275,7 +275,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <ButtonLink
               className="flex-1"
               href={cartHref}

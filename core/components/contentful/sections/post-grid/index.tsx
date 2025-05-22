@@ -134,7 +134,7 @@ export function PostCard({
         <figure className="bg-surface-image aspect-4/3 w-full overflow-hidden rounded-lg">
           <Image
             alt={image.alt}
-            className="h-full w-full object-cover"
+            className="ease-quad h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
             height={1000}
             src={image.src}
             width={1000}
