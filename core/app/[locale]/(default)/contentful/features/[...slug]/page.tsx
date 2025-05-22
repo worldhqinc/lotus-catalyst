@@ -11,6 +11,7 @@ import { ProductCarousel } from '~/components/contentful/carousels/product-carou
 import SocialShare from '~/components/contentful/sections/social-share';
 import { Image } from '~/components/image';
 import { carouselProductSchema } from '~/contentful/schema';
+import { ensureImageUrl } from '~/lib/utils';
 
 import { getPageBySlug } from '../../[...rest]/page-data';
 
@@ -80,7 +81,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       images: [
         {
-          url: fields.featuredImage?.fields.file.url ?? '/images/lotus-social-share.jpg',
+          url: ensureImageUrl(
+            fields.featuredImage?.fields.file.url ?? '/images/lotus-social-share.jpg',
+          ),
           alt: fields.metaTitleSeo || fields.title,
         },
       ],

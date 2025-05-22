@@ -32,6 +32,7 @@ import {
   getProductPricingAndRelatedProducts,
   getStreamableProduct,
 } from './page-data';
+import { ensureImageUrl } from '~/lib/utils';
 
 interface Props {
   params: Promise<{ slug: string; locale: string }>;
@@ -57,23 +58,14 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     title: pageTitle || product.name,
     description: metaDescription || `${product.plainTextDescription.slice(0, 150)}...`,
     keywords: metaKeywords ? metaKeywords.split(',') : null,
-    openGraph: url
-      ? {
-          images: [
-            {
-              url,
-              alt,
-            },
-          ],
-        }
-      : {
-          images: [
-            {
-              url: '/images/lotus-social-share.jpg',
-              alt: 'Lotus',
-            },
-          ],
+    openGraph: {
+      images: [
+        {
+          url: ensureImageUrl(url ?? '/images/lotus-social-share.jpg'),
+          alt,
         },
+      ],
+    },
   };
 }
 

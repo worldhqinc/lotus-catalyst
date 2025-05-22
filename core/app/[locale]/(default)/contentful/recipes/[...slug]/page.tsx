@@ -44,7 +44,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       images: [
         {
-          url: fields.featuredImage?.fields.file.url ?? '/images/lotus-social-share.jpg',
+          url: ensureImageUrl(
+            fields.featuredImage.fields.file.url ?? '/images/lotus-social-share.jpg',
+          ),
           alt: fields.metaTitleSeo || fields.recipeName,
         },
       ],
