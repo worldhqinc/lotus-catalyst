@@ -7,6 +7,18 @@ export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSe
   const validCta = cta ? ctaSchema.parse(cta) : null;
   const validCarousel = carouselProductSchema.parse(carousel);
 
+  const getHref = (ctaData: NonNullable<typeof validCta>) => {
+    if (typeof ctaData.fields.externalLink === 'string') {
+      return ctaData.fields.externalLink;
+    }
+
+    if (typeof ctaData.fields.internalReference?.fields.pageSlug === 'string') {
+      return ctaData.fields.internalReference.fields.pageSlug;
+    }
+
+    return '/';
+  };
+
   return (
     <SectionLayout containerClassName="py-16">
       <div className="mb-8 flex flex-col items-center">
@@ -22,9 +34,7 @@ export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSe
         cta={
           validCta && (
             <div className="mt-8 text-center">
-              <ButtonLink href={validCta.fields.externalLink || ''}>
-                {validCta.fields.text}
-              </ButtonLink>
+              <ButtonLink href={getHref(validCta)}>{validCta.fields.text}</ButtonLink>
             </div>
           )
         }
