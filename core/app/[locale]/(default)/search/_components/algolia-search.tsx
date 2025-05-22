@@ -136,7 +136,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
         </ButtonLink>
       </div>
       <Hits
-        classNames={{ list: 'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-8' }}
+        classNames={{ list: 'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-6' }}
         // @ts-expect-error - hit is a ProductGridHit | PostGridHit
         hitComponent={(props) => group.card({ ...props })}
       />

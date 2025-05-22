@@ -49,7 +49,7 @@ export function ProductSupportLinks({ title, links }: productSupportLinks['field
   return (
     <SectionLayout>
       <h2 className="text-center text-4xl leading-[120%]">{title}</h2>
-      <ul className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-8">
+      <ul className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-6">
         {links.map((link) => {
           const supportPageLink = supportLinkSchema.parse(link);
           const supportPageLinkFields = supportLinkFieldsSchema.parse(supportPageLink.fields);

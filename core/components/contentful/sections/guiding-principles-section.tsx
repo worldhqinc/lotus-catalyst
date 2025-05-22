@@ -19,7 +19,7 @@ export function GuidingPrinciplesSection({
       {sectionDescription ? (
         <p className="text-icon-secondary mt-4 text-center text-xl">{sectionDescription}</p>
       ) : null}
-      <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
         {principles.map((entry, index) => {
           const principle = guidingPrincipleSchema.parse(entry);
           const { title, description } = principle.fields;

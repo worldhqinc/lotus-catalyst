@@ -158,7 +158,9 @@ export function Slideshow({
   }, [emblaApi, playCount]);
 
   return (
-    <section className={clsx('bg-contrast-200 @container relative h-[80vh]', className)}>
+    <section
+      className={clsx('bg-contrast-200 @container relative h-[calc(100vh-101px)]', className)}
+    >
       <div className="h-full overflow-hidden" ref={emblaRef}>
         <div className={clsx('flex h-full', vertical && 'flex-col')}>
           {slides.map(
