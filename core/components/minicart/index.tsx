@@ -129,7 +129,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
 
   if (optimisticItems.length === 0) {
     return (
-      <div className="bg-contrast-100 flex h-full flex-col">
+      <div className="bg-contrast-100 flex h-full flex-col" data-lenis-prevent>
         <div className="bg-contrast-100 border-contrast-200 flex items-center gap-2 border-b px-6 py-4">
           <div className="flex flex-1 items-center gap-2">
             <Button
@@ -150,7 +150,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
   }
 
   return (
-    <div className="bg-contrast-100 flex h-full flex-col">
+    <div className="bg-contrast-100 flex h-full flex-col" data-lenis-prevent>
       <div className="bg-contrast-100 border-contrast-200 flex items-center gap-2 border-b px-6 py-4">
         <div className="flex flex-1 items-center gap-2">
           <Button
@@ -169,9 +169,9 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
         </span>
       </div>
 
-      <div className="bg-background space-y-4 overflow-y-auto px-4 py-4 sm:space-y-6 sm:px-6">
+      <div className="bg-background divide-contrast-200 divide-y overflow-y-auto">
         {optimisticItems.map((item) => (
-          <div className="flex gap-3 sm:gap-4" key={item.id}>
+          <div className="flex gap-3 p-4 sm:gap-4 sm:px-6" key={item.id}>
             <div className="border-surface-image bg-surface-image relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border sm:h-24 sm:w-24">
               {item.image && (
                 <Image
@@ -192,7 +192,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
                   </p>
                 </div>
                 <button
-                  className="flex items-start p-1 text-[#737373]"
+                  className="text-contrast-400 flex items-start p-1"
                   onClick={() => handleRemoveItem(item.id)}
                 >
                   <Trash size={16} strokeWidth={1} />
@@ -246,7 +246,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
           title={t('completeKitchen.title')}
         />
 
-        <div className="bg-background border-contrast-200 flex flex-col gap-4 border-t px-4 py-4 sm:px-6">
+        <div className="bg-background border-contrast-100 flex flex-col gap-4 border-t px-4 py-4 sm:px-6">
           <div className="flex flex-col gap-1">
             {savings > 0 && (
               <div className="flex justify-between text-sm">
@@ -267,6 +267,11 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
                   currency: optimisticItems[0]?.currencyCode || 'USD',
                 })}
               </span>
+            </div>
+            <div className="mt-1 flex flex-col gap-1">
+              <p className="text-contrast-400 text-xs">
+                Taxes, discounts and shipping calculated at checkout
+              </p>
             </div>
           </div>
 

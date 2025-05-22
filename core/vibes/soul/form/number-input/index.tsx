@@ -69,7 +69,7 @@ export const NumberInput = React.forwardRef<
             'border-border inline-flex items-center rounded border',
             {
               light:
-                'border-[var(--number-input-light-border,hsl(var(--contrast-100)))] bg-[var(--number-input-light-background,hsl(var(--background)))]',
+                'border-contrast-200 bg-[var(--number-input-light-background,hsl(var(--background)))]',
               dark: 'border-[var(--number-input-dark-border,hsl(var(--contrast-500)))] bg-[var(--number-input-dark-background,hsl(var(--foreground)))]',
             }[colorScheme],
           )}
