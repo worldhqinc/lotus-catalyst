@@ -1,5 +1,4 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { SearchParams } from 'nuqs';
@@ -12,7 +11,7 @@ import SocialShare from '~/components/contentful/sections/social-share';
 import { Image } from '~/components/image';
 import { WistiaPlayer } from '~/components/wistia-player';
 import { carouselProductSchema } from '~/contentful/schema';
-import { ensureImageUrl } from '~/lib/utils';
+import { ensureImageUrl, generateHtmlFromRichText } from '~/lib/utils';
 
 import { getPageBySlug } from '../../[...rest]/page-data';
 
@@ -53,7 +52,7 @@ export default async function FeaturePage({ params }: Props) {
   const { fields } = page;
 
   const storyRichText = await richTextFromMarkdown(fields.content ?? '');
-  const storyHtml = documentToHtmlString(storyRichText);
+  const storyHtml = generateHtmlFromRichText(storyRichText);
 
   const productCarousel = fields.productCarousel
     ? carouselProductSchema.parse(fields.productCarousel)

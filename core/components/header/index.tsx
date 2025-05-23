@@ -1,5 +1,4 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { unstable_cacheTag as cacheTag } from 'next/cache';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { cache } from 'react';
@@ -17,7 +16,7 @@ import { routing } from '~/i18n/routing';
 import { getCartId } from '~/lib/cart';
 import { contentfulClient } from '~/lib/contentful';
 import { getPreferredCurrencyCode } from '~/lib/currency';
-import { isString } from '~/lib/utils';
+import { generateHtmlFromRichText, isString } from '~/lib/utils';
 
 import { switchCurrency } from './_actions/switch-currency';
 import { HeaderFragment } from './fragment';
@@ -183,7 +182,7 @@ export const Header = async () => {
     const subtitleRichTextDocument =
       subtitle && isString(subtitle) ? await richTextFromMarkdown(subtitle) : null;
     const subtitleHtml = subtitleRichTextDocument
-      ? documentToHtmlString(subtitleRichTextDocument)
+      ? generateHtmlFromRichText(subtitleRichTextDocument)
       : '';
 
     return <span dangerouslySetInnerHTML={{ __html: subtitleHtml }} key="promo-banner" />;

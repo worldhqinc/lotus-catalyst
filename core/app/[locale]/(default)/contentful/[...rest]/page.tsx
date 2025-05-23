@@ -1,9 +1,9 @@
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import type { Metadata } from 'next';
 import { SearchParams } from 'nuqs';
 
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { routing } from '~/i18n/routing';
+import { generateHtmlFromRichText } from '~/lib/utils';
 
 import { getPageBySlug } from './page-data';
 
@@ -50,7 +50,7 @@ export default async function ContentfulPage({ params, searchParams }: Props) {
           <div
             className="prose container max-w-2xl"
             dangerouslySetInnerHTML={{
-              __html: documentToHtmlString(page.fields.optionalPageDescription),
+              __html: generateHtmlFromRichText(page.fields.optionalPageDescription),
             }}
           />
         )}

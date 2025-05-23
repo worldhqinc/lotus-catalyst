@@ -1,5 +1,6 @@
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { Metadata } from 'next';
+
+import { generateHtmlFromRichText } from '~/lib/utils';
 
 import { getPageBySlug } from '../../[...rest]/page-data';
 
@@ -31,7 +32,7 @@ export default async function PoliciesPage({ params }: Props) {
         <div
           className="prose policy-table [&_>_p:first-child]:text-foreground mt-4 max-w-none [&_h3:first-child]:mt-8"
           dangerouslySetInnerHTML={{
-            __html: documentToHtmlString(fields.optionalPageDescription),
+            __html: generateHtmlFromRichText(fields.optionalPageDescription),
           }}
         />
       )}

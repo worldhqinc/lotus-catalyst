@@ -1,5 +1,4 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { clsx } from 'clsx';
 
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
@@ -14,7 +13,7 @@ import {
   recipeSchema,
   tutorialSchema,
 } from '~/contentful/schema';
-import { ensureImageUrl } from '~/lib/utils';
+import { ensureImageUrl, generateHtmlFromRichText } from '~/lib/utils';
 
 import { Card } from '../../primitives/card';
 
@@ -118,7 +117,7 @@ export async function InspirationBento({
   const validCta = cta ? ctaSchema.parse(cta) : null;
 
   const subheadingRichText = await richTextFromMarkdown(subheading ?? '');
-  const subheadingHtml = documentToHtmlString(subheadingRichText);
+  const subheadingHtml = generateHtmlFromRichText(subheadingRichText);
 
   return (
     <SectionLayout>

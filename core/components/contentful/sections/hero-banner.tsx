@@ -1,5 +1,4 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { clsx } from 'clsx';
 
 import { ElementFade } from '@/vibes/soul/lib/element-fade';
@@ -8,6 +7,7 @@ import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
 import { WistiaPlayer } from '~/components/wistia-player';
 import { cta, ctaSchema, type heroBanner } from '~/contentful/schema';
+import { generateHtmlFromRichText } from '~/lib/utils';
 
 function SimpleHeroBanner({
   descriptionHtml,
@@ -264,7 +264,7 @@ export async function HeroBanner({
   const secondary = secondaryCta ? ctaSchema.parse(secondaryCta) : null;
 
   const descriptionRichText = await richTextFromMarkdown(description ?? '');
-  const descriptionHtml = documentToHtmlString(descriptionRichText);
+  const descriptionHtml = generateHtmlFromRichText(descriptionRichText);
 
   let mediaElement: React.ReactNode = null;
 

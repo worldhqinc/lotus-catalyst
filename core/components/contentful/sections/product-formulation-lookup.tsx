@@ -1,9 +1,9 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { unstable_cacheTag as cacheTag } from 'next/cache';
 
 import { productFinishedGoodsFieldsSchema, productFormulationLookup } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
+import { generateHtmlFromRichText } from '~/lib/utils';
 
 import { ProductFormulationLookupClient } from './product-formulation-lookup-client';
 
@@ -55,7 +55,7 @@ export async function ProductFormulationLookup({
   selectedSku = '',
 }: productFormulationLookup['fields'] & { selectedSku?: string }) {
   const disclaimerRichText = disclaimer ? await richTextFromMarkdown(disclaimer) : null;
-  const disclaimerHtml = disclaimerRichText ? documentToHtmlString(disclaimerRichText) : '';
+  const disclaimerHtml = disclaimerRichText ? generateHtmlFromRichText(disclaimerRichText) : '';
 
   const productOptions = await getProductOptions();
 

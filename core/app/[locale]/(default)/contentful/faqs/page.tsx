@@ -1,8 +1,8 @@
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { Metadata } from 'next';
 
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { categoryFaqFieldsSchema, faqListSchema, faqSchema } from '~/contentful/schema';
+import { generateHtmlFromRichText } from '~/lib/utils';
 
 import { getPageBySlug } from '../[...rest]/page-data';
 
@@ -71,7 +71,7 @@ export default async function FaqsPage({ searchParams }: { searchParams: { searc
     const faqMatches = data.fields.faqReference.some((faqRef: ContentfulEntry) => {
       const faqData = faqSchema.parse(faqRef);
       const question = faqData.fields.question.toLowerCase() || '';
-      const answer = documentToHtmlString(faqData.fields.answer).toLowerCase();
+      const answer = generateHtmlFromRichText(faqData.fields.answer).toLowerCase();
 
       return question.includes(searchTerm) || answer.includes(searchTerm);
     });
@@ -90,7 +90,7 @@ export default async function FaqsPage({ searchParams }: { searchParams: { searc
             <div
               className="text-contrast-400"
               dangerouslySetInnerHTML={{
-                __html: documentToHtmlString(page.fields.optionalPageDescription),
+                __html: generateHtmlFromRichText(page.fields.optionalPageDescription),
               }}
             />
           )}

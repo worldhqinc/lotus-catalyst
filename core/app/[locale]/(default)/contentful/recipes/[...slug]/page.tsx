@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { SearchParams } from 'nuqs';
@@ -22,7 +21,7 @@ import {
   productPartsAndAccessoriesSchema,
 } from '~/contentful/schema';
 import { contentfulProductCardTransformer } from '~/data-transformers/product-card-transformer';
-import { ensureImageUrl } from '~/lib/utils';
+import { ensureImageUrl, generateHtmlFromRichText } from '~/lib/utils';
 import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 
 import { getPageBySlug } from '../../[...rest]/page-data';
@@ -121,15 +120,15 @@ export default async function RecipePage({ params }: Props) {
   const shortDescDoc = fields.shortDescription
     ? await richTextFromMarkdown(fields.shortDescription)
     : null;
-  const shortDescHtml = shortDescDoc ? documentToHtmlString(shortDescDoc) : '';
+  const shortDescHtml = shortDescDoc ? generateHtmlFromRichText(shortDescDoc) : '';
 
   const directionsHtml = fields.recipeDirections
-    ? documentToHtmlString(fields.recipeDirections)
+    ? generateHtmlFromRichText(fields.recipeDirections)
     : '';
 
-  const variationsHtml = fields.variations ? documentToHtmlString(fields.variations) : '';
+  const variationsHtml = fields.variations ? generateHtmlFromRichText(fields.variations) : '';
 
-  const proTipHtml = fields.testKitchenTips ? documentToHtmlString(fields.testKitchenTips) : '';
+  const proTipHtml = fields.testKitchenTips ? generateHtmlFromRichText(fields.testKitchenTips) : '';
 
   const recipeCarousel = fields.recipeCarousel
     ? carouselRecipeSchema.parse(fields.recipeCarousel)

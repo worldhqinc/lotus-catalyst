@@ -1,4 +1,3 @@
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { clsx } from 'clsx';
 import { ArrowRight } from 'lucide-react';
 import { z } from 'zod';
@@ -7,6 +6,7 @@ import { Accordion, AccordionItem } from '@/vibes/soul/primitives/accordion';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Link } from '~/components/link';
 import { faqFieldsSchema, faqListFieldsSchema } from '~/contentful/schema';
+import { generateHtmlFromRichText } from '~/lib/utils';
 
 interface FaqListProps {
   id?: string;
@@ -69,7 +69,7 @@ export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields &
                   <div
                     className="prose prose-a:text-primary"
                     dangerouslySetInnerHTML={{
-                      __html: documentToHtmlString(fields.answer),
+                      __html: generateHtmlFromRichText(fields.answer),
                     }}
                   />
                 </AccordionItem>
