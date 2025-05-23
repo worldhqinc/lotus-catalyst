@@ -14,12 +14,12 @@ mounts:
     '/core/.next':
         source: local
         source_path: 'next'
-    # '/core/build-config':
-    #     source: local
-    #     source_path: 'build-config'
-    # '/core/messages':
-    #     source: local
-    #     source_path: 'messages'
+    '/core/build-config':
+        source: local
+        source_path: 'build-config'
+    '/core/messages':
+        source: local
+        source_path: 'messages'
 web:
     locations:
         '/':
