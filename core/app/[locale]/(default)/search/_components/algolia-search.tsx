@@ -116,12 +116,13 @@ const GROUP_CONFIG: GroupConfig[] = [
 function GroupTabContent({ group }: { group: GroupConfig }) {
   const { items } = useHits();
 
-  if (items.length === 0)
+  if (items.length === 0) {
     return (
       <div className="py-10 text-xl">
         <p>No results found.</p>
       </div>
     );
+  }
 
   return (
     <div className="py-12 first:mt-8">
