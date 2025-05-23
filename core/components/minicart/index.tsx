@@ -149,6 +149,8 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
     );
   }
 
+  const totalItems = optimisticItems.reduce((acc, item) => acc + item.quantity, 0);
+
   return (
     <div className="bg-contrast-100 flex h-full flex-col" data-lenis-prevent>
       <div className="bg-contrast-100 border-contrast-200 flex items-center gap-2 border-b px-6 py-4">
@@ -164,9 +166,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
           </Button>
           <h2 className="font-sans text-base font-medium">{t('title')}</h2>
         </div>
-        <span className="text-sm sm:text-base">
-          {t('items', { count: optimisticItems.length })}
-        </span>
+        <span className="text-sm sm:text-base">{t('items', { count: totalItems })}</span>
       </div>
 
       <div className="bg-background divide-contrast-200 divide-y overflow-y-auto">
