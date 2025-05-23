@@ -706,7 +706,7 @@ export const Navigation = forwardRef(function Navigation(
               />
             </Popover.Trigger>
             <Popover.Portal>
-              <Popover.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @container z-10 h-[calc(100vh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)]">
+              <Popover.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @container z-10 h-[calc(100svh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)]">
                 <div className="flex h-[100svh] flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-[var(--nav-mobile-background,hsl(var(--background)))] px-4 py-6">
                   <Stream
                     fallback={

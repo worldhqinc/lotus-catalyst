@@ -1,5 +1,6 @@
 import { clsx } from 'clsx';
 
+import { ElementFade } from '@/vibes/soul/lib/element-fade';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
@@ -38,28 +39,30 @@ export function HeroSection({
   const linkHref = validCta ? getLinkHref(validCta.fields) : '#';
 
   return (
-    <SectionLayout className="bg-surface-image relative isolate flex h-[calc(100vh-101px)] items-center overflow-hidden py-20 text-center lg:min-h-[900px]">
+    <SectionLayout className="bg-surface-image relative isolate flex h-[calc(100svh-101px)] items-center overflow-hidden py-20 text-center lg:min-h-[720px]">
       {mediaElement}
-      <div
-        className={clsx(
-          'mx-auto space-y-4',
-          invertTextColor && 'text-white',
-          type === 'hero_two' ? 'max-w-6xl' : 'max-w-4xl',
-        )}
-      >
-        <span className="tracking-widest uppercase">{heroEyebrow}</span>
-        <h1
+      <ElementFade>
+        <div
           className={clsx(
-            type === 'hero_two'
-              ? 'font-heading mt-4 text-3xl leading-tight md:text-5xl'
-              : 'font-heading mt-4 text-4xl leading-tight uppercase md:text-6xl',
+            'mx-auto space-y-4',
+            invertTextColor && 'text-white',
+            type === 'hero_two' ? 'max-w-6xl' : 'max-w-4xl',
           )}
         >
-          {heroTitle}
-        </h1>
-        <p className="text-lg leading-8 lg:text-xl lg:leading-8">{heroTagline}</p>
-        {validCta && <ButtonLink href={linkHref}>{validCta.fields.text}</ButtonLink>}
-      </div>
+          <span className="tracking-widest uppercase">{heroEyebrow}</span>
+          <h1
+            className={clsx(
+              type === 'hero_two'
+                ? 'font-heading mt-4 text-3xl leading-tight md:text-5xl'
+                : 'font-heading mt-4 text-4xl leading-tight uppercase md:text-6xl',
+            )}
+          >
+            {heroTitle}
+          </h1>
+          <p className="text-lg leading-8 lg:text-xl lg:leading-8">{heroTagline}</p>
+          {validCta && <ButtonLink href={linkHref}>{validCta.fields.text}</ButtonLink>}
+        </div>
+      </ElementFade>
     </SectionLayout>
   );
 }
