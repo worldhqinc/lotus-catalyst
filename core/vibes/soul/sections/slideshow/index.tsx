@@ -159,7 +159,7 @@ export function Slideshow({
 
   return (
     <section
-      className={clsx('bg-contrast-200 @container relative h-[calc(100vh-101px)]', className)}
+      className={clsx('bg-contrast-200 @container relative h-[calc(100svh-101px)]', className)}
     >
       <div className="h-full overflow-hidden" ref={emblaRef}>
         <div className={clsx('flex h-full', vertical && 'flex-col')}>
@@ -167,7 +167,7 @@ export function Slideshow({
             ({ title, description, showDescription = true, image, cta, showCta = true }, idx) => {
               return (
                 <div
-                  className="relative h-full w-full min-w-0 shrink-0 grow-0 basis-full"
+                  className="relative isolate h-full w-full min-w-0 shrink-0 grow-0 basis-full overflow-hidden"
                   key={idx}
                 >
                   <div
@@ -179,8 +179,11 @@ export function Slideshow({
                   >
                     <div
                       className={clsx(
-                        'mx-auto w-full max-w-(--breakpoint-2xl) px-4 pt-12 pb-16 text-balance @xl:px-6 @xl:pt-16 @xl:pb-20 @4xl:px-8 @4xl:pt-20',
+                        'ease-quad mx-auto w-full max-w-(--breakpoint-2xl) px-4 pt-12 pb-16 text-balance transition-all duration-300 @xl:px-6 @xl:pt-16 @xl:pb-20 @4xl:px-8 @4xl:pt-20',
                         vertical && 'flex h-full flex-col justify-center',
+                        idx === selectedIndex
+                          ? 'translate-y-0 opacity-100'
+                          : 'translate-y-10 opacity-0',
                       )}
                     >
                       <h1 className="m-0 max-w-xl font-[family-name:var(--slideshow-title-font-family,var(--font-family-heading))] text-4xl leading-none font-medium text-[var(--slideshow-title,hsl(var(--background)))] @2xl:text-5xl @2xl:leading-[.9] @4xl:text-6xl">

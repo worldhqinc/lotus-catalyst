@@ -38,7 +38,7 @@ export function HeroSection({
   const linkHref = validCta ? getLinkHref(validCta.fields) : '#';
 
   return (
-    <SectionLayout className="bg-surface-image relative isolate flex h-[calc(100vh-101px)] items-center overflow-hidden py-20 text-center lg:min-h-[900px]">
+    <SectionLayout className="bg-surface-image relative isolate flex h-[calc(100dvh-101px)] items-center overflow-hidden py-20 text-center lg:min-h-[720px]">
       {mediaElement}
       <div
         className={clsx(

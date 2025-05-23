@@ -96,8 +96,10 @@ export function HeroCarousel({ data }: Props) {
 
       // Calculate if we're in the carousel section
       const isInCarousel = rect.top <= 0 && rect.bottom >= 0;
+      const containerHeight = container.offsetHeight;
+      const isPastLastSlide = rect.top < -(containerHeight - window.innerHeight);
 
-      setIsInView(isInCarousel);
+      setIsInView(isInCarousel && !isPastLastSlide);
 
       // If container is out of view, reset lock state
       if (rect.top > vh) {
@@ -168,7 +170,7 @@ export function HeroCarousel({ data }: Props) {
         <div
           className="relative"
           ref={containerRef}
-          style={{ height: `calc(${processedSlides.length * 100}dvh + 1000px)` }}
+          style={{ height: `calc(${processedSlides.length * 100}svh + 500px)` }}
         >
           {/* Fixed viewport container */}
           <div className="sticky top-0 h-screen w-full">

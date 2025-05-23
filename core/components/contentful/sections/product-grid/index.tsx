@@ -119,7 +119,7 @@ function DropdownRefinementFilter({ attribute, label }: DropdownRefinementFilter
   };
 
   return (
-    <div className="flex max-w-max flex-col items-start @2xl:max-w-none">
+    <div className="flex w-full flex-col items-start @2xl:max-w-none">
       <SelectField
         hideLabel
         label={label ?? ''}

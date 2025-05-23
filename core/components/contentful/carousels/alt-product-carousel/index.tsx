@@ -144,9 +144,9 @@ export function AltProductCarousel({
               </CarouselItem>
             ))}
           </CarouselContent>
-          <div className="mt-8 flex justify-between gap-4">
+          <div className="mt-8 flex flex-col-reverse justify-between gap-4 @md:flex-row">
             {cta}
-            <CarouselPagination />
+            <CarouselPagination className="justify-end @md:justify-start" />
           </div>
         </Carousel>
       </div>
