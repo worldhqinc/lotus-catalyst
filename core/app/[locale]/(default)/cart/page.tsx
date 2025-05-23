@@ -117,7 +117,6 @@ export default async function Cart({ params, searchParams }: Props) {
 
   const lineItems = [...cart.lineItems.physicalItems, ...cart.lineItems.digitalItems];
 
-  // Fetch additional data for each Product
   const additionalProductData = await Promise.all(
     lineItems.map(async (item) => {
       const additionalDataResponse = await client.fetch({

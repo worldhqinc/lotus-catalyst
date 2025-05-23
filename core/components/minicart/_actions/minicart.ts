@@ -236,7 +236,6 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
     return [];
   }
 
-  // Fetch additional data for each Product
   const additionalProductData = await Promise.all(
     cart.lineItems.physicalItems.map(async (item) => {
       const additionalDataResponse = await client.fetch({
