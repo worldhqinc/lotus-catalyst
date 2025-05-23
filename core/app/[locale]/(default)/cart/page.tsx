@@ -19,10 +19,11 @@ import { updateShippingInfo } from './_actions/update-shipping-info';
 // import { CartViewed } from './_components/cart-viewed';
 import { getCart, getShippingCountries } from './page-data';
 
-const GetProductPricingQuery = graphql(`
-  query GetProductPricing($entityId: Int!, $currencyCode: currencyCode) {
+const GetAdditionalProductDataQuery = graphql(`
+  query GetAdditionalProductData($entityId: Int!, $currencyCode: currencyCode) {
     site {
       product(entityId: $entityId) {
+        path
         prices(currencyCode: $currencyCode) {
           price {
             value
@@ -31,6 +32,15 @@ const GetProductPricingQuery = graphql(`
           basePrice {
             value
             currencyCode
+          }
+        }
+        customFields {
+          edges {
+            node {
+              entityId
+              name
+              value
+            }
           }
         }
       }
@@ -107,11 +117,11 @@ export default async function Cart({ params, searchParams }: Props) {
 
   const lineItems = [...cart.lineItems.physicalItems, ...cart.lineItems.digitalItems];
 
-  // Fetch pricing data for each product
-  const pricingData = await Promise.all(
+  // Fetch additional data for each Product
+  const additionalProductData = await Promise.all(
     lineItems.map(async (item) => {
-      const pricingResponse = await client.fetch({
-        document: GetProductPricingQuery,
+      const additionalDataResponse = await client.fetch({
+        document: GetAdditionalProductDataQuery,
         variables: {
           entityId: item.productEntityId,
           currencyCode,
@@ -120,19 +130,26 @@ export default async function Cart({ params, searchParams }: Props) {
 
       return {
         productEntityId: item.productEntityId,
-        prices: pricingResponse.data.site.product?.prices,
+        path: additionalDataResponse.data.site.product?.path,
+        prices: additionalDataResponse.data.site.product?.prices,
+        customFields: additionalDataResponse.data.site.product?.customFields,
       };
     }),
   );
-
-  const productPricingMap = new Map(
-    pricingData.map((pricing) => [pricing.productEntityId, pricing.prices]),
+  const additionalProductDataMap = new Map(
+    additionalProductData.map((additionalData) => [additionalData.productEntityId, additionalData]),
   );
 
   const formattedLineItems = lineItems.map((item) => {
-    const prices = productPricingMap.get(item.productEntityId);
+    const additionalData = additionalProductDataMap.get(item.productEntityId);
+    const path = additionalData?.path;
+    const prices = additionalData?.prices;
     const basePrice = prices?.basePrice?.value;
     const currentPrice = prices?.price.value;
+    const customFields = additionalData?.customFields?.edges;
+    const webProductNameDescriptor = customFields?.find(
+      (field) => field.node.name === 'Web Product Name Descriptor',
+    )?.node.value;
 
     return {
       id: item.entityId,
@@ -148,31 +165,32 @@ export default async function Cart({ params, searchParams }: Props) {
               currency: prices.basePrice?.currencyCode,
             })
           : undefined,
-      subtitle: item.selectedOptions
-        .map((option) => {
-          switch (option.__typename) {
-            case 'CartSelectedMultipleChoiceOption':
-            case 'CartSelectedCheckboxOption':
-              return `${option.name}: ${option.value}`;
+      subtitle: webProductNameDescriptor ?? '',
+      // subtitle: item.selectedOptions
+      //   .map((option) => {
+      //     switch (option.__typename) {
+      //       case 'CartSelectedMultipleChoiceOption':
+      //       case 'CartSelectedCheckboxOption':
+      //         return `${option.name}: ${option.value}`;
 
-            case 'CartSelectedNumberFieldOption':
-              return `${option.name}: ${option.number}`;
+      //       case 'CartSelectedNumberFieldOption':
+      //         return `${option.name}: ${option.number}`;
 
-            case 'CartSelectedMultiLineTextFieldOption':
-            case 'CartSelectedTextFieldOption':
-              return `${option.name}: ${option.text}`;
+      //       case 'CartSelectedMultiLineTextFieldOption':
+      //       case 'CartSelectedTextFieldOption':
+      //         return `${option.name}: ${option.text}`;
 
-            case 'CartSelectedDateFieldOption':
-              return `${option.name}: ${format.dateTime(new Date(option.date.utc))}`;
+      //       case 'CartSelectedDateFieldOption':
+      //         return `${option.name}: ${format.dateTime(new Date(option.date.utc))}`;
 
-            default:
-              return '';
-          }
-        })
-        .join(', '),
+      //       default:
+      //         return '';
+      //     }
+      //   })
+      // .join(', '),
       title: item.name,
       image: { src: item.image?.url || '', alt: item.name },
-      href: new URL(item.url).pathname,
+      href: path,
       selectedOptions: item.selectedOptions,
       productEntityId: item.productEntityId,
       variantEntityId: item.variantEntityId,

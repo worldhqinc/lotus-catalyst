@@ -172,7 +172,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
       <div className="bg-background divide-contrast-200 divide-y overflow-y-auto">
         {optimisticItems.map((item) => (
           <div className="flex gap-3 p-4 sm:gap-4 sm:px-6" key={item.id}>
-            <div className="border-surface-image bg-surface-image relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border sm:h-24 sm:w-24">
+            <div className="border-surface-image bg-surface-image relative h-20 w-20 overflow-hidden rounded-lg border sm:h-24 sm:w-24">
               {item.image && (
                 <Image
                   alt={item.image.alt}

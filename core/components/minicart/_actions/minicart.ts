@@ -19,7 +19,6 @@ const GetMinicartQuery = graphql(`
         lineItems {
           physicalItems {
             name
-            brand
             image {
               altText
               url: urlTemplate(lossy: true)
@@ -39,7 +38,6 @@ const GetMinicartQuery = graphql(`
           }
           digitalItems {
             name
-            brand
             image {
               altText
               url: urlTemplate(lossy: true)
@@ -63,6 +61,25 @@ const GetMinicartQuery = graphql(`
   }
 `);
 
+const GetAdditionalProductDataQuery = graphql(`
+  query GetAdditionalProductData($entityId: Int!) {
+    site {
+      product(entityId: $entityId) {
+        path
+        customFields {
+          edges {
+            node {
+              entityId
+              name
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+`);
+
 const GetProductRelatedQuery = graphql(`
   query GetProductRelatedQuery($entityId: Int!, $currencyCode: currencyCode) {
     site {
@@ -73,9 +90,6 @@ const GetProductRelatedQuery = graphql(`
               entityId
               name
               path
-              brand {
-                name
-              }
               defaultImage {
                 altText
                 url: urlTemplate(lossy: true)
@@ -86,6 +100,14 @@ const GetProductRelatedQuery = graphql(`
                 }
                 basePrice {
                   value
+                }
+              }
+              customFields {
+                edges {
+                  node {
+                    name
+                    value
+                  }
                 }
               }
             }
@@ -130,6 +152,7 @@ export interface CartItem {
   productEntityId: number;
   variantEntityId: number | null;
   currencyCode: string;
+  href: string;
   image?: {
     src: string;
     alt: string;
@@ -164,9 +187,6 @@ interface RelatedProductNode {
   entityId: number;
   name: string;
   path: string;
-  brand: {
-    name: string;
-  } | null;
   defaultImage: {
     altText: string;
     url: string;
@@ -179,6 +199,14 @@ interface RelatedProductNode {
       value: number;
     } | null;
   } | null;
+  customFields: {
+    edges: Array<{
+      node: {
+        name: string;
+        value: string;
+      };
+    }> | null;
+  };
 }
 
 export const getMinicartItems = async (): Promise<CartItem[]> => {
@@ -207,6 +235,25 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
   if (!cart) {
     return [];
   }
+
+  // Fetch additional data for each Product
+  const additionalProductData = await Promise.all(
+    cart.lineItems.physicalItems.map(async (item) => {
+      const additionalDataResponse = await client.fetch({
+        document: GetAdditionalProductDataQuery,
+        variables: { entityId: item.productEntityId },
+      });
+
+      return {
+        productEntityId: item.productEntityId,
+        path: additionalDataResponse.data.site.product?.path,
+        customFields: additionalDataResponse.data.site.product?.customFields,
+      };
+    }),
+  );
+  const additionalProductDataMap = new Map(
+    additionalProductData.map((additionalData) => [additionalData.productEntityId, additionalData]),
+  );
 
   const productIds = new Set([
     ...cart.lineItems.physicalItems.map((item) => item.productEntityId),
@@ -242,7 +289,10 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
             .map((edge: { node: RelatedProductNode }) => ({
               id: edge.node.entityId.toString(),
               title: edge.node.name,
-              subtitle: edge.node.brand?.name ?? undefined,
+              subtitle:
+                edge.node.customFields.edges?.find(
+                  (field) => field.node.name === 'Web Product Name Descriptor',
+                )?.node.value ?? '',
               price: edge.node.prices?.price.value ?? 0,
               originalPrice:
                 edge.node.prices?.basePrice?.value &&
@@ -273,7 +323,11 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
     (item) => ({
       id: item.entityId,
       title: item.name,
-      subtitle: item.brand || '',
+      subtitle:
+        additionalProductDataMap
+          .get(item.productEntityId)
+          ?.customFields?.edges?.find((field) => field.node.name === 'Web Product Name Descriptor')
+          ?.node.value ?? '',
       price: item.listPrice.value,
       originalPrice:
         item.originalPrice.value > item.listPrice.value ? item.originalPrice.value : undefined,
@@ -283,6 +337,7 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
       currencyCode: item.listPrice.currencyCode,
       image: item.image ? { src: item.image.url, alt: item.image.altText } : undefined,
       relatedProducts: relatedProductsMap.get(item.productEntityId),
+      href: additionalProductDataMap.get(item.productEntityId)?.path,
     }),
   );
 
