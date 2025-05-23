@@ -2,6 +2,7 @@ import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { clsx } from 'clsx';
 
+import { ElementFade } from '@/vibes/soul/lib/element-fade';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Image } from '~/components/image';
@@ -58,44 +59,46 @@ function StackedHeroBanner({
   title: string;
 }) {
   return (
-    <section className="relative isolate h-auto overflow-hidden bg-contrast-200 lg:h-[calc(100svh-64px)]">
+    <section className="bg-contrast-200 relative isolate h-auto overflow-hidden lg:h-[calc(100svh-64px)]">
       <div className="grid h-full grid-cols-[minmax(var(--container-padding),1fr)_minmax(0,calc((var(--container-max-width)/2)))_minmax(0,calc((var(--container-max-width)/2)))_minmax(var(--container-padding),1fr)] gap-y-8 lg:gap-0">
         <div
           className={clsx(
             'justify-space-between col-span-2 col-start-2 flex h-full w-full flex-col gap-8 pt-8 lg:col-start-2 lg:col-end-3 lg:py-16',
           )}
         >
-          <div className="space-y-6">
-            {isPageHeader ? (
-              <h1
-                className={clsx(
-                  'font-heading max-w-xl text-4xl uppercase md:text-6xl',
-                  invertText ? 'text-white' : 'text-surface-foreground',
-                )}
-              >
-                {title}
-              </h1>
-            ) : (
-              <h2
-                className={clsx(
-                  'font-heading max-w-xl text-4xl uppercase md:text-6xl',
-                  invertText ? 'text-white' : 'text-surface-foreground',
-                )}
-              >
-                {title}
-              </h2>
-            )}
-            {description ? (
-              <p
-                className={clsx(
-                  'max-w-lg text-xl',
-                  invertText ? 'text-white' : 'text-contrast-400',
-                )}
-              >
-                {description}
-              </p>
-            ) : null}
-          </div>
+          <ElementFade>
+            <div className="space-y-6">
+              {isPageHeader ? (
+                <h1
+                  className={clsx(
+                    'font-heading max-w-xl text-4xl uppercase md:text-6xl',
+                    invertText ? 'text-white' : 'text-surface-foreground',
+                  )}
+                >
+                  {title}
+                </h1>
+              ) : (
+                <h2
+                  className={clsx(
+                    'font-heading max-w-xl text-4xl uppercase md:text-6xl',
+                    invertText ? 'text-white' : 'text-surface-foreground',
+                  )}
+                >
+                  {title}
+                </h2>
+              )}
+              {description ? (
+                <p
+                  className={clsx(
+                    'max-w-lg text-xl',
+                    invertText ? 'text-white' : 'text-contrast-400',
+                  )}
+                >
+                  {description}
+                </p>
+              ) : null}
+            </div>
+          </ElementFade>
           {primary || secondary ? <HeroBannerCTAs primary={primary} secondary={secondary} /> : null}
           <HeroBannerSecondary
             className="mt-auto"
@@ -139,34 +142,39 @@ function LeftAlignedHeroBanner({
     <SectionLayout className="relative isolate h-[calc(100svh-64px)] [&_>div]:h-full">
       <div className="absolute inset-0 -z-10 bg-linear-to-l from-transparent to-black/50" />
       {mediaElement}
-      <div className={clsx('flex h-full w-full flex-col justify-center gap-8')}>
-        {isPageHeader ? (
-          <h1
-            className={clsx(
-              'font-heading max-w-xl text-4xl md:text-6xl',
-              invertText ? 'text-white' : 'text-surface-foreground',
-              variant === 'left-aligned' && 'uppercase',
-            )}
-          >
-            {title}
-          </h1>
-        ) : (
-          <h2
-            className={clsx(
-              'font-heading max-w-xl text-4xl md:text-6xl',
-              invertText ? 'text-white' : 'text-surface-foreground',
-              variant === 'left-aligned' && 'uppercase',
-            )}
-          >
-            {title}
-          </h2>
-        )}
-        {description ? (
-          <p className={clsx('max-w-lg text-xl', invertText ? 'text-white' : 'text-contrast-400')}>
-            {description}
-          </p>
-        ) : null}
-        <HeroBannerCTAs primary={primary} secondary={secondary} variant={variant} />
+      <div className={clsx('h-full w-full')}>
+        {/* Note: If ElementFade is removed, apply the classes to the parent div instead. */}
+        <ElementFade className="flex flex-col justify-center gap-8">
+          {isPageHeader ? (
+            <h1
+              className={clsx(
+                'font-heading max-w-xl text-4xl md:text-6xl',
+                invertText ? 'text-white' : 'text-surface-foreground',
+                variant === 'left-aligned' && 'uppercase',
+              )}
+            >
+              {title}
+            </h1>
+          ) : (
+            <h2
+              className={clsx(
+                'font-heading max-w-xl text-4xl md:text-6xl',
+                invertText ? 'text-white' : 'text-surface-foreground',
+                variant === 'left-aligned' && 'uppercase',
+              )}
+            >
+              {title}
+            </h2>
+          )}
+          {description ? (
+            <p
+              className={clsx('max-w-lg text-xl', invertText ? 'text-white' : 'text-contrast-400')}
+            >
+              {description}
+            </p>
+          ) : null}
+          <HeroBannerCTAs primary={primary} secondary={secondary} variant={variant} />
+        </ElementFade>
         <HeroBannerSecondary
           invertText={invertText}
           secondaryDescription={secondaryDescription}
@@ -197,37 +205,40 @@ function CenteredHeroBanner({
   return (
     <SectionLayout className="bg-contrast-200 relative isolate h-[calc(100svh-101px)] min-h-[480px] lg:min-h-[720px]">
       {mediaElement}
-      <div className="flex w-full flex-col items-center justify-center gap-8 py-20 lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
-        {isPageHeader ? (
-          <h1
-            className={clsx(
-              'font-heading max-w-4xl text-center text-4xl uppercase md:text-6xl',
-              invertText ? 'text-white' : 'text-surface-foreground',
-            )}
-          >
-            {title}
-          </h1>
-        ) : (
-          <h2
-            className={clsx(
-              'font-heading max-w-4xl text-center text-4xl uppercase md:text-6xl',
-              invertText ? 'text-white' : 'text-surface-foreground',
-            )}
-          >
-            {title}
-          </h2>
-        )}
-        {description ? (
-          <p
-            className={clsx(
-              'max-w-lg text-center text-xl',
-              invertText ? 'text-white' : 'text-contrast-400',
-            )}
-          >
-            {description}
-          </p>
-        ) : null}
-        <HeroBannerCTAs primary={primary} secondary={secondary} />
+      <div className="absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2 py-20">
+        {/* Note: If ElementFade is removed, apply the classes to the parent div instead. */}
+        <ElementFade className="flex w-full flex-col items-center justify-center gap-8">
+          {isPageHeader ? (
+            <h1
+              className={clsx(
+                'font-heading max-w-4xl text-center text-4xl uppercase md:text-6xl',
+                invertText ? 'text-white' : 'text-surface-foreground',
+              )}
+            >
+              {title}
+            </h1>
+          ) : (
+            <h2
+              className={clsx(
+                'font-heading max-w-4xl text-center text-4xl uppercase md:text-6xl',
+                invertText ? 'text-white' : 'text-surface-foreground',
+              )}
+            >
+              {title}
+            </h2>
+          )}
+          {description ? (
+            <p
+              className={clsx(
+                'max-w-lg text-center text-xl',
+                invertText ? 'text-white' : 'text-contrast-400',
+              )}
+            >
+              {description}
+            </p>
+          ) : null}
+          <HeroBannerCTAs primary={primary} secondary={secondary} />
+        </ElementFade>
       </div>
     </SectionLayout>
   );
