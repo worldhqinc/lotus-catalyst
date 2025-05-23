@@ -14,12 +14,12 @@ mounts:
     '/core/.next':
         source: local
         source_path: 'next'
-    '/core/build-config':
-        source: local
-        source_path: 'build-config'
-    '/core/messages':
-        source: local
-        source_path: 'messages'
+    # '/core/build-config':
+    #     source: local
+    #     source_path: 'build-config'
+    # '/core/messages':
+    #     source: local
+    #     source_path: 'messages'
 web:
     locations:
         '/':
@@ -40,10 +40,8 @@ hooks:
         chmod +x scripts/setup_env_vars.sh
         chmod +x scripts/setup_mounts.sh
         ./scripts/setup_env_vars.sh
-        cd /app/core
         pnpm install
         NODE_OPTIONS="--max-old-space-size=8192" pnpm build
-        cd /app
         ./scripts/setup_mounts.sh
     deploy: |
         set -eu

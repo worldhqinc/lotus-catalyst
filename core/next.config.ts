@@ -87,10 +87,10 @@ export default async (): Promise<NextConfig> => {
       ],
     },
     typescript: {
-      ignoreBuildErrors: !!process.env.CI,
+      ignoreBuildErrors: process.env.NODE_ENV === 'production',
     },
     eslint: {
-      ignoreDuringBuilds: !!process.env.CI,
+      ignoreDuringBuilds: process.env.NODE_ENV === 'production',
       dirs: [
         'app',
         'auth',
