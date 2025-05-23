@@ -336,7 +336,7 @@ export const getMinicartItems = async (): Promise<CartItem[]> => {
       currencyCode: item.listPrice.currencyCode,
       image: item.image ? { src: item.image.url, alt: item.image.altText } : undefined,
       relatedProducts: relatedProductsMap.get(item.productEntityId),
-      href: additionalProductDataMap.get(item.productEntityId)?.path,
+      href: additionalProductDataMap.get(item.productEntityId)?.path ?? '',
     }),
   );
 
