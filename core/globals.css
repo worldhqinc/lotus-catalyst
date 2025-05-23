@@ -56,6 +56,44 @@
       position: static !important;
     }
 
+    /* This is a hack to show a loading indicator for the wistia player. */
+
+    .wistia_swatch {
+      display: grid;
+      place-items: center;
+
+      img {
+        opacity: 0.3 !important;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: rotate(0deg);
+        transform-origin: top left;
+        width: 120px;
+        height: 120px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' %3E%3Cpath d='M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8'/%3E%3Cpath d='M3 3v5h5'/%3E%3C/svg%3E");
+        background-size: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        animation: rotate 1s linear reverse infinite;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    }
+
+    /* End wistia player loading indicator hack. */
+
     .w-chrome {
       height: 100% !important;
     }
