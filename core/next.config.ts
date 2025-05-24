@@ -68,7 +68,6 @@ export default async (): Promise<NextConfig> => {
       useCache: true,
     },
     images: {
-      unoptimized: true,
       remotePatterns: [
         {
           protocol: 'https',
