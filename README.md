@@ -76,6 +76,12 @@ Learn more about Catalyst at [catalyst.dev](https://catalyst.dev).
 - [GraphQL Storefront API Explorer](https://developer.bigcommerce.com/graphql-storefront/explorer)
 - [BigCommerce DevDocs](https://developer.bigcommerce.com/docs/build)
 
+## Production Build
+
+Lint and Build locally via: `pnpm build`
+
+If everything is passing, create PR from the `staging` branch to `main`.
+
 ## Contentful Schema
 
 IMPORTANT! Do not manually edit `schema.ts`!
