@@ -133,29 +133,36 @@ function DropdownRefinementFilter({ attribute, label }: DropdownRefinementFilter
   );
 }
 
-function ClearFilters() {
+interface ClearProps {
+  onResetSort: () => void;
+  sortOption: string;
+}
+
+function Clear({ onResetSort, sortOption }: ClearProps) {
   const { setIndexUiState, indexUiState } = useInstantSearch();
   const hasRefinements = Object.keys(indexUiState.refinementList ?? {}).length > 0;
+  const hasSorts = sortOption !== 'relevance';
 
-  if (!hasRefinements) {
+  if (!hasRefinements && !hasSorts) {
     return null;
   }
 
-  const handleClearFilters = () => {
+  const handleClear = () => {
     setIndexUiState((uiState) => ({
       ...uiState,
       refinementList: {},
     }));
+    onResetSort();
   };
 
   return (
     <Button
       className="text-contrast-400 text-sm"
-      onClick={handleClearFilters}
+      onClick={handleClear}
       size="medium"
       variant="link"
     >
-      Clear filters
+      Clear
     </Button>
   );
 }
@@ -261,13 +268,11 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
               </div>
             )}
             {type === 'accessories' && (
-              <>
-                <div className="flex min-w-[200px] flex-1 shrink-0 flex-col items-start">
-                  <DropdownRefinementFilter attribute="categories" label="Categories" />
-                </div>
-                <ClearFilters />
-              </>
+              <div className="flex min-w-[200px] flex-1 shrink-0 flex-col items-start">
+                <DropdownRefinementFilter attribute="categories" label="Categories" />
+              </div>
             )}
+            <Clear onResetSort={() => setSortOption('relevance')} sortOption={sortOption} />
           </div>
           <ResultCount />
         </div>
