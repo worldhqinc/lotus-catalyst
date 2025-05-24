@@ -14,9 +14,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { fields } = page;
 
   return {
-    title: fields.metaTitleSeo || fields.pageName,
+    title: fields.metaTitle || fields.pageName,
     description: fields.metaDescription,
-    keywords: fields.metaKeywordsSeo,
+    keywords: fields.metaKeywords,
   };
 }
 

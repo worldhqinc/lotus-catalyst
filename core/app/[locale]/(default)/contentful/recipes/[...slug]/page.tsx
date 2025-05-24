@@ -37,16 +37,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { fields } = page;
 
   return {
-    title: fields.metaTitleSeo || fields.recipeName,
+    title: fields.metaTitle || fields.recipeName,
     description: fields.metaDescription,
-    keywords: fields.metaKeywordsSeo,
+    keywords: fields.metaKeywords,
     openGraph: {
       images: [
         {
           url: ensureImageUrl(
             fields.featuredImage.fields.file.url ?? '/images/lotus-social-share.jpg',
           ),
-          alt: fields.metaTitleSeo || fields.recipeName,
+          alt: fields.metaTitle || fields.recipeName,
         },
       ],
     },

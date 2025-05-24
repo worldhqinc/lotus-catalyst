@@ -12,7 +12,7 @@
         "id": "productFinishedGoods",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:02.296Z",
-        "updatedAt": "2025-05-22T16:06:29.278Z",
+        "updatedAt": "2025-05-24T17:55:55.420Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 417,
-        "publishedAt": "2025-05-22T16:06:29.278Z",
+        "publishedVersion": 419,
+        "publishedAt": "2025-05-24T17:55:55.420Z",
         "firstPublishedAt": "2025-03-07T21:04:10.592Z",
         "createdBy": {
           "sys": {
@@ -37,8 +37,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 209,
-        "version": 418,
+        "publishedCounter": 210,
+        "version": 420,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -491,7 +491,7 @@
         },
         {
           "id": "metaTitle",
-          "name": "Meta Title (SEO)",
+          "name": "Meta Title",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -502,7 +502,7 @@
         },
         {
           "id": "metaDescription",
-          "name": "Meta Description (SEO)",
+          "name": "Meta Description",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -513,7 +513,7 @@
         },
         {
           "id": "metaKeywords",
-          "name": "Meta Keywords (SEO)",
+          "name": "Meta Keywords",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -1173,7 +1173,7 @@
         "id": "recipe",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:03.111Z",
-        "updatedAt": "2025-05-22T16:03:31.960Z",
+        "updatedAt": "2025-05-24T17:54:41.067Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1181,8 +1181,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 47,
-        "publishedAt": "2025-05-22T16:03:31.960Z",
+        "publishedVersion": 49,
+        "publishedAt": "2025-05-24T17:54:41.067Z",
         "firstPublishedAt": "2025-03-07T21:04:15.617Z",
         "createdBy": {
           "sys": {
@@ -1198,8 +1198,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 24,
-        "version": 48,
+        "publishedCounter": 25,
+        "version": 50,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -1239,8 +1239,8 @@
           "omitted": false
         },
         {
-          "id": "metaTitleSeo",
-          "name": "Meta Title (SEO)",
+          "id": "metaTitle",
+          "name": "Meta Title",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -1251,7 +1251,7 @@
         },
         {
           "id": "metaDescription",
-          "name": "Meta Description (SEO)",
+          "name": "Meta Description",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -1261,8 +1261,8 @@
           "omitted": false
         },
         {
-          "id": "metaKeywordsSeo",
-          "name": "Meta Keywords (SEO)",
+          "id": "metaKeywords",
+          "name": "Meta Keywords",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -1682,7 +1682,7 @@
         "id": "productPartsAndAccessories",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:03.151Z",
-        "updatedAt": "2025-05-22T16:06:19.538Z",
+        "updatedAt": "2025-05-24T17:56:16.330Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -1690,8 +1690,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 197,
-        "publishedAt": "2025-05-22T16:06:19.538Z",
+        "publishedVersion": 199,
+        "publishedAt": "2025-05-24T17:56:16.330Z",
         "firstPublishedAt": "2025-03-07T21:04:14.874Z",
         "createdBy": {
           "sys": {
@@ -1707,8 +1707,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 99,
-        "version": 198,
+        "publishedCounter": 100,
+        "version": 200,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -2046,7 +2046,7 @@
         },
         {
           "id": "metaTitle",
-          "name": "Meta Title (SEO)",
+          "name": "Meta Title",
           "type": "Symbol",
           "localized": true,
           "required": true,
@@ -2057,7 +2057,7 @@
         },
         {
           "id": "metaDescription",
-          "name": "Meta Description (SEO)",
+          "name": "Meta Description",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -2068,7 +2068,7 @@
         },
         {
           "id": "metaKeywords",
-          "name": "Meta Keywords (SEO)",
+          "name": "Meta Keywords",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -2494,7 +2494,7 @@
         "id": "pageStandard",
         "type": "ContentType",
         "createdAt": "2025-03-07T21:04:05.115Z",
-        "updatedAt": "2025-05-22T16:02:47.937Z",
+        "updatedAt": "2025-05-24T17:55:24.775Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -2502,8 +2502,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 13,
-        "publishedAt": "2025-05-22T16:02:47.937Z",
+        "publishedVersion": 17,
+        "publishedAt": "2025-05-24T17:55:24.775Z",
         "firstPublishedAt": "2025-03-07T21:04:21.914Z",
         "createdBy": {
           "sys": {
@@ -2519,8 +2519,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 7,
-        "version": 14,
+        "publishedCounter": 9,
+        "version": 18,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -2557,8 +2557,8 @@
           "omitted": false
         },
         {
-          "id": "metaTitleSeo",
-          "name": "Meta Title (SEO)",
+          "id": "metaTitle",
+          "name": "Meta Title",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -2569,7 +2569,7 @@
         },
         {
           "id": "metaDescription",
-          "name": "Meta Description (SEO)",
+          "name": "Meta Description",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -2579,8 +2579,8 @@
           "omitted": false
         },
         {
-          "id": "metaKeywordsSeo",
-          "name": "Meta Keywords (SEO)",
+          "id": "metaKeywords",
+          "name": "Meta Keywords",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -2603,9 +2603,10 @@
                 "underline",
                 "code",
                 "superscript",
-                "subscript"
+                "subscript",
+                "strikethrough"
               ],
-              "message": "Only bold, italic, underline, code, superscript, and subscript marks are allowed"
+              "message": "Only bold, italic, underline, code, superscript, subscript, and strikethrough marks are allowed"
             },
             {
               "enabledNodeTypes": [
@@ -3500,7 +3501,7 @@
         "id": "tutorial",
         "type": "ContentType",
         "createdAt": "2025-04-03T18:35:56.772Z",
-        "updatedAt": "2025-05-22T16:03:45.025Z",
+        "updatedAt": "2025-05-24T17:55:02.801Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3508,8 +3509,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 17,
-        "publishedAt": "2025-05-22T16:03:45.025Z",
+        "publishedVersion": 19,
+        "publishedAt": "2025-05-24T17:55:02.801Z",
         "firstPublishedAt": "2025-04-03T18:35:57.091Z",
         "createdBy": {
           "sys": {
@@ -3525,8 +3526,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 9,
-        "version": 18,
+        "publishedCounter": 10,
+        "version": 20,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3563,8 +3564,8 @@
           "omitted": false
         },
         {
-          "id": "metaTitleSeo",
-          "name": "Meta Title (SEO)",
+          "id": "metaTitle",
+          "name": "Meta Title",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -3575,7 +3576,7 @@
         },
         {
           "id": "metaDescription",
-          "name": "Meta Description (SEO)",
+          "name": "Meta Description",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -3585,8 +3586,8 @@
           "omitted": false
         },
         {
-          "id": "metaKeywordsSeo",
-          "name": "Meta Keywords (SEO)",
+          "id": "metaKeywords",
+          "name": "Meta Keywords",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -4091,7 +4092,7 @@
         "id": "feature",
         "type": "ContentType",
         "createdAt": "2025-04-19T21:02:00.973Z",
-        "updatedAt": "2025-05-22T16:03:00.406Z",
+        "updatedAt": "2025-05-24T17:54:09.843Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4099,8 +4100,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 17,
-        "publishedAt": "2025-05-22T16:03:00.406Z",
+        "publishedVersion": 19,
+        "publishedAt": "2025-05-24T17:54:09.843Z",
         "firstPublishedAt": "2025-04-19T21:02:01.287Z",
         "createdBy": {
           "sys": {
@@ -4116,8 +4117,8 @@
             "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 9,
-        "version": 18,
+        "publishedCounter": 10,
+        "version": 20,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -4157,8 +4158,8 @@
           "omitted": false
         },
         {
-          "id": "metaTitleSeo",
-          "name": "Meta Title (SEO)",
+          "id": "metaTitle",
+          "name": "Meta Title",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -4169,7 +4170,7 @@
         },
         {
           "id": "metaDescription",
-          "name": "Meta Description (SEO)",
+          "name": "Meta Description",
           "type": "Symbol",
           "localized": true,
           "required": false,
@@ -4179,8 +4180,8 @@
           "omitted": false
         },
         {
-          "id": "metaKeywordsSeo",
-          "name": "Meta Keywords (SEO)",
+          "id": "metaKeywords",
+          "name": "Meta Keywords",
           "type": "Symbol",
           "localized": true,
           "required": false,

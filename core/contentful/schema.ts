@@ -1251,9 +1251,9 @@ export type carouselProduct = z.infer<typeof carouselProductSchema>;
 export const recipeFieldsSchema = z.object({
   recipeName: z.string(),
   pageSlug: z.string(),
-  metaTitleSeo: z.string().nullish(),
+  metaTitle: z.string().nullish(),
   metaDescription: z.string().nullish(),
-  metaKeywordsSeo: z.string().nullish(),
+  metaKeywords: z.string().nullish(),
   author: z
     .object({
       metadata: z.object({
@@ -2531,9 +2531,9 @@ export type supportDocument = z.infer<typeof supportDocumentSchema>;
 export const pageStandardFieldsSchema = z.object({
   pageName: z.string(),
   pageSlug: z.string(),
-  metaTitleSeo: z.string().nullish(),
+  metaTitle: z.string().nullish(),
   metaDescription: z.string().nullish(),
-  metaKeywordsSeo: z.string().nullish(),
+  metaKeywords: z.string().nullish(),
   optionalPageDescription: z
     .object({
       nodeType: z.literal(BLOCKS.DOCUMENT),
@@ -3790,9 +3790,9 @@ export type inspirationCard = z.infer<typeof inspirationCardSchema>;
 export const tutorialFieldsSchema = z.object({
   title: z.string(),
   pageSlug: z.string().nullish(),
-  metaTitleSeo: z.string().nullish(),
+  metaTitle: z.string().nullish(),
   metaDescription: z.string().nullish(),
-  metaKeywordsSeo: z.string().nullish(),
+  metaKeywords: z.string().nullish(),
   subtitle: z.string().nullish(),
   featuredImage: z
     .object({
@@ -4190,9 +4190,9 @@ export type postGrid = z.infer<typeof postGridSchema>;
 export const featureFieldsSchema = z.object({
   title: z.string(),
   pageSlug: z.string(),
-  metaTitleSeo: z.string().nullish(),
+  metaTitle: z.string().nullish(),
   metaDescription: z.string().nullish(),
-  metaKeywordsSeo: z.string().nullish(),
+  metaKeywords: z.string().nullish(),
   subtitle: z.string().nullish(),
   categories: z.array(z.string()).nullish(),
   featuredImage: z
