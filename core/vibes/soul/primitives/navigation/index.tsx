@@ -359,7 +359,7 @@ export const LocaleSwitcher = ({
             return (
               <button
                 className={clsx(
-                  'rounded-full border px-3 py-2 text-base font-medium',
+                  'nav-locale-item rounded-full border px-3 py-2 text-base font-medium',
                   id === activeLocaleId
                     ? 'bg-contrast-100 border-contrast-100 text-foreground'
                     : 'border-contrast-200 text-contrast-400 bg-transparent',
