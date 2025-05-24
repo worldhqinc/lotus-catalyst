@@ -68,6 +68,7 @@ export default async (): Promise<NextConfig> => {
       useCache: true,
     },
     images: {
+      unoptimized: true,
       remotePatterns: [
         {
           protocol: 'https',
@@ -87,10 +88,10 @@ export default async (): Promise<NextConfig> => {
       ],
     },
     typescript: {
-      ignoreBuildErrors: process.env.NODE_ENV === 'production',
+      ignoreBuildErrors: !!process.env.CI,
     },
     eslint: {
-      ignoreDuringBuilds: process.env.NODE_ENV === 'production',
+      ignoreDuringBuilds: !!process.env.CI,
       dirs: [
         'app',
         'auth',
