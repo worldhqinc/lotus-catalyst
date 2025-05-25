@@ -27,7 +27,7 @@ const getErrorsOrUndefined = (
   return errors?.[fieldName] || undefined;
 };
 
-export const ContactForm = ({ fields }: { fields: TicketField[] }) => {
+export const ContactFormClient = ({ fields }: { fields: TicketField[] }) => {
   const initialState: FormState = {
     errors: null,
     success: false,
