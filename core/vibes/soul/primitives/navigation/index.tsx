@@ -516,10 +516,10 @@ export const Navigation = forwardRef(function Navigation(
                     {item.groups != null && item.groups.length > 0 ? (
                       <button
                         className={clsx(
-                          '@4xl:after:bg-border @4xl:after:ease-quad hidden after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-3 @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
+                          '@4xl:after:ease-quad hover:@4xl:after:bg-border hidden after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-3 @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
                           pathname.includes('/shop/')
                             ? '@4xl:after:bg-primary @4xl:after:scale-x-100'
-                            : 'after:scale-x-0',
+                            : 'after:scale-x-0 @4xl:after:bg-transparent',
                         )}
                       >
                         {item.label}
@@ -527,10 +527,10 @@ export const Navigation = forwardRef(function Navigation(
                     ) : (
                       <Link
                         className={clsx(
-                          '@4xl:after:bg-border @4xl:after:ease-quad text-nowrap after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
+                          '@4xl:after:ease-quad hover:@4xl:after:bg-border text-nowrap after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-3 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
                           pathname === item.href || pathname === `${item.href}/`
                             ? '@4xl:after:bg-primary @4xl:after:scale-x-100'
-                            : 'after:scale-x-0',
+                            : 'after:scale-x-0 @4xl:after:bg-transparent',
                         )}
                         href={item.href}
                       >
