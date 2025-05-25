@@ -63,7 +63,7 @@ export const Banner = forwardRef(
           src={BannerBackground}
           width={2560}
         />
-        <div className="@container container flex flex-row items-center justify-between">
+        <div className="[&_*::selection]:text-primary @container container flex flex-row items-center justify-between [&_*::selection]:bg-white">
           <div>
             <Stream
               fallback={<p className="bg-contrast-100 block h-4 w-20 animate-pulse rounded-md" />}
