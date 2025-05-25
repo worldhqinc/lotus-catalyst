@@ -34,7 +34,7 @@ export const WishlistButtonDropdown = ({
     const path = params.size === 0 ? pathname : `${pathname}?${params.toString()}`;
 
     if (isLoggedIn) {
-      router.push(path);
+      router.replace(path);
     } else {
       const loginParams = new URLSearchParams({ redirectTo: path });
 

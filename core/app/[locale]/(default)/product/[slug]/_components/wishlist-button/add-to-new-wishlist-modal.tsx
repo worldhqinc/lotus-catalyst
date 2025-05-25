@@ -37,7 +37,7 @@ export const AddToNewWishlistModal = ({
 
     params.delete('action');
 
-    router.push(params.size === 0 ? pathname : `${pathname}?${params.toString()}`);
+    router.replace(params.size === 0 ? pathname : `${pathname}?${params.toString()}`);
   };
 
   return (
