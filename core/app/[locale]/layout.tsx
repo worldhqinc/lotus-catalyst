@@ -121,7 +121,7 @@ export default async function RootLayout({ params, children }: Props) {
 
   return (
     <html className={clsx(fonts.map((f) => f.variable))} lang={locale}>
-      <body className="font-body flex min-h-screen flex-col antialiased [&_[data-radix-popper-content-wrapper]]:!z-20">
+      <body className="font-body flex min-h-screen flex-col antialiased [&_[data-radix-popper-content-wrapper]]:!z-40">
         <SmoothScrolling>
           <GoogleTagManager gtmId={`${process.env.NEXT_PUBLIC_GTM_ID}`} />
           <NextIntlClientProvider>

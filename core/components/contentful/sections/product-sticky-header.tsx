@@ -1,6 +1,7 @@
 'use client';
 
 import { clsx } from 'clsx';
+import { ShoppingCart } from 'lucide-react';
 import { forwardRef, RefObject, useEffect, useState, useTransition } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
@@ -52,8 +53,24 @@ function AddToBagForm({
       }}
     >
       <input name="sku" type="hidden" value={sku} />
-      <Button disabled={isPending} loading={isPending} size="small" type="submit">
+      <Button
+        className="!hidden sm:!inline-flex"
+        disabled={isPending}
+        loading={isPending}
+        size="small"
+        type="submit"
+      >
         Add to cart{priceDisplay ? ` | ${priceDisplay}` : ''}
+      </Button>
+      <Button
+        className="inline-flex sm:hidden"
+        disabled={isPending}
+        loading={isPending}
+        shape="circle"
+        size="small"
+        type="submit"
+      >
+        <ShoppingCart className="h-5 w-5" />
       </Button>
     </form>
   );
@@ -106,54 +123,58 @@ export const ProductStickyHeader = forwardRef<
   return (
     <header
       className={clsx(
-        'bg-contrast-100 fixed top-[var(--site-header-height,0px)] left-0 z-30 hidden w-full items-center justify-between px-6 py-3 shadow-md transition-opacity sm:flex @xl:px-12',
-        showStickyHeader ? 'opacity-100' : 'pointer-events-none opacity-0',
+        'bg-contrast-100 ease-quad fixed top-[var(--site-header-height,0px)] left-0 z-25 w-full items-center justify-between py-3 shadow-md transition-all duration-200',
+        showStickyHeader
+          ? 'translate-y-0 opacity-100'
+          : 'pointer-events-none -translate-y-full opacity-0',
       )}
       ref={ref}
     >
-      <div className="flex min-w-0 items-center gap-4">
-        <LogoLotus height={32} type="icon" width={32} />
-      </div>
-      <nav className="ml-8 flex flex-1 items-center justify-center gap-8">
-        <span
-          className="text-surface-foreground max-w-xs truncate text-2xl font-medium tracking-widest uppercase @xl:max-w-md"
-          title={contentful?.fields.webProductName || ''}
-        >
-          {contentful?.fields.webProductName}
-        </span>
-        <button
-          className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
-          Overview
-        </button>
-        <button
-          className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
-          onClick={scrollToFeatures}
-        >
-          Features
-        </button>
-        {/* <a
-            className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
-            href="#reviews"
-            style={{ scrollBehavior: 'smooth' }}
+      <div className="container flex items-center justify-between">
+        <div className="hidden sm:flex sm:min-w-0 sm:items-center sm:gap-4">
+          <LogoLotus height={32} type="icon" width={32} />
+        </div>
+        <nav className="flex flex-1 items-center gap-8 sm:ml-8 sm:justify-center">
+          <span
+            className="text-surface-foreground max-w-xs truncate text-2xl font-medium tracking-widest uppercase @xl:max-w-md"
+            title={contentful?.fields.webProductName || ''}
           >
-            Reviews
-          </a> */}
-      </nav>
-      <div className="flex items-center">
-        <Stream
-          fallback={
-            <Button loading size="small">
-              Add to cart
-            </Button>
-          }
-          value={Streamable.all([product.price, streamableCtaDisabled])}
-        >
-          {([price, ctaDisabled]) => (
-            <AddToBagForm ctaDisabled={ctaDisabled} price={price} sku={product.sku} />
-          )}
-        </Stream>
+            {contentful?.fields.webProductName}
+          </span>
+          <button
+            className="text-surface-foreground/80 hover:text-surface-foreground hidden transition-colors sm:inline-flex"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            Overview
+          </button>
+          <button
+            className="text-surface-foreground/80 hover:text-surface-foreground hidden transition-colors sm:inline-flex"
+            onClick={scrollToFeatures}
+          >
+            Features
+          </button>
+          {/* <a
+              className="text-surface-foreground/80 hover:text-surface-foreground transition-colors"
+              href="#reviews"
+              style={{ scrollBehavior: 'smooth' }}
+            >
+              Reviews
+            </a> */}
+        </nav>
+        <div className="flex items-center">
+          <Stream
+            fallback={
+              <Button loading size="small">
+                Add to cart
+              </Button>
+            }
+            value={Streamable.all([product.price, streamableCtaDisabled])}
+          >
+            {([price, ctaDisabled]) => (
+              <AddToBagForm ctaDisabled={ctaDisabled} price={price} sku={product.sku} />
+            )}
+          </Stream>
+        </div>
       </div>
     </header>
   );
