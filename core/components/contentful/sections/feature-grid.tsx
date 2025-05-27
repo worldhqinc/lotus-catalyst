@@ -17,7 +17,7 @@ export function FeatureGrid({ title, subheading, items }: featureGrid['fields'])
   }
 
   return (
-    <SectionLayout containerClassName="bg-white py-24 space-y-16">
+    <SectionLayout containerClassName="bg-white lg:py-24 space-y-16">
       <div className="flex flex-col items-center empty:hidden">
         {title ? (
           <h2 className="font-heading text-icon-primary max-w-4xl text-center text-4xl uppercase md:text-6xl">
