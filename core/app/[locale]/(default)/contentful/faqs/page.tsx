@@ -39,9 +39,14 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function FaqsPage({ searchParams }: { searchParams: { search?: string } }) {
+export default async function FaqsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ search?: string }>;
+}) {
   const page = await getPageBySlug('pageStandard', ['faqs']);
-  const searchTerm = searchParams.search?.toLowerCase() || '';
+  const resolvedSearchParams = await searchParams;
+  const searchTerm = resolvedSearchParams.search?.toLowerCase() || '';
 
   const faqCategories: FaqCategory[] =
     page.fields.pageContent
@@ -103,7 +108,10 @@ export default async function FaqsPage({ searchParams }: { searchParams: { searc
             <FaqSidebar categories={faqCategories} />
           </div>
           <div className="lg:col-span-7 lg:col-start-5 [&_>div]:flex [&_>div]:flex-col [&_>div]:gap-12">
-            <PageContentEntries pageContent={filteredPageContent} searchParams={searchParams} />
+            <PageContentEntries
+              pageContent={filteredPageContent}
+              searchParams={resolvedSearchParams}
+            />
           </div>
         </div>
       </div>
