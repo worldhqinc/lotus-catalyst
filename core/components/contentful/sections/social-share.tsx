@@ -2,14 +2,9 @@
 
 import { clsx } from 'clsx';
 import { Mail, Printer } from 'lucide-react';
-import {
-  EmailShareButton,
-  FacebookShareButton,
-  PinterestShareButton,
-  TwitterShareButton,
-} from 'react-share';
+import { EmailShareButton, FacebookShareButton, PinterestShareButton } from 'react-share';
 
-import { Facebook, Pinterest, X } from '@/vibes/soul/sections/footer/social-icons';
+import { Facebook, Pinterest } from '@/vibes/soul/sections/footer/social-icons';
 import Placeholder from '~/public/images/Lotus-Media-Placeholder.png';
 
 interface Props {
@@ -19,7 +14,7 @@ interface Props {
   url: string;
 }
 
-export default function SocialShare({ align = 'center', media, title, url }: Props) {
+export default function SocialShare({ align = 'center', media, url }: Props) {
   const handlePrint = () => {
     if (typeof window !== 'undefined') {
       window.print();
@@ -41,12 +36,6 @@ export default function SocialShare({ align = 'center', media, title, url }: Pro
       >
         <Facebook />
       </FacebookShareButton>
-      <TwitterShareButton
-        className="!text-foreground ease-quad hover:!text-primary transition-colors duration-200"
-        url={url}
-      >
-        <X />
-      </TwitterShareButton>
       <PinterestShareButton
         className="!text-foreground ease-quad hover:!text-primary transition-colors duration-200"
         media={media || Placeholder.src}
@@ -55,8 +44,9 @@ export default function SocialShare({ align = 'center', media, title, url }: Pro
         <Pinterest />
       </PinterestShareButton>
       <EmailShareButton
+        body="This recipe from Lotus Cooking looks delicious!"
         className="!text-foreground ease-quad hover:!text-primary transition-colors duration-200"
-        subject={title}
+        subject="Check out this Lotus Cooking Recipe!"
         url={url}
       >
         <Mail className="h-6 w-6" />

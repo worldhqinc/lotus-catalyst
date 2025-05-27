@@ -54,7 +54,7 @@ export function BlockProductFeatures({
                     )}
                   </div>
                   <div className="mt-6 text-center md:text-left">
-                    <h3 className="text-surface-foreground font-medium">{fields.heading}</h3>
+                    <h3 className="text-surface-foreground text-xl">{fields.heading}</h3>
                     {!!fields.description && (
                       <p className="mt-2 max-w-[45ch] text-balance text-gray-500">
                         {fields.description}
@@ -65,7 +65,7 @@ export function BlockProductFeatures({
               ) : (
                 <div className={isFirst ? 'md:row-span-2' : ''}>
                   <div
-                    className={`relative overflow-hidden rounded-lg ${isFirst ? 'aspect-video md:h-full md:w-full' : 'aspect-video'}`}
+                    className={`relative overflow-hidden rounded-lg ${isFirst ? 'aspect-square md:h-full md:w-full' : 'aspect-square lg:aspect-video'}`}
                   >
                     {fields.wistiaId ? (
                       <div className="absolute inset-0 h-full w-full">
@@ -85,9 +85,9 @@ export function BlockProductFeatures({
                       />
                     )}
                     <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent p-6 md:p-8">
-                      <h3 className="text-background font-medium">{fields.heading}</h3>
+                      <h3 className="text-background text-xl">{fields.heading}</h3>
                       {!!fields.description && (
-                        <p className="text-background max-w-[45ch] text-lg text-balance">
+                        <p className="text-background max-w-[45ch] text-balance">
                           {fields.description}
                         </p>
                       )}

@@ -1,61 +1,19 @@
 'use client';
 
-import { clsx } from 'clsx';
 import { ArrowRight } from 'lucide-react';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  useCarousel,
+  CarouselScrollbar,
 } from '@/vibes/soul/primitives/carousel';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { assetSchema, carouselProduct, productFinishedGoodsSchema } from '~/contentful/schema';
 import { ensureImageUrl } from '~/lib/utils';
-
-function CarouselPagination({ className }: { className?: string }) {
-  const { api } = useCarousel();
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  useEffect(() => {
-    if (!api) return;
-
-    const onSelect = () => {
-      setSelectedIndex(api.selectedScrollSnap());
-    };
-
-    api.on('select', onSelect);
-
-    return () => {
-      api.off('select', onSelect);
-    };
-  }, [api]);
-
-  if (!api) return null;
-
-  const scrollSnaps = api.scrollSnapList();
-
-  return (
-    <div className={clsx('flex items-center gap-2', className)}>
-      {scrollSnaps.map((_, index) => (
-        <button
-          aria-label={`View slide ${index + 1}`}
-          className={clsx(
-            'transition-all focus:outline-none',
-            index === selectedIndex
-              ? 'h-2 w-6 rounded-full bg-black'
-              : 'h-2 w-2 rounded-full bg-gray-300',
-          )}
-          key={index}
-          onClick={() => api.scrollTo(index)}
-        />
-      ))}
-    </div>
-  );
-}
 
 export function AltProductCarousel({
   carousel,
@@ -101,7 +59,7 @@ export function AltProductCarousel({
           <CarouselContent className="-ml-4 flex @2xl:-ml-5">
             {items.map((product, index) => (
               <CarouselItem
-                className="basis-full pl-4 @md:basis-1/2 @lg:basis-1/3 @2xl:basis-[30%] @2xl:pl-6"
+                className="basis-1/2 pl-4 @md:basis-1/2 @lg:basis-1/3 @2xl:basis-[30%] @2xl:pl-6"
                 key={`${product.id}-${index}`}
               >
                 <div className="flex flex-col items-start gap-3">
@@ -123,14 +81,12 @@ export function AltProductCarousel({
                         {product.title}
                       </h3>
                       {product.subtitle !== undefined && (
-                        <p className="text-icon-secondary w-full truncate text-sm">
-                          {product.subtitle}
-                        </p>
+                        <p className="text-icon-secondary w-full text-sm">{product.subtitle}</p>
                       )}
                     </div>
                     <ButtonLink
                       aria-label={`View ${product.title}`}
-                      className="bg-transparent"
+                      className="!hidden bg-transparent lg:!inline-flex"
                       href={product.href}
                       shape="circle"
                       size="medium"
@@ -144,9 +100,11 @@ export function AltProductCarousel({
               </CarouselItem>
             ))}
           </CarouselContent>
-          <div className="mt-8 flex flex-col-reverse justify-between gap-4 @md:flex-row">
+          <div className="mt-8 flex items-center justify-between gap-4 @lg:mt-12">
             {cta}
-            <CarouselPagination className="justify-end @md:justify-start" />
+            <div className="max-w-[120px] flex-1">
+              <CarouselScrollbar colorScheme="light" label="Scroll" />
+            </div>
           </div>
         </Carousel>
       </div>

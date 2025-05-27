@@ -22,7 +22,7 @@ export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSe
         carousel={validCarousel}
         cta={
           validCta && (
-            <div className="mt-8 text-center">
+            <div className="text-center">
               <ButtonLink href={getLinkHref(validCta.fields)}>{validCta.fields.text}</ButtonLink>
             </div>
           )
