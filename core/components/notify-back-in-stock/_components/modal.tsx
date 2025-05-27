@@ -25,7 +25,7 @@ export default function NotifyBackInStockModal({
   sku,
   buttonLabel = 'Notify me',
   buttonClassName,
-  buttonSize = 'medium',
+  buttonSize = 'small',
   textCta = false,
 }: {
   action: Action<
