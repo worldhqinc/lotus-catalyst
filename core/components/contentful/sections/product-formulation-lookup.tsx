@@ -1,9 +1,12 @@
 import { richTextFromMarkdown } from '@contentful/rich-text-from-markdown';
 import { unstable_cacheTag as cacheTag } from 'next/cache';
+import { Suspense } from 'react';
 
+import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { productFinishedGoodsFieldsSchema, productFormulationLookup } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
 import { generateHtmlFromRichText } from '~/lib/utils';
+import { Spinner } from '~/vibes/soul/primitives/spinner';
 
 import { ProductFormulationLookupClient } from './product-formulation-lookup-client';
 
@@ -49,10 +52,36 @@ async function getProductFields(sku: string) {
   return productFinishedGoodsFieldsSchema.parse(productData.items[0]?.fields);
 }
 
-export async function ProductFormulationLookup({
+export function ProductFormulationLookup({
   title,
   disclaimer,
   selectedSku = '',
+}: productFormulationLookup['fields'] & { selectedSku?: string }) {
+  return (
+    <SectionLayout className="bg-contrast-100">
+      <div className="mx-auto max-w-3xl rounded bg-white p-12">
+        <Suspense
+          fallback={
+            <div className="flex justify-center">
+              <Spinner loadingAriaLabel="Loading product formulation lookup form..." size="lg" />
+            </div>
+          }
+        >
+          <ProductFormulationLookupBody
+            disclaimer={disclaimer}
+            selectedSku={selectedSku}
+            title={title}
+          />
+        </Suspense>
+      </div>
+    </SectionLayout>
+  );
+}
+
+async function ProductFormulationLookupBody({
+  disclaimer,
+  selectedSku,
+  title,
 }: productFormulationLookup['fields'] & { selectedSku?: string }) {
   const disclaimerRichText = disclaimer ? await richTextFromMarkdown(disclaimer) : null;
   const disclaimerHtml = disclaimerRichText ? generateHtmlFromRichText(disclaimerRichText) : '';
@@ -70,7 +99,7 @@ export async function ProductFormulationLookup({
       disclaimerHtml={disclaimerHtml}
       productOptions={productOptions}
       selectedProductFields={selectedProductFields}
-      selectedSku={selectedSku}
+      selectedSku={selectedSku ?? ''}
       title={title ?? ''}
     />
   );

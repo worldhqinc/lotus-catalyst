@@ -1,9 +1,10 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { SelectField } from '@/vibes/soul/form/select-field';
-import { SectionLayout } from '@/vibes/soul/sections/section-layout';
+import { Spinner } from '@/vibes/soul/primitives/spinner';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { Asset, productFinishedGoods } from '~/contentful/schema';
@@ -135,10 +136,18 @@ export function ProductFormulationLookupClient({
 }: ProductFormulationLookupClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(true);
+
+  const currentSelectedSku = searchParams.get('selectedSku') ?? '';
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [selectedProductFields]);
 
   const handleSelect = (sku: string) => {
     const params = new URLSearchParams(searchParams.toString());
 
+    setIsLoading(true);
     params.set('selectedSku', sku);
     router.replace(`?${params.toString()}`);
   };
@@ -168,7 +177,6 @@ export function ProductFormulationLookupClient({
     }
   }
 
-  // Product card for the selected product
   const productCard = selectedProductFields ? (
     <div className="border-contrast-200 mb-8 flex items-center rounded-lg border p-4">
       <div className="bg-contrast-200 mr-4 h-16 w-16 overflow-hidden rounded">
@@ -202,27 +210,33 @@ export function ProductFormulationLookupClient({
   ) : null;
 
   return (
-    <SectionLayout className="bg-contrast-100">
-      <div className="mx-auto max-w-3xl rounded bg-white p-12">
-        <h2 className="mb-8 text-4xl">{title}</h2>
-        <div className="mb-10">
-          <SelectField
-            className="flex-1"
-            hideLabel
-            label="Select a product"
-            name="productSku"
-            onValueChange={handleSelect}
-            options={productOptions}
-            placeholder="Select a product"
-            value={searchParams.get('selectedSku') ?? ''}
-          />
+    <>
+      <h2 className="mb-8 text-4xl">{title}</h2>
+      {isLoading ? (
+        <div className="flex justify-center py-12">
+          <Spinner loadingAriaLabel="Loading product information..." size="lg" />
         </div>
-        <div className="mb-10">
-          {productCard}
-          {ab1200Content}
-        </div>
-        <div className="prose space-y-6" dangerouslySetInnerHTML={{ __html: disclaimerHtml }} />
-      </div>
-    </SectionLayout>
+      ) : (
+        <>
+          <div className="mb-10">
+            <SelectField
+              className="flex-1"
+              hideLabel
+              label="Select a product"
+              name="productSku"
+              onValueChange={handleSelect}
+              options={productOptions}
+              placeholder="Select a product"
+              value={currentSelectedSku}
+            />
+          </div>
+          <div className="mb-10">
+            {productCard}
+            {ab1200Content}
+          </div>
+          <div className="prose space-y-6" dangerouslySetInnerHTML={{ __html: disclaimerHtml }} />
+        </>
+      )}
+    </>
   );
 }

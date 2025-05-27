@@ -6,6 +6,7 @@ import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
+import { Spinner } from '~/vibes/soul/primitives/spinner';
 
 import { ContactFormClient } from '../_components/contact-form-client';
 
@@ -126,7 +127,13 @@ export default function ContactFormPage() {
           <p className="text-contrast-400 pt-2 text-center">Closed on major US holidays.</p>
         </div>
         <div className="border-contrast-200 mx-auto mt-8 max-w-2xl rounded-lg border p-4 lg:mt-16 lg:p-8">
-          <Suspense fallback={<div>Form loading...</div>}>
+          <Suspense
+            fallback={
+              <div className="flex justify-center">
+                <Spinner loadingAriaLabel="Loading contact form..." size="lg" />
+              </div>
+            }
+          >
             <ContactForm />
           </Suspense>
           <CookiePreferencesNotice />
