@@ -71,7 +71,7 @@ export function InlineEmailForm({
       <div
         className={clsx(
           'bg-background focus-within:border-primary relative border-b text-base transition-colors duration-200 focus:outline-hidden focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none @4xl:text-xl',
-          errors.length ? 'border-error' : 'border-contrast-200',
+          errors.length || fields.email.errors ? 'border-error' : 'border-contrast-200',
           inputContainerClassName,
         )}
       >
