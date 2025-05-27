@@ -63,6 +63,12 @@
       place-items: center;
 
       img {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center !important;
         opacity: 0.3 !important;
       }
 
