@@ -66,7 +66,7 @@ export default function NotifyBackInStockModal({
   };
 
   useEffect(() => {
-    if (lastResult?.status === 'success') {
+    if (successMessage) {
       toast.success(successMessage);
       setModalOpen(false);
     }
