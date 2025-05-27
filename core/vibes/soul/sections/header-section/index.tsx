@@ -44,7 +44,7 @@ export function HeaderSection({ navigation, banner }: HeaderProps) {
     <>
       <Banner {...banner}>{banner?.children || null}</Banner>
       <div
-        className="sticky top-0 z-20 bg-[var(--header-background,hsl(var(--background)))]"
+        className="sticky top-0 z-30 bg-[var(--header-background,hsl(var(--background)))]"
         ref={headerRef}
       >
         <div>

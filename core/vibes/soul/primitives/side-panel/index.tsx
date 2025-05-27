@@ -19,7 +19,7 @@ function Content({ title, children, isMobileSidePanel = false, isFloating = fals
     <Dialog.Portal>
       <Dialog.Overlay
         className={clsx(
-          'bg-foreground/50 @container fixed inset-0 z-30',
+          'bg-foreground/50 @container fixed inset-0 z-40',
           isMobileSidePanel ? 'top-32 h-full w-full' : 'inset-y-0',
         )}
       >

@@ -63,7 +63,7 @@ function StackedHeroBanner({
       <div className="grid h-full grid-cols-[minmax(var(--container-padding),1fr)_minmax(0,calc((var(--container-max-width)/2)))_minmax(0,calc((var(--container-max-width)/2)))_minmax(var(--container-padding),1fr)] gap-y-8 lg:gap-0">
         <div
           className={clsx(
-            'justify-space-between col-span-2 col-start-2 flex h-full w-full flex-col gap-8 pt-8 lg:col-start-2 lg:col-end-3 lg:py-16',
+            'justify-space-between col-span-2 col-start-2 flex h-full w-full flex-col gap-8 pt-16 lg:col-start-2 lg:col-end-3 lg:py-16',
           )}
         >
           <ElementFade>
