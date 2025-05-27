@@ -1,5 +1,7 @@
 'use client';
 
+import { clsx } from 'clsx';
+
 import { SelectField } from '@/vibes/soul/form/select-field';
 import { Image } from '~/components/image';
 import type { featureItem, productFinishedGoods, supportDocument } from '~/contentful/schema';
@@ -8,6 +10,7 @@ import { ensureImageUrl } from '~/lib/utils';
 type FeatureItemProps = Omit<featureItem['fields'], 'products'> & {
   products?: productFinishedGoods[];
   reverseOrder?: boolean;
+  isFinishedGoods?: boolean;
 };
 
 export function FeatureItem({
@@ -15,6 +18,7 @@ export function FeatureItem({
   description,
   image,
   products,
+  isFinishedGoods = false,
   reverseOrder = false,
 }: FeatureItemProps) {
   const supportLinks =
@@ -48,7 +52,12 @@ export function FeatureItem({
 
   return (
     <>
-      <div className="flex flex-col items-start justify-start lg:px-12">
+      <div
+        className={clsx(
+          'flex flex-col items-start justify-start lg:px-12',
+          isFinishedGoods ? 'mx-auto max-w-lg' : '',
+        )}
+      >
         <h3 className="text-4xl">{heading}</h3>
         {description ? <p className="text-contrast-400 mt-2">{description}</p> : null}
         {supportLinks.length > 0 ? (

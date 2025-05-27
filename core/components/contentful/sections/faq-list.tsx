@@ -38,7 +38,7 @@ export function FaqList({ faqParentCategory, faqReference, id }: FaqListFields &
       )}
       id={id}
     >
-      <div className={clsx(id !== 'gg5Z3yjOegetUdutuAXgr' ? '' : 'mx-auto max-w-2xl md:px-8')}>
+      <div className={clsx(id !== 'gg5Z3yjOegetUdutuAXgr' ? '' : 'space-y-8 @4xl:space-y-16')}>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-2xl md:text-4xl">{categoryName}</h2>
           {faqParentCategory === 'Common questions' && (
