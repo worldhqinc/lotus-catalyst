@@ -120,6 +120,7 @@ export function ProductCard({
               )}
               fill
               priority={imagePriority}
+              quality={100}
               sizes={imageSizes}
               src={image.src}
             />
