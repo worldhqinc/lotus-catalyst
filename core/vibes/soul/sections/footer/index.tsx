@@ -103,8 +103,8 @@ export const Footer = forwardRef(async function Footer(
       ref={ref}
     >
       <div className="container py-6 @xl:py-10 @4xl:py-12">
-        <div className="flex flex-col justify-between gap-x-8 gap-y-12 @3xl:grid @3xl:grid-cols-2 @4xl:gap-x-16 @6xl:gap-x-34 @7xl:grid-cols-[437px_1fr]">
-          <div className="flex flex-1 flex-col gap-4 @3xl:gap-6 @4xl:flex-none">
+        <div className="flex flex-col justify-between gap-x-8 gap-y-12 @3xl:grid @3xl:grid-cols-2 @4xl:gap-x-16 @6xl:grid-cols-[auto_1fr] @6xl:gap-x-34">
+          <div className="flex flex-1 flex-col gap-4 @3xl:max-w-[437px] @3xl:gap-6 @4xl:flex-none">
             {/* Logo Information */}
             <LogoLotus height={40} type="icon" width={80} />
 
