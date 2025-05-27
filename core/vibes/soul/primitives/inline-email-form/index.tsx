@@ -9,6 +9,8 @@ import { useActionState } from 'react';
 import { FormStatus } from '@/vibes/soul/form/form-status';
 import { Button } from '@/vibes/soul/primitives/button';
 
+import { FieldError } from '../../form/field-error';
+
 import { schema } from './schema';
 
 type Action<State, Payload> = (
@@ -97,11 +99,7 @@ export function InlineEmailForm({
           </Button>
         </div>
       </div>
-      {errors.map((error, index) => (
-        <FormStatus key={index} type="error">
-          {error}
-        </FormStatus>
-      ))}
+      {fields.email.errors?.map((error, index) => <FieldError key={index}>{error}</FieldError>)}
       {form.status === 'success' && errorMessage ? (
         <FormStatus type="error">{errorMessage}</FormStatus>
       ) : null}
