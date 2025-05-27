@@ -2108,7 +2108,7 @@ export const productPartsAndAccessoriesFieldsSchema = z.object({
   outOfBoxHeight: z.string().nullish(),
   outOfBoxSizeUom: z.string().nullish(),
   outOfBoxWeightUom: z.string().nullish(),
-  metaTitle: z.string(),
+  metaTitle: z.string().nullish(),
   metaDescription: z.string().nullish(),
   metaKeywords: z.string().nullish(),
   archive: z.boolean().nullish(),
