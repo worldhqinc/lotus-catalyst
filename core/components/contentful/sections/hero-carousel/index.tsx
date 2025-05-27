@@ -6,6 +6,7 @@ import { ComponentProps, useEffect, useRef, useState } from 'react';
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { Slideshow } from '@/vibes/soul/sections/slideshow';
 import { Image } from '~/components/image';
+import { WistiaPlayer } from '~/components/wistia-player';
 import { assetSchema, heroCarousel, heroSlideSchema } from '~/contentful/schema';
 import { ensureImageUrl, isString } from '~/lib/utils';
 
@@ -15,6 +16,7 @@ interface Props {
 
 type Slide = ComponentProps<typeof Slideshow>['slides'][number] & {
   invertText?: boolean;
+  wistiaId?: string;
 };
 
 export function HeroCarousel({ data }: Props) {
@@ -56,11 +58,33 @@ export function HeroCarousel({ data }: Props) {
               }
             : undefined,
         showCta: Boolean(fields.ctaLabel && pageSlug),
+        wistiaId: isString(fields.wistiaId) ? fields.wistiaId : undefined,
       };
 
       return slideData;
     })
     .filter((slide): slide is Slide => slide !== null);
+
+  const mediaElement = (slide: Slide, idx: number) => {
+    if (slide.wistiaId) {
+      return <WistiaPlayer pageType="page" wistiaMediaId={slide.wistiaId} />;
+    } else if (slide.image?.src) {
+      return (
+        <Image
+          alt={slide.image.alt}
+          blurDataURL={slide.image.blurDataUrl}
+          className="h-full w-full object-cover"
+          fill
+          placeholder={slide.image.blurDataUrl ? 'blur' : 'empty'}
+          priority={idx === 0}
+          sizes="100vw"
+          src={slide.image.src}
+        />
+      );
+    }
+
+    return null;
+  };
 
   // Scroll to specific slide
   const scrollToSlide = (index: number) => {
@@ -81,43 +105,62 @@ export function HeroCarousel({ data }: Props) {
     if (!data.fields.vertical || !containerRef.current) return;
 
     const container = containerRef.current;
-    let startScrollY = 0;
     let isLocked = false;
-    let lastScrollY = 0;
+    let lastScrollY = window.scrollY;
+
+    // Calculates initial active index based on scroll position
+    const calculateInitialIndex = () => {
+      const containerRect = container.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      // If we're already scrolled past the container
+      if (containerRect.top <= 0) {
+        const scrollProgress = Math.abs(containerRect.top) / viewportHeight;
+        const initialIndex = Math.min(
+          Math.max(0, Math.floor(scrollProgress)),
+          processedSlides.length - 1,
+        );
+
+        setActiveIndex(initialIndex);
+        isLocked = true;
+      }
+    };
 
     // Handle scroll event
     const handleScroll = () => {
-      const rect = container.getBoundingClientRect();
-      const vh = window.innerHeight;
+      const containerRect = container.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
       const scrollY = window.scrollY;
       const isScrollingUp = scrollY < lastScrollY;
 
       lastScrollY = scrollY;
 
-      // Calculate if we're in the carousel section
-      const isInCarousel = rect.top <= 0 && rect.bottom >= 0;
+      // Calculates if we're in the carousel section
+      const isInCarousel = containerRect.top <= 0 && containerRect.bottom >= 0;
       const containerHeight = container.offsetHeight;
-      const isPastLastSlide = rect.top < -(containerHeight - window.innerHeight);
+      const isPastLastSlide = containerRect.top < -(containerHeight - window.innerHeight);
 
       setIsInView(isInCarousel && !isPastLastSlide);
 
       // If container is out of view, reset lock state
-      if (rect.top > vh) {
+      if (containerRect.top > viewportHeight) {
         isLocked = false;
 
         return;
       }
 
       // When the carousel first enters the viewport from top or bottom, record the scroll position
-      if (!isLocked && (rect.top <= 0 || (isScrollingUp && rect.bottom >= vh))) {
+      if (
+        !isLocked &&
+        (containerRect.top <= 0 || (isScrollingUp && containerRect.bottom >= viewportHeight))
+      ) {
         isLocked = true;
-        startScrollY = scrollY;
       }
 
       // Only calculate slide changes if the carousel is locked
       if (isLocked) {
-        // Calculate scroll progress relative to when the carousel was locked
-        const scrollProgress = (scrollY - startScrollY) / vh;
+        // Calculates scroll progress relative to when the carousel was locked
+        const scrollProgress = Math.abs(containerRect.top) / viewportHeight;
         const slideIndex = Math.min(
           Math.max(0, Math.floor(scrollProgress)),
           processedSlides.length - 1,
@@ -127,7 +170,8 @@ export function HeroCarousel({ data }: Props) {
       }
     };
 
-    // Initial calculation
+    // Calculates initial state
+    calculateInitialIndex();
     handleScroll();
 
     // Listen for scroll events
@@ -186,18 +230,7 @@ export function HeroCarousel({ data }: Props) {
                 >
                   <div className="absolute inset-0 z-15 bg-linear-to-l from-transparent to-black/50" />
                   <div className="bg-contrast-200 absolute inset-0 z-10 h-full w-full">
-                    {slide.image?.src != null && slide.image.src !== '' && (
-                      <Image
-                        alt={slide.image.alt}
-                        blurDataURL={slide.image.blurDataUrl}
-                        className="h-full w-full object-cover"
-                        fill
-                        placeholder={slide.image.blurDataUrl ? 'blur' : 'empty'}
-                        priority={idx === 0}
-                        sizes="100vw"
-                        src={slide.image.src}
-                      />
-                    )}
+                    {mediaElement(slide, idx)}
                   </div>
                   <div className="absolute inset-0 left-0 z-20">
                     <div
