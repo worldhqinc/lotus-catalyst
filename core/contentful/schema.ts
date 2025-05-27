@@ -4079,6 +4079,7 @@ export const heroSlideFieldsSchema = z.object({
       }),
     })
     .nullish(),
+  wistiaId: z.string().nullish(),
   headline: z.string(),
   subhead: z.string().nullish(),
   invertTextColor: z.boolean().nullish(),

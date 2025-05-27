@@ -3789,7 +3789,7 @@
         "id": "heroSlide",
         "type": "ContentType",
         "createdAt": "2025-04-11T15:59:21.909Z",
-        "updatedAt": "2025-05-20T14:51:30.974Z",
+        "updatedAt": "2025-05-27T19:21:19.369Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -3797,8 +3797,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 5,
-        "publishedAt": "2025-05-20T14:51:30.974Z",
+        "publishedVersion": 7,
+        "publishedAt": "2025-05-27T19:21:19.369Z",
         "firstPublishedAt": "2025-04-11T15:59:22.157Z",
         "createdBy": {
           "sys": {
@@ -3814,8 +3814,8 @@
             "id": "2fjjcGbkkzT8Ayfmp2kbCJ"
           }
         },
-        "publishedCounter": 3,
-        "version": 6,
+        "publishedCounter": 4,
+        "version": 8,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -3840,6 +3840,17 @@
           "disabled": false,
           "omitted": false,
           "linkType": "Asset"
+        },
+        {
+          "id": "wistiaId",
+          "name": "Wistia ID",
+          "type": "Symbol",
+          "localized": false,
+          "required": false,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
         },
         {
           "id": "headline",

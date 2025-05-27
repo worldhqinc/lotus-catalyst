@@ -72,7 +72,9 @@
         opacity: 0.3 !important;
       }
 
-      &::after {
+      /* Hide the loading indicator */
+
+      /* &::after {
         content: '';
         position: absolute;
         top: 50%;
@@ -95,7 +97,7 @@
         to {
           transform: rotate(360deg);
         }
-      }
+      } */
     }
 
     /* End wistia player loading indicator hack. */

@@ -707,7 +707,10 @@ export const Navigation = forwardRef(function Navigation(
             </Popover.Trigger>
             <Popover.Portal>
               <Popover.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @container z-10 h-[calc(100svh-var(--headroom-wrapper-height))] w-[var(--radix-popper-anchor-width)]">
-                <div className="flex h-[100svh] flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-[var(--nav-mobile-background,hsl(var(--background)))] px-4 py-6">
+                <div
+                  className="flex h-[100svh] flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-[var(--nav-mobile-background,hsl(var(--background)))] px-4 py-6"
+                  data-lenis-prevent
+                >
                   <Stream
                     fallback={
                       <ul className="flex animate-pulse flex-col gap-4 p-5 @4xl:gap-2 @4xl:p-5">
@@ -874,7 +877,10 @@ export const Navigation = forwardRef(function Navigation(
           </Stream>
         </div>
       </div>
-      <div className="absolute top-full right-0 left-0 z-50 flex w-full justify-center perspective-[2000px]">
+      <div
+        className="absolute top-full right-0 left-0 z-50 flex w-full justify-center perspective-[2000px]"
+        data-lenis-prevent
+      >
         <NavigationMenu.Viewport className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative w-full shadow-md" />
       </div>
     </NavigationMenu.Root>
