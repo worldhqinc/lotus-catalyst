@@ -225,7 +225,7 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
   return (
     <SectionLayout containerSize="2xl">
       <div className="flex flex-col items-center gap-4">
-        <h1 className="font-heading max-w-xl text-center text-4xl uppercase @2xl:text-5xl @4xl:text-6xl">
+        <h1 className="font-heading max-w-2xl text-center text-4xl uppercase @2xl:text-5xl @4xl:text-6xl">
           {title}
         </h1>
         {subtitle ? <p className="text-contrast-400 max-w-3xl text-center">{subtitle}</p> : null}
