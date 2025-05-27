@@ -1,5 +1,5 @@
 import { documentToHtmlString, Options } from '@contentful/rich-text-html-renderer';
-import { Block, BLOCKS, Document, Inline } from '@contentful/rich-text-types';
+import { Block, BLOCKS, Document, Inline, MARKS } from '@contentful/rich-text-types';
 
 import { cta } from '~/contentful/schema';
 
@@ -87,18 +87,19 @@ export function getLinkHref(fields: cta['fields']) {
 
 export function createContentfulRichTextOptions(scrollOffset = 90): Options {
   return {
+    renderMark: {
+      [MARKS.BOLD]: (text: string) => {
+        const elementId = generateIdFromStrings([text]);
+
+        return `<b id="${elementId}" style="scroll-margin-top: ${scrollOffset}px;">${text}</b>`;
+      },
+    },
     renderNode: {
-      [BLOCKS.HEADING_6]: (node, next) => {
-        const headingHtml = next(node.content);
+      [BLOCKS.HEADING_6]: (node: Block | Inline, next) => {
+        const html = next(node.content);
+        const elementId = generateIdFromNodeContent(node);
 
-        const headingId = node.content
-          .map((child) => ('value' in child ? child.value : ''))
-          .join(' ')
-          .toLowerCase()
-          .replace(/\s+/g, '-')
-          .replace(/[^\w-]+/g, '');
-
-        return `<h6 id="${headingId}" style="scroll-margin-top: ${scrollOffset}px;">${headingHtml}</h6>`;
+        return `<h6 id="${elementId}" style="scroll-margin-top: ${scrollOffset}px;">${html}</h6>`;
       },
       'embedded-asset-block': (node: Block | Inline): string => {
         if (!isEmbeddedAsset(node)) return '';
@@ -133,4 +134,16 @@ function isEmbeddedAsset(
   node: Block | Inline,
 ): node is Block & { data: { target: ContentfulAsset } } {
   return node.nodeType === BLOCKS.EMBEDDED_ASSET;
+}
+
+function generateIdFromStrings(text: string[]): string {
+  return text
+    .join(' ')
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '');
+}
+
+function generateIdFromNodeContent(node: Block | Inline): string {
+  return generateIdFromStrings(node.content.map((child) => ('value' in child ? child.value : '')));
 }
