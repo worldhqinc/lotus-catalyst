@@ -1,11 +1,16 @@
 import AlgoliaSearch from '~/app/[locale]/(default)/search/_components/algolia-search';
 
-export default function SearchPage({
+export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const searchTerm = typeof searchParams.term === 'string' ? searchParams.term : undefined;
+  const params = await searchParams;
+  const searchTerm = typeof params.term === 'string' ? params.term : undefined;
 
-  return <AlgoliaSearch initialSearchTerm={searchTerm} />;
+  return (
+    <div className="min-h-screen">
+      <AlgoliaSearch initialSearchTerm={searchTerm} />
+    </div>
+  );
 }

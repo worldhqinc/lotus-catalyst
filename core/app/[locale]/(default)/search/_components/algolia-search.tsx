@@ -5,7 +5,15 @@ import { clsx } from 'clsx';
 import { ArrowRight, Search } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
-import { Configure, Hits, Index, InstantSearch, SearchBox, useHits } from 'react-instantsearch';
+import {
+  Configure,
+  Hits,
+  Index,
+  InstantSearch,
+  SearchBox,
+  useHits,
+  useInstantSearch,
+} from 'react-instantsearch';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { ProductCard } from '@/vibes/soul/primitives/product-card';
@@ -113,13 +121,66 @@ const GROUP_CONFIG: GroupConfig[] = [
   },
 ];
 
+function SkeletonCard() {
+  return (
+    <div className="animate-pulse">
+      <div className="mb-3 aspect-square rounded-lg bg-gray-200" />
+      <div className="space-y-2">
+        <div className="h-4 w-3/4 rounded bg-gray-200" />
+        <div className="h-4 w-1/2 rounded bg-gray-200" />
+      </div>
+    </div>
+  );
+}
+
+function LoadingGrid() {
+  return (
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-6">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <SkeletonCard key={index} />
+      ))}
+    </div>
+  );
+}
+
 function GroupTabContent({ group }: { group: GroupConfig }) {
   const { items } = useHits();
+  const { status } = useInstantSearch();
+
+  if (status === 'loading' || status === 'stalled') {
+    return (
+      <div className="py-12 first:mt-8">
+        <div className="mb-8 flex items-center justify-between gap-4">
+          <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
+            {group.label}
+          </h2>
+          <ButtonLink href={group.href} shape="link" size="link" variant="link">
+            <span className="flex items-center gap-2 text-base font-normal">
+              View more <ArrowRight size={20} strokeWidth={1.5} />
+            </span>
+          </ButtonLink>
+        </div>
+        <LoadingGrid />
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (
-      <div className="py-10 text-xl">
-        <p>No results found.</p>
+      <div className="py-12 first:mt-8">
+        <div className="mb-8 flex items-center justify-between gap-4">
+          <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
+            {group.label}
+          </h2>
+          <ButtonLink href={group.href} shape="link" size="link" variant="link">
+            <span className="flex items-center gap-2 text-base font-normal">
+              View more <ArrowRight size={20} strokeWidth={1.5} />
+            </span>
+          </ButtonLink>
+        </div>
+        <div className="flex items-center justify-center text-xl">
+          <p>No results found.</p>
+        </div>
       </div>
     );
   }
@@ -137,7 +198,9 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
         </ButtonLink>
       </div>
       <Hits
-        classNames={{ list: 'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-6' }}
+        classNames={{
+          list: 'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-6',
+        }}
         // @ts-expect-error - hit is a ProductGridHit | PostGridHit
         hitComponent={(props) => group.card({ ...props })}
       />
@@ -169,10 +232,11 @@ function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) 
   const router = useRouter();
   const searchParams = useSearchParams();
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+
   const formStyles =
     '[&_form]:flex [&_form]:gap-4 [&_form_button.ais-SearchBox-submit]:hidden [&_form_button.ais-SearchBox-reset]:hidden';
   const inputStyles =
-    '[&_input]:flex-1 [&_input]:min-h-10 pl-2 text-icon-primary text-lg [&_input]:focus-within:pl-6 [&_input]:focus-within:outline-0 [&_input::-webkit-search-cancel-button]:appearance-none';
+    '[&_input]:flex-1 [&_input]:min-h-10 [&_input]:pl-3 text-icon-primary text-lg [&_input]:focus-within:outline-0 [&_input::-webkit-search-cancel-button]:appearance-none';
 
   const updateSearchParams = useCallback(
     (value: string) => {
