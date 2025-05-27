@@ -50,6 +50,8 @@
       "heading": "Sign in",
       "forgotPassword": "Forgot password?",
       "cta": "Sign in",
+      "email": "Email",
+      "password": "Password",
       "invalidCredentials": "Your email address or password is incorrect. Try signing in again or reset your password",
       "somethingWentWrong": "Something went wrong. Please try again later.",
       "CreateAccount": {
@@ -154,6 +156,10 @@
       "orderNumber": "Order #",
       "totalPrice": "Total",
       "viewDetails": "View Details",
+      "emptyState": {
+        "title": "You don't have any orders",
+        "cta": "Shop now"
+      },
       "Details": {
         "title": "Order #{orderNumber}",
         "shippingAddress": "Shipping address",
@@ -182,6 +188,7 @@
       "title": "Account",
       "changePassword": "Change password",
       "passwordUpdated": "Password has been updated successfully!",
+      "settingsUpdated": "Account settings have been updated successfully!",
       "somethingWentWrong": "Something went wrong. Please try again later.",
       "currentPassword": "Current password",
       "newPassword": "New password",
@@ -190,6 +197,7 @@
     }
   },
   "Wishlist": {
+    "actionsTitle": "Wishlist actions",
     "title": "Wish Lists",
     "new": "New wish list",
     "items": "{count, plural, =1 {1 item} other {# items}}",
