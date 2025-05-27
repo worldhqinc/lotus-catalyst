@@ -33,6 +33,11 @@ export function FeatureGrid({ title, subheading, items }: featureGrid['fields'])
           <div className="grid items-center gap-8 md:grid-cols-2" key={sys.id}>
             <FeatureItem
               {...fields}
+              isFinishedGoods={
+                Array.isArray(fields.products)
+                  ? fields.products.filter(isProductFinishedGoods).length > 0
+                  : false
+              }
               products={
                 Array.isArray(fields.products)
                   ? fields.products.filter(isProductFinishedGoods)

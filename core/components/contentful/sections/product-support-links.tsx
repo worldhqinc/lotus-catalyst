@@ -49,7 +49,7 @@ export function ProductSupportLinks({ title, links }: productSupportLinks['field
   return (
     <SectionLayout>
       <h2 className="text-center text-4xl leading-[120%]">{title}</h2>
-      <ul className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-6">
+      <ul className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-6">
         {links.map((link) => {
           const supportPageLink = supportLinkSchema.parse(link);
           const supportPageLinkFields = supportLinkFieldsSchema.parse(supportPageLink.fields);
@@ -60,10 +60,10 @@ export function ProductSupportLinks({ title, links }: productSupportLinks['field
 
           return (
             <li
-              className="bg-contrast-100 relative flex flex-col items-center justify-center gap-8 rounded-lg p-8 text-center"
+              className="bg-contrast-100 relative flex flex-col items-center justify-start gap-6 rounded-lg p-4 text-center lg:p-8"
               key={link.sys.id}
             >
-              {iconMap(link)}
+              <span className="inline-block self-center">{iconMap(link)}</span>
               <div>
                 <Link
                   className="text-lg leading-[120%] font-medium tracking-[1.8px] uppercase after:absolute after:inset-0 md:text-2xl md:tracking-[2.4px]"

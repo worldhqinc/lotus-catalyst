@@ -39,8 +39,8 @@ export function FeatureTile({ fields }: FeatureTileProps) {
   const Icon = isIconKey(fields.icon) ? IconMap[fields.icon] : HelpCircle;
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <Icon className="h-6 w-6" strokeWidth={1.5} />
+    <div className="grid grid-cols-1 place-items-center gap-4">
+      <Icon className="h-6 w-6 self-baseline" strokeWidth={1.5} />
       <span className="text-contrast-400 max-w-52 text-center text-balance">{fields.label}</span>
     </div>
   );

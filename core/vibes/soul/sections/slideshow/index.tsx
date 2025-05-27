@@ -159,7 +159,10 @@ export function Slideshow({
 
   return (
     <section
-      className={clsx('bg-contrast-200 @container relative h-[calc(100svh-101px)]', className)}
+      className={clsx(
+        'bg-contrast-200 @container relative aspect-[3/4] max-h-[calc(100svh-101px)] w-full lg:aspect-video',
+        className,
+      )}
     >
       <div className="h-full overflow-hidden" ref={emblaRef}>
         <div className={clsx('flex h-full', vertical && 'flex-col')}>
@@ -212,7 +215,7 @@ export function Slideshow({
                     <Image
                       alt={image.alt}
                       blurDataURL={image.blurDataUrl}
-                      className="block h-20 w-full object-cover"
+                      className="block h-full w-full object-cover"
                       fill
                       placeholder={
                         image.blurDataUrl != null && image.blurDataUrl !== '' ? 'blur' : 'empty'
