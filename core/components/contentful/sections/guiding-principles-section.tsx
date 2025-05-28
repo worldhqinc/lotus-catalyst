@@ -26,7 +26,7 @@ export function GuidingPrinciplesSection({
 
           return (
             <div
-              className="border-border rounded-lg border bg-white p-8 text-left"
+              className="border-border rounded-lg border bg-white p-4 text-left md:p-8"
               key={principle.sys.id}
             >
               <div className="text-surface-foreground mb-8 text-xl font-medium">
