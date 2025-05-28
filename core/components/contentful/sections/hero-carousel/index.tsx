@@ -67,7 +67,7 @@ export function HeroCarousel({ data }: Props) {
 
   const mediaElement = (slide: Slide, idx: number) => {
     if (slide.wistiaId) {
-      return <WistiaPlayer pageType="page" wistiaMediaId={slide.wistiaId} />;
+      return <WistiaPlayer buttonPosition="left" pageType="page" wistiaMediaId={slide.wistiaId} />;
     } else if (slide.image?.src) {
       return (
         <Image
