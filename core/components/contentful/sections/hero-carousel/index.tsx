@@ -220,7 +220,7 @@ export function HeroCarousel({ data }: Props) {
           style={{ height: `calc(${processedSlides.length * 100}svh + 500px)` }}
         >
           {/* Fixed viewport container */}
-          <div className="sticky top-0 h-screen w-full">
+          <div className="sticky top-0 h-dvh w-full">
             {/* Content sections layer */}
             <div className="relative h-full w-full">
               {processedSlides.map((slide, idx) => (
@@ -231,11 +231,10 @@ export function HeroCarousel({ data }: Props) {
                   )}
                   key={`content-${idx}`}
                 >
-                  <div className="absolute inset-0 z-15 bg-linear-to-l from-transparent to-black/50" />
-                  <div className="bg-contrast-200 absolute inset-0 z-10 h-full w-full">
+                  <div className="bg-contrast-200 absolute inset-0 z-10 h-full w-full after:absolute after:inset-0 after:z-15 after:bg-linear-to-l after:from-transparent after:to-black/50">
                     {mediaElement(slide, idx)}
                   </div>
-                  <div className="absolute inset-0 left-0 z-20">
+                  <div className="absolute top-1/2 left-0 z-20 -translate-y-1/2">
                     <div
                       className={clsx(
                         'ease-quad container mx-auto flex h-full flex-col justify-center py-10 transition-all duration-500',
