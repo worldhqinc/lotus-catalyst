@@ -97,14 +97,6 @@ const renderMetaInfo = (
   );
 };
 
-function getGridColumnsClass(productCount: number): string {
-  if (productCount === 1) return 'grid-cols-1';
-  if (productCount === 2) return 'grid-cols-2';
-  if (productCount === 3) return 'grid-cols-2 md:grid-cols-3';
-
-  return 'grid-cols-2 md:grid-cols-4';
-}
-
 // eslint-disable-next-line complexity
 export default async function RecipePage({ params }: Props) {
   const { slug } = await params;
@@ -253,7 +245,7 @@ export default async function RecipePage({ params }: Props) {
             <h2 className="text-surface-foreground text-2xl font-medium uppercase">
               What You'll Need
             </h2>
-            <div className={`mt-6 grid gap-4 ${getGridColumnsClass(fields.products.length)}`}>
+            <div className="mt-6 grid grid-cols-2 gap-4 lg:gap-8">
               {fields.products.map((product) => {
                 const parsed =
                   product.sys.contentType.sys.id === 'productFinishedGoods'
