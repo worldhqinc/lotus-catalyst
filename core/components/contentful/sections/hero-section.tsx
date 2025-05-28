@@ -22,7 +22,7 @@ export function HeroSection({
   const wistiaVideo = wistiaId ?? '';
   const mediaElement = wistiaVideo ? (
     <figure className="bg-surface-image absolute inset-0 -z-20 h-full w-full after:absolute after:inset-0 after:bg-black after:opacity-30">
-      <WistiaPlayer anchorIds={[]} pageType="page" wistiaMediaId={wistiaVideo} />
+      <WistiaPlayer buttonPosition="left" pageType="page" wistiaMediaId={wistiaVideo} />
     </figure>
   ) : (
     <figure className="absolute inset-0 -z-10 h-full w-full overflow-hidden after:absolute after:inset-0 after:bg-black after:opacity-30">

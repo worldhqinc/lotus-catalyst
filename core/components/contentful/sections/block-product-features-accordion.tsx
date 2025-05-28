@@ -69,7 +69,7 @@ export function BlockProductFeaturesAccordion({
                 <h3 className="text-xl leading-[120%] font-medium tracking-[1.8px] uppercase">
                   {item.fields.title}
                 </h3>
-                <p className="text-surface-foreground">{item.fields.detail}</p>
+                <p className="text-contrast-400">{item.fields.detail}</p>
               </CarouselItem>
             ))}
           </CarouselContent>
@@ -93,7 +93,7 @@ export function BlockProductFeaturesAccordion({
               title={item.fields.title}
               value={item.sys.id}
             >
-              <p className="text-surface-foreground">{item.fields.detail}</p>
+              <p className="text-contrast-400">{item.fields.detail}</p>
             </AccordionItem>
           ))}
         </Accordion>

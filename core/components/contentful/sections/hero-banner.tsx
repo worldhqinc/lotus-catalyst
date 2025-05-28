@@ -295,7 +295,11 @@ export async function HeroBanner({
   } else if (wistiaId) {
     mediaElement = (
       <figure className="bg-surface-image absolute inset-0 -z-20 h-full w-full after:absolute after:inset-0 after:bg-black after:opacity-30">
-        <WistiaPlayer anchorIds={[]} pageType="page" wistiaMediaId={wistiaId} />
+        <WistiaPlayer
+          buttonPosition={isPageHeader ? 'left' : 'right'}
+          pageType="page"
+          wistiaMediaId={wistiaId}
+        />
       </figure>
     );
   }

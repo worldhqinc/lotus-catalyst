@@ -36,7 +36,7 @@ function InfiniteHits() {
 
   if (status === 'loading' || status === 'stalled') {
     return (
-      <div className="mt-8 grid w-full gap-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      <div className="mt-8 grid w-full grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
         {Array.from({ length: 8 }).map((_, index) => (
           <ProductCardSkeleton aspectRatio="1:1" key={index} />
         ))}
@@ -46,7 +46,7 @@ function InfiniteHits() {
 
   return (
     <>
-      <div className="mt-8 grid w-full gap-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      <div className="mt-8 grid w-full grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
         {items.map((hit, index) => (
           <ProductCard
             aspectRatio="1:1"

@@ -73,7 +73,7 @@ function CategoryFilter({ attribute }: { attribute: string }) {
   });
 
   return (
-    <div className="flex flex-wrap justify-center gap-2 py-12">
+    <div className="flex flex-wrap justify-center gap-2 pt-8 lg:py-16">
       {items.map((item) => (
         <Button
           className="!font-normal uppercase"
@@ -144,7 +144,7 @@ export function PostCard({
         <figure className="bg-surface-image aspect-4/3 w-full rounded-lg" />
       )}
       <div className="flex flex-1 flex-col gap-2 py-4">
-        <h3 className="font-heading text-3xl">{title}</h3>
+        <h3 className="font-heading text-xl lg:text-3xl">{title}</h3>
         {subtitle ? <p className="text-contrast-400 line-clamp-2 text-sm">{subtitle}</p> : null}
       </div>
       <div className="flex flex-wrap gap-2 pb-2">
