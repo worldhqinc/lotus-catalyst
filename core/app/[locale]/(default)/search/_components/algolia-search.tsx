@@ -149,7 +149,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
 
   if (status === 'loading' || status === 'stalled') {
     return (
-      <div className="py-12 first:mt-8">
+      <div className="py-12">
         <div className="mb-8 flex items-center justify-between gap-4">
           <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
             {group.label}
@@ -167,7 +167,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
 
   if (items.length === 0) {
     return (
-      <div className="py-12 first:mt-8">
+      <div className="py-12">
         <div className="mb-8 flex items-center justify-between gap-4">
           <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
             {group.label}
@@ -186,7 +186,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
   }
 
   return (
-    <div className="py-12 first:mt-8">
+    <div className="py-12">
       <div className="mb-8 flex items-center justify-between gap-4">
         <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
           {group.label}
