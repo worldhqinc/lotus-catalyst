@@ -267,6 +267,11 @@ function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) 
     [updateSearchParams],
   );
 
+  const queryHook = useCallback((query: string, search: (query: string) => void) => {
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => search(query), 200);
+  }, []);
+
   useEffect(() => {
     return () => {
       clearTimeout(timeoutRef.current);
@@ -284,6 +289,7 @@ function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) 
           defaultValue={initialSearchTerm}
           onInput={handleSearchChange}
           placeholder="Search Products"
+          queryHook={queryHook}
           translations={{
             submitButtonTitle: 'Submit your search query',
             resetButtonTitle: 'Clear your search query',
