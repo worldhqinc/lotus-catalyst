@@ -45,7 +45,7 @@ function InfiniteHits({ type }: { type: string }) {
         ))}
       </div>
       <div className="flex w-full flex-col items-center gap-8 py-12">
-        <div className="w-full max-w-xs px-4">
+        <div className="pagination-bar w-full max-w-xs px-4">
           <div className="text-foreground mb-2 flex justify-center text-xl font-medium">
             {items.length}/{totalCount}
           </div>
