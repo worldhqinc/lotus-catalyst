@@ -94,8 +94,8 @@ export function ProductDetail<F extends Field>({
               streamableCtaDisabled={streamableCtaDisabled}
             />
             <section className="@container">
-              <div className="group/product-detail mx-auto w-full max-w-(--breakpoint-2xl) @xl:px-6 @xl:py-14 @4xl:px-8 @4xl:py-20">
-                <div className="grid grid-cols-1 items-stretch gap-x-6 gap-y-6 @2xl:grid-cols-12">
+              <div className="group/product-detail mx-auto w-full max-w-(--breakpoint-2xl) @xl:px-6 @xl:py-8 @4xl:px-8">
+                <div className="grid grid-cols-1 items-stretch gap-x-6 @2xl:grid-cols-12">
                   <div className="group/product-gallery col-span-full @2xl:col-span-6 @5xl:col-span-7">
                     <ProductGallery
                       badge={contentful.fields.badge}
