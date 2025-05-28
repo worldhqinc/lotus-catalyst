@@ -742,7 +742,7 @@ export const Navigation = forwardRef(function Navigation(
                                 <SidePanel.Trigger asChild>
                                   <button
                                     className={clsx(
-                                      'flex w-full items-center justify-between gap-2 tracking-[1.28px] uppercase',
+                                      'flex w-full items-center justify-between gap-2 tracking-[1.28px] uppercase focus-visible:ring-0 focus-visible:outline-none',
                                     )}
                                   >
                                     {item.label}
