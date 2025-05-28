@@ -26,9 +26,10 @@ function Content({ title, children, isMobileSidePanel = false, isFloating = fals
         <Dialog.Content
           className={clsx(
             'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right fixed right-0 flex flex-col transition duration-500 [animation-timing-function:cubic-bezier(0.25,0.46,0.45,0.94)]',
-            isMobileSidePanel ? 'top-16 h-full w-full' : 'inset-y-0 w-96 max-w-full',
-            isFloating ? 'top-16' : 'top-[100px]',
+            isMobileSidePanel ? 'top-16 w-full' : 'inset-y-0 h-full w-96 max-w-full',
+            isFloating ? 'top-16 h-[calc(100vh-64px)]' : 'top-[100px] h-[calc(100vh-100px)]',
           )}
+          data-lenis-prevent
           forceMount
         >
           <div className="bg-background flex items-center justify-between gap-2 px-4 pt-4 pb-4 @md:pt-4 @4xl:px-8">
