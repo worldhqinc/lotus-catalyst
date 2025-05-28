@@ -507,13 +507,13 @@ export const Navigation = forwardRef(function Navigation(
             {(links) =>
               links.map((item, i) => (
                 <NavigationMenu.Item key={i} value={i.toString()}>
-                  <NavigationMenu.Trigger
-                    asChild
-                    onPointerEnter={(event) => event.preventDefault()}
-                    onPointerLeave={(event) => event.preventDefault()}
-                    onPointerMove={(event) => event.preventDefault()}
-                  >
-                    {item.groups != null && item.groups.length > 0 ? (
+                  {item.groups != null && item.groups.length > 0 ? (
+                    <NavigationMenu.Trigger
+                      asChild
+                      onPointerEnter={(event) => event.preventDefault()}
+                      onPointerLeave={(event) => event.preventDefault()}
+                      onPointerMove={(event) => event.preventDefault()}
+                    >
                       <button
                         className={clsx(
                           '@4xl:after:ease-quad hover:@4xl:after:bg-border hidden after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-0 @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
@@ -524,20 +524,20 @@ export const Navigation = forwardRef(function Navigation(
                       >
                         {item.label}
                       </button>
-                    ) : (
-                      <Link
-                        className={clsx(
-                          '@4xl:after:ease-quad hover:@4xl:after:bg-border text-nowrap after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-0 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
-                          pathname === item.href || pathname === `${item.href}/`
-                            ? '@4xl:after:bg-primary @4xl:after:scale-x-100'
-                            : 'after:scale-x-0 @4xl:after:bg-transparent',
-                        )}
-                        href={item.href}
-                      >
-                        {item.label}
-                      </Link>
-                    )}
-                  </NavigationMenu.Trigger>
+                    </NavigationMenu.Trigger>
+                  ) : (
+                    <Link
+                      className={clsx(
+                        '@4xl:after:ease-quad hover:@4xl:after:bg-border text-nowrap after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-0 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
+                        pathname === item.href || pathname === `${item.href}/`
+                          ? '@4xl:after:bg-primary @4xl:hover:after:!bg-primary @4xl:after:scale-x-100'
+                          : 'after:scale-x-0 @4xl:after:bg-transparent',
+                      )}
+                      href={item.href}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                   {item.groups != null && item.groups.length > 0 && (
                     <NavigationMenu.Content
                       className="bg-[var(--nav-menu-background,hsl(var(--background)))]"
@@ -595,7 +595,10 @@ export const Navigation = forwardRef(function Navigation(
                           </div>
                         </div>
                         <div className="col-start-2 xl:col-start-3">
-                          <Link className="group w-full" href="/shop/professional-series">
+                          <NavigationMenu.Link
+                            className="group w-full"
+                            href="/shop/professional-series"
+                          >
                             <div className="flex h-full flex-col">
                               <figure className="bg-surface-image aspect-[19/6] h-full min-h-[246px] w-full overflow-hidden rounded-lg">
                                 <Image
@@ -610,7 +613,7 @@ export const Navigation = forwardRef(function Navigation(
                                 Explore the Professional Series
                               </span>
                             </div>
-                          </Link>
+                          </NavigationMenu.Link>
                         </div>
                       </div>
                     </NavigationMenu.Content>
@@ -797,7 +800,10 @@ export const Navigation = forwardRef(function Navigation(
                                     );
                                   })}
                                   <div className="border-border col-start-3 border-t pt-6">
-                                    <Link className="w-full" href="/professional-series">
+                                    <NavigationMenu.Link
+                                      className="w-full"
+                                      href="/professional-series"
+                                    >
                                       <div className="flex h-full flex-col">
                                         <figure className="bg-surface-image aspect-[19/6] h-full min-h-[246px] w-full overflow-hidden rounded-lg">
                                           <Image
@@ -812,7 +818,7 @@ export const Navigation = forwardRef(function Navigation(
                                           Explore the Professional Series
                                         </span>
                                       </div>
-                                    </Link>
+                                    </NavigationMenu.Link>
                                   </div>
                                 </SidePanel.Content>
                               </SidePanel.Root>
