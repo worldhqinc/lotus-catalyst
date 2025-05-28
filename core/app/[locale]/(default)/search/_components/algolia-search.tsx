@@ -242,7 +242,7 @@ function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) 
   const formStyles =
     '[&_form]:flex [&_form]:gap-4 [&_form_button.ais-SearchBox-submit]:hidden [&_form_button.ais-SearchBox-reset]:hidden';
   const inputStyles =
-    '[&_input]:flex-1 [&_input]:min-h-10 [&_input]:pl-3 text-icon-primary text-lg [&_input]:focus-within:outline-0 [&_input::-webkit-search-cancel-button]:appearance-none';
+    '[&_input]:flex-1 [&_input]:min-h-10 [&_input]:px-3 text-icon-primary text-lg [&_input]:focus-within:outline-0 [&_input::-webkit-search-cancel-button]:appearance-none';
 
   const updateSearchParams = useCallback(
     (value: string) => {
