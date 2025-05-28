@@ -35,7 +35,7 @@ function InfiniteHits({ type }: { type: string }) {
 
   return (
     <>
-      <div className="mt-8 grid w-full gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid w-full gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-x-6">
         {items.map((hit) => (
           <PostCard
             key={hit.objectID}
@@ -73,7 +73,7 @@ function CategoryFilter({ attribute }: { attribute: string }) {
   });
 
   return (
-    <div className="flex flex-wrap justify-center gap-2 pt-8 lg:py-16">
+    <div className="flex flex-wrap justify-center gap-2 py-8 lg:py-16">
       {items.map((item) => (
         <Button
           className="!font-normal uppercase"

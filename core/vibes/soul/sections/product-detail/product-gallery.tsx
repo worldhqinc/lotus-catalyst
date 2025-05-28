@@ -27,7 +27,7 @@ export function ProductGallery({
 
   return (
     <div className="relative">
-      <div className={clsx('hidden grid-cols-2 gap-4 @2xl:grid', className)}>
+      <div className={clsx('hidden grid-cols-2 gap-6 @2xl:grid', className)}>
         {featuredImage && (
           <div
             className={clsx(

@@ -22,7 +22,7 @@ function NavHeader({ title, subtitle }: { title: string; subtitle?: string | nul
   const { scrollPrev, scrollNext, canScrollPrev, canScrollNext } = useCarousel();
 
   return (
-    <div className="mb-12 flex items-start justify-between">
+    <div className="mb-8 flex items-start justify-between lg:mb-16">
       <div className="flex flex-col gap-2">
         <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
           {title}

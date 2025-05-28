@@ -9,13 +9,13 @@ export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSe
   const validCarousel = carouselProductSchema.parse(carousel);
 
   return (
-    <SectionLayout containerClassName="py-16">
+    <SectionLayout>
       <div className="mb-8 flex flex-col items-center">
         <h2 className="font-heading text-icon-primary max-w-4xl text-center text-4xl uppercase md:text-6xl">
           {heading}
         </h2>
         {subtitle ? (
-          <p className="text-icon-secondary mt-8 max-w-xl text-center text-xl">{subtitle}</p>
+          <p className="text-icon-secondary mt-4 max-w-xl text-center text-xl">{subtitle}</p>
         ) : null}
       </div>
       <AltProductCarousel

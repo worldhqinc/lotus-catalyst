@@ -16,14 +16,12 @@ export function CommunitySection({
   socialLinks,
 }: communitySection['fields']) {
   return (
-    <SectionLayout className="text-center" containerClassName="py-16" containerSize="xl">
+    <SectionLayout className="text-center" containerSize="xl">
       <h2 className="text-icon-primary mb-4 text-4xl">{sectionTitle}</h2>
       {sectionDescription ? (
-        <p className="text-icon-secondary mx-auto mb-8 max-w-3xl text-center">
-          {sectionDescription}
-        </p>
+        <p className="text-icon-secondary mx-auto max-w-3xl text-center">{sectionDescription}</p>
       ) : null}
-      <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
+      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:mt-16 lg:gap-6">
         <div className="border-border flex aspect-[2.25] flex-col rounded-lg border bg-white p-4 text-left md:p-8">
           <h3 className="text-icon-primary mb-2 text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
             {signUpLabel}

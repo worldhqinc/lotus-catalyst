@@ -28,7 +28,7 @@ function SimpleHeroBanner({
         )}
         {!!descriptionHtml && (
           <div
-            className="prose container mt-8 max-w-2xl"
+            className="prose container mt-6 max-w-2xl"
             dangerouslySetInnerHTML={{ __html: descriptionHtml }}
           />
         )}
@@ -144,7 +144,7 @@ function LeftAlignedHeroBanner({
       {mediaElement}
       <div className={clsx('h-full w-full')}>
         {/* Note: If ElementFade is removed, apply the classes to the parent div instead. */}
-        <ElementFade className="flex flex-col justify-center gap-8">
+        <ElementFade className="flex flex-col justify-center gap-6">
           {isPageHeader ? (
             <h1
               className={clsx(
@@ -207,7 +207,7 @@ function CenteredHeroBanner({
       {mediaElement}
       <div className="absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-4 py-20">
         {/* Note: If ElementFade is removed, apply the classes to the parent div instead. */}
-        <ElementFade className="flex w-full flex-col items-center justify-center gap-8">
+        <ElementFade className="flex w-full flex-col items-center justify-center gap-6">
           {isPageHeader ? (
             <h1
               className={clsx(

@@ -217,7 +217,7 @@ export default async function RecipePage({ params }: Props) {
           <h2 className="font-heading text-2xl leading-[120%] lg:text-3xl lg:leading-[120%]">
             {fields.intro}
           </h2>
-          <div className="mt-12">
+          <div className="mt-8 lg:mt-16">
             {/* Social Share Section */}
             <SocialShare
               align="left"
@@ -225,7 +225,7 @@ export default async function RecipePage({ params }: Props) {
               title={fields.recipeName}
               url={fullUrl}
             />
-            <hr className="border-border mt-12" />
+            <hr className="border-border mt-8 lg:mt-16" />
           </div>
         </SectionLayout>
         {/* Ingredients Section */}
@@ -241,7 +241,7 @@ export default async function RecipePage({ params }: Props) {
 
         {fields.products?.length ? (
           <SectionLayout className="mx-auto max-w-2xl [&_>div]:pb-0">
-            <hr className="border-border mb-12" />
+            <hr className="border-border mb-8 lg:mb-16" />
             <h2 className="text-surface-foreground text-2xl font-medium uppercase">
               What You'll Need
             </h2>
@@ -263,7 +263,7 @@ export default async function RecipePage({ params }: Props) {
                 );
               })}
             </div>
-            <hr className="border-border mt-12" />
+            <hr className="border-border mt-8 lg:mt-16" />
           </SectionLayout>
         ) : null}
 
@@ -297,7 +297,7 @@ export default async function RecipePage({ params }: Props) {
               className="prose text-contrast-400 mt-4 max-w-none"
               dangerouslySetInnerHTML={{ __html: proTipHtml }}
             />
-            <hr className="border-border mt-12" />
+            <hr className="border-border mt-8 lg:mt-16" />
           </SectionLayout>
         ) : null}
       </div>

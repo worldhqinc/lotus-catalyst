@@ -39,11 +39,11 @@ export function ProductBento(props: productBento['fields']) {
       className="scroll-mt-16 overflow-visible"
       containerClassName="overflow-auto"
     >
-      <div className="mb-8 flex flex-col items-center gap-4">
+      <div className="mb-8 flex flex-col items-center gap-4 lg:mb-16">
         <h2 className="text-icon-primary max-w-sm text-center text-4xl">{props.title}</h2>
         <p className="text-icon-secondary max-w-lg text-center">{props.subtitle}</p>
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-6">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-x-4 md:gap-y-8 lg:grid-cols-4 lg:gap-x-6">
         {items.map((product, index) => {
           const colSpanClass = getColSpan(index);
           const mobileRatioMap: Record<'5:6' | '3:4' | '1:1', string> = {
