@@ -194,7 +194,7 @@ export function HeroCarousel({ data }: Props) {
         {/* Fixed navigation bullets */}
         <div
           className={clsx(
-            'fixed bottom-16 left-1/2 z-50 flex -translate-x-1/2 gap-2 transition-opacity duration-500 md:top-1/2 md:right-8 md:bottom-auto md:left-auto md:-translate-x-0 md:-translate-y-1/2 md:flex-col xl:right-16',
+            'fixed bottom-16 left-1/2 z-20 flex -translate-x-1/2 gap-2 transition-opacity duration-500 md:top-1/2 md:right-8 md:bottom-auto md:left-auto md:-translate-x-0 md:-translate-y-1/2 md:flex-col xl:right-16',
             isInView ? 'opacity-100' : 'pointer-events-none opacity-0',
           )}
         >
