@@ -25,3 +25,6 @@ alwaysApply: false
 - TypeScript configuration is extended from root [tsconfig.json](mdc:tsconfig.json)
 - Follow security guidelines in [SECURITY.md](mdc:SECURITY.md)
 - Use zod for parsing responses and types
+
+# Git
+- Do not uppercase the first word in commit messages
