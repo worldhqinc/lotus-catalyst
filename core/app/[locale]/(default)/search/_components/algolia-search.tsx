@@ -13,6 +13,7 @@ import {
   SearchBox,
   useHits,
   useInstantSearch,
+  useRefinementList,
 } from 'react-instantsearch';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
@@ -50,7 +51,7 @@ interface GroupConfig {
 
 const GROUP_CONFIG: GroupConfig[] = [
   {
-    key: 'products',
+    key: 'productFinishedGoods',
     label: 'Products',
     href: '/shop/all',
     filter: 'contentType:productFinishedGoods',
@@ -70,7 +71,7 @@ const GROUP_CONFIG: GroupConfig[] = [
     },
   },
   {
-    key: 'accessories',
+    key: 'productPartsAndAccessories',
     label: 'Accessories',
     href: '/shop/accessories',
     filter: 'contentType:productPartsAndAccessories',
@@ -88,7 +89,7 @@ const GROUP_CONFIG: GroupConfig[] = [
     ),
   },
   {
-    key: 'recipes',
+    key: 'recipe',
     label: 'Recipes',
     href: '/recipes',
     filter: 'contentType:recipe',
@@ -104,7 +105,7 @@ const GROUP_CONFIG: GroupConfig[] = [
     ),
   },
   {
-    key: 'features',
+    key: 'feature',
     label: 'Features',
     href: '/features',
     filter: 'contentType:feature',
@@ -144,8 +145,13 @@ function LoadingGrid() {
 }
 
 function GroupTabContent({ group }: { group: GroupConfig }) {
-  const { items } = useHits();
   const { status } = useInstantSearch();
+  const { items } = useRefinementList({ attribute: 'contentType' });
+  const groupRefinement = items.find((item) => item.value === group.key);
+
+  if (!groupRefinement) {
+    return null;
+  }
 
   if (status === 'loading' || status === 'stalled') {
     return (
