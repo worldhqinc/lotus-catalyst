@@ -34,12 +34,14 @@ export function WistiaPlayer({
   activeId,
   anchorIds = [],
   pageType = 'product',
+  buttonPosition = 'right',
   wistiaMediaId,
   wistiaMediaSegments,
 }: {
   activeId?: string;
   anchorIds?: string[];
   pageType?: 'product' | 'page' | 'tutorial';
+  buttonPosition?: 'right' | 'left';
   wistiaMediaId?: string | null;
   wistiaMediaSegments?: string[] | null;
 }) {
@@ -265,7 +267,12 @@ export function WistiaPlayer({
       ref={videoContainerRef}
     >
       {pageType !== 'product' && (
-        <div className="wistia-player-control absolute right-0 bottom-0 z-20 flex items-center justify-center">
+        <div
+          className={clsx(
+            'wistia-player-control absolute bottom-0 z-20 flex items-center justify-center',
+            buttonPosition === 'left' ? 'left-0' : 'right-0',
+          )}
+        >
           {!isPlaying ? (
             <Button className="text-white" onClick={handlePlay} shape="link" variant="link">
               <PlayIcon />
