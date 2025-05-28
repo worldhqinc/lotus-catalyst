@@ -11,7 +11,6 @@ import {
   Index,
   InstantSearch,
   SearchBox,
-  useHits,
   useInstantSearch,
   useRefinementList,
 } from 'react-instantsearch';
