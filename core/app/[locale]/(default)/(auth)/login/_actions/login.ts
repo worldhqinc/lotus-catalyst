@@ -17,13 +17,13 @@ export const login = async (
   formData: FormData,
 ) => {
   const locale = await getLocale();
-  const t = await getTranslations('Login');
+  const t = await getTranslations('Auth.Login');
   const cartId = await getCartId();
 
   const submission = parseWithZod(formData, { schema });
 
   if (submission.status !== 'success') {
-    return submission.reply({ formErrors: [t('Form.somethingWentWrong')] });
+    return submission.reply();
   }
 
   try {
@@ -45,14 +45,15 @@ export const login = async (
 
     if (
       error instanceof AuthError &&
-      error.name === 'CallbackRouteError' &&
+      error.type === 'CallbackRouteError' &&
       error.cause &&
-      error.cause.err?.message.includes('Invalid credentials')
+      error.cause.err instanceof BigCommerceGQLError &&
+      error.cause.err.message.includes('Invalid credentials')
     ) {
-      return submission.reply({ formErrors: [t('Form.invalidCredentials')] });
+      return submission.reply({ formErrors: [t('invalidCredentials')] });
     }
 
-    return submission.reply({ formErrors: [t('Form.somethingWentWrong')] });
+    return submission.reply({ formErrors: [t('somethingWentWrong')] });
   }
 
   return redirect({ href: redirectTo, locale });

@@ -1,6 +1,9 @@
+'use client';
+
 import { ComponentPropsWithoutRef } from 'react';
 
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
+import { usePathname } from '~/i18n/routing';
 
 import { SidebarMenuLink } from './sidebar-menu-link';
 import { SidebarMenuSelect } from './sidebar-menu-select';
@@ -9,6 +12,9 @@ interface MenuLink {
   href: string;
   label: string;
   prefetch?: ComponentPropsWithoutRef<typeof SidebarMenuLink>['prefetch'];
+  secondaryLinks?: Array<{ href: string; label: string }>;
+  onClick?: () => void;
+  component?: React.ComponentType<{ label: string }>;
 }
 
 interface Props {
@@ -17,6 +23,8 @@ interface Props {
 }
 
 export function SidebarMenu({ links: streamableLinks, placeholderCount = 5 }: Props) {
+  const pathname = usePathname();
+
   return (
     <Stream
       fallback={<SidebarMenuSkeleton placeholderCount={placeholderCount} />}
@@ -30,13 +38,41 @@ export function SidebarMenu({ links: streamableLinks, placeholderCount = 5 }: Pr
         return (
           <nav>
             <ul className="hidden @2xl:block">
-              {links.map((link, index) => (
-                <li key={index}>
-                  <SidebarMenuLink href={link.href} prefetch={link.prefetch}>
-                    {link.label}
-                  </SidebarMenuLink>
-                </li>
-              ))}
+              {links.map((link, index) => {
+                const isPrimaryActive = pathname.includes(link.href);
+
+                return (
+                  <li className="mb-2" key={index}>
+                    {link.component ? (
+                      <link.component label={link.label} />
+                    ) : (
+                      <SidebarMenuLink
+                        href={link.href}
+                        onClick={link.onClick}
+                        prefetch={link.prefetch}
+                      >
+                        {link.label}
+                      </SidebarMenuLink>
+                    )}
+                    {link.secondaryLinks && isPrimaryActive && (
+                      <ul className="mt-1 ml-4">
+                        {link.secondaryLinks.map((secondaryLink, secondaryIndex) => (
+                          <li key={secondaryIndex}>
+                            <SidebarMenuLink
+                              className="!tracking-normal !normal-case after:content-none"
+                              href={secondaryLink.href}
+                              isSecondary
+                              prefetch={link.prefetch}
+                            >
+                              {secondaryLink.label}
+                            </SidebarMenuLink>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
             <div className="@2xl:hidden">
               <SidebarMenuSelect links={links} />
@@ -55,13 +91,13 @@ function SidebarMenuSkeleton({ placeholderCount }: { placeholderCount: number })
         <div className="w-full animate-pulse">
           {Array.from({ length: placeholderCount }).map((_, index) => (
             <div className="flex h-10 items-center px-3" key={index}>
-              <div className="h-[1lh] flex-1 rounded-lg bg-contrast-100" />
+              <div className="bg-contrast-100 h-[1lh] flex-1 rounded-lg" />
             </div>
           ))}
         </div>
       </div>
       <div className="@2xl:hidden">
-        <div className="h-[50px] w-full rounded-lg bg-contrast-100" />
+        <div className="bg-contrast-100 h-[50px] w-full rounded-lg" />
       </div>
     </>
   );

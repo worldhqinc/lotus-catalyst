@@ -11,24 +11,53 @@ import {
 } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { createSerializer, parseAsString, useQueryStates } from 'nuqs';
-import { ReactNode, useActionState, useCallback, useEffect } from 'react';
-import { useFormStatus } from 'react-dom';
+import {
+  forwardRef,
+  ReactNode,
+  startTransition,
+  useActionState,
+  useCallback,
+  useEffect,
+} from 'react';
+import { requestFormReset, useFormStatus } from 'react-dom';
 import { z } from 'zod';
 
 import { ButtonRadioGroup } from '@/vibes/soul/form/button-radio-group';
 import { CardRadioGroup } from '@/vibes/soul/form/card-radio-group';
 import { Checkbox } from '@/vibes/soul/form/checkbox';
+import { DatePicker } from '@/vibes/soul/form/date-picker';
 import { FormStatus } from '@/vibes/soul/form/form-status';
 import { Input } from '@/vibes/soul/form/input';
 import { NumberInput } from '@/vibes/soul/form/number-input';
 import { RadioGroup } from '@/vibes/soul/form/radio-group';
-import { Select } from '@/vibes/soul/form/select';
+import { SelectField } from '@/vibes/soul/form/select-field';
 import { SwatchRadioGroup } from '@/vibes/soul/form/swatch-radio-group';
+import { Textarea } from '@/vibes/soul/form/textarea';
 import { Button } from '@/vibes/soul/primitives/button';
-import { toast } from '@/vibes/soul/primitives/toaster';
+// import { useEvents } from '~/components/analytics/events';
+import NotifyBackInStock from '~/components/notify-back-in-stock';
 import { usePathname, useRouter } from '~/i18n/routing';
 
 import { Field, schema, SchemaRawShape } from './schema';
+
+const SubmitButton = forwardRef<HTMLButtonElement, { children: ReactNode; disabled?: boolean }>(
+  ({ children, disabled }, ref) => {
+    const { pending } = useFormStatus();
+
+    return (
+      <Button
+        className="w-full"
+        disabled={disabled}
+        loading={pending}
+        ref={ref}
+        size="medium"
+        type="submit"
+      >
+        {children}
+      </Button>
+    );
+  },
+);
 
 type Action<S, P> = (state: Awaited<S>, payload: P) => S | Promise<S>;
 
@@ -44,29 +73,30 @@ export interface ProductDetailFormProps<F extends Field> {
   fields: F[];
   action: ProductDetailFormAction<F>;
   productId: string;
+  sku: string;
   ctaLabel?: string;
-  quantityLabel?: string;
-  incrementLabel?: string;
-  decrementLabel?: string;
   emptySelectPlaceholder?: string;
   ctaDisabled?: boolean;
   prefetch?: boolean;
+  additionalActions?: ReactNode;
+  detailFormRef?: React.Ref<HTMLDivElement>;
 }
 
 export function ProductDetailForm<F extends Field>({
   action,
   fields,
   productId,
+  sku,
   ctaLabel = 'Add to cart',
-  quantityLabel = 'Quantity',
-  incrementLabel = 'Increase quantity',
-  decrementLabel = 'Decrease quantity',
   emptySelectPlaceholder = 'Select an option',
   ctaDisabled = false,
   prefetch = false,
+  additionalActions,
+  detailFormRef,
 }: ProductDetailFormProps<F>) {
   const router = useRouter();
   const pathname = usePathname();
+  // const events = useEvents();
 
   const searchParams = fields.reduce<Record<string, typeof parseAsString>>((acc, field) => {
     return field.persist === true ? { ...acc, [field.name]: parseAsString } : acc;
@@ -101,8 +131,6 @@ export function ProductDetailForm<F extends Field>({
 
   useEffect(() => {
     if (lastResult?.status === 'success') {
-      toast.success(successMessage);
-
       // This is needed to refresh the Data Cache after the product has been added to the cart.
       // The cart id is not picked up after the first time the cart is created/updated.
       router.refresh();
@@ -115,18 +143,28 @@ export function ProductDetailForm<F extends Field>({
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: schema(fields) });
     },
+    onSubmit(event, { formData }) {
+      event.preventDefault();
+
+      startTransition(() => {
+        requestFormReset(event.currentTarget);
+        formAction(formData);
+
+        // events.onAddToCart?.(formData);
+      });
+    },
     // @ts-expect-error: `defaultValue` types are conflicting with `onValidate`.
     defaultValue,
     shouldValidate: 'onSubmit',
     shouldRevalidate: 'onInput',
   });
 
-  const quantityControl = useInputControl(formFields.quantity);
+  // const quantityControl = useInputControl(formFields.quantity);
 
   return (
     <FormProvider context={form.context}>
       <FormStateInput />
-      <form {...getFormProps(form)} action={formAction} className="py-8">
+      <form {...getFormProps(form)} action={formAction}>
         <input name="id" type="hidden" value={productId} />
         <div className="space-y-6">
           {fields.map((field) => {
@@ -143,15 +181,15 @@ export function ProductDetailForm<F extends Field>({
             );
           })}
           {form.errors?.map((error, index) => (
-            <FormStatus className="pt-3" key={index} type="error">
+            <FormStatus className="py-3" key={index} type="error">
               {error}
             </FormStatus>
           ))}
-          <div className="flex gap-x-3 pt-3">
-            <NumberInput
-              aria-label={quantityLabel}
-              decrementLabel={decrementLabel}
-              incrementLabel={incrementLabel}
+          <div className="flex items-center gap-x-3" ref={detailFormRef}>
+            {/* <NumberInput
+              aria-label="Quantity"
+              decrementLabel="Decrement"
+              incrementLabel="Increment"
               min={1}
               name={formFields.quantity.name}
               onBlur={quantityControl.blur}
@@ -159,31 +197,24 @@ export function ProductDetailForm<F extends Field>({
               onFocus={quantityControl.focus}
               required
               value={quantityControl.value}
-            />
-            <SubmitButton disabled={ctaDisabled}>{ctaLabel}</SubmitButton>
+            /> */}
+            {ctaDisabled ? (
+              <NotifyBackInStock sku={sku} />
+            ) : (
+              <>
+                <input name={formFields.quantity.name} type="hidden" value="1" />
+                <SubmitButton disabled={ctaDisabled}>{ctaLabel}</SubmitButton>
+              </>
+            )}
           </div>
+          {additionalActions}
         </div>
       </form>
     </FormProvider>
   );
 }
 
-function SubmitButton({ children, disabled }: { children: ReactNode; disabled?: boolean }) {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button
-      className="w-auto @xl:w-56"
-      disabled={disabled}
-      loading={pending}
-      size="medium"
-      type="submit"
-    >
-      {children}
-    </Button>
-  );
-}
-
+// eslint-disable-next-line complexity
 function FormField({
   field,
   formField,
@@ -197,16 +228,19 @@ function FormField({
 }) {
   const controls = useInputControl(formField);
 
-  const [, setParams] = useQueryStates(
+  const [params, setParams] = useQueryStates(
     field.persist === true ? { [field.name]: parseAsString.withOptions({ shallow: false }) } : {},
   );
 
   const handleChange = useCallback(
     (value: string) => {
-      void setParams({ [field.name]: value });
-      controls.change(value);
+      // Ensure that if page is reached without a full reload, we are still setting the selection properly based on query params.
+      const fieldValue = value || String(params[field.name] ?? '');
+
+      void setParams({ [field.name]: fieldValue });
+      controls.change(fieldValue);
     },
-    [setParams, field, controls],
+    [setParams, field, controls, params],
   );
 
   const handleOnOptionMouseEnter = (value: string) => {
@@ -248,6 +282,38 @@ function FormField({
         />
       );
 
+    case 'date':
+      return (
+        <DatePicker
+          defaultValue={controls.value}
+          errors={formField.errors}
+          key={formField.id}
+          label={field.label}
+          name={formField.name}
+          onBlur={controls.blur}
+          onChange={(e) => handleChange(e.currentTarget.value)}
+          onFocus={controls.focus}
+          required={formField.required}
+        />
+      );
+
+    case 'textarea':
+      return (
+        <Textarea
+          errors={formField.errors}
+          key={formField.id}
+          label={field.label}
+          maxLength={field.maxLength}
+          minLength={field.minLength}
+          name={formField.name}
+          onBlur={controls.blur}
+          onChange={(e) => handleChange(e.currentTarget.value)}
+          onFocus={controls.focus}
+          required={formField.required}
+          value={controls.value ?? ''}
+        />
+      );
+
     case 'checkbox':
       return (
         <Checkbox
@@ -265,7 +331,7 @@ function FormField({
 
     case 'select':
       return (
-        <Select
+        <SelectField
           errors={formField.errors}
           key={formField.id}
           label={field.label}

@@ -46,9 +46,11 @@ interface Props {
 export const WishlistDetails = ({
   className = '',
   wishlist: streamableWishlist,
+  emptyStateText,
   paginationInfo,
   headerActions,
   prevHref,
+  placeholderCount,
   action,
   removeAction,
 }: Props) => {
@@ -58,6 +60,7 @@ export const WishlistDetails = ({
         <WishlistDetailSkeleton
           className={className}
           headerActions={typeof headerActions === 'function' ? headerActions() : headerActions}
+          placeholderCount={placeholderCount}
           prevHref={prevHref}
         />
       }
@@ -67,8 +70,8 @@ export const WishlistDetails = ({
         const { name, totalItems, items } = wishlist;
 
         return (
-          <section className={clsx('w-full @container', className)}>
-            <header className="mb-4 flex flex-col gap-4 @lg:flex-row @lg:justify-between">
+          <section className={clsx('@container w-full', className)}>
+            <header className="mb-8 flex flex-col gap-4 @lg:flex-row @lg:justify-between">
               <div className="flex flex-1 gap-2">
                 {prevHref != null && prevHref !== '' && (
                   <ButtonLink href={prevHref} shape="circle" size="small" variant="ghost">
@@ -76,10 +79,8 @@ export const WishlistDetails = ({
                   </ButtonLink>
                 )}
                 <div className="flex flex-1 flex-col gap-2">
-                  <h1 className="font-heading text-3xl font-medium leading-none @7xl:text-5xl">
-                    {name}
-                  </h1>
-                  <div className="text-sm text-contrast-500 @7xl:text-base">{totalItems.label}</div>
+                  <h1 className="text-2xl leading-[120%] @2xl:text-4xl">{name}</h1>
+                  <div className="text-contrast-500 text-sm @7xl:text-base">{totalItems.label}</div>
                 </div>
               </div>
               {typeof headerActions === 'function' ? headerActions(wishlist) : headerActions}
@@ -87,7 +88,9 @@ export const WishlistDetails = ({
 
             <WishlistItems
               action={action}
+              emptyStateText={emptyStateText}
               items={items}
+              placeholderCount={placeholderCount}
               removeAction={removeAction}
               wishlistId={wishlist.id}
             />
@@ -131,7 +134,7 @@ function WishlistItems({
         }
 
         return (
-          <div className="w-full @container">
+          <div className="@container w-full">
             <div className="mx-auto grid grid-cols-2 gap-x-4 gap-y-6 @sm:grid-cols-3 @2xl:grid-cols-4 @2xl:gap-x-5 @2xl:gap-y-8 @5xl:grid-cols-5 @7xl:grid-cols-6">
               {items.map((item, index) => (
                 <WishlistItemCard
@@ -162,9 +165,9 @@ function WishlistItemsEmptyState({
       <div className="[mask-image:linear-gradient(to_bottom,_black_25%,_transparent_100%)]">
         <WishlistItemsSkeleton placeholderCount={placeholderCount} />
       </div>
-      <div className="absolute inset-0 mx-auto px-3 py-24 pb-3 @4xl:px-10 @4xl:pb-10 @4xl:pt-24">
+      <div className="absolute inset-0 mx-auto px-3 py-24 pb-3 @4xl:px-10 @4xl:pt-24 @4xl:pb-10">
         <div className="mx-auto max-w-xl space-y-2 text-center @4xl:space-y-3">
-          <p className="text-sm text-contrast-500 @4xl:text-lg">{emptyStateText}</p>
+          <p className="text-contrast-500 text-sm @4xl:text-lg">{emptyStateText}</p>
         </div>
       </div>
     </div>
@@ -207,7 +210,7 @@ function WishlistDetailSkeleton({
   headerActions?: React.ReactNode;
 }) {
   return (
-    <section className={clsx('w-full animate-pulse @container', className)}>
+    <section className={clsx('@container w-full animate-pulse', className)}>
       <header className="mb-4 flex flex-col gap-4 @lg:flex-row @lg:justify-between">
         <div className="flex flex-1 gap-2">
           {prevHref != null &&
@@ -222,9 +225,9 @@ function WishlistDetailSkeleton({
           <div className="flex flex-1 flex-col gap-2">
             <Skeleton.Text
               characterCount={12}
-              className="rounded text-3xl leading-none @7xl:text-5xl"
+              className="rounded-sm text-3xl leading-none @7xl:text-5xl"
             />
-            <Skeleton.Text characterCount={5} className="rounded text-sm @7xl:text-base" />
+            <Skeleton.Text characterCount={5} className="rounded-sm text-sm @7xl:text-base" />
           </div>
         </div>
         {headerActions}

@@ -19,7 +19,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  const t = await getTranslations({ locale, namespace: 'Login' });
+  const t = await getTranslations({ locale, namespace: 'Auth.Login' });
 
   return {
     title: t('title'),
@@ -32,33 +32,38 @@ export default async function Login({ params, searchParams }: Props) {
 
   setRequestLocale(locale);
 
-  const t = await getTranslations('Login');
+  const t = await getTranslations('Auth.Login');
 
   const vanityUrl = buildConfig.get('urls').vanityUrl;
-  const redirectToPathname = new URL(redirectTo, vanityUrl).pathname;
+  const redirectUrl = new URL(redirectTo, vanityUrl);
+  const redirectTarget = redirectUrl.pathname + redirectUrl.search;
 
   return (
     <>
       <ForceRefresh />
       <SignInSection
-        action={login.bind(null, { redirectTo: redirectToPathname })}
+        action={login.bind(null, { redirectTo: redirectTarget })}
+        emailLabel={t('email')}
         forgotPasswordHref="/login/forgot-password"
-        forgotPasswordLabel={t('Form.forgotPassword')}
-        submitLabel={t('Form.logIn')}
+        forgotPasswordLabel={t('forgotPassword')}
+        passwordLabel={t('password')}
+        submitLabel={t('cta')}
         title={t('heading')}
       >
-        <div className="">
-          <h3 className="mb-3 text-xl font-bold lg:text-2xl">{t('CreateAccount.heading')}</h3>
-          <p className="text-base font-semibold">{t('CreateAccount.accountBenefits')}</p>
-          <ul className="mb-4 list-disc ps-4">
-            <li>{t('CreateAccount.fastCheckout')}</li>
-            <li>{t('CreateAccount.multipleAddresses')}</li>
-            <li>{t('CreateAccount.ordersHistory')}</li>
-            <li>{t('CreateAccount.ordersTracking')}</li>
-            <li>{t('CreateAccount.wishlists')}</li>
-          </ul>
-          <ButtonLink href="/register" variant="secondary">
-            {t('CreateAccount.createLink')}
+        <div className="flex flex-col gap-y-8">
+          <h3 className="text-2xl leading-[120%] @5xl:text-4xl">{t('CreateAccount.title')}</h3>
+          <div>
+            <p className="text-xl font-medium">{t('CreateAccount.accountBenefits')}</p>
+            <ul className="text-contrast-400 mt-2 flex list-disc flex-col gap-y-1 ps-4">
+              <li>{t('CreateAccount.fastCheckout')}</li>
+              <li>{t('CreateAccount.ordersTracking')}</li>
+              <li>{t('CreateAccount.ordersHistory')}</li>
+              <li>{t('CreateAccount.multipleAddresses')}</li>
+              <li>{t('CreateAccount.wishlists')}</li>
+            </ul>
+          </div>
+          <ButtonLink className="@2xl:self-start" href="/register" size="medium" variant="primary">
+            {t('CreateAccount.cta')}
           </ButtonLink>
         </div>
       </SignInSection>

@@ -1,19 +1,56 @@
 import { Metadata } from 'next';
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
+import { SearchParams } from 'nuqs/server';
 
 import { Cart as CartComponent, CartEmptyState } from '@/vibes/soul/sections/cart';
+import { client } from '~/client';
+import { graphql } from '~/client/graphql';
+import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { getCartId } from '~/lib/cart';
+import { getPreferredCurrencyCode } from '~/lib/currency';
 import { exists } from '~/lib/utils';
+
+import { getPageBySlug } from '../contentful/[...rest]/page-data';
 
 import { redirectToCheckout } from './_actions/redirect-to-checkout';
 import { updateCouponCode } from './_actions/update-coupon-code';
 import { updateLineItem } from './_actions/update-line-item';
 import { updateShippingInfo } from './_actions/update-shipping-info';
-import { CartViewed } from './_components/cart-viewed';
+// import { CartViewed } from './_components/cart-viewed';
 import { getCart, getShippingCountries } from './page-data';
+
+const GetAdditionalProductDataQuery = graphql(`
+  query GetAdditionalProductData($entityId: Int!, $currencyCode: currencyCode) {
+    site {
+      product(entityId: $entityId) {
+        path
+        prices(currencyCode: $currencyCode) {
+          price {
+            value
+            currencyCode
+          }
+          basePrice {
+            value
+            currencyCode
+          }
+        }
+        customFields {
+          edges {
+            node {
+              entityId
+              name
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+`);
 
 interface Props {
   params: Promise<{ locale: string }>;
+  searchParams: SearchParams;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -27,7 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // eslint-disable-next-line complexity
-export default async function Cart({ params }: Props) {
+export default async function Cart({ params, searchParams }: Props) {
   const { locale } = await params;
 
   setRequestLocale(locale);
@@ -35,15 +72,24 @@ export default async function Cart({ params }: Props) {
   const t = await getTranslations('Cart');
   const format = await getFormatter();
   const cartId = await getCartId();
+  const currencyCode = await getPreferredCurrencyCode();
 
   if (!cartId) {
-    return (
-      <CartEmptyState
-        cta={{ label: t('Empty.cta'), href: '/shop-all' }}
-        subtitle={t('Empty.subtitle')}
-        title={t('Empty.title')}
-      />
-    );
+    try {
+      const page = await getPageBySlug('pageStandard', ['cart-empty']);
+
+      return (
+        <PageContentEntries pageContent={page.fields.pageContent} searchParams={searchParams} />
+      );
+    } catch {
+      return (
+        <CartEmptyState
+          cta={{ label: t('Empty.cta'), href: '/shop/all' }}
+          subtitle={t('Empty.subtitle')}
+          title={t('Empty.title')}
+        />
+      );
+    }
   }
 
   const data = await getCart({ cartId });
@@ -52,53 +98,103 @@ export default async function Cart({ params }: Props) {
   const checkout = data.site.checkout;
 
   if (!cart) {
-    return (
-      <CartEmptyState
-        cta={{ label: t('Empty.cta'), href: '/shop-all' }}
-        subtitle={t('Empty.subtitle')}
-        title={t('Empty.title')}
-      />
-    );
+    try {
+      const page = await getPageBySlug('pageStandard', ['cart-empty']);
+
+      return (
+        <PageContentEntries pageContent={page.fields.pageContent} searchParams={searchParams} />
+      );
+    } catch {
+      return (
+        <CartEmptyState
+          cta={{ label: t('Empty.cta'), href: '/shop/all' }}
+          subtitle={t('Empty.subtitle')}
+          title={t('Empty.title')}
+        />
+      );
+    }
   }
 
   const lineItems = [...cart.lineItems.physicalItems, ...cart.lineItems.digitalItems];
 
-  const formattedLineItems = lineItems.map((item) => ({
-    id: item.entityId,
-    quantity: item.quantity,
-    price: format.number(item.listPrice.value, {
-      style: 'currency',
-      currency: item.listPrice.currencyCode,
+  const additionalProductData = await Promise.all(
+    lineItems.map(async (item) => {
+      const additionalDataResponse = await client.fetch({
+        document: GetAdditionalProductDataQuery,
+        variables: {
+          entityId: item.productEntityId,
+          currencyCode,
+        },
+      });
+
+      return {
+        productEntityId: item.productEntityId,
+        path: additionalDataResponse.data.site.product?.path,
+        prices: additionalDataResponse.data.site.product?.prices,
+        customFields: additionalDataResponse.data.site.product?.customFields,
+      };
     }),
-    subtitle: item.selectedOptions
-      .map((option) => {
-        switch (option.__typename) {
-          case 'CartSelectedMultipleChoiceOption':
-          case 'CartSelectedCheckboxOption':
-            return `${option.name}: ${option.value}`;
+  );
+  const additionalProductDataMap = new Map(
+    additionalProductData.map((additionalData) => [additionalData.productEntityId, additionalData]),
+  );
 
-          case 'CartSelectedNumberFieldOption':
-            return `${option.name}: ${option.number}`;
+  const formattedLineItems = lineItems.map((item) => {
+    const additionalData = additionalProductDataMap.get(item.productEntityId);
+    const path = additionalData?.path;
+    const prices = additionalData?.prices;
+    const basePrice = prices?.basePrice?.value;
+    const currentPrice = prices?.price.value;
+    const customFields = additionalData?.customFields?.edges;
+    const webProductNameDescriptor = customFields?.find(
+      (field) => field.node.name === 'Web Product Name Descriptor',
+    )?.node.value;
 
-          case 'CartSelectedMultiLineTextFieldOption':
-          case 'CartSelectedTextFieldOption':
-            return `${option.name}: ${option.text}`;
+    return {
+      id: item.entityId,
+      quantity: item.quantity,
+      price: format.number(item.extendedSalePrice.value, {
+        style: 'currency',
+        currency: item.extendedSalePrice.currencyCode,
+      }),
+      basePrice:
+        basePrice && currentPrice && basePrice !== currentPrice
+          ? format.number(basePrice * item.quantity, {
+              style: 'currency',
+              currency: prices.basePrice?.currencyCode,
+            })
+          : undefined,
+      subtitle: webProductNameDescriptor ?? '',
+      // subtitle: item.selectedOptions
+      //   .map((option) => {
+      //     switch (option.__typename) {
+      //       case 'CartSelectedMultipleChoiceOption':
+      //       case 'CartSelectedCheckboxOption':
+      //         return `${option.name}: ${option.value}`;
 
-          case 'CartSelectedDateFieldOption':
-            return `${option.name}: ${format.dateTime(new Date(option.date.utc))}`;
+      //       case 'CartSelectedNumberFieldOption':
+      //         return `${option.name}: ${option.number}`;
 
-          default:
-            return '';
-        }
-      })
-      .join(', '),
-    title: item.name,
-    image: { src: item.image?.url || '', alt: item.name },
-    href: new URL(item.url).pathname,
-    selectedOptions: item.selectedOptions,
-    productEntityId: item.productEntityId,
-    variantEntityId: item.variantEntityId,
-  }));
+      //       case 'CartSelectedMultiLineTextFieldOption':
+      //       case 'CartSelectedTextFieldOption':
+      //         return `${option.name}: ${option.text}`;
+
+      //       case 'CartSelectedDateFieldOption':
+      //         return `${option.name}: ${format.dateTime(new Date(option.date.utc))}`;
+
+      //       default:
+      //         return '';
+      //     }
+      //   })
+      // .join(', '),
+      title: item.name,
+      image: { src: item.image?.url || '', alt: item.name },
+      href: path,
+      selectedOptions: item.selectedOptions,
+      productEntityId: item.productEntityId,
+      variantEntityId: item.variantEntityId,
+    };
+  });
 
   const totalCouponDiscount =
     checkout?.coupons.reduce((sum, coupon) => sum + coupon.discountedAmount.value, 0) ?? 0;
@@ -181,11 +277,6 @@ export default async function Cart({ params }: Props) {
         }}
         decrementLineItemLabel={t('decrement')}
         deleteLineItemLabel={t('removeItem')}
-        emptyState={{
-          title: t('Empty.title'),
-          subtitle: t('Empty.subtitle'),
-          cta: { label: t('Empty.cta'), href: '/shop-all' },
-        }}
         incrementLineItemLabel={t('increment')}
         key={`${cart.entityId}-${cart.version}`}
         lineItemAction={updateLineItem}
@@ -250,11 +341,11 @@ export default async function Cart({ params }: Props) {
         summaryTitle={t('CheckoutSummary.title')}
         title={t('title')}
       />
-      <CartViewed
+      {/* <CartViewed
         currencyCode={cart.currencyCode}
         lineItems={lineItems}
         subtotal={checkout?.subtotal?.value}
-      />
+      /> */}
     </>
   );
 }

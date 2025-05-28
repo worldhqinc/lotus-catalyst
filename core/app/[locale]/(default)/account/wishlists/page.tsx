@@ -37,7 +37,7 @@ const searchParamsCache = createSearchParamsCache({
 
 async function listWishlists(
   searchParamsPromise: Promise<SearchParams>,
-  t: ExistingResultType<typeof getTranslations<'Account.Wishlists'>>,
+  t: ExistingResultType<typeof getTranslations<'Wishlist'>>,
 ): Promise<Wishlist[]> {
   const searchParamsParsed = searchParamsCache.parse(await searchParamsPromise);
   const formatter = await getFormatter();
@@ -64,7 +64,7 @@ export default async function Wishlists({ params, searchParams }: Props) {
 
   setRequestLocale(locale);
 
-  const t = await getTranslations('Account.Wishlists');
+  const t = await getTranslations('Wishlist');
   const isMobile = await isMobileUser();
   const newWishlistModal = getNewWishlistModal(t);
 
@@ -85,6 +85,7 @@ export default async function Wishlists({ params, searchParams }: Props) {
 
           return (
             <WishlistActionsMenu
+              actionsTitle={t('actionsTitle')}
               items={[
                 {
                   label: t('rename'),
@@ -107,12 +108,12 @@ export default async function Wishlists({ params, searchParams }: Props) {
                       modalTitle: t('Modal.shareTitle', { name: wishlist.name }),
                       publicUrl: wishlist.publicUrl,
                       closeLabel: t('Modal.close'),
+                      copyLabel: t('Modal.copy'),
                       copiedMessage: t('shareCopied'),
                       disabledTooltip: t('shareDisabled'),
                       label: t('share'),
                       successMessage: t('shareSuccess'),
                       isPublic: wishlist.visibility.isPublic,
-                      modalCloseLabel: t('Modal.close'),
                       isMobileUser: isMobile,
                     }
                   : undefined

@@ -1,0 +1,30 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Development Workflow Guide
+
+## Getting Started
+1. Install Node.js version specified in [.nvmrc](mdc:.nvmrc)
+2. Install pnpm package manager
+3. Run `pnpm install` to install dependencies
+4. Use Turborepo commands defined in [turbo.json](mdc:turbo.json) for development tasks
+
+## Package Development
+- Each package in [packages/](mdc:packages) is independently versioned
+- Use changesets for version management (see [.changeset](mdc:.changeset) directory)
+- Follow the contribution guidelines in [CONTRIBUTING.md](mdc:CONTRIBUTING.md)
+
+## CI/CD Pipeline
+- GitHub Actions workflows are defined in [.github/workflows](mdc:.github/workflows)
+- Platform.sh deployment configuration in [.platform.app.yaml](mdc:.platform.app.yaml)
+
+## Code Quality
+- ESLint configuration is shared via [packages/eslint-config-catalyst](mdc:packages/eslint-config-catalyst)
+- TypeScript configuration is extended from root [tsconfig.json](mdc:tsconfig.json)
+- Follow security guidelines in [SECURITY.md](mdc:SECURITY.md)
+- Use zod for parsing responses and types
+
+# Git
+- Do not uppercase the first word in commit messages

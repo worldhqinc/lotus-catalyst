@@ -5,11 +5,12 @@ import { cache } from 'react';
 import * as z from 'zod';
 
 import { Streamable } from '@/vibes/soul/lib/streamable';
-import { CompareCardWithId } from '@/vibes/soul/primitives/compare-card';
+import { CompareProduct } from '@/vibes/soul/primitives/compare-card';
 import { CompareSection } from '@/vibes/soul/sections/compare-section';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 
 import { addToCart } from './_actions/add-to-cart';
+// import { CompareAnalyticsProvider } from './_components/compare-analytics-provider';
 import { getCompareData } from './page-data';
 
 const CompareParamsSchema = z.object({
@@ -29,7 +30,7 @@ const CompareParamsSchema = z.object({
     .transform((value) => value?.map((id) => parseInt(id, 10))),
 });
 
-const getProducts = cache(async (productIds: number[] = []): Promise<CompareCardWithId[]> => {
+const getProducts = cache(async (productIds: number[] = []): Promise<CompareProduct[]> => {
   const t = await getTranslations('Compare');
 
   const products = await getCompareData(productIds);
@@ -56,6 +57,21 @@ const getProducts = cache(async (productIds: number[] = []): Promise<CompareCard
     disabled: product.availabilityV2.status === 'Unavailable' || !product.inventory.isInStock,
   }));
 });
+
+// const getAnalyticsData = async (productIds: number[] = []) => {
+//   const products = await getCompareData(productIds);
+
+//   return products.map((product) => {
+//     return {
+//       id: product.entityId,
+//       name: product.name,
+//       sku: product.sku,
+//       brand: product.brand?.name ?? '',
+//       price: product.prices?.price.value ?? 0,
+//       currency: product.prices?.price.currencyCode ?? '',
+//     };
+//   });
+// };
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -86,21 +102,29 @@ export default async function Compare(props: Props) {
   const productIds = parsed.ids?.filter((id) => !Number.isNaN(id));
 
   return (
-    <CompareSection
-      addToCartAction={addToCart}
-      addToCartLabel={t('addToCart')}
-      descriptionLabel={t('description')}
-      emptyStateTitle={t('noProductsToCompare')}
-      nextLabel={t('next')}
-      noDescriptionLabel={t('noDescription')}
-      noOtherDetailsLabel={t('noOtherDetails')}
-      noRatingsLabel={t('noRatings')}
-      otherDetailsLabel={t('otherDetails')}
-      previousLabel={t('previous')}
-      products={Streamable.from(() => getProducts(productIds))}
-      ratingLabel={t('rating')}
-      title={t('title')}
-      viewOptionsLabel={t('viewOptions')}
-    />
+    <>
+      {/* <CompareAnalyticsProvider data={Streamable.from(() => getAnalyticsData(productIds))}> */}
+      <CompareSection
+        addToCartAction={addToCart}
+        addToCartLabel={t('addToCart')}
+        descriptionLabel={t('description')}
+        emptyStateTitle={t('noProductsToCompare')}
+        nextLabel={t('next')}
+        noDescriptionLabel={t('noDescription')}
+        noOtherDetailsLabel={t('noOtherDetails')}
+        noRatingsLabel={t('noRatings')}
+        otherDetailsLabel={t('otherDetails')}
+        previousLabel={t('previous')}
+        products={Streamable.from(() => getProducts(productIds))}
+        ratingLabel={t('rating')}
+        title={t('title')}
+        viewOptionsLabel={t('viewOptions')}
+      />
+      {/* </CompareAnalyticsProvider> */}
+    </>
   );
 }
+
+// Disabled to circumvent a bug in Next.js and PPR
+// More info: https://github.com/vercel/next.js/issues/59407
+export const experimental_ppr = false;

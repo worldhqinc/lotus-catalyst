@@ -23,7 +23,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  const t = await getTranslations({ locale, namespace: 'Register' });
+  const t = await getTranslations({ locale, namespace: 'Auth.Register' });
 
   return {
     title: t('title'),
@@ -35,7 +35,7 @@ export default async function Register({ params }: Props) {
 
   setRequestLocale(locale);
 
-  const t = await getTranslations('Register');
+  const t = await getTranslations('Auth.Register');
 
   const registerCustomerData = await getRegisterCustomerQuery({
     address: { sortBy: 'SORT_ORDER' },
@@ -52,6 +52,16 @@ export default async function Register({ params }: Props) {
   return (
     <DynamicFormSection
       action={registerCustomer}
+      benefits={{
+        title: t('AccountBenefits.title'),
+        items: [
+          t('AccountBenefits.fastCheckout'),
+          t('AccountBenefits.ordersTracking'),
+          t('AccountBenefits.ordersHistory'),
+          t('AccountBenefits.multipleAddresses'),
+          t('AccountBenefits.wishlists'),
+        ],
+      }}
       fields={[
         addressFields
           .filter((field) => FULL_NAME_FIELDS.includes(field.entityId))
@@ -62,7 +72,8 @@ export default async function Register({ params }: Props) {
           .map(formFieldTransformer)
           .filter(exists),
       ]}
-      submitLabel={t('Form.submit')}
+      isRegisterForm
+      submitLabel={t('cta')}
       title={t('heading')}
     />
   );

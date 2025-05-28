@@ -20,7 +20,8 @@ export enum FieldNameToFieldId {
   stateOrProvince,
   postalCode,
   currentPassword = 24,
-  exclusiveOffers = 25,
+  exclusiveOffers,
+  newsletter = 27,
 }
 
 export enum FieldTypeToFieldInput {

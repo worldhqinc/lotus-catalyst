@@ -1,0 +1,27 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Project Structure Guide
+
+This is a monorepo project managed with pnpm workspaces and Turborepo. The project consists of several key packages and directories:
+
+## Core Packages
+- [packages/cli](mdc:packages/cli) - Command-line interface package
+- [packages/client](mdc:packages/client) - Client library package
+- [packages/create-catalyst](mdc:packages/create-catalyst) - Project scaffolding tool
+- [packages/eslint-config-catalyst](mdc:packages/eslint-config-catalyst) - Shared ESLint configuration
+
+## Configuration Files
+- [package.json](mdc:package.json) - Root package configuration
+- [pnpm-workspace.yaml](mdc:pnpm-workspace.yaml) - Workspace configuration
+- [turbo.json](mdc:turbo.json) - Turborepo configuration
+- [tsconfig.json](mdc:tsconfig.json) - TypeScript configuration
+
+## Documentation
+- [README.md](mdc:README.md) - Project overview and getting started guide
+- [CONTRIBUTING.md](mdc:CONTRIBUTING.md) - Contribution guidelines
+- [CODE_OF_CONDUCT.md](mdc:CODE_OF_CONDUCT.md) - Community guidelines
+- [SECURITY.md](mdc:SECURITY.md) - Security policy and reporting vulnerabilities
+- [LICENSE](mdc:LICENSE) - Project license information

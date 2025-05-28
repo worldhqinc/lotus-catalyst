@@ -16,7 +16,7 @@ import { FormStatus } from '@/vibes/soul/form/form-status';
 import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
 import { RadioGroup } from '@/vibes/soul/form/radio-group';
-import { Select } from '@/vibes/soul/form/select';
+import { SelectField } from '@/vibes/soul/form/select-field';
 import { Button } from '@/vibes/soul/primitives/button';
 
 import { shippingActionFormDataSchema } from '../schema';
@@ -227,16 +227,16 @@ export function ShippingForm({
   const stateControl = useInputControl(addressFields.state);
 
   return (
-    <div className="space-y-4 border-t border-contrast-100 pb-5 pt-4">
+    <div>
       <div>
-        <div className="flex justify-between">
+        <div className="flex justify-between text-sm leading-6">
           <span>{shippingLabel}</span>
           {state.shippingOption ? (
             <span>{state.shippingOption.price}</span>
           ) : (
             !showForms && (
               <button
-                className="font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--button-focus,hsl(var(--primary)))] focus-visible:ring-offset-2"
+                className="link text-primary font-medium"
                 onClick={() => setShowForms(!showForms)}
               >
                 {addLabel}
@@ -247,12 +247,9 @@ export function ShippingForm({
 
         {state.shippingOption && (
           <div className="flex gap-1.5 text-xs">
-            <span className="font-medium text-contrast-400">{state.shippingOption.label}</span>
+            <span className="text-contrast-400 font-medium">{state.shippingOption.label}</span>
             {!showForms && (
-              <button
-                className="font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--button-focus,hsl(var(--primary)))] focus-visible:ring-offset-2"
-                onClick={() => setShowForms(true)}
-              >
+              <button className="link text-primary font-medium" onClick={() => setShowForms(true)}>
                 {changeLabel}
               </button>
             )}
@@ -264,10 +261,10 @@ export function ShippingForm({
         <form
           {...getFormProps(addressForm)}
           action={formAction}
-          className={clsx('space-y-5', { hidden: !showAddressForm })}
+          className={clsx('mt-4 space-y-4', { hidden: !showAddressForm })}
         >
           {Array.isArray(countries) ? (
-            <Select
+            <SelectField
               errors={addressFields.country.errors}
               key={addressFields.country.id}
               label={countryLabel}
@@ -277,7 +274,7 @@ export function ShippingForm({
               onValueChange={countryControl.change}
               options={countries}
               placeholder=""
-              value={countryControl.value}
+              value={countryControl.value ?? ''}
             />
           ) : (
             <Input
@@ -295,7 +292,7 @@ export function ShippingForm({
           />
           <div className="flex gap-3">
             {Array.isArray(states) ? (
-              <Select
+              <SelectField
                 disabled={addressFields.country.value === undefined}
                 errors={addressFields.state.errors}
                 key={addressFields.state.id}
@@ -308,7 +305,7 @@ export function ShippingForm({
                   states.find((s) => s.country === addressFields.country.value)?.states ?? []
                 }
                 placeholder=""
-                value={stateControl.value}
+                value={stateControl.value ?? ''}
               />
             ) : (
               <Input
@@ -343,7 +340,7 @@ export function ShippingForm({
                   ? setShowAddressForm(false)
                   : setShowForms(false)
               }
-              size="small"
+              size="medium"
               type="button"
               variant="tertiary"
             >
@@ -352,11 +349,11 @@ export function ShippingForm({
           </div>
         </form>
 
-        <div className={clsx('space-y-2.5', { hidden: showAddressForm })}>
+        <div className={clsx('mt-4 space-y-2.5', { hidden: showAddressForm })}>
           {formattedAddress}
           <Button
             onClick={() => setShowAddressForm(true)}
-            size="small"
+            size="medium"
             type="button"
             variant="tertiary"
           >
@@ -371,7 +368,7 @@ export function ShippingForm({
           {...getFormProps(shippingOptionsForm)}
           action={formAction}
         >
-          <div className="space-y-3">
+          <div className="mt-4 space-y-3">
             <RadioGroup
               {...getInputProps(shippingOptionsFields.shippingOption, {
                 type: 'radio',
@@ -411,7 +408,7 @@ export function ShippingForm({
                 setShowForms(false);
                 setShowAddressForm(false);
               }}
-              size="small"
+              size="medium"
               type="button"
               variant="tertiary"
             >
@@ -421,7 +418,7 @@ export function ShippingForm({
         </form>
 
         <div
-          className={clsx('space-y-3', {
+          className={clsx('mt-6 space-y-3', {
             hidden: state.shippingOptions === null || state.shippingOptions.length > 0,
           })}
         >
@@ -436,5 +433,5 @@ export function ShippingForm({
 function SubmitButton(props: React.ComponentPropsWithoutRef<typeof Button>) {
   const { pending } = useFormStatus();
 
-  return <Button {...props} loading={pending} size="small" type="submit" variant="secondary" />;
+  return <Button {...props} loading={pending} size="medium" type="submit" variant="primary" />;
 }

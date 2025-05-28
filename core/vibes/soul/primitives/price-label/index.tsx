@@ -39,7 +39,7 @@ export function PriceLabel({ className, colorScheme = 'light', price }: Props) {
     return (
       <span
         className={clsx(
-          'block font-semibold',
+          'block text-sm',
           {
             light: 'text-[var(--price-light-text,hsl(var(--foreground)))]',
             dark: 'text-[var(--price-dark-text,hsl(var(--background)))]',
@@ -57,7 +57,7 @@ export function PriceLabel({ className, colorScheme = 'light', price }: Props) {
       return (
         <span
           className={clsx(
-            'block font-semibold',
+            'block text-sm',
             {
               light: 'text-[var(--price-light-text,hsl(var(--foreground)))]',
               dark: 'text-[var(--price-dark-text,hsl(var(--background)))]',
@@ -73,7 +73,17 @@ export function PriceLabel({ className, colorScheme = 'light', price }: Props) {
 
     case 'sale':
       return (
-        <span className={clsx('block font-semibold', className)}>
+        <span className={clsx('block text-sm', className)}>
+          <span
+            className={clsx(
+              {
+                light: 'text-[var(--price-light-sale-text,hsl(var(--foreground)))]',
+                dark: 'text-[var(--price-dark-sale-text,hsl(var(--background)))]',
+              }[colorScheme],
+            )}
+          >
+            {price.currentValue}
+          </span>{' '}
           <span
             className={clsx(
               'font-normal line-through opacity-50',
@@ -84,16 +94,6 @@ export function PriceLabel({ className, colorScheme = 'light', price }: Props) {
             )}
           >
             {price.previousValue}
-          </span>{' '}
-          <span
-            className={clsx(
-              {
-                light: 'text-[var(--price-light-sale-text,hsl(var(--foreground)))]',
-                dark: 'text-[var(--price-dark-sale-text,hsl(var(--background)))]',
-              }[colorScheme],
-            )}
-          >
-            {price.currentValue}
           </span>
         </span>
       );

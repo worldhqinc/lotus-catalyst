@@ -1,10 +1,17 @@
 import { composeMiddlewares } from './middlewares/compose-middlewares';
+import { withAnalyticsCookies } from './middlewares/with-analytics-cookies';
 import { withAuth } from './middlewares/with-auth';
 import { withChannelId } from './middlewares/with-channel-id';
 import { withIntl } from './middlewares/with-intl';
 import { withRoutes } from './middlewares/with-routes';
 
-export const middleware = composeMiddlewares(withAuth, withIntl, withChannelId, withRoutes);
+export const middleware = composeMiddlewares(
+  withAuth,
+  withIntl,
+  withAnalyticsCookies,
+  withChannelId,
+  withRoutes,
+);
 
 export const config = {
   matcher: [
@@ -19,7 +26,8 @@ export const config = {
      * - sitemap.xml (sitemap route)
      * - xmlsitemap.php (legacy sitemap route)
      * - robots.txt (robots route)
+     * - images/*.svg (SVG images in the publicimages directory)
      */
-    '/((?!api|admin|_next/static|_next/image|_vercel|favicon.ico|xmlsitemap.php|sitemap.xml|robots.txt|login/token).*)',
+    '/((?!api|admin|_next/static|_next/image|_vercel|favicon.ico|xmlsitemap.php|sitemap.xml|robots.txt|images/[^/]+\\.jpg).*)',
   ],
 };

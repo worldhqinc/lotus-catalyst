@@ -1,3 +1,4 @@
+import { BigCommerceAuthError } from '@bigcommerce/catalyst-client';
 import { unstable_rethrow as rethrow } from 'next/navigation';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -25,9 +26,9 @@ const CheckoutRedirectMutation = graphql(`
   }
 `);
 
-export async function GET(_: NextRequest, { params }: { params: Promise<{ locale: string }> }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const cartId = await getCartId();
+  const cartId = req.nextUrl.searchParams.get('cartId') ?? (await getCartId());
   const customerAccessToken = await getSessionCustomerAccessToken();
   const channelId = getChannelIdFromLocale(locale);
 
@@ -57,6 +58,10 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ locale
     });
   } catch (error) {
     rethrow(error);
+
+    if (error instanceof BigCommerceAuthError) {
+      return redirect({ href: '/logout?redirectTo=/checkout/', locale });
+    }
 
     // eslint-disable-next-line no-console
     console.error(error);

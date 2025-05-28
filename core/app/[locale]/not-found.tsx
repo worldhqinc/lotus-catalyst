@@ -1,64 +1,39 @@
-import { removeEdgesAndNodes } from '@bigcommerce/catalyst-client';
-import { getFormatter, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
+import type { SearchParams } from 'nuqs/server';
 
-import { FeaturedProductCarousel } from '@/vibes/soul/sections/featured-product-carousel';
 import { NotFound as NotFoundSection } from '@/vibes/soul/sections/not-found';
-import { CarouselProduct } from '@/vibes/soul/sections/product-carousel';
-import { client } from '~/client';
-import { graphql } from '~/client/graphql';
-import { revalidate } from '~/client/revalidate-target';
+import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { Footer } from '~/components/footer';
 import { Header } from '~/components/header';
-import { ProductCardFragment } from '~/components/product-card/fragment';
-import { productCardTransformer } from '~/data-transformers/product-card-transformer';
-import { getPreferredCurrencyCode } from '~/lib/currency';
 
-const NotFoundQuery = graphql(
-  `
-    query NotFoundQuery($currencyCode: currencyCode) {
-      site {
-        featuredProducts(first: 10) {
-          edges {
-            node {
-              ...ProductCardFragment
-            }
-          }
-        }
-      }
-    }
-  `,
-  [ProductCardFragment],
-);
+import { getPageBySlug } from './(default)/contentful/[...rest]/page-data';
 
-async function getFeaturedProducts(): Promise<CarouselProduct[]> {
-  const format = await getFormatter();
-  const currencyCode = await getPreferredCurrencyCode();
-  const { data } = await client.fetch({
-    document: NotFoundQuery,
-    variables: { currencyCode },
-    fetchOptions: { next: { revalidate } },
-  });
-
-  const featuredProducts = removeEdgesAndNodes(data.site.featuredProducts);
-
-  return productCardTransformer(featuredProducts, format);
-}
-
-export default async function NotFound() {
+export default async function NotFound({ searchParams }: { searchParams: SearchParams }) {
   const t = await getTranslations('NotFound');
 
-  return (
-    <>
-      <Header />
+  try {
+    const page = await getPageBySlug('pageStandard', ['not-found']);
 
-      <NotFoundSection subtitle={t('message')} title={t('heading')} />
+    return (
+      <>
+        <Header />
+        <PageContentEntries pageContent={page.fields.pageContent} searchParams={searchParams} />
+        <Footer />
+      </>
+    );
+  } catch {
+    return (
+      <>
+        <Header />
 
-      <FeaturedProductCarousel
-        products={getFeaturedProducts()}
-        title={t('Carousel.featuredProducts')}
-      />
+        <NotFoundSection
+          className="flex-1 place-content-center"
+          subtitle={t('subtitle')}
+          title={t('title')}
+        />
 
-      <Footer />
-    </>
-  );
+        <Footer />
+      </>
+    );
+  }
 }

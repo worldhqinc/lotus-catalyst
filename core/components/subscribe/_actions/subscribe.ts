@@ -5,6 +5,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { getTranslations } from 'next-intl/server';
 
 import { schema } from '@/vibes/soul/primitives/inline-email-form/schema';
+import { klaviyoNewsletterSignup } from '~/lib/klaviyo';
 
 export const subscribe = async (
   _lastResult: {
@@ -22,30 +23,15 @@ export const subscribe = async (
     return { lastResult: submission.reply() };
   }
 
-  const response = await fetch(
-    `https://a.klaviyo.com/api/lists/${process.env.KLAVIYO_LIST_ID}/relationships/profiles/`,
-    {
-      method: 'POST',
-      headers: {
-        accept: 'application/vnd.api+json',
-        'Content-Type': 'application/vnd.api+json',
-        revision: '2025-01-15',
-        Authorization: `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY}`,
-      },
-      body: JSON.stringify({
-        data: [
-          {
-            type: 'profile',
-            attributes: {
-              email: submission.value.email,
-            },
-          },
-        ],
-      }),
-    },
+  const klaviyoResponse = await klaviyoNewsletterSignup(
+    submission.value.email,
+    'Footer Newsletter Signup',
   );
 
-  if (!response.ok) {
+  if (!klaviyoResponse.ok) {
+    // eslint-disable-next-line no-console
+    console.error('Error submitting newsletter signup:', klaviyoResponse);
+
     return { lastResult: submission.reply(), successMessage: null, errorMessage: t('error') };
   }
 

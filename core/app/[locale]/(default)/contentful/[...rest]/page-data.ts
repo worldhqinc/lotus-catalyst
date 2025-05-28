@@ -1,53 +1,48 @@
-import { EntryFieldTypes } from 'contentful';
+import { unstable_cacheTag as cacheTag } from 'next/cache';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
+import { z } from 'zod';
 
+import {
+  featureSchema,
+  pageStandardSchema,
+  recipeSchema,
+  tutorialSchema,
+} from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
 
-interface PageStandardEntrySkeleton {
-  contentTypeId: 'pageStandard';
-  fields: {
-    pageName: EntryFieldTypes.Text;
-    pageSlug: EntryFieldTypes.Text;
-    metaTitleSeo: EntryFieldTypes.Text;
-    metaDescription: EntryFieldTypes.Text;
-    metaKeywordsSeo: EntryFieldTypes.Text;
-    optionalPageDescription: EntryFieldTypes.RichText;
-    pageContent: EntryFieldTypes.Object;
-  };
-}
+type ContentType = 'pageStandard' | 'recipe' | 'feature' | 'tutorial';
 
-export interface PageContentField {
-  sys: {
-    id: string;
-    contentType: {
-      sys: {
-        id: string;
-      };
-    };
-  };
-}
+const schemaMap = {
+  pageStandard: pageStandardSchema,
+  recipe: recipeSchema,
+  feature: featureSchema,
+  tutorial: tutorialSchema,
+};
 
-export const getPageBySlug = cache(async (rest: string[]) => {
-  const response = await contentfulClient.getEntries<PageStandardEntrySkeleton>({
-    content_type: 'pageStandard',
-    'fields.pageSlug': rest.join('/'),
-    limit: 1,
-  });
+type ParsedPageData<T extends ContentType> = z.infer<(typeof schemaMap)[T]>;
 
-  const page = response.items[0];
+export const getPageBySlug = cache(
+  async <T extends ContentType>(contentType: T, rest: string[]): Promise<ParsedPageData<T>> => {
+    'use cache';
 
-  if (!page) {
-    return notFound();
-  }
+    cacheTag('contentful');
 
-  return page;
-});
+    const response = await contentfulClient.getEntries({
+      content_type: contentType,
+      'fields.pageSlug': rest.join('/'),
+      limit: 1,
+      include: 5,
+    });
 
-export async function getPages() {
-  const response = await contentfulClient.getEntries({
-    content_type: 'pageStandard',
-  });
+    const pageData = response.items[0];
 
-  return response.items;
-}
+    if (!pageData) {
+      notFound();
+    }
+
+    const schema = schemaMap[contentType];
+
+    return schema.parse(pageData);
+  },
+);

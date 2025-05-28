@@ -4,8 +4,8 @@ import { BigCommerceGQLError } from '@bigcommerce/catalyst-client';
 import { parseWithZod } from '@conform-to/zod';
 import { getTranslations } from 'next-intl/server';
 
-import { ChangePasswordAction } from '@/vibes/soul/sections/account-settings-section/change-password-form';
-import { changePasswordSchema } from '@/vibes/soul/sections/account-settings-section/schema';
+import { ChangePasswordAction } from '@/vibes/soul/sections/account-settings/change-password-form';
+import { changePasswordSchema } from '@/vibes/soul/sections/account-settings/schema';
 import { getSessionCustomerAccessToken } from '~/auth';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
@@ -35,7 +35,7 @@ const CustomerChangePasswordMutation = graphql(`
 `);
 
 export const changePassword: ChangePasswordAction = async (prevState, formData) => {
-  const t = await getTranslations('Account.Settings.ChangePassword');
+  const t = await getTranslations('Account.Settings');
   const customerAccessToken = await getSessionCustomerAccessToken();
 
   const submission = parseWithZod(formData, { schema: changePasswordSchema });
@@ -79,6 +79,6 @@ export const changePassword: ChangePasswordAction = async (prevState, formData) 
       return submission.reply({ formErrors: [error.message] });
     }
 
-    return submission.reply({ formErrors: [t('error')] });
+    return submission.reply({ formErrors: [t('somethingWentWrong')] });
   }
 };

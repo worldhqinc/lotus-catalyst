@@ -21,25 +21,27 @@ export function SignInSection({
   emailLabel,
   passwordLabel,
   forgotPasswordHref = '/forgot-password',
-  forgotPasswordLabel = 'Forgot your password?',
+  forgotPasswordLabel = 'Forgot Password?',
 }: Props) {
   return (
-    <div className="@container">
-      <div className="flex flex-col justify-center gap-y-24 px-3 py-10 @xl:flex-row @xl:px-6 @4xl:py-20 @5xl:px-20">
-        <div className="flex w-full flex-col @xl:max-w-md @xl:border-r @xl:pr-10 @4xl:pr-20">
-          <h1 className="mb-10 text-4xl font-medium leading-none @xl:text-5xl">{title}</h1>
+    <div className="@container px-4 py-8 xl:py-16 @xl:px-8">
+      <div className="border-contrast-200 divide-contrast-200 mx-auto grid max-w-[1076px] grid-cols-1 divide-y rounded-lg border p-4 @xl:grid-cols-2 @xl:divide-x @xl:divide-y-0 @xl:p-8">
+        <div className="flex w-full flex-col pb-4 @xl:pr-8 @xl:pb-0">
+          <h1 className="mb-8 text-2xl leading-[120%] @5xl:text-4xl">{title}</h1>
           <SignInForm
             action={action}
             emailLabel={emailLabel}
             passwordLabel={passwordLabel}
             submitLabel={submitLabel}
           />
-          <Link className="-mb-10 mt-4 text-sm font-semibold" href={forgotPasswordHref}>
-            {forgotPasswordLabel}
-          </Link>
+          <div className="mt-4 flex items-center gap-x-2">
+            <Link className="link text-primary block self-start" href={forgotPasswordHref}>
+              {forgotPasswordLabel}
+            </Link>
+          </div>
         </div>
 
-        <div className="flex w-full flex-col @xl:max-w-md @xl:pl-10 @4xl:pl-20">{children}</div>
+        <div className="flex w-full flex-col pt-4 @xl:pt-0 @xl:pl-8">{children}</div>
       </div>
     </div>
   );

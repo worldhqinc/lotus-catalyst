@@ -1,7 +1,8 @@
 import { Streamable } from '@/vibes/soul/lib/streamable';
-import { AnimatedLink } from '@/vibes/soul/primitives/animated-link';
+import { AnimatedUnderline } from '@/vibes/soul/primitives/animated-underline';
 import { CarouselProduct, ProductCarousel } from '@/vibes/soul/sections/product-carousel';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
+import { Link } from '~/components/link';
 
 interface Link {
   label: string;
@@ -50,7 +51,7 @@ export function FeaturedProductCarousel({
   hideOverflow = false,
 }: FeaturedProductCarouselProps) {
   return (
-    <SectionLayout containerSize="2xl" hideOverflow={true}>
+    <SectionLayout containerSize="2xl">
       <div className="mb-6 flex w-full flex-row flex-wrap items-end justify-between gap-x-8 gap-y-6 @4xl:mb-8">
         <header className="font-[family-name:var(--featured-product-carousel-font-family,var(--font-family-body))]">
           <h2 className="font-[family-name:var(--featured-product-carousel-title-font-family,var(--font-family-heading))] text-2xl leading-none text-[var(--featured-product-carousel-title,hsl(var(--foreground)))] @xl:text-3xl @4xl:text-4xl">
@@ -63,9 +64,9 @@ export function FeaturedProductCarousel({
           )}
         </header>
         {cta != null && cta.href !== '' && cta.label !== '' && (
-          <AnimatedLink className="mr-3" href={cta.href}>
-            {cta.label}
-          </AnimatedLink>
+          <Link className="group/underline focus:outline-none" href={cta.href}>
+            <AnimatedUnderline className="mr-3">{cta.label}</AnimatedUnderline>
+          </Link>
         )}
       </div>
       <div className="group/product-carousel">

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 interface FormField {
   name: string;
-  label?: string;
+  label: string;
   errors?: string[];
   required?: boolean;
   persist?: boolean;
@@ -44,6 +44,8 @@ type TextAreaField = {
   type: 'textarea';
   defaultValue?: string;
   pattern?: string;
+  minLength?: number;
+  maxLength?: number;
 } & FormField;
 
 type DateField = {
@@ -133,6 +135,14 @@ export function schema(fields: Field[]): z.ZodObject<SchemaRawShape> {
 
         if (field.min != null) fieldSchema = fieldSchema.min(field.min);
         if (field.max != null) fieldSchema = fieldSchema.max(field.max);
+
+        shape[field.name] = fieldSchema;
+        break;
+
+      case 'textarea':
+        fieldSchema = z.string();
+        if (field.minLength != null) fieldSchema = fieldSchema.min(field.minLength);
+        if (field.maxLength != null) fieldSchema = fieldSchema.max(field.maxLength);
 
         shape[field.name] = fieldSchema;
         break;

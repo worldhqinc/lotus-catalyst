@@ -6,6 +6,7 @@ import { ComponentPropsWithoutRef, useEffect, useState } from 'react';
 
 export interface AccordionProps extends ComponentPropsWithoutRef<typeof AccordionPrimitive.Item> {
   colorScheme?: 'light' | 'dark';
+  textTransform?: 'uppercase' | 'lowercase' | 'capitalize' | 'none';
 }
 
 // eslint-disable-next-line valid-jsdoc
@@ -37,6 +38,7 @@ function AccordionItem({
   title,
   children,
   colorScheme = 'light',
+  textTransform = 'uppercase',
   className,
   ...props
 }: AccordionProps) {
@@ -50,7 +52,7 @@ function AccordionItem({
     <AccordionPrimitive.Item
       {...props}
       className={clsx(
-        'focus:outline-2 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[var(--accordion-focus,hsl(var(--primary)))] has-[:focus-visible]:ring-offset-4',
+        'focus:outline-2 has-focus-visible:ring-2 has-focus-visible:ring-(--accordion-focus,hsl(var(--primary))) has-focus-visible:ring-offset-4',
         {
           light: 'ring-offset-[var(--acordion-light-offset,hsl(var(--background)))]',
           dark: 'ring-offset-[var(--acordion-dark-offset,hsl(var(--foreground)))]',
@@ -59,15 +61,20 @@ function AccordionItem({
       )}
     >
       <AccordionPrimitive.Header>
-        <AccordionPrimitive.Trigger className="group flex w-full cursor-pointer items-start gap-8 border-none py-3 text-start focus:outline-none @md:py-4">
+        <AccordionPrimitive.Trigger className="group flex w-full cursor-pointer items-start gap-8 border-none py-3 text-start text-xl font-medium focus:outline-hidden @md:py-4">
           <div
             className={clsx(
-              'flex-1 select-none font-[family-name:var(--accordion-title-font-family,var(--font-family-mono))] text-sm font-normal uppercase transition-colors duration-300 ease-out',
+              'flex-1 select-none',
               {
-                light:
-                  'text-[var(--accordion-light-title-text,hsl(var(--contrast-400)))] group-hover:text-[var(--accordion-light-title-text-hover,hsl(var(--foreground)))]',
-                dark: 'text-[var(--accordion-dark-title-text,hsl(var(--contrast-200)))] group-hover:text-[var(--accordion-dark-title-text-hover,hsl(var(--background)))]',
+                light: 'text-surface-foreground',
+                dark: 'text-contrast-200',
               }[colorScheme],
+              {
+                uppercase: 'uppercase',
+                lowercase: 'lowercase',
+                capitalize: 'capitalize',
+                none: '',
+              }[textTransform],
             )}
           >
             {title}
@@ -93,9 +100,9 @@ function AccordionItem({
       >
         <div
           className={clsx(
-            'py-3 font-[family-name:var(--accordion-content-font-family,var(--font-family-body))] text-base font-light leading-normal',
+            'py-3 text-base leading-normal',
             {
-              light: 'text-[var(--accordion-light-content-text,hsl(var(--foreground)))]',
+              light: 'text-contrast-400',
               dark: 'text-[var(--accordion-dark-content-text,hsl(var(--background)))]',
             }[colorScheme],
           )}
@@ -121,23 +128,16 @@ function AnimatedChevron({
       viewBox="0 0 10 10"
       width={16}
     >
-      {/* Left Line of Chevron */}
+      {/* Horizontal line for plus/minus */}
+      <line strokeLinecap="round" x1={2} x2={8} y1={5} y2={5} />
+      {/* Vertical line for plus, hidden when open */}
       <line
-        className="group-data-[state=open]:-translate-y-[3px] group-data-[state=open]:-rotate-90"
+        className="group-data-[state=open]:opacity-0"
         strokeLinecap="round"
-        x1={2}
+        x1={5}
         x2={5}
         y1={2}
-        y2={5}
-      />
-      {/* Right Line of Chevron */}
-      <line
-        className="group-data-[state=open]:-translate-y-[3px] group-data-[state=open]:rotate-90"
-        strokeLinecap="round"
-        x1={8}
-        x2={5}
-        y1={2}
-        y2={5}
+        y2={8}
       />
     </svg>
   );

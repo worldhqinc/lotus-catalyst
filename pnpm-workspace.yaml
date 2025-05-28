@@ -1,9 +1,4 @@
 packages:
   - core
   - packages/*
-onlyBuiltDependencies:
-  - '@swc/core'
-  - '@vercel/speed-insights'
-  - esbuild
-  - msw
-  - sharp
+neverBuiltDependencies: null

@@ -9,22 +9,38 @@ import { usePathname } from '~/i18n/routing';
 export function SidebarMenuLink({
   className,
   href,
+  isSecondary,
+  onClick,
   ...rest
-}: React.ComponentPropsWithoutRef<typeof Link>) {
+}: React.ComponentPropsWithoutRef<typeof Link> & { isSecondary?: boolean }) {
   const pathname = usePathname();
   const linkPathname = typeof href === 'string' ? href : (href.pathname ?? null);
+
+  const isActive =
+    linkPathname !== null &&
+    (isSecondary
+      ? pathname === linkPathname || pathname === `${linkPathname}/`
+      : pathname.includes(linkPathname));
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (onClick) {
+      e.preventDefault();
+      onClick(e);
+    }
+  };
 
   return (
     <Link
       {...rest}
       className={clsx(
-        'flex min-h-10 items-center rounded-md px-3 text-sm font-semibold',
-        linkPathname !== null && pathname.includes(linkPathname)
-          ? 'bg-contrast-100'
-          : 'hover:bg-contrast-100',
+        'ease-quad relative flex min-h-10 items-center py-2 pl-3 leading-[150%] tracking-[1.28px] uppercase transition-colors duration-200',
+        isActive
+          ? 'text-foreground after:bg-primary font-medium after:absolute after:inset-y-0 after:left-0 after:w-0.75'
+          : 'text-contrast-400 hover:text-foreground',
         className,
       )}
       href={href}
+      onClick={handleClick}
     />
   );
 }

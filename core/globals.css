@@ -1,0 +1,648 @@
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-radix';
+@plugin 'tailwindcss-animate';
+@plugin '@tailwindcss/container-queries';
+@plugin '@tailwindcss/typography';
+
+@source './app/**/*.{ts,tsx}';
+@source './components/**/*.{ts,tsx}';
+@source './vibes/**/*.{ts,tsx}';
+
+@theme inline {
+  --font-body: var(--font-family-body);
+  --font-heading: var(--font-family-heading);
+  --font-mono: var(--font-family-mono);
+}
+
+@layer base {
+  body {
+    @apply text-balance;
+  }
+
+  a:not([class]),
+  .link {
+    @apply after:ease-quad relative inline-block text-inherit after:absolute after:top-full after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-200 hover:after:scale-x-100;
+  }
+
+  ul.list-disc li {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -0.75rem;
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+  }
+
+  .wistia_responsive_padding {
+    position: static !important;
+    padding: 0 !important;
+
+    div {
+      padding: 0 !important;
+    }
+
+    .wistia_responsive_wrapper {
+      position: absolute !important;
+      inset: 0 !important;
+      pointer-events: none !important;
+    }
+
+    .wistia-player-control {
+      position: static !important;
+    }
+
+    /* This is a hack to show a loading indicator for the wistia player. */
+
+    .wistia_swatch {
+      display: grid;
+      place-items: center;
+
+      img {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        opacity: 0.3 !important;
+      }
+
+      /* Hide the loading indicator */
+
+      /* &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: rotate(0deg);
+        transform-origin: top left;
+        width: 120px;
+        height: 120px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' %3E%3Cpath d='M21 12a9 9 0 1 1-6.219-8.56'/%3E%3C/svg%3E");
+        background-size: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        animation: rotate 1s linear reverse infinite;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      } */
+    }
+
+    /* End wistia player loading indicator hack. */
+
+    .w-chrome {
+      height: 100% !important;
+    }
+
+    [data-handle='bigPlayButton'],
+    [data-handle='bigPauseButton'],
+    [data-handle='playPauseNotifier'],
+    [data-handle='playPauseLoading'] {
+      display: none !important;
+    }
+
+    .w-bottom-bar {
+      @apply !hidden;
+    }
+
+    video {
+      position: absolute !important;
+      inset: 0 !important;
+      height: 100% !important;
+      width: 100% !important;
+      object-fit: cover !important;
+      border-radius: 0 !important;
+    }
+  }
+
+  .tutorial-video {
+    [data-handle='clickForSoundButton'],
+    [data-handle='click-for-sound-backdrop'] {
+      display: inline !important;
+    }
+  }
+
+  /* Global focus ring color override */
+  :where(a, button, input, select, textarea):focus-visible {
+    @apply ring-primary rounded ring-2 ring-offset-2 outline-none;
+  }
+
+  *::selection {
+    @apply bg-primary text-white;
+  }
+}
+
+@layer components {
+  .policy-table table {
+    @apply outline-contrast-200 my-6 w-full border-collapse overflow-hidden rounded text-base outline outline-offset-[-1px];
+  }
+  .policy-table th {
+    @apply bg-contrast-100 border-contrast-200 border px-4 py-3 text-left text-xs font-medium;
+  }
+  .policy-table th b {
+    @apply text-surface-foreground font-medium;
+  }
+  .policy-table td {
+    @apply border-contrast-200 border !px-4 !py-3 text-left text-xs;
+  }
+  .policy-table table p:first-child {
+    @apply text-contrast-400;
+  }
+}
+
+@layer utilities {
+  .prose {
+    :where(h1):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      color: hsl(var(--foreground));
+      font-family: var(--font-family-body);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+    }
+
+    :where(h2):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      color: hsl(var(--foreground));
+      font-family: var(--font-family-body);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+    }
+
+    :where(h3):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      color: hsl(var(--foreground));
+      font-family: var(--font-family-body);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+    }
+
+    :where(h4):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      color: hsl(var(--foreground));
+      font-family: var(--font-family-body);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+    }
+
+    :where(h5):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      color: hsl(var(--foreground));
+      font-family: var(--font-family-body);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+    }
+
+    :where(h6):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      color: hsl(var(--foreground));
+      font-family: var(--font-family-body);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+    }
+
+    :where(p):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      color: hsl(var(--contrast-400));
+      font-family: var(--font-family-body);
+    }
+
+    :where(a):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      color: color-mix(in oklab, hsl(var(--primary)), black 15%);
+      text-decoration: none;
+      font-weight: 400;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    :where(ul):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      color: hsl(var(--contrast-500));
+      font-family: var(--font-family-body);
+    }
+
+    :where(ul) > li {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      margin: 0;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0.65rem;
+        left: -0.75rem;
+        display: block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background-color: hsl(var(--contrast-400));
+      }
+
+      p {
+        margin: 0;
+      }
+    }
+
+    :where(ol):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      color: hsl(var(--contrast-500));
+      font-family: var(--font-family-body);
+    }
+
+    :where(strong):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      font-weight: 600;
+    }
+
+    :where(blockquote):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      border-left-color: hsl(var(--contrast-300));
+
+      p {
+        color: hsl(var(--contrast-500));
+        font-style: normal;
+        font-weight: 400;
+      }
+    }
+
+    :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      color: hsl(var(--contrast-500));
+      font-family: var(--font-family-mono);
+    }
+
+    :where(pre):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+      color: hsl(var(--background));
+      background-color: hsl(var(--foreground));
+      font-family: var(--font-family-mono);
+    }
+
+    u {
+      color: hsl(var(--contrast-400));
+    }
+
+    a {
+      display: inline;
+      text-decoration: underline;
+      color: hsl(var(--primary));
+
+      u {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      &::after {
+        content: none;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+  input {
+    &::-webkit-search-cancel-button {
+      display: block;
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E")
+        no-repeat center center;
+      background-size: contain;
+      cursor: pointer;
+    }
+  }
+}
+
+@theme {
+  --color-primary: hsl(var(--primary));
+  --color-primary-highlight: hsl(var(--primary-highlight));
+  --color-primary-shadow: color-mix(in oklab, hsl(var(--primary)), black 75%);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-highlight: color-mix(in oklab, hsl(var(--accent)), white 75%);
+  --color-accent-shadow: color-mix(in oklab, hsl(var(--accent)), black 75%);
+
+  --color-success: hsl(var(--success));
+  --color-success-highlight: color-mix(in oklab, hsl(var(--success)), white 75%);
+  --color-success-shadow: color-mix(in oklab, hsl(var(--success)), black 75%);
+
+  --color-error: hsl(var(--error));
+  --color-error-highlight: color-mix(in oklab, hsl(var(--error)), white 75%);
+  --color-error-shadow: hsl(0deg 100% 15.1%);
+
+  --color-warning: hsl(var(--warning));
+  --color-warning-highlight: color-mix(in oklab, hsl(var(--warning)), white 75%);
+  --color-warning-shadow: color-mix(in oklab, hsl(var(--warning)), black 75%);
+
+  --color-info: hsl(var(--info));
+  --color-info-highlight: color-mix(in oklab, hsl(var(--info)), white 75%);
+  --color-info-shadow: color-mix(in oklab, hsl(var(--info)), black 75%);
+
+  --color-foreground: hsl(var(--foreground));
+  --color-background: hsl(var(--background));
+
+  --color-disabled: hsl(var(--disabled));
+
+  --color-icon-primary: hsl(var(--icon-primary));
+  --color-icon-secondary: hsl(var(--icon-secondary));
+
+  --color-contrast-100: hsl(var(--contrast-100));
+  --color-contrast-200: hsl(var(--contrast-200));
+  --color-contrast-300: hsl(var(--contrast-300));
+  --color-contrast-400: hsl(var(--contrast-400));
+  --color-contrast-500: hsl(var(--contrast-500));
+
+  --color-border: hsl(var(--border-primary));
+  --color-border-secondary: hsl(var(--border-secondary));
+  --color-border-input: hsl(var(--border-input));
+
+  --color-surface: hsl(var(--surface-primary));
+  --color-surface-secondary: hsl(var(--surface-secondary));
+  --color-surface-image: hsl(var(--surface-image));
+  --color-surface-foreground: hsl(var(--surface-foreground));
+
+  --text-xs: var(--font-size-xs, 0.75rem);
+  --text-sm: var(--font-size-sm, 0.875rem);
+  --text-base: var(--font-size-base, 1rem);
+  --text-lg: var(--font-size-lg, 1.125rem);
+  --text-xl: var(--font-size-xl, 1.25rem);
+  --text-2xl: var(--font-size-2xl, 1.5rem);
+  --text-3xl: var(--font-size-3xl, 1.875rem);
+  --text-4xl: var(--font-size-4xl, 2.25rem);
+  --text-5xl: var(--font-size-5xl, 3rem);
+  --text-6xl: var(--font-size-6xl, 3.75rem);
+  --text-7xl: var(--font-size-7xl, 4.5rem);
+  --text-8xl: var(--font-size-8xl, 6rem);
+  --text-9xl: var(--font-size-9xl, 8rem);
+
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+
+  --font-heading: var(--font-family-heading);
+  --font-heading-font-feature-settings: var(--font-feature-settings-heading);
+  --font-heading-font-variation-settings: var(--font-variation-settings-heading);
+
+  --font-body: var(--font-family-body);
+  --font-body-font-feature-settings: var(--font-feature-settings-body);
+  --font-body-font-variation-settings: var(--font-variation-settings-body);
+
+  --font-mono: var(--font-family-mono);
+  --font-mono-font-feature-settings: var(--font-feature-settings-mono);
+  --font-mono-font-variation-settings: var(--font-variation-settings-mono);
+
+  --animate-collapse: collapse 400ms cubic-bezier(1, 0, 0.25, 1);
+  --animate-expand: expand 400ms cubic-bezier(1, 0, 0.25, 1);
+  --animate-marching: marching-ants 10s linear infinite;
+  --animate-rotate: rotate 2000ms linear infinite;
+  --animate-scroll: scroll 200ms infinite linear both;
+  --animate-scrollLeft: scrollLeft var(--marquee-duration) linear infinite;
+  --animate-shake: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  --animate-slideIn: slideIn 800ms cubic-bezier(0.25, 1, 0, 1);
+  --animate-clipIn: clipIn 800ms cubic-bezier(0.25, 1, 0, 1);
+  --animate-clipOut: clipOut 800ms cubic-bezier(0.25, 1, 0, 1);
+
+  --ease-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.075, 0.82, 0.165, 1);
+  --ease-in-out: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  --ease-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-quint-out: cubic-bezier(0.34, 1, 0.36, 1);
+
+  @keyframes collapse {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+
+    to {
+      height: 0;
+    }
+  }
+
+  @keyframes expand {
+    from {
+      height: 0;
+    }
+
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes marching-ants {
+    to {
+      background-position:
+        0 0,
+        0 -1px,
+        calc(100% + 1px) 0,
+        100% calc(100% + 1px),
+        -1px 100%;
+    }
+  }
+
+  @keyframes rotateFade {
+    from {
+      opacity: 1;
+      transform: rotateZ(0deg) translate3d(-50%, -50%, 0);
+    }
+
+    35% {
+      opacity: 0;
+    }
+
+    70% {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+      transform: rotateZ(360deg) translate3d(-50%, -50%, 0);
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotateZ(0deg) translate3d(-50%, -50%, 0);
+    }
+
+    to {
+      transform: rotateZ(360deg) translate3d(-50%, -50%, 0);
+    }
+  }
+
+  @keyframes scroll {
+    to {
+      background-position: 5px 0;
+    }
+  }
+
+  @keyframes dotScrollSmall: {
+    to: {
+      background-position:
+        -6px -6px,
+        -12px -12px;
+    }
+  }
+
+  @keyframes dotScrollLarge: {
+    to {
+      background-position:
+        -8px -8px,
+        -16px -16px;
+    }
+  }
+
+  @keyframes scrollLeft {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes shake {
+    10%,
+    90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+      transform: translate3d(1px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+      transform: translate3d(-2px, 0, 0);
+    }
+
+    40%,
+    60% {
+      transform: translate3d(2px, 0, 0);
+    }
+  }
+
+  @keyframes slideIn: {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(0%);
+    }
+  }
+  @keyframes clipIn: {
+    0% {
+      clip-path: inset(0 0 100% 0);
+    }
+    100% {
+      clip-path: inset(0 0 -1% 0);
+    }
+  }
+  @keyframes clipOut: {
+    0% {
+      clip-path: inset(0 0 -1% 0);
+    }
+    100% {
+      clip-path: inset(0 0 100% 0);
+    }
+  }
+}
+
+@utility container {
+  @apply mx-auto w-[min(100%-(var(--container-padding)*2),var(--container-max-width))];
+
+  @media (width >= 40rem) {
+    max-width: none;
+  }
+  @media (width >= 48rem) {
+    max-width: none;
+  }
+  @media (width >= 64rem) {
+    max-width: none;
+  }
+}
+
+:root {
+  --primary: 108 19% 49%;
+  --primary-highlight: 109 19% 59%;
+  --accent: 96 100% 88%;
+  --background: 0 0% 100%;
+  --image: 0 0% 90%;
+  --foreground: 0 0% 7.45%;
+  --disabled: 0 0% 64%;
+  --success: 116 78% 65%;
+  --error: 0 100% 60%;
+  --warning: 40 100% 60%;
+  --info: 220 70% 45%;
+  --icon-primary: 0 0% 9%;
+  --icon-secondary: 0 0% 45%;
+  --border-primary: 0 0% 83%;
+  --border-secondary: 0 0% 90%;
+  --border-input: 0 0% 83%;
+  --surface-primary: 0 0% 100%;
+  --surface-secondary: 0 0% 96%;
+  --surface-image: 0 0% 95%;
+  --surface-foreground: 0 0% 7%;
+  --contrast-100: 0 0% 93%;
+  --contrast-200: 0 0% 82%;
+  --contrast-300: 0 0% 70%;
+  --contrast-400: 0 0% 54%;
+  --contrast-500: 0 0% 34%;
+  --font-variation-settings-body: 'slnt' 0;
+  --font-variation-settings-heading: 'slnt' 0;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Container */
+  --container-max-width: 1472px;
+  --container-padding: 1rem;
+
+  @media (min-width: 768px) {
+    --container-padding: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    --container-padding: 2rem;
+  }
+}

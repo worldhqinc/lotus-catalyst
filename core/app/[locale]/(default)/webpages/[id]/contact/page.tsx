@@ -34,11 +34,11 @@ interface ContactPage extends WebPage {
 }
 
 const fieldMapping = {
-  fullname: 'fullNameLabel',
-  companyname: 'companyNameLabel',
-  phone: 'phoneLabel',
-  orderno: 'orderNoLabel',
-  rma: 'rmaLabel',
+  fullname: 'fullName',
+  companyname: 'companyName',
+  phone: 'phone',
+  orderno: 'orderNo',
+  rma: 'rma',
 } as const;
 
 type ContactField = keyof typeof fieldMapping;
@@ -67,11 +67,13 @@ const getWebPage = cache(async (id: string): Promise<ContactPage> => {
 });
 
 async function getWebPageBreadcrumbs(id: string): Promise<Breadcrumb[]> {
+  const t = await getTranslations('WebPages.ContactUs');
+
   const webpage = await getWebPage(id);
   const [, ...rest] = webpage.breadcrumbs.reverse();
   const breadcrumbs = [
     {
-      label: 'Home',
+      label: t('home'),
       href: '/',
     },
     ...rest.reverse(),
@@ -109,6 +111,7 @@ async function getContactFields(id: string) {
     id: 'pageId',
     name: 'pageId',
     type: 'hidden',
+    label: 'Page ID',
     defaultValue: String(entityId),
   };
 
@@ -117,13 +120,14 @@ async function getContactFields(id: string) {
     id: 'pagePath',
     name: 'pagePath',
     type: 'hidden',
+    label: 'Page Path',
     defaultValue: path,
   };
 
   const emailField: Field = {
     id: 'email',
     name: 'email',
-    label: `${t('emailLabel')} *`,
+    label: `${t('email')} *`,
     type: 'email',
     required: true,
   };
@@ -131,7 +135,7 @@ async function getContactFields(id: string) {
   const commentsField: Field = {
     id: 'comments',
     name: 'comments',
-    label: `${t('commentsLabel')} *`,
+    label: `${t('comments')} *`,
     type: 'textarea',
     required: true,
   };
@@ -205,7 +209,7 @@ export default async function ContactPage({ params, searchParams }: Props) {
         <DynamicForm
           action={submitContactForm}
           fields={await getContactFields(id)}
-          submitLabel={t('submitFormText')}
+          submitLabel={t('cta')}
         />
       </div>
     </WebPageContent>

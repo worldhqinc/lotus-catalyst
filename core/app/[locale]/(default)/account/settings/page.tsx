@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { AccountSettingsSection } from '@/vibes/soul/sections/account-settings-section';
+import { AccountSettingsSection } from '@/vibes/soul/sections/account-settings';
 
 import { changePassword } from './_actions/change-password';
 import { updateCustomer } from './_actions/update-customer';
@@ -27,6 +27,8 @@ export default async function Settings({ params }: Props) {
 
   setRequestLocale(locale);
 
+  const t = await getTranslations('Account.Settings');
+
   const customerSettings = await getCustomerSettingsQuery();
 
   if (!customerSettings) {
@@ -37,7 +39,14 @@ export default async function Settings({ params }: Props) {
     <AccountSettingsSection
       account={customerSettings.customerInfo}
       changePasswordAction={changePassword}
+      changePasswordSubmitLabel={t('cta')}
+      changePasswordTitle={t('changePassword')}
+      confirmPasswordLabel={t('confirmPassword')}
+      currentPasswordLabel={t('currentPassword')}
+      newPasswordLabel={t('newPassword')}
+      title={t('title')}
       updateAccountAction={updateCustomer}
+      updateAccountSubmitLabel={t('cta')}
     />
   );
 }

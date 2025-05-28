@@ -24,6 +24,8 @@ web:
     locations:
         '/':
             root: 'core'
+            scripts: false
+            passthru: true
             request_buffering:
                 enabled: false
             headers:
@@ -38,9 +40,12 @@ hooks:
         chmod +x scripts/setup_env_vars.sh
         chmod +x scripts/setup_mounts.sh
         ./scripts/setup_env_vars.sh
-        pnpm install
-        NODE_OPTIONS="--max-old-space-size=8192" pnpm build
+        NODE_ENV=production pnpm install
+        NODE_OPTIONS="--max-old-space-size=8192" NODE_ENV=production CI=true pnpm build
         ./scripts/setup_mounts.sh
     deploy: |
         set -eu
         ./scripts/setup_mounts.sh
+    post_deploy: |
+        set -eu
+        curl -H "Fastly-Key: $FASTLY_API_TOKEN" -X POST "https://api.fastly.com/service/${FASTLY_SERVICE_ID}/purge_all"

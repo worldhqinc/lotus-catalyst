@@ -16,6 +16,8 @@ export interface ModalProps extends React.PropsWithChildren {
   required?: boolean;
   /** Hides the header / top of the modal. */
   hideHeader?: boolean;
+  /** Description for screen reader support. */
+  description?: string;
 }
 
 // eslint-disable-next-line valid-jsdoc
@@ -39,18 +41,20 @@ export const Modal = ({
   children,
   required = false,
   hideHeader = false,
+  description,
 }: ModalProps) => {
   return (
     <Dialog.Root onOpenChange={setOpen} open={isOpen}>
       {trigger != null && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-30 flex items-center justify-center bg-[var(--modal-overlay-background,hsl(var(--foreground)/50%))] @container">
+        <Dialog.Overlay className="@container fixed inset-0 z-30 flex items-center justify-center bg-[var(--modal-overlay-background,hsl(var(--foreground)/50%))]">
           <Dialog.Content
+            aria-describedby={description || undefined}
             className={clsx(
               'mx-3 my-10 max-h-[90%] max-w-3xl overflow-y-auto rounded-2xl bg-[var(--modal-background,hsl(var(--background)))]',
               'transition ease-out',
-              'data-[state=closed]:duration-200 data-[state=open]:duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out',
-              'focus:outline-none data-[state=closed]:slide-out-to-bottom-16 data-[state=open]:slide-in-from-bottom-16',
+              'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-200 data-[state=open]:duration-200',
+              'data-[state=closed]:slide-out-to-bottom-16 data-[state=open]:slide-in-from-bottom-16 focus:outline-hidden',
               className,
             )}
             onEscapeKeyDown={required ? (event) => event.preventDefault() : undefined}
@@ -60,12 +64,12 @@ export const Modal = ({
             <div className="flex flex-col">
               <div
                 className={clsx(
-                  'mb-5 flex min-h-10 flex-row items-center border-b border-b-contrast-200 py-3 pl-5',
+                  'flex min-h-10 flex-row items-center pt-6 pl-5',
                   hideHeader ? 'sr-only' : '',
                 )}
               >
                 <Dialog.Title asChild>
-                  <h1 className="flex-1 pr-4 text-base font-semibold leading-none">{title}</h1>
+                  <h1 className="flex-1 pr-4 text-base leading-none font-semibold">{title}</h1>
                 </Dialog.Title>
                 {!(required || hideHeader) && (
                   <div className="flex items-center justify-center pr-3">
@@ -77,7 +81,7 @@ export const Modal = ({
                   </div>
                 )}
               </div>
-              <div className={clsx('mb-5 flex-1 px-5', hideHeader ? 'mt-5' : '')}>{children}</div>
+              <div className="my-6 flex-1 px-6">{children}</div>
             </div>
           </Dialog.Content>
         </Dialog.Overlay>
