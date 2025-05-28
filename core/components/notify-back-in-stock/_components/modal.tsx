@@ -76,11 +76,11 @@ export default function NotifyBackInStockModal({
     <Dialog.Root onOpenChange={setModalOpen} open={modalOpen}>
       <Dialog.Trigger asChild>
         {textCta ? (
-          <div className="flex items-center">
-            Coming soon{' '}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            Coming soon
             <Button
               className="text-contrast-400 text-md underline"
-              size="medium"
+              size="link"
               type="button"
               variant="link"
             >
@@ -129,15 +129,19 @@ export default function NotifyBackInStockModal({
                   available.
                 </p>
                 <form {...getFormProps(form)} action={formAction} className="space-y-4">
-                  <input name="sku" type="hidden" value={sku} />
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    {...getInputProps(fields.email, { type: 'email' })}
-                    className={clsx(
-                      fields.email.errors && fields.email.errors.length > 0 && 'border-red-500',
-                    )}
-                    key={fields.email.id}
-                  />
+                  <div className="flex flex-col gap-1">
+                    <input name="sku" type="hidden" value={sku} />
+                    <Label className="text-foreground text-sm font-medium" htmlFor="email">
+                      Email
+                    </Label>
+                    <Input
+                      {...getInputProps(fields.email, { type: 'email' })}
+                      className={clsx(
+                        fields.email.errors && fields.email.errors.length > 0 && 'border-red-500',
+                      )}
+                      key={fields.email.id}
+                    />
+                  </div>
                   {fields.email.errors && fields.email.errors.length > 0 && (
                     <FormStatus className="mt-1 text-sm" type="error">
                       {fields.email.errors[0]}
@@ -147,12 +151,13 @@ export default function NotifyBackInStockModal({
                     <Button
                       disabled={isPending}
                       onClick={handleModalClose}
+                      size="medium"
                       type="button"
                       variant="tertiary"
                     >
                       Cancel
                     </Button>
-                    <Button disabled={isPending} loading={isPending} type="submit">
+                    <Button disabled={isPending} loading={isPending} size="medium" type="submit">
                       Notify me
                     </Button>
                   </div>
