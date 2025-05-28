@@ -1,11 +1,27 @@
-import { NextResponse, URLPattern } from 'next/server';
+import { NextResponse } from 'next/server';
 
 import { auth, signIn, signOut } from '~/auth';
+import { locales } from '~/i18n/locales';
 
 import { type MiddlewareFactory } from './compose-middlewares';
 
-// Path matcher for any routes that require authentication
-const protectedPathPattern = new URLPattern({ pathname: '/(account)/*' });
+function isProtectedRoute(url: string): boolean {
+  const urlObj = new URL(url);
+  const pathname = urlObj.pathname.toLowerCase();
+
+  if (pathname.startsWith('/account/') || pathname === '/account') {
+    return true;
+  }
+
+  return locales.some((locale) => {
+    const localePrefix = `/${locale}`;
+
+    return (
+      pathname.startsWith(`${localePrefix}/account/`) || pathname === `${localePrefix}/account`
+    );
+  });
+}
+
 const sessionInvalidateParam = 'invalidate-session';
 
 function redirectToLogin(url: string) {
@@ -16,13 +32,13 @@ export const withAuth: MiddlewareFactory = (next) => {
   return async (request, event) => {
     // @ts-expect-error: The `auth` function doesn't have the correct type to support it as a MiddlewareFactory.
     const authWithCallback = auth(async (req) => {
-      const isProtectedRoute = protectedPathPattern.test(req.nextUrl.toString().toLowerCase());
+      const isProtectedPath = isProtectedRoute(req.nextUrl.toString());
       const isGetRequest = req.method === 'GET';
 
       if (!req.auth) {
         await signIn('anonymous', { redirect: false });
 
-        if (isProtectedRoute && isGetRequest) {
+        if (isProtectedPath && isGetRequest) {
           return redirectToLogin(req.url);
         }
 
@@ -31,7 +47,7 @@ export const withAuth: MiddlewareFactory = (next) => {
 
       const { customerAccessToken } = req.auth.user ?? {};
 
-      if (isProtectedRoute && isGetRequest && !customerAccessToken) {
+      if (isProtectedPath && isGetRequest && !customerAccessToken) {
         return redirectToLogin(req.url);
       }
 
