@@ -90,9 +90,12 @@ export function HeroCarousel({ data }: Props) {
   const scrollToSlide = (index: number) => {
     if (!containerRef.current) return;
 
-    const slideHeight = window.innerHeight;
-    const containerTop = containerRef.current.offsetTop;
-    const targetPosition = containerTop + index * slideHeight;
+    const container = containerRef.current;
+    const containerRect = container.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const currentScroll = window.scrollY;
+
+    const targetPosition = currentScroll + containerRect.top + index * viewportHeight;
 
     window.scrollTo({
       top: targetPosition,
