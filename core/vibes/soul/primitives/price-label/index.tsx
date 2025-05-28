@@ -82,7 +82,7 @@ export function PriceLabel({ className, colorScheme = 'light', price }: Props) {
               }[colorScheme],
             )}
           >
-            {price.currentValue}
+            {price.previousValue}
           </span>{' '}
           <span
             className={clsx(
@@ -93,7 +93,7 @@ export function PriceLabel({ className, colorScheme = 'light', price }: Props) {
               }[colorScheme],
             )}
           >
-            {price.previousValue}
+            {price.currentValue}
           </span>
         </span>
       );

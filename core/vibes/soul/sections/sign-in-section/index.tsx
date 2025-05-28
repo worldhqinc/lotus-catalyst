@@ -27,7 +27,10 @@ export function SignInSection({
     <div className="@container px-4 py-8 xl:py-16 @xl:px-8">
       <div className="border-contrast-200 divide-contrast-200 mx-auto grid max-w-[1076px] grid-cols-1 divide-y rounded-lg border p-4 @xl:grid-cols-2 @xl:divide-x @xl:divide-y-0 @xl:p-8">
         <div className="flex w-full flex-col pb-4 @xl:pr-8 @xl:pb-0">
-          <h1 className="mb-8 text-2xl leading-[120%] @5xl:text-4xl">{title}</h1>
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-2">
+            <h1 className="text-2xl leading-[120%] @5xl:text-4xl">{title}</h1>
+            <p className="text-foreground text-sm">Required Fields *</p>
+          </div>
           <SignInForm
             action={action}
             emailLabel={emailLabel}

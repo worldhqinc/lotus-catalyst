@@ -14,7 +14,7 @@ export function BlockProductFeatures({
   const parsedItems = items?.map((item) => featureItemSchema.parse(item)) ?? [];
 
   return (
-    <SectionLayout containerClassName="bg-white lg:py-24" containerSize="2xl">
+    <SectionLayout containerClassName="bg-white" containerSize="2xl">
       <div className="mb-8 flex flex-col items-center lg:mb-16">
         <h2 className="text-surface-foreground max-w-4xl text-center text-2xl md:text-4xl">
           {heading}
@@ -84,7 +84,7 @@ export function BlockProductFeatures({
                         width={fields.image.fields.file.details.image?.width || 400}
                       />
                     )}
-                    <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent p-6 md:p-8">
+                    <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4 md:p-8">
                       <h3 className="text-background text-xl">{fields.heading}</h3>
                       {!!fields.description && (
                         <p className="text-background max-w-[45ch] text-balance">

@@ -135,7 +135,7 @@ function SkeletonCard() {
 
 function LoadingGrid() {
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-6">
+    <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-4 lg:grid-cols-6 lg:gap-6">
       {Array.from({ length: 6 }).map((_, index) => (
         <SkeletonCard key={index} />
       ))}
@@ -154,7 +154,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
 
   if (status === 'loading' || status === 'stalled') {
     return (
-      <div className="py-12">
+      <div className="py-8 lg:py-16">
         <div className="mb-8 flex items-center justify-between gap-4">
           <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
             {group.label}
@@ -172,7 +172,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
 
   if (items.length === 0) {
     return (
-      <div className="py-12">
+      <div className="py-8 lg:py-16">
         <div className="mb-8 flex items-center justify-between gap-4">
           <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
             {group.label}
@@ -191,7 +191,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
   }
 
   return (
-    <div className="py-12">
+    <div className="py-8 lg:py-16">
       <div className="mb-8 flex items-center justify-between gap-4">
         <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
           {group.label}
