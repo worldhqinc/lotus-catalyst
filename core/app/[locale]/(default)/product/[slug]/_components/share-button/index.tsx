@@ -51,7 +51,7 @@ export const ProductShareButton = ({
   };
 
   const ShareButton = (
-    <Button size="small" variant="link">
+    <Button className="[&_span]:px-0" size="small" variant="link">
       <Share size={20} strokeWidth={1.5} />
       <span className="text-base">Share</span>
     </Button>

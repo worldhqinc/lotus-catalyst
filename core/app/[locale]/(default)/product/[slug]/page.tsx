@@ -359,7 +359,7 @@ export default async function Product(props: Props) {
       <ProductDetail
         action={addToCart}
         additionalActions={
-          <div className="text-contrast-400 flex items-center gap-2">
+          <div className="text-contrast-400 grid grid-cols-2 items-center gap-4">
             <ProductShareButton
               closeLabel={wishlistT('Modal.close')}
               copiedMessage={wishlistT('shareCopied')}

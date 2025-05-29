@@ -148,7 +148,7 @@ export const WishlistButton = async ({ productId, productSku, formId }: Props) =
       newWishlistLabel={t('addToNewWishlist')}
       wishlists={wishlists}
     >
-      <Button size="small" variant="link">
+      <Button className="[&_span]:px-0" size="small" variant="link">
         <Heart filled={isProductInWishlist} />
         <span className="text-base">Wishlist</span>
       </Button>

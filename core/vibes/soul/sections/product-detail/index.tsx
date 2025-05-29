@@ -134,7 +134,7 @@ export function ProductDetail<F extends Field>({
                     />
                   </div>
                   <div className="col-span-full px-4 py-8 @xl:px-0 @xl:py-0 @2xl:col-span-6 @5xl:col-span-5">
-                    <div className="mb-8 flex items-start justify-between gap-4">
+                    <div className="mb-8 flex items-center justify-between gap-4">
                       <div className="flex gap-2">
                         {contentful.fields.webProductLine?.map((line, index) => (
                           <Badge key={index}>{line}</Badge>
@@ -172,7 +172,7 @@ export function ProductDetail<F extends Field>({
                             {contentful.fields.shortDescription}
                           </div>
                         )}
-                      <div className="grid gap-2 @xl:grid-cols-2">
+                      <div className="grid grid-cols-2 gap-2">
                         {[
                           {
                             icon: Package2,
@@ -184,10 +184,12 @@ export function ProductDetail<F extends Field>({
                           },
                         ].map(({ icon: Icon, label }, index) => (
                           <div className="flex items-center gap-2" key={index}>
-                            <div className="bg-contrast-100 flex h-14 w-14 items-center justify-center rounded-lg">
+                            <div className="bg-contrast-100 flex h-12 w-12 items-center justify-center rounded-lg lg:h-14 lg:w-14">
                               <Icon className="h-6 w-6" strokeWidth={1.5} />
                             </div>
-                            <span className="text-contrast-400">{label}</span>
+                            <span className="text-contrast-400 flex-1 text-sm lg:text-base">
+                              {label}
+                            </span>
                           </div>
                         ))}
                       </div>
