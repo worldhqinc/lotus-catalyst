@@ -189,7 +189,7 @@ export function ShippingForm({
     const firstLine = `${cityAndState} ${postalCode}`.trim();
 
     return (
-      <div>
+      <div className="text-sm">
         {Boolean(firstLine) && (
           <>
             {firstLine} <br />
@@ -349,16 +349,15 @@ export function ShippingForm({
           </div>
         </form>
 
-        <div className={clsx('mt-4 space-y-2.5', { hidden: showAddressForm })}>
+        <div className={clsx('mt-4 flex items-start gap-x-8', { hidden: showAddressForm })}>
           {formattedAddress}
-          <Button
+          <button
+            className="link text-primary text-sm"
             onClick={() => setShowAddressForm(true)}
-            size="medium"
             type="button"
-            variant="tertiary"
           >
             {editAddressLabel}
-          </Button>
+          </button>
         </div>
 
         <form

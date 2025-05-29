@@ -6,7 +6,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselScrollbar,
   useCarousel,
 } from '@/vibes/soul/primitives/carousel';
 import { ProductCard } from '@/vibes/soul/primitives/product-card';
