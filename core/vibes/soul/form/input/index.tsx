@@ -37,7 +37,7 @@ export const Input = React.forwardRef<
   const generatedId = React.useId();
 
   return (
-    <div className={clsx('w-full space-y-2', className)}>
+    <div className={clsx('w-full space-y-1', className)}>
       {label != null && label !== '' && (
         <Label colorScheme={colorScheme} htmlFor={id ?? generatedId}>
           {label}
