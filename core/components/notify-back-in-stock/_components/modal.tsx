@@ -77,9 +77,9 @@ export default function NotifyBackInStockModal({
       <Dialog.Trigger asChild>
         {textCta ? (
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-            Coming soon
+            <span className="text-sm">Coming soon</span>
             <Button
-              className="text-contrast-400 text-md underline"
+              className="text-contrast-400 underline [&_span]:text-sm"
               size="link"
               type="button"
               variant="link"

@@ -8,6 +8,7 @@ import {
   productFinishedGoodsSchema,
   productPartsAndAccessoriesSchema,
   recipeSchema,
+  tutorialSchema,
 } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
 import { ensureImageUrl } from '~/lib/utils';
@@ -111,6 +112,21 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
 
     if (entry.sys.contentType.sys.id === 'feature') {
       const parsedEntry = featureSchema.parse(entry);
+
+      body = {
+        href: `/${parsedEntry.fields.pageSlug}`,
+        title: parsedEntry.fields.title,
+        subtitle: parsedEntry.fields.subtitle,
+        categories: parsedEntry.fields.categories,
+        image: {
+          src: ensureImageUrl(parsedEntry.fields.featuredImage?.fields.file.url ?? ''),
+          alt: parsedEntry.fields.featuredImage?.fields.description ?? parsedEntry.fields.title,
+        },
+      };
+    }
+
+    if (entry.sys.contentType.sys.id === 'tutorial') {
+      const parsedEntry = tutorialSchema.parse(entry);
 
       body = {
         href: `/${parsedEntry.fields.pageSlug}`,

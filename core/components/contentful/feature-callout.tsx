@@ -10,7 +10,7 @@ interface FeatureCalloutProps {
 
 export function FeatureCallout({ fields }: FeatureCalloutProps) {
   return (
-    <div className="text-contrast-400 flex items-center gap-2 text-sm">
+    <div className="text-contrast-400 flex items-center gap-2 text-xs">
       {fields.label}
       {fields.logo && (
         <>

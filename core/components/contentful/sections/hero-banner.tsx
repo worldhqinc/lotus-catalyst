@@ -63,7 +63,7 @@ function StackedHeroBanner({
       <div className="grid h-full grid-cols-[minmax(var(--container-padding),1fr)_minmax(0,calc((var(--container-max-width)/2)))_minmax(0,calc((var(--container-max-width)/2)))_minmax(var(--container-padding),1fr)] gap-y-8 lg:gap-0">
         <div
           className={clsx(
-            'justify-space-between col-span-2 col-start-2 flex h-full w-full flex-col gap-8 pt-16 lg:col-start-2 lg:col-end-3 lg:py-16',
+            'justify-space-between col-span-2 col-start-2 flex h-full w-full flex-col gap-8 pt-8 lg:col-start-2 lg:col-end-3 lg:py-16',
           )}
         >
           <ElementFade>
@@ -139,7 +139,7 @@ function LeftAlignedHeroBanner({
   variant: string;
 }) {
   return (
-    <SectionLayout className="relative isolate aspect-[3/4] w-full lg:aspect-video xl:max-h-[calc(100svh-101px)] [&_>div]:h-full">
+    <SectionLayout className="relative isolate aspect-[3/4] w-full lg:aspect-video xl:max-h-[calc(100svh-101px)] max-lg:landscape:aspect-video [&_>div]:h-full">
       <div className="absolute inset-0 -z-10 bg-linear-to-l from-transparent to-black/50" />
       {mediaElement}
       <div className={clsx('h-full w-full')}>
@@ -203,7 +203,7 @@ function CenteredHeroBanner({
   title: string;
 }) {
   return (
-    <SectionLayout className="bg-contrast-200 relative isolate aspect-[3/4] w-full lg:aspect-video xl:max-h-[calc(100svh-101px)]">
+    <SectionLayout className="bg-contrast-200 relative isolate aspect-[3/4] w-full lg:aspect-video xl:max-h-[calc(100svh-101px)] max-lg:landscape:aspect-video">
       {mediaElement}
       <div className="absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-4 py-20">
         {/* Note: If ElementFade is removed, apply the classes to the parent div instead. */}

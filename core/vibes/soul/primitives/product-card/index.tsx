@@ -37,6 +37,7 @@ export interface ProductCardProps {
   showCompare?: boolean;
   imagePriority?: boolean;
   imageSizes?: string;
+  imageQuality?: number;
   compareLabel?: string;
   compareParamName?: string;
   fillContainer?: boolean;
@@ -74,7 +75,8 @@ export function ProductCard({
   compareLabel,
   compareParamName,
   imagePriority = false,
-  imageSizes = '(min-width: 80rem) 20vw, (min-width: 64rem) 25vw, (min-width: 42rem) 33vw, (min-width: 24rem) 50vw, 100vw',
+  imageSizes = '(min-width: 80rem) 40vw, (min-width: 64rem) 45vw, (min-width: 42rem) 50vw, (min-width: 24rem) 60vw, 100vw',
+  imageQuality = 100,
   fillContainer = false,
   ratioOverride,
   onClick,
@@ -120,7 +122,7 @@ export function ProductCard({
               )}
               fill
               priority={imagePriority}
-              quality={100}
+              quality={imageQuality}
               sizes={imageSizes}
               src={image.src}
             />
@@ -153,13 +155,13 @@ export function ProductCard({
                   router.refresh();
                 });
               }}
-              className="pointer-events-none absolute inset-0 z-10"
+              className="pointer-events-none absolute inset-0 z-10 hidden lg:block"
             >
               <AddToBagForm sku={sku} />
             </form>
           )}
           {!!sku && !inStock && (
-            <div className="pointer-events-none absolute inset-0 z-10">
+            <div className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
               <div className="flex size-full items-end justify-center p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                 <NotifyBackInStock
                   buttonClassName="pointer-events-auto w-full"
@@ -199,6 +201,9 @@ export function ProductCard({
               )}
             </div>
             {price != null && inStock && <PriceLabel colorScheme={colorScheme} price={price} />}
+            <div className="relative z-20">
+              {!inStock && !!sku && <NotifyBackInStock sku={sku} textCta={true} />}
+            </div>
           </div>
           {/* {rating != null && (
             <div className="text-foreground mb-2 flex items-center gap-1 text-sm">
@@ -225,7 +230,6 @@ export function ProductCard({
           </Link>
         )}
       </div>
-      {!inStock && !!sku && <NotifyBackInStock sku={sku} textCta={true} />}
       {showCompare && (
         <div className="mt-0.5 shrink-0">
           <Compare

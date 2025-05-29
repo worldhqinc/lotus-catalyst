@@ -50,19 +50,15 @@ export default async function FeaturePage({ params }: Props) {
   const fullUrl = `${protocol}://${host}/tutorials/${slug.join('/')}`;
   const page = await getPageBySlug('tutorial', ['tutorials', ...slug]);
   const { fields } = page;
-
   const storyRichText = await richTextFromMarkdown(fields.content ?? '');
   const storyHtml = generateHtmlFromRichText(storyRichText);
-
   const productCarousel = fields.productCarousel
     ? carouselProductSchema.parse(fields.productCarousel)
     : null;
-
   const featuredImage = fields.featuredImage;
 
   return (
     <article>
-      {/* Hero Image */}
       {featuredImage && (
         <Image
           alt={featuredImage.fields.title ?? fields.title}
@@ -72,8 +68,6 @@ export default async function FeaturePage({ params }: Props) {
           width={featuredImage.fields.file.details.image?.width ?? 0}
         />
       )}
-
-      {/* Feature Header */}
       <SectionLayout className="text-center" containerClassName="!pb-8" containerSize="md">
         <div className="flex flex-wrap items-center justify-center gap-2">
           {fields.categories?.map((category) => <Badge key={category}>{category}</Badge>)}
@@ -90,12 +84,9 @@ export default async function FeaturePage({ params }: Props) {
           url={fullUrl}
         />
       </div>
-
       <SectionLayout containerClassName="!py-0" containerSize="md">
         <hr className="border-border" />
       </SectionLayout>
-
-      {/* Story Content */}
       <SectionLayout containerSize="md">
         {fields.wistiaMediaId ? (
           <div className="tutorial-video relative isolate mb-8 aspect-4/3 h-auto w-full overflow-hidden rounded-lg">
@@ -107,11 +98,9 @@ export default async function FeaturePage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: storyHtml }}
         />
       </SectionLayout>
-
       <SectionLayout containerClassName="!py-0" containerSize="md">
         <hr className="border-border" />
       </SectionLayout>
-
       <SectionLayout className="mx-auto max-w-2xl">
         <div className="flex items-center justify-center">
           <ButtonLink href="/tutorials" size="medium" variant="tertiary">
@@ -119,8 +108,6 @@ export default async function FeaturePage({ params }: Props) {
           </ButtonLink>
         </div>
       </SectionLayout>
-
-      {/* Product Carousel */}
       {productCarousel && <ProductCarousel carousel={productCarousel} />}
     </article>
   );

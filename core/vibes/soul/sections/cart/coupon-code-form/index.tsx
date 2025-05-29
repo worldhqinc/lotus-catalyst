@@ -108,7 +108,7 @@ export function CouponCodeForm({
   };
 
   return (
-    <div className="space-y-2 border-t border-[var(--cart-border,hsl(var(--contrast-100)))] py-5">
+    <div className="border-contrast-200 space-y-2 border-t py-5">
       <button className="link text-primary text-sm" onClick={toggleCouponForm} type="button">
         Promo/Gift Certificate
       </button>

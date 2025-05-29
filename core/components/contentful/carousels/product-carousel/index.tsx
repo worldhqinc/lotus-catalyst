@@ -6,7 +6,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselScrollbar,
   useCarousel,
 } from '@/vibes/soul/primitives/carousel';
 import { ProductCard } from '@/vibes/soul/primitives/product-card';
@@ -62,7 +61,7 @@ export function ProductCarousel({ carousel }: Props) {
         <CarouselContent className="mb-8 -ml-4 @2xl:-ml-5">
           {items.map((product, index) => (
             <CarouselItem
-              className="basis-full pl-4 @md:basis-1/2 @lg:basis-1/3 @2xl:basis-1/4 @2xl:pl-5"
+              className="basis-4/5 pl-4 @md:basis-1/2 @lg:basis-1/3 @2xl:basis-1/4 @2xl:pl-5"
               key={`${product.id}-${index}`}
             >
               <ProductCard
@@ -72,10 +71,6 @@ export function ProductCarousel({ carousel }: Props) {
             </CarouselItem>
           ))}
         </CarouselContent>
-
-        <div className="mb-4 flex w-full justify-end px-4 @xl:px-6">
-          <CarouselScrollbar colorScheme="light" label="Scroll" />
-        </div>
       </Carousel>
     </SectionLayout>
   );

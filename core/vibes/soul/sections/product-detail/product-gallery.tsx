@@ -91,6 +91,8 @@ export function ProductGallery({
       <div className="@2xl:hidden">
         <Slideshow
           className="aspect-square !h-auto"
+          isProductGallery={true}
+          navigationColor="black"
           slides={allImages.map((image) => ({
             image: {
               alt: image?.alt ?? '',

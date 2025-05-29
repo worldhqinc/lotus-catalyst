@@ -111,12 +111,7 @@ export const ContactFormClient = ({ fields }: { fields: TicketField[] }) => {
   const formDataKey = JSON.stringify(formState.formData);
 
   return (
-    <form
-      action={formAction}
-      className="contact-form flex flex-col gap-6 md:gap-4"
-      noValidate
-      ref={formRef}
-    >
+    <form action={formAction} className="flex flex-col gap-6 md:gap-4" noValidate ref={formRef}>
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-medium tracking-[1.8px] uppercase">Email</h2>
         <p className="text-foreground text-sm">
