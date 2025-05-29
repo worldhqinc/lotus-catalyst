@@ -34,6 +34,8 @@ interface Props {
   interval?: number;
   className?: string;
   vertical?: boolean | null;
+  isProductGallery?: boolean;
+  navigationColor?: 'white' | 'black';
 }
 
 interface UseProgressButtonType {
@@ -106,15 +108,17 @@ const useProgressButton = (
  * ```
  */
 export function Slideshow({
+  className,
   slides,
   playOnInit = true,
   interval = 5000,
-  className,
+  isProductGallery = false,
   vertical = false,
+  navigationColor = 'white',
 }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, duration: 20, axis: vertical ? 'y' : 'x' },
-    [Autoplay({ delay: interval, playOnInit }), Fade()],
+    [...(isProductGallery ? [] : [Autoplay({ delay: interval, playOnInit })]), Fade()],
   );
   const { selectedIndex, scrollSnaps, onProgressButtonClick } = useProgressButton(emblaApi);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -170,7 +174,11 @@ export function Slideshow({
             ({ title, description, showDescription = true, image, cta, showCta = true }, idx) => {
               return (
                 <div
-                  className="relative isolate h-full w-full min-w-0 shrink-0 grow-0 basis-full overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-b after:from-transparent after:to-black/60 lg:after:from-20%"
+                  className={clsx(
+                    'relative isolate h-full w-full min-w-0 shrink-0 grow-0 basis-full overflow-hidden',
+                    !isProductGallery &&
+                      'after:absolute after:inset-0 after:bg-gradient-to-b after:from-transparent after:to-black/60 lg:after:from-20%',
+                  )}
                   key={idx}
                 >
                   <div
@@ -260,9 +268,10 @@ export function Slideshow({
                 {/* White Bar - Current Index Indicator / Progress Bar */}
                 <div
                   className={clsx(
-                    'fill-mode-forwards bg-contrast-200 absolute size-2 opacity-0',
-                    'transition-all duration-300',
+                    'fill-mode-forwards absolute size-2 transition-all duration-300',
                     isPlaying ? 'running' : 'paused',
+                    navigationColor === 'black' ? 'bg-black' : 'bg-contrast-200',
+                    index === selectedIndex ? 'opacity-100' : 'opacity-0',
                     index === selectedIndex ? animationStyle : 'animate-out fade-out ease-out',
                   )}
                   key={`progress-${playCount}`} // Force the animation to restart when pressing "Play", to match animation with embla's autoplay timer
@@ -280,7 +289,11 @@ export function Slideshow({
                 />
                 {/* Grey Bar BG */}
                 <div
-                  className="bg-contrast-200 size-2 opacity-30 transition-all duration-300"
+                  className={clsx(
+                    'size-2 transition-all duration-300',
+                    navigationColor === 'black' ? 'bg-black' : 'bg-contrast-200',
+                    index === selectedIndex ? 'opacity-100' : 'opacity-30',
+                  )}
                   style={vertical ? { height: dimensionStyle } : { width: dimensionStyle }}
                 />
               </div>
@@ -291,7 +304,7 @@ export function Slideshow({
         {/* Carousel Count - "01/03" */}
         <span
           className={clsx(
-            'mt-px mr-3 ml-auto font-[family-name:var(--slideshow-number-font-family,var(--font-family-mono))] text-sm text-[var(--slideshow-number,hsl(var(--background)))]',
+            'mt-px mr-3 ml-auto hidden font-[family-name:var(--slideshow-number-font-family,var(--font-family-mono))] text-sm text-[var(--slideshow-number,hsl(var(--background)))] md:block',
             vertical ? 'mt-2' : '',
           )}
         >
@@ -300,21 +313,24 @@ export function Slideshow({
         </span>
 
         {/* Stop / Start Button */}
-        <button
-          aria-label={isPlaying ? 'Pause' : 'Play'}
-          className={clsx(
-            'flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--slideshow-play-border,hsl(var(--contrast-300)/50%))] text-[var(--slideshow-play-text,hsl(var(--background)))] ring-[var(--slideshow-focus)] transition-opacity duration-300 hover:border-[var(--slideshow-play-border-hover,hsl(var(--contrast-300)/80%))] focus-visible:ring-2 focus-visible:outline-0',
-            vertical ? 'mt-2' : '',
-          )}
-          onClick={toggleAutoplay}
-          type="button"
-        >
-          {isPlaying ? (
-            <Pause className="pointer-events-none" size={16} strokeWidth={1.5} />
-          ) : (
-            <Play className="pointer-events-none" size={16} strokeWidth={1.5} />
-          )}
-        </button>
+        {!isProductGallery && (
+          <button
+            aria-label={isPlaying ? 'Pause' : 'Play'}
+            className={clsx(
+              'flex h-7 w-7 items-center justify-center rounded-lg ring-[var(--slideshow-focus)] transition-opacity duration-300 focus-visible:ring-0 focus-visible:outline-0',
+              navigationColor === 'black' ? 'text-black' : 'text-contrast-200',
+              vertical ? 'mt-2' : '',
+            )}
+            onClick={toggleAutoplay}
+            type="button"
+          >
+            {isPlaying ? (
+              <Pause className="pointer-events-none" size={16} strokeWidth={1.5} />
+            ) : (
+              <Play className="pointer-events-none" size={16} strokeWidth={1.5} />
+            )}
+          </button>
+        )}
       </div>
     </section>
   );
