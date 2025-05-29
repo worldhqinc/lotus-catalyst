@@ -678,13 +678,13 @@ export const Navigation = forwardRef(function Navigation(
               <Popover.Content
                 className={clsx(
                   'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 @container z-10 w-[var(--radix-popper-anchor-width)]',
-                  isFloating ? 'h-[calc(100vh-64px)]' : 'h-[calc(100vh-100px)]',
+                  isFloating ? 'h-[calc(100dvh-64px)]' : 'h-[calc(100dvh-100px)]',
                 )}
               >
                 <div
                   className={clsx(
                     'flex flex-col gap-6 divide-y divide-[var(--nav-mobile-divider,hsl(var(--contrast-100)))] overflow-y-auto bg-[var(--nav-mobile-background,hsl(var(--background)))] px-4 py-6',
-                    isFloating ? 'h-[calc(100vh-64px)]' : 'h-[calc(100vh-100px)]',
+                    isFloating ? 'h-[calc(100dvh-64px)]' : 'h-[calc(100dvh-100px)]',
                   )}
                   data-lenis-prevent
                 >
