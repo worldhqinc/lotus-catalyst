@@ -72,7 +72,9 @@ export function ProductSupportLinks({ title, links }: productSupportLinks['field
                   {supportPageLinkFields.title}
                 </Link>
                 {supportPageLinkFields.subHeading ? (
-                  <p className="text-contrast-400">{supportPageLinkFields.subHeading}</p>
+                  <p className="text-contrast-400 hidden lg:block">
+                    {supportPageLinkFields.subHeading}
+                  </p>
                 ) : null}
               </div>
             </li>
