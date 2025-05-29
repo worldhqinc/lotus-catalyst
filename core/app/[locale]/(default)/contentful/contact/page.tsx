@@ -1,8 +1,23 @@
+import { Metadata } from 'next';
+
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { Image } from '~/components/image';
 import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 
+import { getPageBySlug } from '../[...rest]/page-data';
+
 import { ChatWidgetButton } from './_components/chat-widget-button';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPageBySlug('pageStandard', ['contact']);
+  const { fields } = page;
+
+  return {
+    title: fields.metaTitle || fields.pageName,
+    description: fields.metaDescription,
+    keywords: fields.metaKeywords,
+  };
+}
 
 export default function ContactPage() {
   return (

@@ -1,9 +1,12 @@
+import { Metadata } from 'next';
 import { unstable_cacheTag as cacheTag } from 'next/cache';
 
 import CookiePreferencesCta from '~/components/cookie-preferences-cta';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { productFinishedGoodsFieldsSchema } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
+
+import { getPageBySlug } from '../[...rest]/page-data';
 
 import { ProductRegistrationForm } from './_components/product-registration-form';
 
@@ -39,6 +42,17 @@ async function getProductOptions() {
 
   return {
     modelNumberOptions,
+  };
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPageBySlug('pageStandard', ['product-registration']);
+  const { fields } = page;
+
+  return {
+    title: fields.metaTitle || fields.pageName,
+    description: fields.metaDescription,
+    keywords: fields.metaKeywords,
   };
 }
 

@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { Suspense } from 'react';
 import { z } from 'zod';
 
@@ -8,6 +9,7 @@ import { Link } from '~/components/link';
 import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 import { Spinner } from '~/vibes/soul/primitives/spinner';
 
+import { getPageBySlug } from '../../[...rest]/page-data';
 import { ContactFormClient } from '../_components/contact-form-client';
 
 const TicketFormSchema = z.object({
@@ -103,6 +105,17 @@ const TicketFieldSchema = z.object({
 
 export type TicketForm = z.infer<typeof TicketFormSchema>['ticket_form'];
 export type TicketField = z.infer<typeof TicketFieldSchema>['ticket_field'];
+
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPageBySlug('pageStandard', ['contact/form']);
+  const { fields } = page;
+
+  return {
+    title: fields.metaTitle || fields.pageName,
+    description: fields.metaDescription,
+    keywords: fields.metaKeywords,
+  };
+}
 
 export default function ContactFormPage() {
   return (
