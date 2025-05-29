@@ -57,11 +57,11 @@ export function CardSection({
 
             return (
               <div
-                className="bg-surface-image relative isolate flex aspect-square flex-col justify-end overflow-hidden rounded-lg p-4 md:p-8 lg:aspect-4/3"
+                className="bg-surface-image relative isolate flex aspect-square flex-col justify-end overflow-hidden rounded-lg p-4 lg:aspect-4/3 lg:p-8"
                 key={`${card.sys.id}-${index}`}
               >
                 {card.fields.image && (
-                  <figure className="absolute inset-0 -z-10">
+                  <figure className="absolute inset-0 -z-10 after:absolute after:inset-0 after:bg-gradient-to-b after:from-transparent after:to-black/60 lg:after:from-40%">
                     <Image
                       alt={card.fields.image.fields.title ?? ''}
                       className="h-full w-full object-cover object-center"
@@ -70,7 +70,6 @@ export function CardSection({
                     />
                   </figure>
                 )}
-                <div className="top absolute inset-0 bg-gradient-to-b from-transparent to-black/60 lg:from-60%" />
                 <div className="relative flex items-end justify-between gap-4">
                   <div className="flex-1 space-y-1">
                     <h3 className="text-xl">{card.fields.title}</h3>

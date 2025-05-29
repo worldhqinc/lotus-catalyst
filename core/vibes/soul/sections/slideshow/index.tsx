@@ -170,14 +170,13 @@ export function Slideshow({
             ({ title, description, showDescription = true, image, cta, showCta = true }, idx) => {
               return (
                 <div
-                  className="relative isolate h-full w-full min-w-0 shrink-0 grow-0 basis-full overflow-hidden"
+                  className="relative isolate h-full w-full min-w-0 shrink-0 grow-0 basis-full overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-b after:from-transparent after:to-black/60 lg:after:from-20%"
                   key={idx}
                 >
                   <div
                     className={clsx(
-                      'absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-[var(--slideshow-mask,hsl(var(--foreground)/80%))] to-transparent',
-                      vertical &&
-                        'absolute inset-y-0 left-0 z-10 bg-linear-to-r from-[var(--slideshow-mask,hsl(var(--foreground)/80%))] to-transparent',
+                      'absolute inset-x-0 bottom-0 z-10',
+                      vertical && 'absolute inset-y-0 left-0 z-10',
                     )}
                   >
                     <div
