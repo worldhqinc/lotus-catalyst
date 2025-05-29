@@ -39,7 +39,7 @@ export function ElementFade({
   return (
     <div
       className={clsx(
-        'ease-quad h-full w-full transition-all duration-300 landscape:!translate-y-0 landscape:!opacity-100',
+        'ease-quad h-full w-full transition-all duration-300 max-lg:landscape:!translate-y-0 max-lg:landscape:!opacity-100',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0',
         className,
       )}
