@@ -103,7 +103,7 @@ export default async function FaqsPage({
       </section>
       <div className="container lg:mt-16">
         <div className="grid lg:grid-cols-12 lg:gap-8">
-          <div className="sticky top-16 space-y-4 bg-white py-8 lg:top-32 lg:col-span-3 lg:max-h-max lg:space-y-8 lg:py-0">
+          <div className="sticky top-16 z-10 space-y-4 bg-white py-8 lg:top-32 lg:col-span-3 lg:max-h-max lg:space-y-8 lg:py-0 max-lg:landscape:grid max-lg:landscape:grid-cols-2 max-lg:landscape:gap-4 max-lg:landscape:space-y-0">
             <FaqSearch />
             <FaqSidebar categories={faqCategories} />
           </div>

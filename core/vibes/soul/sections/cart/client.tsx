@@ -268,7 +268,7 @@ export function CartClient<LineItem extends CartLineItem>({
                   removeLabel={couponCode.removeLabel}
                 />
               )}
-              <div className="flex justify-between border-t border-[var(--cart-border,hsl(var(--contrast-100)))] py-5 font-medium">
+              <div className="border-contrast-200 flex justify-between border-t py-5 font-medium">
                 <dt>{cart.totalLabel ?? 'Total'}</dt>
                 <dl>{cart.total}</dl>
               </div>
@@ -389,7 +389,7 @@ function CounterForm({
         </div>
 
         {/* Counter */}
-        <div className="flex items-center rounded-lg border border-[var(--cart-counter-border,hsl(var(--contrast-100)))]">
+        <div className="border-contrast-200 flex items-center rounded-lg border">
           <button
             aria-label={decrementLabel}
             className={clsx(

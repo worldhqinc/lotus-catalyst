@@ -137,13 +137,11 @@ export function UpdateAccountForm({
       <div className="flex flex-col gap-1">
         <Label className="text-foreground text-sm font-medium" htmlFor={fields.company.id}>
           {companyLabel}
-          <span className="text-contrast-400">*</span>
         </Label>
         <Input
           {...getInputProps(fields.company, { type: 'text' })}
           errors={fields.company.errors}
           key={fields.company.id}
-          required
         />
       </div>
       <Button loading={pending} name="intent" size="medium" type="submit" value="update">

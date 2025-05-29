@@ -39,9 +39,17 @@ export function Highlights({
           />
           <div className="flex h-full flex-col gap-4">
             <div className="flex h-full flex-col justify-between gap-2">
-              <p className="text-background font-heading text-4xl lg:text-5xl lg:leading-[120%]">
-                “{quoteText}”
-              </p>
+              <div className="grid grid-cols-[auto_1fr] gap-x-1">
+                <span className="text-background font-heading text-4xl lg:text-5xl lg:leading-[120%]">
+                  “
+                </span>
+                <p className="text-background font-heading text-4xl lg:text-5xl lg:leading-[120%]">
+                  {quoteText}
+                  <span className="text-background font-heading text-4xl lg:text-5xl lg:leading-[120%]">
+                    ”
+                  </span>
+                </p>
+              </div>
               <div className="mt-auto flex flex-col pt-5">
                 {quoteAuthorImage ? (
                   <div className="bg-surface-image mb-8 aspect-square w-20 overflow-hidden rounded-full">

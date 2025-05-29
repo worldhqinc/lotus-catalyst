@@ -1,8 +1,23 @@
+import { Metadata } from 'next';
+
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { Image } from '~/components/image';
 import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 
+import { getPageBySlug } from '../[...rest]/page-data';
+
 import { ChatWidgetButton } from './_components/chat-widget-button';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPageBySlug('pageStandard', ['contact']);
+  const { fields } = page;
+
+  return {
+    title: fields.metaTitle || fields.pageName,
+    description: fields.metaDescription,
+    keywords: fields.metaKeywords,
+  };
+}
 
 export default function ContactPage() {
   return (
@@ -15,7 +30,9 @@ export default function ContactPage() {
           src={BrandArtwork}
         />
         <div className="container max-w-[300px] md:max-w-lg lg:max-w-2xl">
-          <h1 className="font-heading text-4xl uppercase md:text-6xl">Contact Lotus</h1>
+          <h1 className="font-heading text-4xl uppercase [word-spacing:0.1em] md:text-6xl">
+            Contact Lotus
+          </h1>
           <p className="mt-4">Have a question? Need a hand? Our team is ready to help.</p>
         </div>
       </div>

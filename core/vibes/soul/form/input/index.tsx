@@ -37,7 +37,7 @@ export const Input = React.forwardRef<
   const generatedId = React.useId();
 
   return (
-    <div className={clsx('w-full space-y-2', className)}>
+    <div className={clsx('w-full space-y-1', className)}>
       {label != null && label !== '' && (
         <Label colorScheme={colorScheme} htmlFor={id ?? generatedId}>
           {label}
@@ -62,7 +62,7 @@ export const Input = React.forwardRef<
         <input
           {...rest}
           className={clsx(
-            'w-full [appearance:textfield] p-3 text-sm placeholder:font-normal focus:outline-hidden [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none',
+            'text-md w-full [appearance:textfield] p-3 placeholder:font-normal focus:outline-hidden [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none',
             {
               light:
                 'bg-[var(--input-light-background,hsl(var(--background)))] text-[var(--input-light-text,hsl(var(--foreground)))] placeholder:text-[var(--input-light-placeholder,hsl(var(--contrast-500)))]',

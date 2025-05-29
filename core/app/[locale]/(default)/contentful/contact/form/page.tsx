@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { Suspense } from 'react';
 import { z } from 'zod';
 
@@ -8,6 +9,7 @@ import { Link } from '~/components/link';
 import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 import { Spinner } from '~/vibes/soul/primitives/spinner';
 
+import { getPageBySlug } from '../../[...rest]/page-data';
 import { ContactFormClient } from '../_components/contact-form-client';
 
 const TicketFormSchema = z.object({
@@ -104,6 +106,17 @@ const TicketFieldSchema = z.object({
 export type TicketForm = z.infer<typeof TicketFormSchema>['ticket_form'];
 export type TicketField = z.infer<typeof TicketFieldSchema>['ticket_field'];
 
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPageBySlug('pageStandard', ['contact/form']);
+  const { fields } = page;
+
+  return {
+    title: fields.metaTitle || fields.pageName,
+    description: fields.metaDescription,
+    keywords: fields.metaKeywords,
+  };
+}
+
 export default function ContactFormPage() {
   return (
     <>
@@ -115,7 +128,9 @@ export default function ContactFormPage() {
           src={BrandArtwork}
         />
         <div className="container max-w-[300px] md:max-w-lg lg:max-w-2xl">
-          <h1 className="font-heading text-4xl uppercase md:text-6xl">Contact Lotus</h1>
+          <h1 className="font-heading text-4xl uppercase [word-spacing:0.1em] md:text-6xl">
+            Contact Lotus
+          </h1>
           <p className="mt-4">Have a question? Need a hand? Our team is ready to help.</p>
         </div>
       </div>
