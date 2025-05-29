@@ -244,7 +244,7 @@ export default async function Product(props: Props) {
               content: (
                 <ul className="list-disc space-y-4 pl-4">
                   {fields.webBullets.map((bullet, index) => (
-                    <li className="text-contrast-400 text-sm" key={index}>
+                    <li className="text-contrast-400 text-md" key={index}>
                       {bullet}
                     </li>
                   ))}
@@ -260,7 +260,7 @@ export default async function Product(props: Props) {
               content: (
                 <ul className="space-y-4">
                   {fields.webWhatsIncluded.map((item, index) => (
-                    <li className="text-contrast-400 flex items-center gap-2 text-sm" key={index}>
+                    <li className="text-contrast-400 text-md flex items-center gap-2" key={index}>
                       <Check className="text-surface-foreground h-4 w-4" />
                       {item}
                     </li>
@@ -279,7 +279,7 @@ export default async function Product(props: Props) {
                   <dl className="flex flex-col gap-4">
                     {specifications.map((field, index) => (
                       <div
-                        className="text-contrast-400 grid grid-cols-1 gap-2 @lg:grid-cols-2"
+                        className="text-contrast-400 text-md grid grid-cols-1 gap-2 @lg:grid-cols-[1fr_2fr]"
                         key={index}
                       >
                         <dt className="font-medium">{field.name}</dt>
