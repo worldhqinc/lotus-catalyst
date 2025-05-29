@@ -39,7 +39,7 @@ export function HeroSection({
   const linkHref = validCta ? getLinkHref(validCta.fields) : '#';
 
   return (
-    <SectionLayout className="bg-surface-image relative isolate flex aspect-[3/4] max-h-[calc(100svh-101px)] w-full items-center overflow-hidden py-20 text-center lg:aspect-video">
+    <SectionLayout className="bg-surface-image relative isolate flex aspect-[3/4] w-full items-center overflow-hidden py-20 text-center lg:aspect-video xl:max-h-[calc(100svh-101px)]">
       {mediaElement}
       <ElementFade>
         <div

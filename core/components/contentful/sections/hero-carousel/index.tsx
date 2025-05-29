@@ -67,7 +67,7 @@ export function HeroCarousel({ data }: Props) {
 
   const mediaElement = (slide: Slide, idx: number) => {
     if (slide.wistiaId) {
-      return <WistiaPlayer pageType="page" wistiaMediaId={slide.wistiaId} />;
+      return <WistiaPlayer buttonPosition="left" pageType="page" wistiaMediaId={slide.wistiaId} />;
     } else if (slide.image?.src) {
       return (
         <Image
@@ -90,9 +90,12 @@ export function HeroCarousel({ data }: Props) {
   const scrollToSlide = (index: number) => {
     if (!containerRef.current) return;
 
-    const slideHeight = window.innerHeight;
-    const containerTop = containerRef.current.offsetTop;
-    const targetPosition = containerTop + index * slideHeight;
+    const container = containerRef.current;
+    const containerRect = container.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const currentScroll = window.scrollY;
+
+    const targetPosition = currentScroll + containerRect.top + index * viewportHeight;
 
     window.scrollTo({
       top: targetPosition,
@@ -191,7 +194,7 @@ export function HeroCarousel({ data }: Props) {
         {/* Fixed navigation bullets */}
         <div
           className={clsx(
-            'fixed bottom-16 left-1/2 z-50 flex -translate-x-1/2 gap-2 transition-opacity duration-500 md:top-1/2 md:right-8 md:bottom-auto md:left-auto md:-translate-x-0 md:-translate-y-1/2 md:flex-col xl:right-16',
+            'fixed bottom-16 left-1/2 z-20 flex -translate-x-1/2 gap-2 transition-opacity duration-500 md:top-1/2 md:right-8 md:bottom-auto md:left-auto md:-translate-x-0 md:-translate-y-1/2 md:flex-col xl:right-16',
             isInView ? 'opacity-100' : 'pointer-events-none opacity-0',
           )}
         >
@@ -217,7 +220,7 @@ export function HeroCarousel({ data }: Props) {
           style={{ height: `calc(${processedSlides.length * 100}svh + 500px)` }}
         >
           {/* Fixed viewport container */}
-          <div className="sticky top-0 h-screen w-full">
+          <div className="sticky top-0 h-dvh w-full">
             {/* Content sections layer */}
             <div className="relative h-full w-full">
               {processedSlides.map((slide, idx) => (
@@ -228,11 +231,10 @@ export function HeroCarousel({ data }: Props) {
                   )}
                   key={`content-${idx}`}
                 >
-                  <div className="absolute inset-0 z-15 bg-linear-to-l from-transparent to-black/50" />
-                  <div className="bg-contrast-200 absolute inset-0 z-10 h-full w-full">
+                  <div className="bg-contrast-200 absolute inset-0 z-10 h-full w-full after:absolute after:inset-0 after:z-15 after:bg-linear-to-l after:from-transparent after:to-black/50">
                     {mediaElement(slide, idx)}
                   </div>
-                  <div className="absolute inset-0 left-0 z-20">
+                  <div className="absolute top-1/2 left-0 z-20 -translate-y-1/2">
                     <div
                       className={clsx(
                         'ease-quad container mx-auto flex h-full flex-col justify-center py-10 transition-all duration-500',

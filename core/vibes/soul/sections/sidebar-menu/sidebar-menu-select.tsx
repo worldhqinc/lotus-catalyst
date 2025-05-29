@@ -30,21 +30,24 @@ export function SidebarMenuSelect({ links }: { links: MenuLink[] }) {
       )?.href;
     }, undefined) ?? '';
 
-  const options: SelectOption[] = links.flatMap((link) => [
-    ...(link.secondaryLinks?.length
-      ? []
-      : [
-          {
-            value: link.href,
-            label: link.label,
-            isCustomAction: !!link.component,
-          },
-        ]),
-    ...(link.secondaryLinks?.map((secondary) => ({
-      value: secondary.href,
-      label: `${link.label} - ${secondary.label}`,
-    })) ?? []),
-  ]);
+  const options: SelectOption[] = links.flatMap((link) => {
+    if (link.href === '/policies/privacy-policy') {
+      return (
+        link.secondaryLinks?.map((secondary) => ({
+          value: secondary.href,
+          label: `Privacy Policy - ${secondary.label}`,
+        })) ?? []
+      );
+    }
+
+    return [
+      {
+        value: link.href,
+        label: link.label,
+        isCustomAction: !!link.component,
+      },
+    ];
+  });
 
   return (
     <Select
@@ -57,7 +60,7 @@ export function SidebarMenuSelect({ links }: { links: MenuLink[] }) {
           router.push(value);
         }
       }}
-      options={links.map((link) => ({ value: link.href, label: link.label }))}
+      options={options}
       position="popper"
       value={matchingLink}
     />

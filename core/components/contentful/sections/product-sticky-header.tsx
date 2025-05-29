@@ -7,20 +7,11 @@ import { forwardRef, RefObject, useEffect, useState, useTransition } from 'react
 import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Button } from '@/vibes/soul/primitives/button';
 import { LogoLotus } from '@/vibes/soul/primitives/logo-lotus';
-import { Price } from '@/vibes/soul/primitives/price-label';
 import { addToCartBySkuForm } from '~/app/[locale]/(default)/cart/_actions/add-to-cart-by-sku-form';
 import { productFinishedGoods, productPartsAndAccessories } from '~/contentful/schema';
 import { useRouter } from '~/i18n/routing';
 
-function AddToBagForm({
-  sku,
-  price,
-  ctaDisabled,
-}: {
-  sku?: string;
-  price?: Price | null;
-  ctaDisabled?: boolean | null;
-}) {
+function AddToBagForm({ sku, ctaDisabled }: { sku?: string; ctaDisabled?: boolean | null }) {
   const router = useRouter();
   const [isPending, start] = useTransition();
 
@@ -28,16 +19,10 @@ function AddToBagForm({
     return null;
   }
 
-  let priceDisplay = '';
-
-  if (typeof price === 'string') priceDisplay = price;
-  else if (price && price.type === 'range') priceDisplay = `${price.minValue}–${price.maxValue}`;
-  else if (price) priceDisplay = price.currentValue;
-
   if (!sku) {
     return (
       <Button disabled size="small">
-        Add to cart{priceDisplay ? ` | ${priceDisplay}` : ''}
+        Add to cart
       </Button>
     );
   }
@@ -60,7 +45,7 @@ function AddToBagForm({
         size="small"
         type="submit"
       >
-        Add to cart{priceDisplay ? ` | ${priceDisplay}` : ''}
+        Add to cart
       </Button>
       <Button
         className="inline-flex sm:hidden"
@@ -80,7 +65,6 @@ export const ProductStickyHeader = forwardRef<
   HTMLDivElement,
   {
     product: {
-      price?: Streamable<Price | null>;
       id: string;
       sku?: string;
     };
@@ -168,11 +152,9 @@ export const ProductStickyHeader = forwardRef<
                 Add to cart
               </Button>
             }
-            value={Streamable.all([product.price, streamableCtaDisabled])}
+            value={Streamable.all([streamableCtaDisabled])}
           >
-            {([price, ctaDisabled]) => (
-              <AddToBagForm ctaDisabled={ctaDisabled} price={price} sku={product.sku} />
-            )}
+            {([ctaDisabled]) => <AddToBagForm ctaDisabled={ctaDisabled} sku={product.sku} />}
           </Stream>
         </div>
       </div>

@@ -19,14 +19,14 @@ export function GuidingPrinciplesSection({
       {sectionDescription ? (
         <p className="text-icon-secondary mt-4 text-center text-xl">{sectionDescription}</p>
       ) : null}
-      <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
+      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:mt-16 lg:gap-6">
         {principles.map((entry, index) => {
           const principle = guidingPrincipleSchema.parse(entry);
           const { title, description } = principle.fields;
 
           return (
             <div
-              className="border-border rounded-lg border bg-white p-8 text-left"
+              className="border-border rounded-lg border bg-white p-4 text-left md:p-8"
               key={principle.sys.id}
             >
               <div className="text-surface-foreground mb-8 text-xl font-medium">

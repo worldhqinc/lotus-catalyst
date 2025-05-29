@@ -59,7 +59,7 @@ export function FeatureItem({
         )}
       >
         <h3 className="text-4xl">{heading}</h3>
-        {description ? <p className="text-contrast-400 mt-2">{description}</p> : null}
+        {description ? <p className="text-contrast-400 mt-4">{description}</p> : null}
         {supportLinks.length > 0 ? (
           <SelectField
             className="mt-12"

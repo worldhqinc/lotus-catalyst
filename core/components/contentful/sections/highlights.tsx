@@ -24,10 +24,10 @@ export function Highlights({
       {...(pageAnchor && { id: pageAnchor })}
       className="bg-surface-secondary scroll-mt-32 !overflow-auto"
     >
-      <div className="mb-12 flex flex-col items-center gap-4">
+      <div className="mb-8 flex flex-col items-center gap-4 lg:mb-16">
         <h2 className="text-icon-primary text-4xl">{title}</h2>
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
+      <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 lg:gap-6">
         <div className="bg-primary relative isolate overflow-hidden rounded-lg p-4 lg:p-8 xl:aspect-4/3">
           <Image
             alt="Lotus Pattern"

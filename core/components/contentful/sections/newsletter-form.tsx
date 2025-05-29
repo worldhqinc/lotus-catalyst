@@ -22,9 +22,9 @@ export function NewsletterForm({
         src={BannerBackground}
         width={2560}
       />
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <h2 className="font-heading mx-auto mb-4 max-w-xl text-5xl uppercase">{title}</h2>
-        <p className="mx-auto mb-16 max-w-2xl">{description}</p>
+        <p className="mx-auto mb-8 max-w-2xl lg:mb-16">{description}</p>
         <div className="mx-auto max-w-md">
           <InlineEmailForm
             action={subscribe}

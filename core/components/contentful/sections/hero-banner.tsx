@@ -28,7 +28,7 @@ function SimpleHeroBanner({
         )}
         {!!descriptionHtml && (
           <div
-            className="prose container mt-8 max-w-2xl"
+            className="prose container mt-6 max-w-2xl"
             dangerouslySetInnerHTML={{ __html: descriptionHtml }}
           />
         )}
@@ -59,7 +59,7 @@ function StackedHeroBanner({
   title: string;
 }) {
   return (
-    <section className="bg-contrast-200 relative isolate h-auto w-full overflow-hidden lg:aspect-video lg:max-h-[calc(100svh-64px)]">
+    <section className="bg-contrast-200 relative isolate h-auto w-full overflow-hidden lg:aspect-video lg:xl:max-h-[calc(100svh-64px)]">
       <div className="grid h-full grid-cols-[minmax(var(--container-padding),1fr)_minmax(0,calc((var(--container-max-width)/2)))_minmax(0,calc((var(--container-max-width)/2)))_minmax(var(--container-padding),1fr)] gap-y-8 lg:gap-0">
         <div
           className={clsx(
@@ -139,12 +139,12 @@ function LeftAlignedHeroBanner({
   variant: string;
 }) {
   return (
-    <SectionLayout className="relative isolate aspect-[3/4] max-h-[calc(100svh-101px)] w-full lg:aspect-video [&_>div]:h-full">
+    <SectionLayout className="relative isolate aspect-[3/4] w-full lg:aspect-video xl:max-h-[calc(100svh-101px)] [&_>div]:h-full">
       <div className="absolute inset-0 -z-10 bg-linear-to-l from-transparent to-black/50" />
       {mediaElement}
       <div className={clsx('h-full w-full')}>
         {/* Note: If ElementFade is removed, apply the classes to the parent div instead. */}
-        <ElementFade className="flex flex-col justify-center gap-8">
+        <ElementFade className="flex flex-col justify-center gap-6">
           {isPageHeader ? (
             <h1
               className={clsx(
@@ -203,11 +203,11 @@ function CenteredHeroBanner({
   title: string;
 }) {
   return (
-    <SectionLayout className="bg-contrast-200 relative isolate aspect-[3/4] max-h-[calc(100svh-101px)] w-full lg:aspect-video">
+    <SectionLayout className="bg-contrast-200 relative isolate aspect-[3/4] w-full lg:aspect-video xl:max-h-[calc(100svh-101px)]">
       {mediaElement}
       <div className="absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-4 py-20">
         {/* Note: If ElementFade is removed, apply the classes to the parent div instead. */}
-        <ElementFade className="flex w-full flex-col items-center justify-center gap-8">
+        <ElementFade className="flex w-full flex-col items-center justify-center gap-6">
           {isPageHeader ? (
             <h1
               className={clsx(

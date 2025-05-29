@@ -48,6 +48,7 @@ export function WistiaPlayer({
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const videoInitializedRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const userPausedRef = useRef(false);
 
   const videoSegments = useRef<Record<string, VideoSegment>>({});
 
@@ -130,6 +131,7 @@ export function WistiaPlayer({
     if (!video) return;
     video.play();
     setIsPlaying(true);
+    userPausedRef.current = false;
   }, [getVideo]);
 
   const handlePause = useCallback(() => {
@@ -138,6 +140,7 @@ export function WistiaPlayer({
     if (!video) return;
     video.pause();
     setIsPlaying(false);
+    userPausedRef.current = true;
   }, [getVideo]);
 
   // Load Wistia scripts when component mounts
@@ -216,7 +219,9 @@ export function WistiaPlayer({
             videoInitializedRef.current = true;
           }
 
-          playCurrentSegment();
+          if (!userPausedRef.current) {
+            playCurrentSegment();
+          }
         } else {
           video.pause();
         }
