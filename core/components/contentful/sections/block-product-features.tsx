@@ -15,16 +15,14 @@ export function BlockProductFeatures({
 
   return (
     <SectionLayout containerClassName="bg-white" containerSize="2xl">
-      <div className="mb-8 flex flex-col items-center lg:mb-16">
-        <h2 className="text-surface-foreground max-w-4xl text-center text-2xl md:text-4xl">
-          {heading}
-        </h2>
+      <div className="mb-8 flex flex-col items-start lg:mb-16">
+        <h2 className="text-surface-foreground max-w-4xl text-2xl md:text-4xl">{heading}</h2>
       </div>
       <div
         className={
           alternate
-            ? 'grid grid-cols-1 gap-4 md:grid-cols-3 lg:gap-6'
-            : 'grid grid-cols-1 gap-4 md:grid-cols-2 md:grid-rows-2 lg:gap-6'
+            ? 'grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-3 lg:gap-6'
+            : 'grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 md:grid-rows-2 lg:gap-6'
         }
       >
         {parsedItems.map(({ sys, fields }, idx) => {
@@ -49,7 +47,7 @@ export function BlockProductFeatures({
                       )}
                     </div>
                   </div>
-                  <div className="mt-6 text-center md:text-left">
+                  <div className="mt-4 lg:mt-6">
                     <h3 className="text-surface-foreground text-xl">{fields.heading}</h3>
                     {!!fields.description && (
                       <p className="mt-2 max-w-[45ch] text-balance text-gray-500">
