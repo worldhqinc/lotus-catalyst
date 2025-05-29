@@ -6,7 +6,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
-import { ChevronDown, ChevronRight, Search, ShoppingCart, TriangleAlert, User } from 'lucide-react';
+import { ChevronDown, ChevronRight, Search, ShoppingCart, User } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, {
   forwardRef,
@@ -23,8 +23,6 @@ import { Stream, Streamable } from '@/vibes/soul/lib/streamable';
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Price } from '@/vibes/soul/primitives/price-label';
 import * as SidePanel from '@/vibes/soul/primitives/side-panel';
-import CookiePreferencesCta from '~/components/cookie-preferences-cta';
-import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { Minicart } from '~/components/minicart';
@@ -32,7 +30,6 @@ import { CartItem } from '~/components/minicart/_actions/minicart';
 import { usePathname, useRouter } from '~/i18n/routing';
 
 import { LogoLotus } from '../logo-lotus';
-import { Modal } from '../modal';
 
 interface Link {
   label: string;
@@ -288,93 +285,62 @@ export const LocaleSwitcher = ({
     }
   }
 
-  const [isOpen, setOpen] = useState(false);
-
   return (
-    <>
-      <div className="msg-to-opt-out-users" style={{ display: 'none' }}>
-        <Modal
-          className="min-w-64 @lg:w-lg"
-          isOpen={isOpen}
-          setOpen={setOpen}
-          title="Message to cookie opt out users"
-          trigger={
+    <div className="locale-switcher">
+      <div className="hidden @4xl:inline-block">
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger
+            className="nav-locale-button flex items-center gap-1 p-0 text-sm transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30"
+            disabled={isPending}
+          >
+            {getLocaleLabel(activeLocaleId)}
+            <ChevronDown size={16} strokeWidth={1.5} />
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              align="end"
+              className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
+              sideOffset={16}
+            >
+              {locales.map(({ id }) => (
+                <DropdownMenu.Item
+                  className={clsx(
+                    'nav-locale-item cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
+                    {
+                      'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
+                        id === activeLocaleId,
+                    },
+                  )}
+                  key={id}
+                  onSelect={() => startTransition(() => switchLocale(id))}
+                >
+                  {getLocaleLabel(id)}
+                </DropdownMenu.Item>
+              ))}
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
+      </div>
+      <div className="flex flex-row items-center gap-2 @4xl:hidden">
+        {locales.map(({ id }) => {
+          return (
             <button
-              className="flex items-center gap-1 p-0 text-sm transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30"
+              className={clsx(
+                'nav-locale-item rounded-full border px-3 py-2 text-base font-medium',
+                id === activeLocaleId
+                  ? 'bg-contrast-100 border-contrast-100 text-foreground'
+                  : 'border-contrast-200 text-contrast-400 bg-transparent',
+              )}
+              key={id}
+              onClick={() => startTransition(() => switchLocale(id))}
               type="button"
             >
-              English
-              <TriangleAlert size={16} strokeWidth={1.5} />
+              {getLocaleLabel(id)}
             </button>
-          }
-        >
-          <CookiePreferencesNotice
-            message={
-              <>
-                We use cookies to ensure you get the best experience on our website. Please enable
-                "Functional cookies" in your <CookiePreferencesCta variant="link" /> to continue
-                with site translations.
-              </>
-            }
-          />
-        </Modal>
+          );
+        })}
       </div>
-      <div className="locale-switcher">
-        <div className="hidden @4xl:inline-block">
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger
-              className="nav-locale-button flex items-center gap-1 p-0 text-sm transition-opacity hover:text-white/70 focus-visible:text-white/70 focus-visible:outline-none disabled:opacity-30"
-              disabled={isPending}
-            >
-              {getLocaleLabel(activeLocaleId)}
-              <ChevronDown size={16} strokeWidth={1.5} />
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Portal>
-              <DropdownMenu.Content
-                align="end"
-                className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
-                sideOffset={16}
-              >
-                {locales.map(({ id }) => (
-                  <DropdownMenu.Item
-                    className={clsx(
-                      'nav-locale-item cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
-                      {
-                        'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
-                          id === activeLocaleId,
-                      },
-                    )}
-                    key={id}
-                    onSelect={() => startTransition(() => switchLocale(id))}
-                  >
-                    {getLocaleLabel(id)}
-                  </DropdownMenu.Item>
-                ))}
-              </DropdownMenu.Content>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Root>
-        </div>
-        <div className="flex flex-row items-center gap-2 @4xl:hidden">
-          {locales.map(({ id }) => {
-            return (
-              <button
-                className={clsx(
-                  'nav-locale-item rounded-full border px-3 py-2 text-base font-medium',
-                  id === activeLocaleId
-                    ? 'bg-contrast-100 border-contrast-100 text-foreground'
-                    : 'border-contrast-200 text-contrast-400 bg-transparent',
-                )}
-                key={id}
-                onClick={() => startTransition(() => switchLocale(id))}
-                type="button"
-              >
-                {getLocaleLabel(id)}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </>
+    </div>
   );
 };
 
