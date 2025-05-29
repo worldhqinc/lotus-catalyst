@@ -82,18 +82,18 @@ async function getWishlistButton(
   productId: number,
   productSku?: Streamable<string>,
 ): Promise<WishlistButton> {
-  const t = await getTranslations('Wishlist.Button');
+  // const t = await getTranslations('Wishlist.Button');
   const data = await getWishlistButtonData(productId, await getSessionCustomerAccessToken());
 
   if (!data?.wishlists.edges?.length) {
-    const defaultWishlist: WishlistButtonWishlistInfo = {
-      entityId: 0,
-      name: t('defaultWishlistName'),
-    };
+    // const defaultWishlist: WishlistButtonWishlistInfo = {
+    //   entityId: 0,
+    //   name: t('defaultWishlistName'),
+    // };
 
     return {
       isProductInWishlist: false,
-      wishlists: [defaultWishlist],
+      wishlists: [],
     };
   }
 

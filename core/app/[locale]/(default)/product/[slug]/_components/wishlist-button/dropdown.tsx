@@ -93,8 +93,7 @@ export const WishlistButtonDropdown = ({
           ),
           action: addToNewWishlistAction,
         },
-        'separator',
-        ...items,
+        ...(wishlists.length > 0 ? ['separator' as const, ...items] : []),
       ]}
     >
       <div>{children}</div>
