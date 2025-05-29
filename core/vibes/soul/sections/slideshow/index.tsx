@@ -160,7 +160,7 @@ export function Slideshow({
   return (
     <section
       className={clsx(
-        'bg-contrast-200 @container relative aspect-[3/4] w-full lg:aspect-video xl:max-h-[calc(100svh-101px)]',
+        'bg-contrast-200 @container relative aspect-[3/4] w-full lg:aspect-video xl:max-h-[calc(100svh-101px)] landscape:aspect-video',
         className,
       )}
     >
