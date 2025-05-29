@@ -98,10 +98,25 @@ function DropdownRefinementFilter({ attribute, label }: DropdownRefinementFilter
   // Determine the selected value based on actual refinements
   const selectedValue = refinements.length === 0 ? 'all' : refinements[0];
 
+  function transformLabel(itemLabel: string) {
+    if (itemLabel === 'productPartsAndAccessories') {
+      return 'Accessories';
+    }
+
+    if (itemLabel === 'productFinishedGoods') {
+      return 'Products';
+    }
+
+    return itemLabel;
+  }
+
   const options = [
-    { label: `All ${label ?? attribute}`, value: 'all' },
+    {
+      label: items.some((item) => item.isRefined) ? 'View all' : (label ?? attribute),
+      value: 'all',
+    },
     ...items.map((item) => ({
-      label: `${item.label} (${item.count})`,
+      label: transformLabel(item.label),
       value: item.value,
     })),
   ];
@@ -156,12 +171,7 @@ function Clear({ onResetSort, sortOption }: ClearProps) {
   };
 
   return (
-    <Button
-      className="text-contrast-400 text-sm"
-      onClick={handleClear}
-      size="medium"
-      variant="link"
-    >
+    <Button className="text-contrast-400 text-sm" onClick={handleClear} size="small" variant="link">
       Clear
     </Button>
   );
@@ -171,8 +181,8 @@ const baseIndex = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? '';
 
 export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
   const [sortOption, setSortOption] = useState('relevance');
-  const [filterOption, setFilterOption] = useState('all');
-  const [searchKey, setSearchKey] = useState(0);
+  const [filterOption] = useState('all');
+  const [searchKey] = useState(0);
 
   const getSortBy = () => {
     switch (sortOption) {
@@ -216,12 +226,6 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
     { label: 'Price: High to Low', value: 'price_desc' },
   ];
 
-  const filterOptions = [
-    { label: 'All', value: 'all' },
-    { label: 'Products', value: 'product' },
-    { label: 'Accessories', value: 'accessory' },
-  ];
-
   return (
     <SectionLayout containerSize="2xl">
       <div className="flex flex-col items-center gap-4">
@@ -253,18 +257,7 @@ export function ProductGrid({ title, subtitle, type }: ProductGridProps) {
             </div>
             {type === 'all' && (
               <div className="flex min-w-[200px] flex-1 shrink-0 flex-col items-start">
-                <SelectField
-                  hideLabel
-                  label="Filter by"
-                  name="filter"
-                  onValueChange={(value) => {
-                    setFilterOption(value);
-                    setSearchKey((prev) => prev + 1);
-                  }}
-                  options={filterOptions}
-                  value={filterOption}
-                  variant="rectangle"
-                />
+                <DropdownRefinementFilter attribute="contentType" label="Product Type" />
               </div>
             )}
             {type === 'accessories' && (
