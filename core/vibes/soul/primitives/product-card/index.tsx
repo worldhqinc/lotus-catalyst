@@ -201,6 +201,9 @@ export function ProductCard({
               )}
             </div>
             {price != null && inStock && <PriceLabel colorScheme={colorScheme} price={price} />}
+            <div className="relative z-20">
+              {!inStock && !!sku && <NotifyBackInStock sku={sku} textCta={true} />}
+            </div>
           </div>
           {/* {rating != null && (
             <div className="text-foreground mb-2 flex items-center gap-1 text-sm">
@@ -227,7 +230,6 @@ export function ProductCard({
           </Link>
         )}
       </div>
-      {!inStock && !!sku && <NotifyBackInStock sku={sku} textCta={true} />}
       {showCompare && (
         <div className="mt-0.5 shrink-0">
           <Compare
