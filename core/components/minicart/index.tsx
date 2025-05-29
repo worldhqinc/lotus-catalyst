@@ -228,7 +228,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
         ))}
       </div>
 
-      <div className="mt-auto">
+      <div className="mt-auto landscape:overflow-y-auto">
         <CompleteKitchen
           addToCartButton={(id) => (
             <Button
