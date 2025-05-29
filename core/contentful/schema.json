@@ -4009,7 +4009,7 @@
         "id": "postGrid",
         "type": "ContentType",
         "createdAt": "2025-04-17T18:27:38.014Z",
-        "updatedAt": "2025-05-07T17:30:37.435Z",
+        "updatedAt": "2025-05-29T19:00:59.132Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -4017,8 +4017,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 5,
-        "publishedAt": "2025-05-07T17:30:37.435Z",
+        "publishedVersion": 7,
+        "publishedAt": "2025-05-29T19:00:59.132Z",
         "firstPublishedAt": "2025-04-17T18:27:38.322Z",
         "createdBy": {
           "sys": {
@@ -4031,16 +4031,16 @@
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
-        "publishedCounter": 3,
-        "version": 6,
+        "publishedCounter": 4,
+        "version": 8,
         "publishedBy": {
           "sys": {
             "type": "Link",
             "linkType": "User",
-            "id": "1BR0P0qbpGVHzRK0rjdom6"
+            "id": "6VGBdQsJwrG5UjbxzxdXJw"
           }
         },
         "urn": "crn:contentful:::content:spaces/esj3sw7u4uve/environments/master/content_types/postGrid"
@@ -4082,7 +4082,8 @@
               "in": [
                 "recipe",
                 "feature",
-                "formulation"
+                "formulation",
+                "tutorial"
               ]
             }
           ],
