@@ -107,13 +107,13 @@ function DropdownRefinementFilter({ attribute, label }: DropdownRefinementFilter
   ];
 
   const handleValueChange = (value: string) => {
-    if (value === 'all') {
-      items.forEach((item) => {
-        if (item.isRefined) {
-          refine(item.value);
-        }
-      });
-    } else {
+    items.forEach((item) => {
+      if (item.isRefined) {
+        refine(item.value);
+      }
+    });
+
+    if (value !== 'all') {
       refine(value);
     }
   };
