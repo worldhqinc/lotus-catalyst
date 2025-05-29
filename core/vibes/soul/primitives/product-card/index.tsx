@@ -37,6 +37,7 @@ export interface ProductCardProps {
   showCompare?: boolean;
   imagePriority?: boolean;
   imageSizes?: string;
+  imageQuality?: number;
   compareLabel?: string;
   compareParamName?: string;
   fillContainer?: boolean;
@@ -74,7 +75,8 @@ export function ProductCard({
   compareLabel,
   compareParamName,
   imagePriority = false,
-  imageSizes = '(min-width: 80rem) 20vw, (min-width: 64rem) 25vw, (min-width: 42rem) 33vw, (min-width: 24rem) 50vw, 100vw',
+  imageSizes = '(min-width: 80rem) 40vw, (min-width: 64rem) 45vw, (min-width: 42rem) 50vw, (min-width: 24rem) 60vw, 100vw',
+  imageQuality = 100,
   fillContainer = false,
   ratioOverride,
   onClick,
@@ -120,7 +122,7 @@ export function ProductCard({
               )}
               fill
               priority={imagePriority}
-              quality={100}
+              quality={imageQuality}
               sizes={imageSizes}
               src={image.src}
             />
