@@ -199,10 +199,10 @@ function getPriceField(
   const priceData = salePrice
     ? {
         type: 'sale' as const,
-        previousValue: `$${salePrice}`,
-        currentValue: `$${price}`,
+        previousValue: salePrice,
+        currentValue: price,
       }
-    : `$${price}`;
+    : price;
 
   return priceData;
 }
