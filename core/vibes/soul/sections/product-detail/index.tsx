@@ -80,10 +80,10 @@ export function ProductDetail<F extends Field>({
         const priceData = contentful.fields.salePrice
           ? {
               type: 'sale' as const,
-              previousValue: `$${contentful.fields.salePrice}`,
-              currentValue: `$${price}`,
+              previousValue: price,
+              currentValue: contentful.fields.salePrice,
             }
-          : `$${price}`;
+          : price;
 
         return (
           <>
