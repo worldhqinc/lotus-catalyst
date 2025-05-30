@@ -195,7 +195,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
                   className="text-contrast-400 flex items-start p-1"
                   onClick={() => handleRemoveItem(item.id)}
                 >
-                  <Trash size={16} strokeWidth={1} />
+                  <Trash size={16} strokeWidth={1.5} />
                 </button>
               </div>
               <div className="flex items-center justify-between gap-2">
