@@ -25,13 +25,11 @@ export default async function NotFound({ searchParams }: { searchParams: SearchP
     return (
       <>
         <Header />
-
         <NotFoundSection
           className="flex-1 place-content-center"
           subtitle={t('subtitle')}
           title={t('title')}
         />
-
         <Footer />
       </>
     );

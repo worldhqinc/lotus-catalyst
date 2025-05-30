@@ -23,10 +23,7 @@ const schemaMap = {
 type ParsedPageData<T extends ContentType> = z.infer<(typeof schemaMap)[T]>;
 
 export const getPageBySlug = cache(
-  async <T extends ContentType>(
-    contentType: T,
-    rest: string[],
-  ): Promise<ParsedPageData<T> | null> => {
+  async <T extends ContentType>(contentType: T, rest: string[]): Promise<ParsedPageData<T>> => {
     'use cache';
 
     cacheTag('contentful');
@@ -41,7 +38,7 @@ export const getPageBySlug = cache(
     const pageData = response.items[0];
 
     if (!pageData) {
-      return null;
+      notFound();
     }
 
     const schema = schemaMap[contentType];

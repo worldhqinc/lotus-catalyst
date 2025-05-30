@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
 import { SearchParams } from 'nuqs';
 
-import { NotFound as NotFoundSection } from '@/vibes/soul/sections/not-found';
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { routing } from '~/i18n/routing';
 import { generateHtmlFromRichText } from '~/lib/utils';
@@ -27,13 +25,6 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { rest } = await params;
   const page = await getPageBySlug('pageStandard', rest);
-
-  if (!page) {
-    return {
-      title: 'Page Not Found',
-    };
-  }
-
   const { fields } = page;
 
   return {
@@ -46,33 +37,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ContentfulPage({ params, searchParams }: Props) {
   const [{ rest }, queryParams] = await Promise.all([params, searchParams]);
   const page = await getPageBySlug('pageStandard', rest);
-
-  if (!page) {
-    const t = await getTranslations('NotFound');
-
-    try {
-      const notFoundPage = await getPageBySlug('pageStandard', ['not-found']);
-
-      if (!notFoundPage) {
-        throw new Error('404 page not found');
-      }
-
-      return (
-        <PageContentEntries
-          pageContent={notFoundPage.fields.pageContent}
-          searchParams={queryParams}
-        />
-      );
-    } catch {
-      return (
-        <NotFoundSection
-          className="flex-1 place-content-center"
-          subtitle={t('subtitle')}
-          title={t('title')}
-        />
-      );
-    }
-  }
 
   return shouldShowSpecialLayout(rest) ? (
     <div>
