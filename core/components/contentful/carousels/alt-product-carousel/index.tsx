@@ -58,12 +58,12 @@ export function AltProductCarousel({
 
   return (
     <section className="@container">
-      <div className="relative mx-auto px-4 @xl:px-6 @4xl:px-8">
+      <div className="relative mx-auto">
         <Carousel hideOverflow={false} opts={{ dragFree: true }}>
-          <CarouselContent className="-ml-4 flex @2xl:-ml-5">
+          <CarouselContent className="flex">
             {items.map((product, index) => (
               <CarouselItem
-                className="basis-1/2 pl-4 @md:basis-1/2 @lg:basis-1/3 @2xl:basis-[30%] @2xl:pl-6"
+                className="basis-1/2 @md:basis-1/2 @lg:basis-1/3 @2xl:basis-[30%]"
                 key={`${product.id}-${index}`}
               >
                 <div className="flex flex-col items-start gap-3">
