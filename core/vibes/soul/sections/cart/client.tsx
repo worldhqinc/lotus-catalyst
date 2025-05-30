@@ -426,7 +426,7 @@ function CounterForm({
             value="increment"
           >
             <Plus
-              className="text-[var(--cart-counter-icon,hsl(var(--contrast-300)))] transition-colors duration-300 group-hover:text-[var(--cart-counter-icon-hover,hsl(var(--foreground)))]"
+              className="text-lg text-[var(--cart-counter-icon,hsl(var(--contrast-300)))] transition-colors duration-300 group-hover:text-[var(--cart-counter-icon-hover,hsl(var(--foreground)))]"
               size={18}
               strokeWidth={1.5}
             />
