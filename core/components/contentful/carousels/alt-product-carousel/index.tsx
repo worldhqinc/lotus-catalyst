@@ -38,6 +38,9 @@ export function AltProductCarousel({
         }
       : undefined;
     const href = fields.pageSlug ? `/${fields.pageSlug}` : '#';
+    const priceOriginal = fields.price;
+    const priceOriginalNumber = parseFloat(priceOriginal ?? '0.00');
+    const originalPrice = `$${priceOriginalNumber.toFixed(2)}`;
     const priceValue = fields.salePrice ?? fields.price;
     const priceNumber = parseFloat(priceValue ?? '0.00');
     const price = `$${priceNumber.toFixed(2)}`;
@@ -48,6 +51,7 @@ export function AltProductCarousel({
       href,
       title: fields.webProductName,
       subtitle: fields.webProductNameDescriptor,
+      originalPrice: fields.salePrice ? originalPrice : null,
       price,
     };
   });
@@ -95,7 +99,16 @@ export function AltProductCarousel({
                       <ArrowRight className="size-6" strokeWidth={1.5} />
                     </ButtonLink>
                   </div>
-                  <span className="text-icon-primary text-base font-medium">{product.price}</span>
+                  {product.originalPrice ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-icon-primary text-base">{product.price}</span>
+                      <span className="text-icon-primary text-base line-through opacity-50">
+                        {product.originalPrice}
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="text-icon-primary text-base">{product.price}</span>
+                  )}
                 </div>
               </CarouselItem>
             ))}
