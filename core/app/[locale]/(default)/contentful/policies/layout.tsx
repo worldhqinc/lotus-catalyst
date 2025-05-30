@@ -2,7 +2,6 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { PropsWithChildren } from 'react';
 
 import { SidebarMenu } from '@/vibes/soul/sections/sidebar-menu';
-import { CookiePolicyLink } from '@/vibes/soul/sections/sidebar-menu/cookie-policy-link';
 import { StickySidebarLayout } from '@/vibes/soul/sections/sticky-sidebar-layout';
 
 interface Props extends PropsWithChildren {
@@ -39,11 +38,6 @@ export default async function Layout({ children, params }: Props) {
                 ],
               },
               { href: '/policies/terms-and-conditions', label: t('termsAndConditions') },
-              {
-                href: '#',
-                label: t('cookiePolicy'),
-                component: CookiePolicyLink,
-              },
               { href: '/policies/accessibility', label: t('accessibility') },
             ]}
           />
