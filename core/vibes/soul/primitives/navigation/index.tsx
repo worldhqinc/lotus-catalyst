@@ -118,19 +118,19 @@ const MobileMenuButton = forwardRef<
       <div className="flex h-4 w-4 origin-center transform flex-col justify-between overflow-hidden transition-all duration-300">
         <div
           className={clsx(
-            'h-px origin-left transform bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all duration-300',
+            'h-0.5 origin-left transform bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all duration-300',
             open ? 'translate-x-10' : 'w-7',
           )}
         />
         <div
           className={clsx(
-            'h-px transform rounded bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all delay-75 duration-300',
+            'h-0.5 transform rounded bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all delay-75 duration-300',
             open ? 'translate-x-10' : 'w-7',
           )}
         />
         <div
           className={clsx(
-            'h-px origin-left transform bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all delay-150 duration-300',
+            'h-0.5 origin-left transform bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all delay-150 duration-300',
             open ? 'translate-x-10' : 'w-7',
           )}
         />
@@ -143,13 +143,13 @@ const MobileMenuButton = forwardRef<
         >
           <div
             className={clsx(
-              'absolute h-px w-4 transform bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all delay-300 duration-500',
+              'absolute h-0.5 w-4 transform bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all delay-300 duration-500',
               open ? 'rotate-45' : 'rotate-0',
             )}
           />
           <div
             className={clsx(
-              'absolute h-px w-4 transform bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all delay-300 duration-500',
+              'absolute h-0.5 w-4 transform bg-[var(--nav-mobile-button-icon,hsl(var(--foreground)))] transition-all delay-300 duration-500',
               open ? '-rotate-45' : 'rotate-0',
             )}
           />
@@ -482,9 +482,9 @@ export const Navigation = forwardRef(function Navigation(
                     >
                       <button
                         className={clsx(
-                          '@4xl:after:ease-quad hover:@4xl:after:bg-border hidden after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-0 @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
+                          '@4xl:after:ease-quad hover:@4xl:after:bg-primary hover:text-primary ease-quad hidden transition-colors duration-200 after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-0 @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
                           pathname.includes('/shop/')
-                            ? '@4xl:after:bg-primary @4xl:after:scale-x-100'
+                            ? 'text-primary @4xl:after:bg-primary @4xl:after:scale-x-100'
                             : 'after:scale-x-0 @4xl:after:bg-transparent',
                         )}
                       >
@@ -494,9 +494,9 @@ export const Navigation = forwardRef(function Navigation(
                   ) : (
                     <Link
                       className={clsx(
-                        '@4xl:after:ease-quad hover:@4xl:after:bg-border text-nowrap after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-0 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
+                        '@4xl:after:ease-quad hover:@4xl:after:bg-primary hover:text-primary ease-quad text-nowrap transition-colors duration-200 after:hover:scale-x-100 hover:after:scale-x-100 data-[state=open]:after:scale-x-100 @4xl:relative @4xl:inline-flex @4xl:px-0 @4xl:tracking-widest @4xl:uppercase @4xl:after:absolute @4xl:after:top-full @4xl:after:left-0 @4xl:after:h-0.5 @4xl:after:w-full @4xl:after:origin-left @4xl:after:transition-transform @4xl:after:duration-200',
                         pathname === item.href || pathname === `${item.href}/`
-                          ? '@4xl:after:bg-primary @4xl:hover:after:!bg-primary @4xl:after:scale-x-100'
+                          ? 'text-primary @4xl:after:bg-primary @4xl:hover:after:bg-primary @4xl:after:scale-x-100'
                           : 'after:scale-x-0 @4xl:after:bg-transparent',
                       )}
                       href={item.href}
@@ -597,17 +597,17 @@ export const Navigation = forwardRef(function Navigation(
           )}
         >
           <Link aria-label="Search" className={navButtonClassName} href="/search">
-            <Search size={24} strokeWidth={1} />
+            <Search size={24} strokeWidth={1.5} />
           </Link>
           <Link
             aria-label={accountLabel}
             className={clsx(navButtonClassName, 'hidden @4xl:inline-block')}
             href={accountHref}
           >
-            <User size={24} strokeWidth={1} />
+            <User size={24} strokeWidth={1.5} />
           </Link>
           <Link aria-label={cartLabel} className={navButtonClassName} href={cartHref}>
-            <ShoppingCart size={24} strokeWidth={1} />
+            <ShoppingCart size={24} strokeWidth={1.5} />
             <Stream
               fallback={
                 <span className="bg-contrast-100 text-background absolute top-1 right-1 flex h-4 w-4 animate-pulse items-center justify-center rounded-full text-xs" />

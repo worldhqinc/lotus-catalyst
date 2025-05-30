@@ -162,7 +162,7 @@ export function ProductDetail<F extends Field>({
                         <PriceLabel className="text-xl @xl:text-2xl" price={priceData} />
                       </div>
                       {'warranty' in contentful.fields && Boolean(contentful.fields.warranty) && (
-                        <div className="text-contrast-300 font-medium">
+                        <div className="text-contrast-400 font-medium">
                           {contentful.fields.warranty}
                         </div>
                       )}

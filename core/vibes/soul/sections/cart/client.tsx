@@ -405,7 +405,7 @@ function CounterForm({
           >
             <Minus
               className={clsx(
-                'text-[var(--cart-counter-icon,hsl(var(--contrast-300)))] transition-colors duration-300',
+                'text-[var(--cart-counter-icon,hsl(var(--contrast-400)))] transition-colors duration-300',
                 lineItem.quantity !== 1 &&
                   'group-hover:text-[var(--cart-counter-icon-hover,hsl(var(--foreground)))]',
               )}
@@ -426,7 +426,7 @@ function CounterForm({
             value="increment"
           >
             <Plus
-              className="text-lg text-[var(--cart-counter-icon,hsl(var(--contrast-300)))] transition-colors duration-300 group-hover:text-[var(--cart-counter-icon-hover,hsl(var(--foreground)))]"
+              className="text-lg text-[var(--cart-counter-icon,hsl(var(--contrast-400)))] transition-colors duration-300 group-hover:text-[var(--cart-counter-icon-hover,hsl(var(--foreground)))]"
               size={18}
               strokeWidth={1.5}
             />
