@@ -110,9 +110,9 @@ function WishlistListItemItems({
 
         return (
           <div className="mt-8 flex-1 overflow-hidden [mask-image:linear-gradient(to_right,_black_70%,_transparent_100%)]">
-            <div className="grid min-w-[1024px] auto-cols-fr grid-flow-col grid-cols-6 gap-4 overflow-hidden">
+            <div className="flex min-w-[1024px] gap-4 overflow-x-hidden">
               {items.map(({ product }) => (
-                <div className="min-w-36" key={product.id}>
+                <div className="max-w-[calc(1024px/6-20px)] min-w-36 shrink-0" key={product.id}>
                   <ProductCard aspectRatio="1:1" product={product} />
                 </div>
               ))}

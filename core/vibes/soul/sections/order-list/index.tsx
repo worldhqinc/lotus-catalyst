@@ -117,9 +117,12 @@ export function OrderList({
                     </ButtonLink>
                   </div>
                   <div className="mt-8 overflow-hidden [mask-image:linear-gradient(to_right,_black_0%,_black_80%,_transparent_98%)]">
-                    <div className="grid min-w-[1024px] auto-cols-fr grid-flow-col grid-cols-6 gap-4 overflow-hidden">
+                    <div className="flex min-w-[1024px] gap-4 overflow-x-hidden">
                       {order.lineItems.map((lineItem) => (
-                        <div className="min-w-36" key={lineItem.id}>
+                        <div
+                          className="max-w-[calc(1024px/6-20px)] min-w-36 shrink-0"
+                          key={lineItem.id}
+                        >
                           <ProductCard aspectRatio="1:1" product={lineItem} />
                         </div>
                       ))}
