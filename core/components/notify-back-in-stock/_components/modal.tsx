@@ -123,30 +123,66 @@ export default function NotifyBackInStockModal({
                   </Dialog.Close>
                 </div>
               </div>
-              <div className="my-6 flex-1 px-6">
+              <div className="my-6 flex-1 px-6 text-pretty">
                 <p className="mb-6 text-sm text-gray-500">
                   Enter your email address below to receive an update when this item becomes
                   available.
                 </p>
                 <form {...getFormProps(form)} action={formAction} className="space-y-4">
+                  <div className="flex items-end justify-end">
+                    <p className="text-foreground text-sm">
+                      Required Fields <span className="text-contrast-400">*</span>
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <input name="sku" type="hidden" value={sku} />
+                    <Label className="text-foreground text-sm font-medium" htmlFor="firstName">
+                      First Name <span>*</span>
+                    </Label>
+                    <Input
+                      {...getInputProps(fields.firstName, { type: 'text' })}
+                      className={clsx(
+                        fields.firstName.errors &&
+                          fields.firstName.errors.length > 0 &&
+                          'border-error',
+                      )}
+                      errors={fields.firstName.errors}
+                      key={fields.email.id}
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <input name="sku" type="hidden" value={sku} />
+                    <Label className="text-foreground text-sm font-medium" htmlFor="lastName">
+                      Last Name <span>*</span>
+                    </Label>
+                    <Input
+                      {...getInputProps(fields.lastName, { type: 'text' })}
+                      className={clsx(
+                        fields.lastName.errors &&
+                          fields.lastName.errors.length > 0 &&
+                          'border-error',
+                      )}
+                      errors={fields.lastName.errors}
+                      key={fields.lastName.id}
+                      required
+                    />
+                  </div>
                   <div className="flex flex-col gap-1">
                     <input name="sku" type="hidden" value={sku} />
                     <Label className="text-foreground text-sm font-medium" htmlFor="email">
-                      Email
+                      Email <span>*</span>
                     </Label>
                     <Input
                       {...getInputProps(fields.email, { type: 'email' })}
                       className={clsx(
-                        fields.email.errors && fields.email.errors.length > 0 && 'border-red-500',
+                        fields.email.errors && fields.email.errors.length > 0 && 'border-error',
                       )}
+                      errors={fields.email.errors}
                       key={fields.email.id}
+                      required
                     />
                   </div>
-                  {fields.email.errors && fields.email.errors.length > 0 && (
-                    <FormStatus className="mt-1 text-sm" type="error">
-                      {fields.email.errors[0]}
-                    </FormStatus>
-                  )}
                   <div className="flex justify-end gap-4">
                     <Button
                       disabled={isPending}
