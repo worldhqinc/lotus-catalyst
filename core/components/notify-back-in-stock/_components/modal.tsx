@@ -136,40 +136,6 @@ export default function NotifyBackInStockModal({
                   </div>
                   <div className="flex flex-col gap-1">
                     <input name="sku" type="hidden" value={sku} />
-                    <Label className="text-foreground text-sm font-medium" htmlFor="firstName">
-                      First Name <span>*</span>
-                    </Label>
-                    <Input
-                      {...getInputProps(fields.firstName, { type: 'text' })}
-                      className={clsx(
-                        fields.firstName.errors &&
-                          fields.firstName.errors.length > 0 &&
-                          'border-error',
-                      )}
-                      errors={fields.firstName.errors}
-                      key={fields.email.id}
-                      required
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <input name="sku" type="hidden" value={sku} />
-                    <Label className="text-foreground text-sm font-medium" htmlFor="lastName">
-                      Last Name <span>*</span>
-                    </Label>
-                    <Input
-                      {...getInputProps(fields.lastName, { type: 'text' })}
-                      className={clsx(
-                        fields.lastName.errors &&
-                          fields.lastName.errors.length > 0 &&
-                          'border-error',
-                      )}
-                      errors={fields.lastName.errors}
-                      key={fields.lastName.id}
-                      required
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <input name="sku" type="hidden" value={sku} />
                     <Label className="text-foreground text-sm font-medium" htmlFor="email">
                       Email <span>*</span>
                     </Label>
