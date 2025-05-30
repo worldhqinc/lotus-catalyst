@@ -133,7 +133,7 @@ export function ProductDetail<F extends Field>({
                       }
                     />
                   </div>
-                  <div className="col-span-full px-4 py-8 @xl:px-0 @xl:py-0 @2xl:col-span-6 @5xl:col-span-5">
+                  <div className="col-span-full px-4 py-8 @xl:px-0 @2xl:col-span-6 @2xl:py-0 @5xl:col-span-5">
                     <div className="mb-8 flex items-center justify-between gap-4">
                       <div className="flex gap-2">
                         {contentful.fields.webProductLine?.map((line, index) => (
