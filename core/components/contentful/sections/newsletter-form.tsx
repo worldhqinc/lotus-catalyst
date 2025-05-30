@@ -22,14 +22,14 @@ export function NewsletterForm({
         src={BannerBackground}
         width={2560}
       />
-      <div className="container mx-auto">
+      <div className="container mx-auto text-white">
         <h2 className="font-heading mx-auto mb-4 max-w-xl text-5xl uppercase">{title}</h2>
         <p className="mx-auto mb-8 max-w-2xl lg:mb-16">{description}</p>
         <div className="mx-auto max-w-md">
           <InlineEmailForm
             action={subscribe}
             arrowClassName="text-white"
-            inputClassName="h-16 w-full bg-transparent pr-16 text-white placeholder-white placeholder:font-normal focus:outline-none"
+            inputClassName="h-16 w-full bg-transparent pr-16 !text-white placeholder-white placeholder:font-normal focus:outline-none"
             inputContainerClassName="bg-transparent focus-within:border-white"
             placeholder={inputPlaceholder || 'Enter your email'}
           />
