@@ -256,9 +256,8 @@ export function WistiaPlayer({
         fill
         src={`https://fast.wistia.com/embed/medias/${wistiaMediaId}/swatch`}
         style={{
-          filter: 'blur(5px)',
           height: '100%',
-          objectFit: 'contain',
+          objectFit: 'cover',
           width: '100%',
         }}
       />
