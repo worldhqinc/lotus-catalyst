@@ -158,6 +158,8 @@ export function WistiaPlayer({
       options: {
         autoplay: pageType !== 'tutorial',
         playsinline: true,
+        controls: false,
+        muted: true,
       },
       onReady(video: Window['wistiaVideos'][string]) {
         window.wistiaVideos[wistiaMediaId] = video;
