@@ -43,7 +43,7 @@ export function CompleteKitchen({
   return (
     <div className="space-y-2 px-4 py-4 sm:px-6">
       <div className="flex items-center justify-between">
-        <h2 className="font-sans text-base font-medium">{title}</h2>
+        <h2 className="font-body text-base font-medium">{title}</h2>
         <div className="flex gap-1">
           <Button
             disabled={!canGoPrevious}

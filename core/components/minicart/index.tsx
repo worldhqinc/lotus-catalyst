@@ -141,7 +141,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
             >
               <X size={20} />
             </Button>
-            <h2 className="font-sans text-base font-medium">{t('title')}</h2>
+            <h2 className="font-body text-base font-medium">{t('title')}</h2>
           </div>
           <span className="text-sm sm:text-base">0 items</span>
         </div>
@@ -164,7 +164,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
           >
             <X size={20} />
           </Button>
-          <h2 className="font-sans text-base font-medium">{t('title')}</h2>
+          <h2 className="font-body text-base font-medium">{t('title')}</h2>
         </div>
         <span className="text-sm sm:text-base">{t('items', { count: totalItems })}</span>
       </div>
