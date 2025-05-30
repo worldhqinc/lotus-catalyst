@@ -47,7 +47,7 @@ export function PriceLabel({ className, colorScheme = 'light', price }: Props) {
           className,
         )}
       >
-        {price}
+        ${price}
       </span>
     );
   }
@@ -65,9 +65,8 @@ export function PriceLabel({ className, colorScheme = 'light', price }: Props) {
             className,
           )}
         >
-          {price.minValue}
-          &nbsp;&ndash;&nbsp;
-          {price.maxValue}
+          ${price.minValue}
+          &nbsp;&ndash;&nbsp; ${price.maxValue}
         </span>
       );
 
@@ -82,7 +81,7 @@ export function PriceLabel({ className, colorScheme = 'light', price }: Props) {
               }[colorScheme],
             )}
           >
-            {price.previousValue}
+            ${price.currentValue}
           </span>{' '}
           <span
             className={clsx(
@@ -93,7 +92,7 @@ export function PriceLabel({ className, colorScheme = 'light', price }: Props) {
               }[colorScheme],
             )}
           >
-            {price.currentValue}
+            ${price.previousValue}
           </span>
         </span>
       );

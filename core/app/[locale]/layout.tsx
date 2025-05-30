@@ -68,8 +68,10 @@ export async function generateMetadata(): Promise<Metadata> {
       default: pageTitle || storeName,
     },
     icons: {
-      icon: '/favicon.ico', // app/favicon.ico/route.ts
+      icon: [{ url: '/favicon.ico', sizes: 'any' }], // app/favicon.ico/route.ts
+      apple: '/images/apple-touch-icon.png',
     },
+    manifest: '/site.webmanifest',
     description: metaDescription,
     keywords: metaKeywords ? metaKeywords.split(',') : null,
     metadataBase: new URL('https://staging.lotuscooking.com'),
