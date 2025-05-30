@@ -30,10 +30,6 @@ web:
                 enabled: false
             headers:
                 X-Frame-Options: SAMEORIGIN
-            rules:
-                '\.webmanifest$':
-                    headers:
-                        Content-Type: "application/manifest+json"
     commands:
         start: cd /app/core && NODE_ENV=production pnpm exec next start -p $PORT
 build:
