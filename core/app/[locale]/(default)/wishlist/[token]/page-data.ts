@@ -54,17 +54,25 @@ export const getPublicWishlist = cache(async (token: string, pagination: Paginat
   const { before, after, limit = 9 } = pagination;
   const currencyCode = await getPreferredCurrencyCode();
   const paginationArgs = before ? { last: limit, before } : { first: limit, after };
-  const response = await client.fetch({
-    document: PublicWishlistQuery,
-    variables: { ...paginationArgs, currencyCode, token },
-    fetchOptions: { next: { revalidate, tags: [TAGS.customer] } },
-  });
 
-  const wishlist = response.data.site.publicWishlist;
+  try {
+    const response = await client.fetch({
+      document: PublicWishlistQuery,
+      variables: { ...paginationArgs, currencyCode, token },
+      fetchOptions: { next: { revalidate, tags: [TAGS.customer] } },
+    });
 
-  if (!wishlist) {
+    const wishlist = response.data.site.publicWishlist;
+
+    if (!wishlist) {
+      return null;
+    }
+
+    return wishlist;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+
     return null;
   }
-
-  return wishlist;
 });
