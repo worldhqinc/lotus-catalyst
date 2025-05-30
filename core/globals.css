@@ -156,6 +156,11 @@
     transition: background-color 5000s ease-in-out 0s;
     color: inherit !important;
   }
+
+  input[type='password'] {
+    -webkit-text-stroke-width: 0.2em;
+    letter-spacing: 0.2em;
+  }
 }
 
 @layer components {
