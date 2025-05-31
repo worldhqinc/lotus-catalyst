@@ -141,7 +141,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
             >
               <X size={20} />
             </Button>
-            <h2 className="font-sans text-base font-medium">{t('title')}</h2>
+            <h2 className="font-body text-base font-medium">{t('title')}</h2>
           </div>
           <span className="text-sm sm:text-base">0 items</span>
         </div>
@@ -164,7 +164,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
           >
             <X size={20} />
           </Button>
-          <h2 className="font-sans text-base font-medium">{t('title')}</h2>
+          <h2 className="font-body text-base font-medium">{t('title')}</h2>
         </div>
         <span className="text-sm sm:text-base">{t('items', { count: totalItems })}</span>
       </div>
@@ -195,7 +195,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
                   className="text-contrast-400 flex items-start p-1"
                   onClick={() => handleRemoveItem(item.id)}
                 >
-                  <Trash size={16} strokeWidth={1} />
+                  <Trash size={16} strokeWidth={1.5} />
                 </button>
               </div>
               <div className="flex items-center justify-between gap-2">

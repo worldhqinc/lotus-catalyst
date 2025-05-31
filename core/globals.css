@@ -73,7 +73,7 @@
         height: 100% !important;
         object-fit: cover !important;
         object-position: center !important;
-        opacity: 0.3 !important;
+        opacity: 1 !important;
       }
 
       /* Hide the loading indicator */
@@ -145,6 +145,21 @@
 
   *::selection {
     @apply bg-primary text-white;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+    -webkit-text-fill-color: currentColor !important;
+    transition: background-color 5000s ease-in-out 0s;
+    color: inherit !important;
+  }
+
+  input[type='password'] {
+    -webkit-text-stroke-width: 0.2em;
+    letter-spacing: 0.2em;
   }
 }
 
@@ -596,14 +611,14 @@
 
 :root {
   --primary: 108 19% 49%;
-  --primary-highlight: 109 19% 59%;
+  --primary-highlight: 109 19% 39%;
   --accent: 96 100% 88%;
   --background: 0 0% 100%;
   --image: 0 0% 90%;
   --foreground: 0 0% 7.45%;
   --disabled: 0 0% 64%;
   --success: 116 78% 65%;
-  --error: 0 100% 60%;
+  --error: 347 77% 50%;
   --warning: 40 100% 60%;
   --info: 220 70% 45%;
   --icon-primary: 0 0% 9%;
@@ -637,10 +652,6 @@
   /* Container */
   --container-max-width: 1472px;
   --container-padding: 1rem;
-
-  @media (min-width: 768px) {
-    --container-padding: 1.5rem;
-  }
 
   @media (min-width: 1024px) {
     --container-padding: 2rem;

@@ -48,9 +48,9 @@ export const Modal = ({ buttons = [], form, children, ...props }: ModalProps) =>
   return (
     <ModalPrimitive {...props}>
       <ModalFormWrapper form={form}>
-        <div>{children}</div>
+        <div className="text-pretty">{children}</div>
         {buttons.length > 0 && (
-          <div className="mt-5 flex flex-row justify-end gap-2">
+          <div className="mt-5 flex flex-row justify-end gap-3">
             {buttons.map((button, index) => (
               <ModalButton key={index} {...button} />
             ))}
@@ -66,7 +66,7 @@ function ModalButton({ label, className, variant, type, action }: ModalButton) {
     case 'cancel':
       return (
         <Close asChild>
-          <Button className={className} size="small" variant="ghost">
+          <Button className={className} size="small" variant={variant ?? 'ghost'}>
             {label}
           </Button>
         </Close>

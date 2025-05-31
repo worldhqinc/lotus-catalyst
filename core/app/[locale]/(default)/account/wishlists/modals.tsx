@@ -102,7 +102,7 @@ export const getShareWishlistModal = (
   children: <ShareWishlistModal publicUrl={publicUrl} />,
   title,
   buttons: [
-    { type: 'cancel', label: closeLabel },
+    { type: 'cancel', label: closeLabel, variant: 'tertiary' },
     { label: copyLabel, variant: 'primary', action },
   ],
 });
@@ -124,10 +124,11 @@ export const getDeleteWishlistModal = (
     {
       label: t('Modal.cancel'),
       type: 'cancel',
+      variant: 'tertiary',
     },
     {
       label: t('Modal.delete'),
-      variant: 'danger',
+      variant: 'primary',
       type: 'submit',
     },
   ],
