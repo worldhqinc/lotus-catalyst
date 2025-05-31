@@ -381,7 +381,7 @@
         "sku": "SKU",
         "weight": "Weight",
         "condition": "Condition",
-        "docs": "Use & Care"
+        "resources": "Product Resources"
       }
     },
     "RelatedProducts": {
@@ -498,7 +498,6 @@
         "ca": "Canada"
       },
       "termsAndConditions": "Terms and Conditions",
-      "cookiePolicy": "Cookie Policy",
       "accessibility": "Accessibility",
       "title": "Policies"
     }

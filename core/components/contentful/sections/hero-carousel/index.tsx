@@ -234,10 +234,10 @@ export function HeroCarousel({ data }: Props) {
                   <div className="bg-contrast-200 absolute inset-0 z-10 h-full w-full after:absolute after:inset-0 after:z-15 after:bg-linear-to-l after:from-transparent after:to-black/50">
                     {mediaElement(slide, idx)}
                   </div>
-                  <div className="absolute top-1/2 left-0 z-20 -translate-y-1/2">
+                  <div className="absolute top-1/2 left-1/2 z-20 container -translate-x-1/2 -translate-y-1/2">
                     <div
                       className={clsx(
-                        'ease-quad container mx-auto flex h-full flex-col justify-center py-10 transition-all duration-500',
+                        'ease-quad flex h-full flex-col justify-center py-10 transition-all duration-500',
                         idx === activeIndex
                           ? 'translate-y-0 opacity-100'
                           : 'translate-y-10 opacity-0',

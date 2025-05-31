@@ -31,7 +31,7 @@ export function ProductGallery({
         {featuredImage && (
           <div
             className={clsx(
-              'bg-surface-image relative col-span-2 aspect-square overflow-hidden rounded-xl',
+              'bg-surface-image relative col-span-2 aspect-square overflow-hidden rounded-lg',
             )}
           >
             <Image

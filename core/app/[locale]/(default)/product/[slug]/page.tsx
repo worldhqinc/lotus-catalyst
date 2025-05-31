@@ -292,27 +292,37 @@ export default async function Product(props: Props) {
             },
           ]
         : []),
-      ...(fields && 'docs' in fields && fields.docs?.length
+      ...(product.sku
         ? [
             {
-              title: t('ProductDetails.Accordions.docs'),
+              title: t('ProductDetails.Accordions.resources'),
               content: (
                 <div className="flex flex-col items-start gap-4">
-                  {fields.docs.map((doc, index) => {
-                    const { documentName, url } = supportDocumentSchema.parse(doc).fields;
+                  {fields && 'docs' in fields && fields.docs?.length
+                    ? fields.docs.map((doc, index) => {
+                        const { documentName, url } = supportDocumentSchema.parse(doc).fields;
 
-                    return (
-                      <Link
-                        className="underline"
-                        href={url}
-                        key={`${doc.sys.id}-${index}`}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        <h3>{documentName}</h3>
-                      </Link>
-                    );
-                  })}
+                        return (
+                          <Link
+                            className="underline"
+                            href={url}
+                            key={`${doc.sys.id}-${index}`}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            <h3>{documentName}</h3>
+                          </Link>
+                        );
+                      })
+                    : []}
+                  <Link
+                    className="underline"
+                    href={`/product-formulation-lookup?selectedSku=${product.sku}`}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Product Formulation Information
+                  </Link>
                 </div>
               ),
             },
