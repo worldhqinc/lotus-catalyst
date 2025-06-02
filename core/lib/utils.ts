@@ -1,5 +1,6 @@
 import { documentToHtmlString, Options } from '@contentful/rich-text-html-renderer';
 import { Block, BLOCKS, Document, Inline, MARKS } from '@contentful/rich-text-types';
+import { createElement, ReactNode } from 'react';
 
 import { cta } from '~/contentful/schema';
 
@@ -146,4 +147,16 @@ function generateIdFromStrings(text: string[]): string {
 
 function generateIdFromNodeContent(node: Block | Inline): string {
   return generateIdFromStrings(node.content.map((child) => ('value' in child ? child.value : '')));
+}
+
+export function formatTrademarkText(text: string): ReactNode {
+  if (!text) return '';
+
+  const parts = text.split(/(™)/g);
+
+  return parts.map((part, index) =>
+    part === '™'
+      ? createElement('sup', { key: index, className: 'text-base align-super -top-1' }, '™')
+      : part,
+  );
 }
