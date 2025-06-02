@@ -135,6 +135,28 @@
     [data-handle='clickForSoundButton'],
     [data-handle='click-for-sound-backdrop'] {
       display: inline !important;
+
+      button {
+        @apply !hidden;
+      }
+    }
+
+    .wistia-player-control {
+      @apply !hidden;
+    }
+
+    [data-handle='bigPlayButton'],
+    [data-handle='bigPauseButton'],
+    [data-handle='playPauseLoading'] {
+      display: block !important;
+    }
+
+    .w-bpb-wrapper {
+      @apply z-10 !rounded-lg;
+    }
+
+    .w-bottom-bar {
+      @apply !block;
     }
   }
 

@@ -171,7 +171,7 @@ export function WistiaPlayer({
         video.bind('play', () => setIsPlaying(true));
         video.bind('pause', () => setIsPlaying(false));
 
-        if (pageType !== 'product') {
+        if (pageType !== 'product' && pageType !== 'tutorial') {
           video.bind('end', () => {
             video.time(0);
             video.play();
