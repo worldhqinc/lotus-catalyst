@@ -279,7 +279,7 @@ export default async function Product(props: Props) {
                   <dl className="flex flex-col gap-4">
                     {specifications.map((field, index) => (
                       <div
-                        className="text-contrast-400 text-md grid grid-cols-1 gap-2 @lg:grid-cols-[1fr_2fr]"
+                        className="text-contrast-400 text-md grid grid-cols-2 gap-2 @lg:grid-cols-[1fr_2fr]"
                         key={index}
                       >
                         <dt className="font-medium">{field.name}</dt>
