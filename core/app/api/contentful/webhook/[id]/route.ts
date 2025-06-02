@@ -199,8 +199,8 @@ function getPriceField(
   const priceData = salePrice
     ? {
         type: 'sale' as const,
-        previousValue: salePrice,
-        currentValue: price,
+        previousValue: price,
+        currentValue: salePrice,
       }
     : price;
 
