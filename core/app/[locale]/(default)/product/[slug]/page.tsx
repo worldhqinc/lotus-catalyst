@@ -427,7 +427,7 @@ export default async function Product(props: Props) {
                     fields: {
                       internalName: 'partsAccessories',
                       carouselTitle: 'Accessories',
-                      subtitle: 'Recommendations just for you',
+                      subtitle: `Recommendations for the ${baseProduct.name}`,
                       products: partsAccessories,
                     },
                   }}
