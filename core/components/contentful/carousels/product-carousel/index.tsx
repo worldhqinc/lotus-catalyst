@@ -55,13 +55,13 @@ export function ProductCarousel({ carousel }: Props) {
 
   return (
     <SectionLayout containerSize="2xl">
-      <Carousel hideOverflow={false}>
+      <Carousel hideOverflow={false} opts={{ align: 'start' }}>
         <NavHeader subtitle={subtitle} title={carouselTitle} />
 
-        <CarouselContent className="mb-8 -ml-4 @2xl:-ml-5">
+        <CarouselContent className="mb-8 -ml-4 @2xl:-ml-6">
           {items.map((product, index) => (
             <CarouselItem
-              className="basis-4/5 pl-4 @md:basis-1/2 @lg:basis-1/3 @2xl:basis-1/4 @2xl:pl-5"
+              className="basis-4/5 pl-4 @md:basis-1/2 @lg:basis-1/3 @2xl:basis-1/4 @2xl:pl-6"
               key={`${product.id}-${index}`}
             >
               <ProductCard
