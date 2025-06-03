@@ -19,7 +19,7 @@ import {
   useCallback,
   useEffect,
 } from 'react';
-import { requestFormReset, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
 import { z } from 'zod';
 
 import { ButtonRadioGroup } from '@/vibes/soul/form/button-radio-group';
@@ -38,6 +38,7 @@ import { Button } from '@/vibes/soul/primitives/button';
 import NotifyBackInStock from '~/components/notify-back-in-stock';
 import { usePathname, useRouter } from '~/i18n/routing';
 
+import { revalidateCart } from './actions/revalidate-cart';
 import { Field, schema, SchemaRawShape } from './schema';
 
 const SubmitButton = forwardRef<HTMLButtonElement, { children: ReactNode; disabled?: boolean }>(
@@ -131,9 +132,13 @@ export function ProductDetailForm<F extends Field>({
 
   useEffect(() => {
     if (lastResult?.status === 'success') {
-      // This is needed to refresh the Data Cache after the product has been added to the cart.
-      // The cart id is not picked up after the first time the cart is created/updated.
       router.refresh();
+
+      startTransition(async () => {
+        // This is needed to refresh the Data Cache after the product has been added to the cart.
+        // The cart id is not picked up after the first time the cart is created/updated.
+        await revalidateCart();
+      });
     }
   }, [lastResult, successMessage, router]);
 
@@ -147,7 +152,6 @@ export function ProductDetailForm<F extends Field>({
       event.preventDefault();
 
       startTransition(() => {
-        requestFormReset(event.currentTarget);
         formAction(formData);
 
         // events.onAddToCart?.(formData);
