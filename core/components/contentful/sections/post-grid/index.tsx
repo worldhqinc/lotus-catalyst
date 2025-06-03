@@ -2,6 +2,7 @@
 
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { Configure, InstantSearch, useInfiniteHits, useRefinementList } from 'react-instantsearch';
+import { useRef } from 'react';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Button } from '@/vibes/soul/primitives/button';
@@ -30,18 +31,33 @@ function InfiniteHits({ type }: { type: string }) {
   const hasMore = !isLastPage;
   const totalCount = results?.nbHits ?? 0;
   const progressPercent = totalCount > 0 ? (items.length / totalCount) * 100 : 0;
+  const newPostsRef = useRef<HTMLDivElement>(null);
 
   const transformer = type === 'feature' ? transformFeatureHit : transformRecipeHit;
+
+  const handleShowMore = () => {
+    showMore();
+    setTimeout(() => {
+      if (newPostsRef.current) {
+        newPostsRef.current.focus();
+      }
+    }, 0);
+  };
 
   return (
     <>
       <div className="grid w-full gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-x-6">
-        {items.map((hit) => (
-          <PostCard
+        {items.map((hit, index) => (
+          <div
             key={hit.objectID}
-            {...transformer(hit)}
-            onClick={() => sendEvent('click', hit, 'Post Clicked')}
-          />
+            ref={index === items.length - 1 ? newPostsRef : null}
+            tabIndex={-1}
+          >
+            <PostCard
+              {...transformer(hit)}
+              onClick={() => sendEvent('click', hit, 'Post Clicked')}
+            />
+          </div>
         ))}
       </div>
       <div className="flex w-full flex-col items-center gap-8 py-12">
@@ -57,7 +73,7 @@ function InfiniteHits({ type }: { type: string }) {
           </div>
         </div>
         {hasMore && (
-          <Button onClick={() => showMore()} variant="tertiary">
+          <Button onClick={handleShowMore} variant="tertiary">
             Load more
           </Button>
         )}

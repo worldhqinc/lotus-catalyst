@@ -70,7 +70,7 @@ export function InlineEmailForm({
     >
       <div
         className={clsx(
-          'bg-background relative border-b text-base transition-colors duration-200 focus:outline-hidden focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none @4xl:text-xl',
+          'bg-background relative border-b text-base transition-all duration-200 focus-within:shadow-[inset_0_-1px_0_0_hsl(var(--contrast-100))] focus:outline-hidden focus-visible:shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none @4xl:text-xl',
           errors.length || fields.email.errors
             ? 'border-error focus-within:border-error'
             : 'border-contrast-200 focus-within:border-primary',
@@ -90,7 +90,7 @@ export function InlineEmailForm({
         <div className="absolute top-1/2 right-0 -translate-y-1/2 pr-2">
           <Button
             aria-label={submitLabel}
-            className="hover:bg-contrast-100/50 bg-transparent"
+            className="hover:bg-contrast-100/50 focus-visible:!outline-contrast-100 focus-visible:[&_svg]:text-foreground bg-transparent"
             loading={isPending}
             shape="circle"
             size="small"

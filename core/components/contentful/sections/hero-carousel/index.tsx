@@ -202,13 +202,14 @@ export function HeroCarousel({ data }: Props) {
             <button
               aria-label={`Show slide ${idx + 1}`}
               className={clsx(
-                'size-2 rounded-full transition-all duration-300 focus:outline-none',
+                'size-2 rounded-full transition-all duration-300',
                 idx === activeIndex
                   ? 'bg-[var(--slideshow-pagination,hsl(var(--background)))] opacity-100'
                   : 'bg-[var(--slideshow-pagination,hsl(var(--background)))] opacity-30 hover:opacity-70',
               )}
               key={idx}
               onClick={() => scrollToSlide(idx)}
+              onFocus={() => scrollToSlide(idx)}
             />
           ))}
         </div>

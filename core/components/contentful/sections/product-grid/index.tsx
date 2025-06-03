@@ -1,7 +1,7 @@
 'use client';
 
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   Configure,
   InstantSearch,
@@ -33,6 +33,7 @@ function InfiniteHits() {
   const hasMore = !isLastPage;
   const totalCount = results?.nbHits ?? 0;
   const progressPercent = totalCount > 0 ? (items.length / totalCount) * 100 : 0;
+  const newProductsRef = useRef<HTMLDivElement>(null);
 
   if ((status === 'loading' || status === 'stalled') && items.length === 0) {
     return (
@@ -44,16 +45,30 @@ function InfiniteHits() {
     );
   }
 
+  const handleShowMore = () => {
+    showMore();
+    setTimeout(() => {
+      if (newProductsRef.current) {
+        newProductsRef.current.focus();
+      }
+    }, 0);
+  };
+
   return (
     <>
       <div className="mt-8 grid w-full grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
         {items.map((hit, index) => (
-          <ProductCard
-            aspectRatio="1:1"
+          <div
             key={`${hit.objectID}-${index}`}
-            onClick={() => sendEvent('click', hit, 'Product Clicked')}
-            product={transformProductHit(hit)}
-          />
+            ref={index === items.length - 1 ? newProductsRef : null}
+            tabIndex={-1}
+          >
+            <ProductCard
+              aspectRatio="1:1"
+              onClick={() => sendEvent('click', hit, 'Product Clicked')}
+              product={transformProductHit(hit)}
+            />
+          </div>
         ))}
       </div>
       <div className="flex w-full flex-col items-center gap-8 py-12">
@@ -69,7 +84,7 @@ function InfiniteHits() {
           </div>
         </div>
         {hasMore && (
-          <Button className="[overflow-anchor:none]" onClick={() => showMore()} variant="tertiary">
+          <Button className="[overflow-anchor:none]" onClick={handleShowMore} variant="tertiary">
             Load more
           </Button>
         )}
