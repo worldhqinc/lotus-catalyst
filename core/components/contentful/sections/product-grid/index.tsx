@@ -34,7 +34,7 @@ function InfiniteHits() {
   const totalCount = results?.nbHits ?? 0;
   const progressPercent = totalCount > 0 ? (items.length / totalCount) * 100 : 0;
 
-  if (status === 'loading' || status === 'stalled') {
+  if ((status === 'loading' || status === 'stalled') && items.length === 0) {
     return (
       <div className="mt-8 grid w-full grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
         {Array.from({ length: 8 }).map((_, index) => (
