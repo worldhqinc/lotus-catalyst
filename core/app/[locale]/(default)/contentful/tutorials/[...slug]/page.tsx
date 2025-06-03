@@ -11,7 +11,7 @@ import SocialShare from '~/components/contentful/sections/social-share';
 import { Image } from '~/components/image';
 import { WistiaPlayer } from '~/components/wistia-player';
 import { carouselProductSchema } from '~/contentful/schema';
-import { ensureImageUrl, generateHtmlFromRichText } from '~/lib/utils';
+import { ensureImageUrl, formatTrademarkText, generateHtmlFromRichText } from '~/lib/utils';
 
 import { getPageBySlug } from '../../[...rest]/page-data';
 
@@ -72,7 +72,9 @@ export default async function FeaturePage({ params }: Props) {
         <div className="flex flex-wrap items-center justify-center gap-2">
           {fields.categories?.map((category) => <Badge key={category}>{category}</Badge>)}
         </div>
-        <h1 className="font-heading mt-8 text-4xl font-medium uppercase">{fields.title}</h1>
+        <h1 className="font-heading mt-8 text-4xl font-medium uppercase">
+          {formatTrademarkText(fields.title)}
+        </h1>
         {fields.subtitle ? (
           <p className="prose [&_p]:text-icon-secondary mt-6 max-w-none">{fields.subtitle}</p>
         ) : null}

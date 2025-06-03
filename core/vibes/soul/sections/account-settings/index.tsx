@@ -41,14 +41,14 @@ export function AccountSettingsSection({
 }: AccountSettingsSectionProps) {
   return (
     <section className="@container w-full">
-      <header className="border-b-contrast-200 mb-6 border-b">
+      <header className="border-b-contrast-200 mb-8 border-b">
         <div className="mb-6 flex min-h-[42px] items-center justify-between">
           <h1 className="text-2xl leading-[120%] @2xl:text-4xl">{title}</h1>
         </div>
       </header>
       <div className="flex flex-col gap-y-24 @xl:flex-row">
         <div className="flex w-full flex-col @xl:max-w-lg">
-          <div className="mb-6 flex justify-end">
+          <div className="mb-8 flex justify-end">
             <p className="text-foreground text-sm">
               Required Fields <span className="text-contrast-400">*</span>
             </p>
@@ -62,6 +62,11 @@ export function AccountSettingsSection({
           </div>
           <div className="border-t border-[var(--account-settings-section-border,hsl(var(--contrast-100)))] pt-12">
             <h2 className="mb-8 text-2xl leading-[120%] @2xl:text-4xl">{changePasswordTitle}</h2>
+            <div className="mb-8 flex items-center justify-end">
+              <p className="text-foreground text-sm">
+                Required Fields <span className="text-contrast-400">*</span>
+              </p>
+            </div>
             <ChangePasswordForm
               action={changePasswordAction}
               confirmPasswordLabel={confirmPasswordLabel}

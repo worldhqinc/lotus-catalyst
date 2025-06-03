@@ -91,7 +91,7 @@ export function ProductCarousel({
         }
 
         return (
-          <Carousel className={className} hideOverflow={hideOverflow}>
+          <Carousel className={className} hideOverflow={hideOverflow} opts={{ align: 'start' }}>
             <CarouselContent className="mb-10 -ml-4 @2xl:-ml-5">
               {products.map(({ id, ...product }) => (
                 <CarouselItem

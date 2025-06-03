@@ -576,7 +576,7 @@ export const Navigation = forwardRef(function Navigation(
                                 />
                               </figure>
                               <span className="ease-quad group-hover:text-primary py-2 font-medium transition-colors duration-200">
-                                Explore the Professional Series
+                                Discover the Professional Series
                               </span>
                             </div>
                           </NavigationMenu.Link>
@@ -789,7 +789,7 @@ export const Navigation = forwardRef(function Navigation(
                                           />
                                         </figure>
                                         <span className="py-2 text-sm font-medium">
-                                          Explore the Professional Series
+                                          Discover the Professional Series
                                         </span>
                                       </div>
                                     </NavigationMenu.Link>

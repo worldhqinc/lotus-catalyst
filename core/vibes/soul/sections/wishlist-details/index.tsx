@@ -95,7 +95,11 @@ export const WishlistDetails = ({
               wishlistId={wishlist.id}
             />
 
-            {paginationInfo && <CursorPagination info={paginationInfo} />}
+            <Stream value={paginationInfo}>
+              {(info) =>
+                info && (info.startCursor || info.endCursor) && <CursorPagination info={info} />
+              }
+            </Stream>
           </section>
         );
       }}

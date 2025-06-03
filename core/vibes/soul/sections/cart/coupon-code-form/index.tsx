@@ -164,7 +164,7 @@ function SubmitButton({ disabled, ...props }: React.ComponentPropsWithoutRef<typ
   return (
     <Button
       {...props}
-      className="max-h-[46px] shrink-0"
+      className="max-h-[50px] shrink-0"
       disabled={disabled ?? pending}
       loading={pending}
       name="intent"
