@@ -299,13 +299,13 @@ export const LocaleSwitcher = ({
           <DropdownMenu.Portal>
             <DropdownMenu.Content
               align="end"
-              className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-y-scroll rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
+              className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 z-50 max-h-80 overflow-hidden rounded-xl bg-[var(--nav-locale-background,hsl(var(--background)))] p-2 shadow-xl @4xl:w-32 @4xl:rounded-2xl @4xl:p-2"
               sideOffset={16}
             >
               {locales.map(({ id }) => (
                 <DropdownMenu.Item
                   className={clsx(
-                    'nav-locale-item cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
+                    'nav-locale-item cursor-default rounded-lg bg-[var(--nav-locale-link-background,transparent)] px-2.5 py-2 text-sm font-medium text-[var(--nav-locale-link-text,hsl(var(--contrast-400)))] ring-[var(--nav-focus,hsl(var(--primary)))] transition-colors outline-none hover:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] hover:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))] focus:bg-[var(--nav-locale-link-background-hover,hsl(var(--contrast-100)))] focus:text-[var(--nav-locale-link-text-hover,hsl(var(--foreground)))]',
                     {
                       'text-[var(--nav-locale-link-text-selected,hsl(var(--foreground)))]':
                         id === activeLocaleId,
@@ -562,10 +562,10 @@ export const Navigation = forwardRef(function Navigation(
                         </div>
                         <div className="col-start-2 xl:col-start-3">
                           <NavigationMenu.Link
-                            className="group w-full"
+                            className="group w-full focus-visible:ring-0 focus-visible:outline-none"
                             href="/shop/professional-series"
                           >
-                            <div className="flex h-full flex-col">
+                            <div className="group-focus-visible:ring-primary group-focus-visible:ring-offset-background flex h-full flex-col group-focus-visible:rounded-lg group-focus-visible:ring-2 group-focus-visible:ring-offset-2">
                               <figure className="bg-surface-image aspect-[19/6] h-full min-h-[246px] w-full overflow-hidden rounded-lg">
                                 <Image
                                   alt="Explore Lotus Professional Series"

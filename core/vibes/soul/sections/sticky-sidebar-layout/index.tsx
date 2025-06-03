@@ -52,22 +52,6 @@ export function StickySidebarLayout({
         <div
           className={clsx(
             'min-w-0',
-            sidebarPosition === 'after' ? 'order-2' : 'order-1',
-            {
-              '1/3': '@4xl:w-1/3',
-              '1/2': '@4xl:w-1/2',
-              '1/4': '@4xl:w-1/4',
-              small: '@4xl:w-48',
-              medium: '@4xl:w-60',
-              large: '@4xl:w-80',
-            }[sidebarSize],
-          )}
-        >
-          <div className="sticky top-36">{sidebar}</div>
-        </div>
-        <div
-          className={clsx(
-            'min-w-0',
             sidebarPosition === 'after' ? 'order-1' : 'order-2',
             {
               '1/3': '@4xl:w-2/3',
@@ -80,6 +64,22 @@ export function StickySidebarLayout({
           )}
         >
           {children}
+        </div>
+        <div
+          className={clsx(
+            'min-w-0',
+            sidebarPosition === 'after' ? 'order-2' : 'order-1',
+            {
+              '1/3': '@4xl:w-1/3',
+              '1/2': '@4xl:w-1/2',
+              '1/4': '@4xl:w-1/4',
+              small: '@4xl:w-48',
+              medium: '@4xl:w-60',
+              large: '@4xl:w-80',
+            }[sidebarSize],
+          )}
+        >
+          <div className="sticky top-36">{sidebar}</div>
         </div>
       </div>
     </section>

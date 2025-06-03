@@ -162,7 +162,7 @@ export function ProductCard({
           )}
           {!!sku && !inStock && (
             <div className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
-              <div className="flex size-full items-end justify-center p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+              <div className="flex size-full items-end justify-center p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100 focus-within:opacity-100">
                 <NotifyBackInStock
                   buttonClassName="pointer-events-auto w-full"
                   sku={sku}
@@ -280,7 +280,7 @@ function AddToBagForm({ sku }: { sku: string }) {
   return (
     <div
       className={clsx(
-        'ease-quad flex size-full items-end justify-center p-4 transition-opacity duration-200 group-hover:opacity-100',
+        'ease-quad flex size-full items-end justify-center p-4 transition-opacity duration-200 group-hover:opacity-100 focus-within:opacity-100',
         pending ? 'opacity-100' : 'opacity-0',
       )}
     >

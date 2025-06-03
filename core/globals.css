@@ -60,6 +60,14 @@
       position: static !important;
     }
 
+    [data-handle='focusOutline'] {
+      @apply !hidden;
+    }
+
+    .w-css-reset.w-vulcan-v2-button {
+      @apply !hidden;
+    }
+
     /* This is a hack to show a loading indicator for the wistia player. */
 
     .wistia_swatch {
@@ -162,7 +170,7 @@
 
   /* Global focus ring color override */
   :where(a, button, input, select, textarea):focus-visible {
-    @apply ring-primary rounded ring-2 ring-offset-2 outline-none;
+    @apply outline-2 outline-offset-2 outline-primary;
   }
 
   *::selection {

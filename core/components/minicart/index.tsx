@@ -3,7 +3,7 @@
 import { parseWithZod } from '@conform-to/zod';
 import { Trash, X } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
-import { startTransition, useActionState, useEffect, useOptimistic } from 'react';
+import { startTransition, useActionState, useEffect, useOptimistic, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
 import { z } from 'zod';
 
@@ -43,6 +43,7 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
   const t = useTranslations('Minicart');
   const format = useFormatter();
   const router = useRouter();
+  const minicartRef = useRef<HTMLDivElement>(null);
   const [{ items, lastResult }, formAction, isPending] = useActionState(minicartAction, {
     items: initialItems,
     lastResult: null,
@@ -56,6 +57,12 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
       router.refresh();
     }
   }, [lastResult, router]);
+
+  useEffect(() => {
+    if (minicartRef.current) {
+      minicartRef.current.focus();
+    }
+  }, []);
 
   const [optimisticItems, setOptimisticItems] = useOptimistic<CartItem[], FormData>(
     items,
@@ -129,7 +136,12 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
 
   if (optimisticItems.length === 0) {
     return (
-      <div className="bg-contrast-100 flex h-full flex-col" data-lenis-prevent>
+      <div
+        className="bg-contrast-100 flex h-full flex-col"
+        data-lenis-prevent
+        ref={minicartRef}
+        tabIndex={-1}
+      >
         <div className="bg-contrast-100 border-contrast-200 flex items-center gap-2 border-b px-6 py-4">
           <div className="flex flex-1 items-center gap-2">
             <Button
@@ -152,7 +164,12 @@ export function Minicart({ initialItems, onClose, cartHref }: Props) {
   const totalItems = optimisticItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <div className="bg-contrast-100 flex h-full flex-col" data-lenis-prevent>
+    <div
+      className="bg-contrast-100 flex h-full flex-col"
+      data-lenis-prevent
+      ref={minicartRef}
+      tabIndex={-1}
+    >
       <div className="bg-contrast-100 border-contrast-200 flex items-center gap-2 border-b px-6 py-4">
         <div className="flex flex-1 items-center gap-2">
           <Button
