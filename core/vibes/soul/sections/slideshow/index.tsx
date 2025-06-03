@@ -295,6 +295,7 @@ export function Slideshow({
                     index === selectedIndex && navigationColor === 'black'
                       ? 'opacity-100'
                       : 'opacity-30',
+                    index === selectedIndex && !isPlaying ? 'opacity-100' : 'opacity-30',
                   )}
                   style={vertical ? { height: dimensionStyle } : { width: dimensionStyle }}
                 />
@@ -319,7 +320,7 @@ export function Slideshow({
           <button
             aria-label={isPlaying ? 'Pause' : 'Play'}
             className={clsx(
-              'ease-quad flex h-7 w-7 items-center justify-center rounded-lg ring-[var(--slideshow-focus)] transition-[color,_opacity] duration-300 focus-visible:ring-0 focus-visible:outline-0',
+              'ease-quad flex h-7 w-7 items-center justify-center rounded-lg ring-[var(--slideshow-focus)] transition-[color,_opacity] duration-300 focus-visible:ring-0',
               navigationColor === 'black' ? 'text-black' : 'hover:text-primary text-white',
               vertical ? 'mt-2' : '',
             )}

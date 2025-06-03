@@ -60,6 +60,14 @@
       position: static !important;
     }
 
+    [data-handle='focusOutline'] {
+      @apply !hidden;
+    }
+
+    .w-css-reset.w-vulcan-v2-button {
+      @apply !hidden;
+    }
+
     /* This is a hack to show a loading indicator for the wistia player. */
 
     .wistia_swatch {
