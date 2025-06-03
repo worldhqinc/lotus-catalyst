@@ -292,7 +292,9 @@ export function Slideshow({
                   className={clsx(
                     'size-2 transition-all duration-300',
                     navigationColor === 'black' ? 'bg-black' : 'bg-contrast-200',
-                    index === selectedIndex ? 'opacity-100' : 'opacity-30',
+                    index === selectedIndex && navigationColor === 'black'
+                      ? 'opacity-100'
+                      : 'opacity-30',
                   )}
                   style={vertical ? { height: dimensionStyle } : { width: dimensionStyle }}
                 />
@@ -302,23 +304,23 @@ export function Slideshow({
         })}
 
         {/* Carousel Count - "01/03" */}
-        <span
+        {/* <span
           className={clsx(
-            'mt-px mr-3 ml-auto hidden font-[family-name:var(--slideshow-number-font-family,var(--font-family-mono))] text-sm text-[var(--slideshow-number,hsl(var(--background)))] md:block',
+            'mt-px ml-4 mr-3 hidden font-[family-name:var(--slideshow-number-font-family,var(--font-family-mono))] text-sm text-[var(--slideshow-number,hsl(var(--background)))] md:block',
             vertical ? 'mt-2' : '',
           )}
         >
           {selectedIndex + 1 < 10 ? `0${selectedIndex + 1}` : selectedIndex + 1}/
           {slides.length < 10 ? `0${slides.length}` : slides.length}
-        </span>
+        </span> */}
 
         {/* Stop / Start Button */}
         {!isProductGallery && (
           <button
             aria-label={isPlaying ? 'Pause' : 'Play'}
             className={clsx(
-              'flex h-7 w-7 items-center justify-center rounded-lg ring-[var(--slideshow-focus)] transition-opacity duration-300 focus-visible:ring-0 focus-visible:outline-0',
-              navigationColor === 'black' ? 'text-black' : 'text-contrast-200',
+              'ease-quad flex h-7 w-7 items-center justify-center rounded-lg ring-[var(--slideshow-focus)] transition-[color,_opacity] duration-300 focus-visible:ring-0 focus-visible:outline-0',
+              navigationColor === 'black' ? 'text-black' : 'hover:text-primary text-white',
               vertical ? 'mt-2' : '',
             )}
             onClick={toggleAutoplay}
