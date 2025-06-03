@@ -1,7 +1,7 @@
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
-import { ensureImageUrl } from '~/lib/utils';
+import { ensureImageUrl, formatTrademarkText } from '~/lib/utils';
 
 interface CardProps {
   categories: string[];
@@ -41,7 +41,7 @@ export function Card({ categories, image, pageSlug, recipeName, shortDescription
       </figure>
       <div className="mt-2 flex flex-col gap-1">
         <h3 className="ease-quad group-hover:text-primary text-surface-foreground font-heading text-3xl transition-colors duration-200">
-          {recipeName}
+          {formatTrademarkText(recipeName)}
         </h3>
         <p className="text-contrast-400 text-sm">{shortDescription}</p>
       </div>

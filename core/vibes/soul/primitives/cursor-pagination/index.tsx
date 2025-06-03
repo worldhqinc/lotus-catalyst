@@ -113,7 +113,7 @@ function PaginationLink({
     <Link
       aria-label={ariaLabel}
       className={clsx(
-        'border-contrast-100 text-foreground ring-primary hover:border-contrast-200 hover:bg-contrast-100 flex h-12 w-12 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:ring-2 focus-visible:outline-0',
+        'text-foreground ring-primary hover:text-primary flex h-12 w-12 items-center justify-center transition-colors duration-300 focus-visible:ring-2 focus-visible:outline-0',
       )}
       href={href}
       scroll={scroll}
@@ -125,7 +125,7 @@ function PaginationLink({
 
 function SkeletonLink({ children }: { children: React.ReactNode }) {
   return (
-    <div className="border-contrast-100 text-foreground flex h-12 w-12 cursor-not-allowed items-center justify-center rounded-full border opacity-50 duration-300">
+    <div className="text-foreground flex h-12 w-12 cursor-not-allowed items-center justify-center opacity-50 duration-300">
       {children}
     </div>
   );
