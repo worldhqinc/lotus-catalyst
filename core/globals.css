@@ -162,7 +162,7 @@
 
   /* Global focus ring color override */
   :where(a, button, input, select, textarea):focus-visible {
-    @apply ring-primary rounded ring-2 ring-offset-2 outline-none;
+    @apply outline-2 outline-offset-2 outline-primary;
   }
 
   *::selection {
