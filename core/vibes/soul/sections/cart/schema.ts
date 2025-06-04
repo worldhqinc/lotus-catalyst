@@ -35,9 +35,9 @@ export const shippingActionFormDataSchema = z.discriminatedUnion('intent', [
   z.object({
     intent: z.literal('add-address'),
     country: z.string(),
-    city: z.string().optional(),
-    state: z.string().optional(),
-    postalCode: z.string().optional(),
+    city: z.string(),
+    state: z.string(),
+    postalCode: z.string(),
   }),
   z.object({
     intent: z.literal('add-shipping'),

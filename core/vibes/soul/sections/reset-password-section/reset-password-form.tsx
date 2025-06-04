@@ -54,7 +54,9 @@ export function ResetPasswordForm({
           </Label>
           <Input
             {...getInputProps(fields.password, { type: 'password' })}
-            errors={fields.password.errors}
+            errors={fields.password.errors?.map((error) =>
+              error === 'Required' ? `${newPasswordLabel} is required` : error,
+            )}
             key={fields.password.id}
             required
           />
@@ -69,7 +71,9 @@ export function ResetPasswordForm({
           </Label>
           <Input
             {...getInputProps(fields.confirmPassword, { type: 'password' })}
-            errors={fields.confirmPassword.errors}
+            errors={fields.confirmPassword.errors?.map((error) =>
+              error === 'Required' ? `${confirmPasswordLabel} is required` : error,
+            )}
             key={fields.confirmPassword.id}
             required
           />

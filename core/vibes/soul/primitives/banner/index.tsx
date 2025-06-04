@@ -78,7 +78,13 @@ export const Banner = forwardRef(
                 <Link href="/where-to-buy">Where to buy</Link>
               </li>
               <li>
-                <div className="flex items-center gap-2">
+                <button
+                  className="UsableNetAssistive flex items-center gap-2"
+                  onClick={() => {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
+                    return window.enableUsableNetAssistive();
+                  }}
+                >
                   <div className="relative isolate after:absolute after:top-1/2 after:left-1/2 after:z-10 after:h-6 after:w-6 after:-translate-x-1/2 after:-translate-y-1/2">
                     <svg
                       className="h-5 w-5"
@@ -127,7 +133,7 @@ export const Banner = forwardRef(
                     </svg>
                   </div>
                   <p className="hidden @4xl:block">Accessibility</p>
-                </div>
+                </button>
               </li>
               <li className="hidden @4xl:block">
                 {locales.length > 1 ? (

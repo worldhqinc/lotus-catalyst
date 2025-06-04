@@ -56,7 +56,9 @@ export function ChangePasswordForm({
         </Label>
         <Input
           {...getInputProps(fields.currentPassword, { type: 'password' })}
-          errors={fields.currentPassword.errors}
+          errors={fields.currentPassword.errors?.map((error) =>
+            error === 'Required' ? `${currentPasswordLabel} is required` : error,
+          )}
           key={fields.currentPassword.id}
           required
         />
@@ -68,7 +70,9 @@ export function ChangePasswordForm({
         </Label>
         <Input
           {...getInputProps(fields.password, { type: 'password' })}
-          errors={fields.password.errors}
+          errors={fields.password.errors?.map((error) =>
+            error === 'Required' ? `${newPasswordLabel} is required` : error,
+          )}
           key={fields.password.id}
           required
         />
@@ -81,7 +85,9 @@ export function ChangePasswordForm({
         <Input
           {...getInputProps(fields.confirmPassword, { type: 'password' })}
           className="mb-6"
-          errors={fields.confirmPassword.errors}
+          errors={fields.confirmPassword.errors?.map((error) =>
+            error === 'Required' ? `${confirmPasswordLabel} is required` : error,
+          )}
           key={fields.confirmPassword.id}
           required
         />

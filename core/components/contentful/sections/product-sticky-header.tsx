@@ -10,6 +10,7 @@ import { LogoLotus } from '@/vibes/soul/primitives/logo-lotus';
 import { addToCartBySkuForm } from '~/app/[locale]/(default)/cart/_actions/add-to-cart-by-sku-form';
 import { productFinishedGoods, productPartsAndAccessories } from '~/contentful/schema';
 import { useRouter } from '~/i18n/routing';
+import { formatTrademarkText } from '~/lib/utils';
 
 function AddToBagForm({ sku, ctaDisabled }: { sku?: string; ctaDisabled?: boolean | null }) {
   const router = useRouter();
@@ -123,7 +124,7 @@ export const ProductStickyHeader = forwardRef<
             className="text-surface-foreground max-w-xs truncate text-2xl font-medium tracking-widest uppercase @xl:max-w-md"
             title={contentful?.fields.webProductName || ''}
           >
-            {contentful?.fields.webProductName}
+            {formatTrademarkText(contentful?.fields.webProductName || '')}
           </span>
           <button
             className="text-surface-foreground/80 hover:text-surface-foreground hidden transition-colors sm:inline-flex"

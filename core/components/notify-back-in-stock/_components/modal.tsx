@@ -12,6 +12,7 @@ import { Input } from '@/vibes/soul/form/input';
 import { Label } from '@/vibes/soul/form/label';
 import { Button } from '@/vibes/soul/primitives/button';
 import { toast } from '@/vibes/soul/primitives/toaster';
+import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 
 import { schema } from '../schema';
 
@@ -128,7 +129,11 @@ export default function NotifyBackInStockModal({
                   Enter your email address below to receive an update when this item becomes
                   available.
                 </p>
-                <form {...getFormProps(form)} action={formAction} className="space-y-4">
+                <form
+                  {...getFormProps(form)}
+                  action={formAction}
+                  className="notify-me-form space-y-4"
+                >
                   <div className="flex items-end justify-end">
                     <p className="text-foreground text-sm">
                       Required Fields <span className="text-contrast-400">*</span>
@@ -167,6 +172,7 @@ export default function NotifyBackInStockModal({
                     <FormStatus type="error">{errorMessage}</FormStatus>
                   ) : null}
                 </form>
+                <CookiePreferencesNotice />
               </div>
             </div>
           </Dialog.Content>

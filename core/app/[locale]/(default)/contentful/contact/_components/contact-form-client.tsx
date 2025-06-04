@@ -24,7 +24,9 @@ const getErrorsOrUndefined = (
   errors: Record<string, string[]> | null,
   fieldName: string,
 ): string[] | undefined => {
-  return errors?.[fieldName] || undefined;
+  return errors?.[fieldName]?.map((error) =>
+    error === 'Required' ? `${fieldName} is required` : error,
+  );
 };
 
 export const ContactFormClient = ({ fields }: { fields: TicketField[] }) => {

@@ -104,7 +104,9 @@ export function UpdateAccountForm({
           </Label>
           <Input
             {...getInputProps(fields.firstName, { type: 'text' })}
-            errors={fields.firstName.errors}
+            errors={fields.firstName.errors?.map((error) =>
+              error === 'Required' ? `${firstNameLabel} is required` : error,
+            )}
             key={fields.firstName.id}
             required
           />
@@ -116,7 +118,9 @@ export function UpdateAccountForm({
           </Label>
           <Input
             {...getInputProps(fields.lastName, { type: 'text' })}
-            errors={fields.lastName.errors}
+            errors={fields.lastName.errors?.map((error) =>
+              error === 'Required' ? `${lastNameLabel} is required` : error,
+            )}
             key={fields.lastName.id}
             required
           />
@@ -129,7 +133,9 @@ export function UpdateAccountForm({
         </Label>
         <Input
           {...getInputProps(fields.email, { type: 'text' })}
-          errors={fields.email.errors}
+          errors={fields.email.errors?.map((error) =>
+            error === 'Required' ? `${emailLabel} is required` : error,
+          )}
           key={fields.email.id}
           required
         />
@@ -140,7 +146,9 @@ export function UpdateAccountForm({
         </Label>
         <Input
           {...getInputProps(fields.company, { type: 'text' })}
-          errors={fields.company.errors}
+          errors={fields.company.errors?.map((error) =>
+            error === 'Required' ? `${companyLabel} is required` : error,
+          )}
           key={fields.company.id}
         />
       </div>

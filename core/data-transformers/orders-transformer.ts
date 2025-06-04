@@ -22,11 +22,11 @@ export const ordersTransformer = (
           return consignment.lineItems.map((lineItem) => {
             const price = lineItem.catalogProductWithOptionSelections?.prices?.price
               ? format.number(lineItem.catalogProductWithOptionSelections.prices.price.value, {
-                  style: 'currency',
+                  style: 'decimal',
                   currency: lineItem.catalogProductWithOptionSelections.prices.price.currencyCode,
                 })
               : format.number(lineItem.subTotalListPrice.value / lineItem.quantity, {
-                  style: 'currency',
+                  style: 'decimal',
                   currency: lineItem.subTotalListPrice.currencyCode,
                 });
 
@@ -37,7 +37,7 @@ export const ordersTransformer = (
               subtitle: lineItem.brand ?? undefined,
               price,
               totalPrice: format.number(lineItem.subTotalListPrice.value, {
-                style: 'currency',
+                style: 'decimal',
                 currency: lineItem.subTotalListPrice.currencyCode,
               }),
               image: lineItem.image

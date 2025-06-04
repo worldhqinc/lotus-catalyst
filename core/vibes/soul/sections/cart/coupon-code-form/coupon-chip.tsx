@@ -39,9 +39,11 @@ export function CouponChip({
         })}
         value={couponCode}
       />
-      <Chip name="intent" removeLabel={removeLabel} value="delete">
-        {couponCode.toUpperCase()}
-      </Chip>
+      <span className="coupon-code-chip">
+        <Chip name="intent" removeLabel={removeLabel} value="delete">
+          {couponCode.toUpperCase()}
+        </Chip>
+      </span>
     </form>
   );
 }
