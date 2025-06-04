@@ -2,6 +2,7 @@ import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { InlineEmailForm } from '@/vibes/soul/primitives/inline-email-form';
 import { Facebook, Instagram, Pinterest } from '@/vibes/soul/sections/footer/social-icons';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
+import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { subscribe } from '~/components/subscribe/_actions/subscribe';
 import { communitySection } from '~/contentful/schema';
 
@@ -31,6 +32,7 @@ export function CommunitySection({
           ) : null}
           <div className="mt-auto">
             <InlineEmailForm action={subscribe} placeholder={signUpPlaceholder} />
+            <CookiePreferencesNotice />
           </div>
         </div>
         <div className="border-border flex aspect-[2.25] flex-col rounded-lg border bg-white p-4 text-left md:p-8">
