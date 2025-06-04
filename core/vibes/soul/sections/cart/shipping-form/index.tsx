@@ -258,6 +258,11 @@ export function ShippingForm({
       </div>
 
       <div className={clsx('space-y-4', { hidden: !showForms })}>
+        <div className="mt-4 flex items-start justify-end">
+          <p className="text-foreground text-sm">
+            Required Fields <span className="text-contrast-400">*</span>
+          </p>
+        </div>
         <form
           {...getFormProps(addressForm)}
           action={formAction}
@@ -265,7 +270,9 @@ export function ShippingForm({
         >
           {Array.isArray(countries) ? (
             <SelectField
-              errors={addressFields.country.errors}
+              errors={addressFields.country.errors?.map((error) =>
+                error === 'Required' ? `${countryLabel} is required` : error,
+              )}
               key={addressFields.country.id}
               label={countryLabel}
               name={addressFields.country.name}
@@ -275,26 +282,35 @@ export function ShippingForm({
               options={countries}
               placeholder=""
               value={countryControl.value ?? ''}
+              required
             />
           ) : (
             <Input
               {...getInputProps(addressFields.country, { type: 'text' })}
-              errors={addressFields.country.errors}
+              errors={addressFields.country.errors?.map((error) =>
+                error === 'Required' ? `${countryLabel} is required` : error,
+              )}
               key={addressFields.country.id}
               label={countryLabel}
+              required
             />
           )}
           <Input
             {...getInputProps(addressFields.city, { type: 'text' })}
-            errors={addressFields.city.errors}
+            errors={addressFields.city.errors?.map((error) =>
+              error === 'Required' ? `${cityLabel} is required` : error,
+            )}
             key={addressFields.city.id}
             label={cityLabel}
+            required
           />
           <div className="flex gap-3">
             {Array.isArray(states) ? (
               <SelectField
                 disabled={addressFields.country.value === undefined}
-                errors={addressFields.state.errors}
+                errors={addressFields.state.errors?.map((error) =>
+                  error === 'Required' ? `${stateLabel} is required` : error,
+                )}
                 key={addressFields.state.id}
                 label={stateLabel}
                 name={addressFields.state.name}
@@ -306,20 +322,27 @@ export function ShippingForm({
                 }
                 placeholder=""
                 value={stateControl.value ?? ''}
+                required
               />
             ) : (
               <Input
                 {...getInputProps(addressFields.state, { type: 'text' })}
-                errors={addressFields.state.errors}
+                errors={addressFields.state.errors?.map((error) =>
+                  error === 'Required' ? `${stateLabel} is required` : error,
+                )}
                 key={addressFields.state.id}
                 label={stateLabel}
+                required
               />
             )}
             <Input
               {...getInputProps(addressFields.postalCode, { type: 'text' })}
-              errors={addressFields.postalCode.errors}
+              errors={addressFields.postalCode.errors?.map((error) =>
+                error === 'Required' ? `${postalCodeLabel} is required` : error,
+              )}
               key={addressFields.postalCode.id}
               label={postalCodeLabel}
+              required
             />
           </div>
 

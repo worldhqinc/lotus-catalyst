@@ -51,7 +51,9 @@ export function SignInForm({
           </Label>
           <Input
             {...getInputProps(fields.email, { type: 'text' })}
-            errors={fields.email.errors}
+            errors={fields.email.errors?.map((error) =>
+              error === 'Required' ? `${emailLabel} is required` : error,
+            )}
             key={fields.email.id}
             required
           />
@@ -63,7 +65,9 @@ export function SignInForm({
           </Label>
           <Input
             {...getInputProps(fields.password, { type: 'password' })}
-            errors={fields.password.errors}
+            errors={fields.password.errors?.map((error) =>
+              error === 'Required' ? `${passwordLabel} is required` : error,
+            )}
             key={fields.password.id}
             required
           />

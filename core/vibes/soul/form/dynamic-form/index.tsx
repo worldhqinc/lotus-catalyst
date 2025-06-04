@@ -88,7 +88,7 @@ export function DynamicForm<F extends Field>({
       return parseWithZod(formData, { schema: dynamicSchema });
     },
     defaultValue,
-    shouldValidate: 'onSubmit',
+    shouldValidate: 'onBlur',
     shouldRevalidate: 'onInput',
     onSubmit(event, { formData }) {
       event.preventDefault();
@@ -116,6 +116,7 @@ export function DynamicForm<F extends Field>({
                       <DynamicFormField
                         field={f}
                         formField={groupFormField}
+                        formFields={formFields}
                         key={groupFormField.id}
                       />
                     );
@@ -128,7 +129,14 @@ export function DynamicForm<F extends Field>({
 
             if (formField == null) return null;
 
-            return <DynamicFormField field={field} formField={formField} key={formField.id} />;
+            return (
+              <DynamicFormField
+                field={field}
+                formField={formField}
+                formFields={formFields}
+                key={formField.id}
+              />
+            );
           })}
           <div className="flex gap-2 pt-3">
             {onCancel && (
@@ -192,6 +200,10 @@ function DynamicFormField({
 }: {
   field: Field;
   formField: FieldMetadata<string | string[] | number | boolean | Date | undefined>;
+  formFields: Record<
+    string,
+    FieldMetadata<string | string[] | number | boolean | Date | undefined>
+  >;
 }) {
   const controls = useInputControl(formField);
 
@@ -222,7 +234,9 @@ function DynamicFormField({
           </Label>
           <Input
             {...getInputProps(formField, { type: 'text' })}
-            errors={formField.errors}
+            errors={formField.errors?.map((error) =>
+              error === 'Required' ? `${field.label} is required` : error,
+            )}
             key={field.name}
           />
         </div>
@@ -253,8 +267,16 @@ function DynamicFormField({
           </Label>
           <Input
             {...getInputProps(formField, { type: 'password' })}
-            errors={formField.errors}
+            errors={formField.errors?.map((error) =>
+              error === 'Required' ? `${field.label} is required` : error,
+            )}
             key={field.name}
+            onBlur={controls.blur}
+            onChange={(e) => {
+              controls.change(e.target.value);
+              requestAnimationFrame(() => controls.blur());
+            }}
+            onFocus={controls.focus}
           />
         </div>
       );
@@ -268,8 +290,16 @@ function DynamicFormField({
           </Label>
           <Input
             {...getInputProps(formField, { type: 'email' })}
-            errors={formField.errors}
+            errors={formField.errors?.map((error) =>
+              error === 'Required' ? 'Email Address is required' : error,
+            )}
             key={field.name}
+            onBlur={controls.blur}
+            onChange={(e) => {
+              controls.change(e.target.value);
+              requestAnimationFrame(() => controls.blur());
+            }}
+            onFocus={controls.focus}
           />
         </div>
       );
@@ -305,7 +335,9 @@ function DynamicFormField({
     case 'select':
       return (
         <SelectField
-          errors={formField.errors}
+          errors={formField.errors?.map((error) =>
+            error === 'Required' ? `${field.label} is required` : error,
+          )}
           key={field.name}
           label={field.label}
           name={formField.name}

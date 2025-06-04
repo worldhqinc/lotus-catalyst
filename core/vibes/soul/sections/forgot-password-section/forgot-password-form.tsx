@@ -50,7 +50,9 @@ export function ForgotPasswordForm({
         </Label>
         <Input
           {...getInputProps(fields.email, { type: 'text' })}
-          errors={fields.email.errors}
+          errors={fields.email.errors?.map((error) =>
+            error === 'Required' ? `${emailLabel} is required` : error,
+          )}
           key={fields.email.id}
           required
         />
