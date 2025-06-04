@@ -23,6 +23,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: t('title'),
+    description:
+      'Sign in to your Lotus account. Are you a new customer? Create an account for faster checkout, real-time order tracking, detailed order history, and more.',
   };
 }
 

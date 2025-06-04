@@ -6,9 +6,9 @@ import { generateHtmlFromRichText } from '~/lib/utils';
 
 import { getPageBySlug } from '../[...rest]/page-data';
 
+import { generateFaqSchema } from './_components/faq-schema';
 import { FaqSearch } from './_components/faq-search';
 import { FaqSidebar } from './_components/faq-sidebar';
-import { generateFaqSchema } from './_components/faq-schema';
 
 interface ContentfulEntry {
   sys: {

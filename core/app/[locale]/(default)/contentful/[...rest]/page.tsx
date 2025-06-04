@@ -1,7 +1,6 @@
+import { clsx } from 'clsx';
 import type { Metadata } from 'next';
 import { SearchParams } from 'nuqs';
-
-import { clsx } from 'clsx';
 
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { routing } from '~/i18n/routing';
