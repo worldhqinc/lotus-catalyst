@@ -112,7 +112,7 @@ export function OrderList({
                       </div>
                       <Badge className="mt-0.5">{order.status}</Badge>
                     </div>
-                    <ButtonLink href={order.href} size="small">
+                    <ButtonLink href={order.href} size="medium">
                       {viewDetailsLabel}
                     </ButtonLink>
                   </div>
@@ -162,7 +162,7 @@ function OrderListSkeleton() {
               </div>
               <Skeleton.Box className="mt-0.5 h-[22px] w-[55px] rounded" />
             </div>
-            <Skeleton.Box className="h-[43px] min-w-[12ch] gap-x-2 rounded-full px-4 py-2.5" />
+            <Skeleton.Box className="h-[50px] min-w-[12ch] gap-x-2 rounded-lg px-4 py-2.5" />
           </div>
           <div className="mt-6 flex gap-4 overflow-hidden [mask-image:linear-gradient(to_right,_black_0%,_black_80%,_transparent_98%)]">
             {Array.from({ length: 8 }).map((__, idx) => (

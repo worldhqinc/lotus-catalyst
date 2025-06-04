@@ -76,7 +76,7 @@ export function CartSkeleton({
                 </div>
               </div>
             </div>
-            <Skeleton.Box className="mt-4 h-[58px] w-full rounded-full" />
+            <Skeleton.Box className="mt-4 h-[50px] w-full rounded-lg" />
           </div>
         }
         sidebarPosition="after"
