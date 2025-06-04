@@ -51,9 +51,9 @@ export default async function Login({ params, searchParams }: Props) {
         title={t('heading')}
       >
         <div className="flex flex-col gap-y-8">
-          <h3 className="text-2xl leading-[120%] @5xl:text-4xl">{t('CreateAccount.title')}</h3>
+          <h2 className="text-2xl leading-[120%] @5xl:text-4xl">{t('CreateAccount.title')}</h2>
           <div>
-            <p className="text-xl font-medium">{t('CreateAccount.accountBenefits')}</p>
+            <h3 className="text-xl font-medium">{t('CreateAccount.accountBenefits')}</h3>
             <ul className="text-contrast-400 mt-2 flex list-disc flex-col gap-y-1 ps-4">
               <li>{t('CreateAccount.fastCheckout')}</li>
               <li>{t('CreateAccount.ordersTracking')}</li>
