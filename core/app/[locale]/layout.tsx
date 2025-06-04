@@ -145,6 +145,12 @@ export default async function RootLayout({ params, children }: Props) {
             src={`https://static.zdassets.com/ekr/snippet.js?key=${process.env.NEXT_PUBLIC_ZENDESK_KEY}`}
             strategy="afterInteractive"
           />
+          <Script
+            data-rapid="true"
+            id="usntA42start"
+            src="https://a42cdn.usablenet.com/a42/lotuscooking/default/prod/cs-text-start"
+            strategy="afterInteractive"
+          />
         </SmoothScrolling>
       </body>
     </html>
