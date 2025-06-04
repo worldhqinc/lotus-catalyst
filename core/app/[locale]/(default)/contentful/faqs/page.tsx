@@ -8,6 +8,7 @@ import { getPageBySlug } from '../[...rest]/page-data';
 
 import { FaqSearch } from './_components/faq-search';
 import { FaqSidebar } from './_components/faq-sidebar';
+import { generateFaqSchema } from './_components/faq-schema';
 
 interface ContentfulEntry {
   sys: {
@@ -36,6 +37,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: fields.metaTitle || fields.pageName,
     description: fields.metaDescription,
     keywords: fields.metaKeywords,
+    other: {
+      'application/ld+json': JSON.stringify(generateFaqSchema(page.fields.pageContent || [])),
+    },
   };
 }
 
