@@ -17,7 +17,7 @@ import {
   productFinishedGoods,
   productPartsAndAccessories,
 } from '~/contentful/schema';
-import { ensureImageUrl } from '~/lib/utils';
+import { ensureImageUrl, formatTrademarkText } from '~/lib/utils';
 
 import { ProductDetailForm, ProductDetailFormAction } from './product-detail-form';
 import { Field } from './schema';
@@ -150,7 +150,7 @@ export function ProductDetail<F extends Field>({
                     <div className="flex flex-col gap-8" id="overview">
                       <div>
                         <h1 className="text-surface-foreground text-2xl leading-none @xl:text-3xl @4xl:text-4xl">
-                          {contentful.fields.webProductName}
+                          {formatTrademarkText(contentful.fields.webProductName)}
                         </h1>
                         {Boolean(contentful.fields.webProductNameDescriptor) && (
                           <p className="text-surface-foreground mt-4">

@@ -94,7 +94,7 @@ export default async function FeaturePage({ params }: Props) {
       <SectionLayout className="mx-auto max-w-2xl">
         <div className="flex items-center justify-center">
           <ButtonLink href="/features" size="medium" variant="tertiary">
-            Explore more features
+            Explore more Features
           </ButtonLink>
         </div>
       </SectionLayout>
