@@ -17,6 +17,8 @@ import { exists } from '~/lib/utils';
 
 import { addressAction } from './_actions/address-action';
 import { getCustomerAddresses } from './page-data';
+import { getShippingCountries } from '../../cart/page-data';
+import { getShippingZones } from '~/client/management/get-shipping-zones';
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -56,6 +58,21 @@ export default async function Addresses({ params, searchParams }: Props) {
 
   const { shippingAddressFields = [], countries } = data;
 
+  let finalCountriesList = countries;
+  const hasAccessToken = Boolean(process.env.BIGCOMMERCE_ACCESS_TOKEN);
+  const shippingZones = hasAccessToken ? await getShippingZones() : [];
+  const uniqueCountryZones = new Set(
+    shippingZones.map((zone) => zone.locations.map((location) => location.country_iso2)).flat(),
+  );
+
+  if (countries) {
+    finalCountriesList = countries.filter((countryDetails) => {
+      const isCountryInTheList = uniqueCountryZones.has(countryDetails.code);
+
+      return isCountryInTheList || !hasAccessToken;
+    });
+  }
+
   const addresses = data.addresses.map<Address>((address) => ({
     id: address.entityId.toString(),
     firstName: address.firstName,
@@ -87,10 +104,10 @@ export default async function Addresses({ params, searchParams }: Props) {
     .filter(exists)
     .map((field) => {
       if (Array.isArray(field)) {
-        return field.map((f) => injectCountryCodeOptions(f, countries ?? []));
+        return field.map((f) => injectCountryCodeOptions(f, finalCountriesList ?? []));
       }
 
-      return injectCountryCodeOptions(field, countries ?? []);
+      return injectCountryCodeOptions(field, finalCountriesList ?? []);
     })
     .filter(exists)
     .map((field) => {

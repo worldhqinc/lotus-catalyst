@@ -226,6 +226,18 @@ export function ShippingForm({
   const countryControl = useInputControl(addressFields.country);
   const stateControl = useInputControl(addressFields.state);
 
+  useEffect(() => {
+    if (
+      Array.isArray(countries) &&
+      countries.length === 1 &&
+      countries[0] &&
+      !countryControl.value &&
+      !state.address?.country
+    ) {
+      countryControl.change(countries[0].value);
+    }
+  }, [countries, countryControl, state.address?.country]);
+
   return (
     <div>
       <div>
