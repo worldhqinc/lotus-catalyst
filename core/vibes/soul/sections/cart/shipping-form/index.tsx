@@ -281,8 +281,8 @@ export function ShippingForm({
               onValueChange={countryControl.change}
               options={countries}
               placeholder=""
-              value={countryControl.value ?? ''}
               required
+              value={countryControl.value ?? ''}
             />
           ) : (
             <Input
@@ -321,8 +321,8 @@ export function ShippingForm({
                   states.find((s) => s.country === addressFields.country.value)?.states ?? []
                 }
                 placeholder=""
-                value={stateControl.value ?? ''}
                 required
+                value={stateControl.value ?? ''}
               />
             ) : (
               <Input
