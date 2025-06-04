@@ -70,9 +70,9 @@ export default async function ProductRegistration() {
       <CookiePreferencesNotice
         message={
           <div className="flex flex-col items-center justify-center pt-10 pb-20">
-            <h1 className="font-heading mt-8 mb-6 text-center text-5xl font-normal md:text-6xl">
+            <h2 className="font-heading mt-8 mb-6 text-center text-5xl font-normal md:text-6xl">
               Our cookie jar is empty.
-            </h1>
+            </h2>
             <p className="mb-10 max-w-2xl text-center text-xl text-gray-500">
               If there is no information visible below, please update your cookie preferences to
               include "functional cookies" via Cookie Preferences accessible with the button below
