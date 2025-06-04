@@ -172,10 +172,10 @@ export function ProductCard({
             </div>
           )}
         </div>
-        <div className="mt-2 flex flex-wrap items-start gap-x-4 gap-y-3 px-1 @xs:mt-3">
+        <div className="mt-2 flex flex-wrap items-start gap-x-4 gap-y-3 @xs:mt-3">
           <div className="flex-1 space-y-2 text-sm @[16rem]:text-base">
             <div>
-              <span
+              <h3
                 className={clsx(
                   'block max-w-full font-medium [word-break:break-word]',
                   {
@@ -185,7 +185,7 @@ export function ProductCard({
                 )}
               >
                 {title}
-              </span>
+              </h3>
               {subtitle != null && subtitle !== '' && (
                 <span
                   className={clsx(
@@ -263,7 +263,7 @@ export function ProductCardSkeleton({
           }[aspectRatio],
         )}
       />
-      <div className="mt-2 flex flex-col items-start gap-x-4 gap-y-3 px-1 @xs:mt-3 @2xl:flex-row">
+      <div className="mt-2 flex flex-col items-start gap-x-4 gap-y-3 @xs:mt-3 @2xl:flex-row">
         <div className="w-full text-sm @[16rem]:text-base">
           <Skeleton.Text characterCount={10} className="rounded-sm" />
           <Skeleton.Text characterCount={8} className="rounded-sm" />
