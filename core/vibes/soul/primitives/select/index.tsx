@@ -81,6 +81,7 @@ export function Select({
 }: SelectProps) {
   return (
     <SelectPrimitive.Root
+      data-lenis-prevent
       disabled={disabled}
       name={name}
       onValueChange={onValueChange}
@@ -141,6 +142,7 @@ export function Select({
               dark: 'bg-[var(--select-dark-content-background,hsl(var(--foreground)))] ring-[var(--select-dark-content-border,hsl(var(--contrast-500)))]',
             }[colorScheme],
           )}
+          data-lenis-prevent
           position={position}
           side={side}
           sideOffset={sideOffset}

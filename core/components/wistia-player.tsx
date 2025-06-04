@@ -251,7 +251,7 @@ export function WistiaPlayer({
 
     return (
       <Image
-        alt=""
+        alt="Wistia Video Thumbnail"
         aria-hidden="true"
         fill
         src={`https://fast.wistia.com/embed/medias/${wistiaMediaId}/swatch`}

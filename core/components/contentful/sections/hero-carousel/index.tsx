@@ -245,14 +245,14 @@ export function HeroCarousel({ data }: Props) {
                       )}
                       style={{ transform: 'translateY(0)' }}
                     >
-                      <h1
+                      <h2
                         className={clsx(
                           'font-heading m-0 max-w-lg text-4xl uppercase lg:text-6xl',
                           slide.invertText ? 'text-white' : 'text-surface-foreground',
                         )}
                       >
                         {slide.title}
-                      </h1>
+                      </h2>
                       {Boolean(slide.showDescription && slide.description) && (
                         <p
                           className={clsx(

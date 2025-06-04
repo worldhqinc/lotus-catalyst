@@ -60,6 +60,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: t('title'),
+    description:
+      'An elevated kitchen awaits. Manage your cart, proceed to checkout, and explore personalized recommendations. Cook with calm confidence today.',
   };
 }
 

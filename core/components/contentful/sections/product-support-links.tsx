@@ -69,7 +69,7 @@ export function ProductSupportLinks({ title, links }: productSupportLinks['field
                   className="text-lg leading-[120%] font-medium tracking-[1.8px] uppercase after:absolute after:inset-0 md:text-2xl md:tracking-[2.4px]"
                   href={`/${supportPageSlug}`}
                 >
-                  {supportPageLinkFields.title}
+                  <h3>{supportPageLinkFields.title}</h3>
                 </Link>
                 {supportPageLinkFields.subHeading ? (
                   <p className="text-contrast-400 hidden lg:block">
