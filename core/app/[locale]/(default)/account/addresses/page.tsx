@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { Address, AddressListSection } from '@/vibes/soul/sections/address-list-section';
+import { getShippingZones } from '~/client/management/get-shipping-zones';
 import {
   fieldToFieldNameTransformer,
   formFieldTransformer,
@@ -17,8 +18,6 @@ import { exists } from '~/lib/utils';
 
 import { addressAction } from './_actions/address-action';
 import { getCustomerAddresses } from './page-data';
-import { getShippingCountries } from '../../cart/page-data';
-import { getShippingZones } from '~/client/management/get-shipping-zones';
 
 interface Props {
   params: Promise<{ locale: string }>;

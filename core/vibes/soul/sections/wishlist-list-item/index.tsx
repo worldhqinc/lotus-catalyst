@@ -191,7 +191,7 @@ export function WishlistListItemSkeleton({
         </div>
         <div className="my-4 flex gap-2 @sm:my-0 @sm:ml-2 @sm:items-center">
           {actionsPosition === 'left' && component?.()}
-          <Skeleton.Box className="h-10 min-w-[9ch] flex-1 rounded-full" />
+          <Skeleton.Box className="h-[50px] min-w-[9ch] flex-1 rounded-lg" />
           {actionsPosition === 'right' && component?.()}
         </div>
       </div>
