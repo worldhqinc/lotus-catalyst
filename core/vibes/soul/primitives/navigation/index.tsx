@@ -7,7 +7,7 @@ import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
 import { ChevronDown, ChevronRight, Search, ShoppingCart, User } from 'lucide-react';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import React, {
   forwardRef,
   Ref,
@@ -241,6 +241,7 @@ const useSwitchLocale = () => {
   const pathname = usePathname();
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
 
   return useCallback(
     (locale: string) =>
@@ -248,10 +249,10 @@ const useSwitchLocale = () => {
         // @ts-expect-error -- TypeScript will validate that only known `params`
         // are used in combination with a given `pathname`. Since the two will
         // always match for the current route, we can skip runtime checks.
-        { pathname, params },
+        { pathname, params, query: Object.fromEntries(searchParams.entries()) },
         { locale },
       ),
-    [pathname, params, router],
+    [pathname, params, router, searchParams],
   );
 };
 

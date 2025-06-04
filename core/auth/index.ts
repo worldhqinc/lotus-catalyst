@@ -5,6 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { getTranslations } from 'next-intl/server';
 import { z } from 'zod';
 
+import { clearAnonymousSession } from '~/auth/anonymous-session';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
 import { clearCartId, setCartId } from '~/lib/cart';
@@ -56,24 +57,27 @@ const LogoutMutation = graphql(`
   }
 `);
 
+const cartIdSchema = z
+  .string()
+  .uuid()
+  .or(z.literal('undefined')) // auth.js seems to pass the cart id as a string literal 'undefined' when not set.
+  .optional()
+  .transform((val) => (val === 'undefined' ? undefined : val));
+
 const PasswordCredentials = z.object({
   email: z.string().email(),
   password: z.string().min(1),
-  cartId: z.string().optional(),
-});
-
-const AnonymousCredentials = z.object({
-  cartId: z.string().optional(),
+  cartId: cartIdSchema,
 });
 
 const JwtCredentials = z.object({
   jwt: z.string(),
-  cartId: z.string().optional(),
+  cartId: cartIdSchema,
 });
 
 const SessionUpdate = z.object({
   user: z.object({
-    cartId: z.string().nullable().optional(),
+    cartId: cartIdSchema,
   }),
 });
 
@@ -115,6 +119,7 @@ async function loginWithPassword(credentials: unknown): Promise<User | null> {
   }
 
   await handleLoginCart(cartId, result.cart?.entityId);
+  await clearAnonymousSession();
 
   return {
     name: `${result.customer.firstName} ${result.customer.lastName}`,
@@ -150,6 +155,7 @@ async function loginWithJwt(credentials: unknown): Promise<User | null> {
   }
 
   await handleLoginCart(cartId, result.cart?.entityId);
+  await clearAnonymousSession();
 
   return {
     name: `${result.customer.firstName} ${result.customer.lastName}`,
@@ -157,14 +163,6 @@ async function loginWithJwt(credentials: unknown): Promise<User | null> {
     customerAccessToken: result.customerAccessToken.value,
     impersonatorId,
     cartId: result.cart?.entityId,
-  };
-}
-
-function loginWithAnonymous(credentials: unknown): User | null {
-  const { cartId } = AnonymousCredentials.parse(credentials);
-
-  return {
-    cartId: cartId ?? null,
   };
 }
 
@@ -263,13 +261,6 @@ const config = {
       authorize: loginWithPassword,
     }),
     CredentialsProvider({
-      id: 'anonymous',
-      credentials: {
-        cartId: { type: 'text' },
-      },
-      authorize: loginWithAnonymous,
-    }),
-    CredentialsProvider({
       id: 'jwt',
       credentials: {
         jwt: { type: 'text' },
@@ -297,3 +288,10 @@ export const isLoggedIn = async () => {
 
   return Boolean(cat);
 };
+
+export {
+  anonymousSignIn,
+  clearAnonymousSession,
+  getAnonymousSession,
+  updateAnonymousSession,
+} from './anonymous-session';

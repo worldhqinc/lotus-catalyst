@@ -1,8 +1,8 @@
 'use client';
 
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
-import { Configure, InstantSearch, useInfiniteHits, useRefinementList } from 'react-instantsearch';
 import { useRef } from 'react';
+import { Configure, InstantSearch, useInfiniteHits, useRefinementList } from 'react-instantsearch';
 
 import { Badge } from '@/vibes/soul/primitives/badge';
 import { Button } from '@/vibes/soul/primitives/button';

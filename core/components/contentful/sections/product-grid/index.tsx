@@ -1,7 +1,7 @@
 'use client';
 
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import {
   Configure,
   InstantSearch,
