@@ -175,7 +175,7 @@ export function ProductCard({
         <div className="mt-2 flex flex-wrap items-start gap-x-4 gap-y-3 @xs:mt-3">
           <div className="flex-1 space-y-2 text-sm @[16rem]:text-base">
             <div>
-              <span
+              <h3
                 className={clsx(
                   'block max-w-full font-medium [word-break:break-word]',
                   {
@@ -185,7 +185,7 @@ export function ProductCard({
                 )}
               >
                 {title}
-              </span>
+              </h3>
               {subtitle != null && subtitle !== '' && (
                 <span
                   className={clsx(
