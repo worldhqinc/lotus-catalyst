@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { SearchParams } from 'nuqs';
 
+import { clsx } from 'clsx';
+
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { routing } from '~/i18n/routing';
 import { generateHtmlFromRichText } from '~/lib/utils';
@@ -48,7 +50,10 @@ export default async function ContentfulPage({ params, searchParams }: Props) {
         </div>
         {page.fields.optionalPageDescription && (
           <div
-            className="prose container max-w-2xl"
+            className={clsx(
+              'prose container max-w-2xl',
+              page.fields.pageName === 'Returns' && '[&_h2]:mb-[0.5em] [&_h2]:text-base',
+            )}
             dangerouslySetInnerHTML={{
               __html: generateHtmlFromRichText(page.fields.optionalPageDescription),
             }}
