@@ -115,6 +115,7 @@ export function CouponCodeForm({
       {showCouponForm && (
         <>
           <form {...getFormProps(form)} action={formAction} className="mt-2 space-y-2">
+            <input name="intent" type="hidden" value="apply" />
             <label className="text-sm" htmlFor={fields.couponCode.id}>
               {label}
             </label>
@@ -167,10 +168,8 @@ function SubmitButton({ disabled, ...props }: React.ComponentPropsWithoutRef<typ
       className="max-h-[50px] shrink-0"
       disabled={disabled ?? pending}
       loading={pending}
-      name="intent"
       size="medium"
       type="submit"
-      value="apply"
       variant="tertiary"
     />
   );
