@@ -8,7 +8,6 @@ import { Heart } from '@/vibes/soul/primitives/favorite/heart';
 import { getSessionCustomerAccessToken, isLoggedIn } from '~/auth';
 import { client } from '~/client';
 import { graphql } from '~/client/graphql';
-import { revalidate } from '~/client/revalidate-target';
 import { TAGS } from '~/client/tags';
 
 import { WishlistButtonDropdown } from './dropdown';
@@ -61,7 +60,7 @@ const getWishlistButtonData = cache(async (productId: number, customerAccessToke
     document: WishlistButtonQuery,
     variables: { productId, first: wishlistButtonLimit },
     customerAccessToken,
-    fetchOptions: { next: { revalidate, tags: [TAGS.customer] } },
+    fetchOptions: { cache: 'no-store', next: { tags: [TAGS.customer] } },
   });
 
   return data.customer;
