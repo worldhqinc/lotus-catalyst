@@ -14,6 +14,7 @@ import {
   transformFeatureHit,
   transformRecipeHit,
 } from '~/data-transformers/algolia-transformers';
+import { Spinner } from '~/vibes/soul/primitives/spinner';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? '',
@@ -32,6 +33,14 @@ function InfiniteHits({ type }: { type: string }) {
   const totalCount = results?.nbHits ?? 0;
   const progressPercent = totalCount > 0 ? (items.length / totalCount) * 100 : 0;
   const newPostsRef = useRef<HTMLDivElement>(null);
+
+  if (items.length === 0) {
+    return (
+      <div className="flex justify-center py-16">
+        <Spinner loadingAriaLabel="Loading posts..." size="lg" />
+      </div>
+    );
+  }
 
   const transformer = type === 'feature' ? transformFeatureHit : transformRecipeHit;
 
