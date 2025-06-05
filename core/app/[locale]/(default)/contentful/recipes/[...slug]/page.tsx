@@ -138,7 +138,7 @@ export default async function RecipePage({ params }: Props) {
   return (
     <article>
       {/* Hero Section */}
-      <div className="bg-primary relative isolate overflow-hidden pb-18">
+      <div className="bg-primary relative isolate overflow-hidden pb-18 lg:max-h-[840px]">
         <Image
           alt="Lotus Pattern"
           className="absolute inset-0 h-full w-full object-cover"
@@ -148,7 +148,7 @@ export default async function RecipePage({ params }: Props) {
         />
         <div className="bg-background absolute inset-0 bottom-1/2 lg:hidden" />
         <div className="bg-background top-0 right-0 left-0 lg:absolute">
-          <SectionLayout className="relative" containerSize="xl">
+          <SectionLayout className="relative mx-auto max-w-[1152px]" containerSize="xl">
             <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2">
               <div className="max-w-xl">
                 {/* Category Pills */}
@@ -191,7 +191,11 @@ export default async function RecipePage({ params }: Props) {
             </div>
           </SectionLayout>
         </div>
-        <SectionLayout containerClassName="pt-0" containerSize="xl">
+        <SectionLayout
+          className="mx-auto max-w-[1152px]"
+          containerClassName="pt-0"
+          containerSize="xl"
+        >
           <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2">
             <div />
             {/* Hero Image */}

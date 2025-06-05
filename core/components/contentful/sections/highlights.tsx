@@ -79,7 +79,9 @@ export function Highlights({
             />
           )}
           <div>
-            <ButtonLink href={linkHref}>{text}</ButtonLink>
+            <ButtonLink href={linkHref} size="medium">
+              {text}
+            </ButtonLink>
           </div>
         </div>
       </div>

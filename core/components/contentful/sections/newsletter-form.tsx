@@ -25,7 +25,7 @@ export function NewsletterForm({
       <div className="container mx-auto text-white">
         <h2 className="font-heading mx-auto mb-4 max-w-xl text-5xl uppercase">{title}</h2>
         <p className="mx-auto mb-8 max-w-2xl lg:mb-16">{description}</p>
-        <div className="[&_button:hover_svg]:!text-foreground mx-auto max-w-md [&_div:not(.form-status)]:text-white">
+        <div className="[&_button:hover_svg]:!text-foreground mx-auto max-w-md space-y-4 [&_div:not(.form-status)]:text-white">
           <InlineEmailForm
             action={subscribe}
             arrowClassName="text-white"

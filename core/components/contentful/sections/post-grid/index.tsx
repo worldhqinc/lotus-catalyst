@@ -82,7 +82,7 @@ function InfiniteHits({ type }: { type: string }) {
           </div>
         </div>
         {hasMore && (
-          <Button onClick={handleShowMore} variant="tertiary">
+          <Button onClick={handleShowMore} size="medium" variant="tertiary">
             Load more
           </Button>
         )}

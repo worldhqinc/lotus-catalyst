@@ -133,7 +133,7 @@ export const Footer = forwardRef(async function Footer(
                         Join our mailing list for insider updates, exclusive offers, and cooking
                         inspiration.
                       </p>
-                      <div className="mt-8">
+                      <div className="mt-8 space-y-4">
                         <InlineEmailForm action={action} />
                         <CookiePreferencesNotice />
                       </div>
@@ -381,7 +381,7 @@ export const Footer = forwardRef(async function Footer(
               Terms and Conditions
             </Link>
             <CookiePreferencesCta
-              className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm transition-colors duration-200"
+              className="text-contrast-400 ease-quad hover:text-primary focus-visible:text-primary block text-sm no-underline transition-colors duration-200"
               variant="link"
             />
             <Link

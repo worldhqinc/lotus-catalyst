@@ -101,7 +101,9 @@ export function InlineEmailForm({
           </Button>
         </div>
       </div>
-      {fields.email.errors?.map((error, index) => <FieldError key={index}>{error}</FieldError>)}
+      {fields.email.errors?.map((error, index) => (
+        <FieldError key={index}>{error === 'Required' ? 'Email is required' : error}</FieldError>
+      ))}
       {form.status === 'success' && errorMessage ? (
         <FormStatus type="error">{errorMessage}</FormStatus>
       ) : null}

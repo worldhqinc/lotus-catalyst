@@ -256,7 +256,7 @@ export function HeroCarousel({ data }: Props) {
                       {Boolean(slide.showDescription && slide.description) && (
                         <p
                           className={clsx(
-                            'mt-4 max-w-lg text-xl @xl:mt-6',
+                            'mt-4 max-w-lg text-lg @xl:mt-6',
                             slide.invertText ? 'text-white' : 'text-contrast-400',
                           )}
                         >

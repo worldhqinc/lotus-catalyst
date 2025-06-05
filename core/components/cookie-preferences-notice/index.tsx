@@ -8,7 +8,7 @@ interface CookiePreferencesNoticeProps {
 
 export default function CookiePreferencesNotice({ message }: CookiePreferencesNoticeProps) {
   let messageToDisplay: React.ReactNode = (
-    <p className="text-left">
+    <p className="text-left text-sm">
       We use cookies to ensure you get the best experience on our website. Please enable "Functional
       cookies" in your <CookiePreferencesCta variant="link" /> or email us at{' '}
       <Link className="underline" href="mailto:customercare@lotuscooking.com">
