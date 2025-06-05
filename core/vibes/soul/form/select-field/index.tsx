@@ -35,6 +35,7 @@ export function SelectField({
   onBlur,
   onOptionMouseEnter,
   onValueChange,
+  ...rest
 }: SelectFieldProps) {
   const id = React.useId();
 
@@ -49,12 +50,14 @@ export function SelectField({
         {required ? <span className="text-contrast-400">*</span> : ''}
       </Label>
       {description ? <p className="text-contrast-400 text-xs">{description}</p> : null}
+      {/* Workaround for https://github.com/radix-ui/primitives/issues/3198, remove when fixed */}
+      <input name={name} type="hidden" value={value} />
       <Select
         colorScheme={colorScheme}
         errors={errors}
         id={id}
         label={label}
-        name={name}
+        name={`${name}_display`} // Temp `_display` to avoid conflicts with the hidden input
         onBlur={onBlur}
         onFocus={onFocus}
         onOptionMouseEnter={onOptionMouseEnter}
@@ -64,6 +67,7 @@ export function SelectField({
         placeholder={placeholder}
         value={value}
         variant={variant}
+        {...rest}
       />
       {errors?.map((error) => (
         <FieldError className="mt-2" key={error}>
