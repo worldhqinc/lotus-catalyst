@@ -4,7 +4,7 @@ import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { clsx } from 'clsx';
 import { ArrowRight, Search } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback } from 'react';
 import {
   Configure,
   Hits,
@@ -19,6 +19,7 @@ import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { ProductCard } from '@/vibes/soul/primitives/product-card';
 import Tabs from '@/vibes/soul/primitives/tabs';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
+import { Link } from '~/components/link';
 import { useRouter } from '~/i18n/routing';
 
 import { PostCard as PostGridPostCard } from '../../../../../components/contentful/sections/post-grid';
@@ -121,32 +122,9 @@ const GROUP_CONFIG: GroupConfig[] = [
   },
 ];
 
-function SkeletonCard() {
-  return (
-    <div className="animate-pulse">
-      <div className="mb-3 aspect-square rounded-lg bg-gray-200" />
-      <div className="space-y-2">
-        <div className="h-4 w-3/4 rounded bg-gray-200" />
-        <div className="h-4 w-1/2 rounded bg-gray-200" />
-      </div>
-    </div>
-  );
-}
-
-function LoadingGrid() {
-  return (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-4 lg:grid-cols-6 lg:gap-6">
-      {Array.from({ length: 6 }).map((_, index) => (
-        <SkeletonCard key={index} />
-      ))}
-    </div>
-  );
-}
-
 function GroupTabContent({ group }: { group: GroupConfig }) {
-  const { status } = useInstantSearch();
   const { items } = useRefinementList({ attribute: 'contentType' });
-  const groupRefinement = items.find((item) => item.value === group.key);
+  const { status } = useInstantSearch();
 
   return (
     <div className="py-8 lg:py-16">
@@ -160,13 +138,25 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
           </span>
         </ButtonLink>
       </div>
-      <Hits
-        classNames={{
-          list: 'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-6',
-        }}
-        // @ts-expect-error - hit is a ProductGridHit | PostGridHit
-        hitComponent={(props) => group.card({ ...props })}
-      />
+      {status !== 'loading' && status !== 'stalled' && items.length === 0 ? (
+        <div className="flex text-lg">
+          <p>
+            No results found.{' '}
+            <Link className="text-primary hover:underline" href={group.href}>
+              View more here
+            </Link>
+            .
+          </p>
+        </div>
+      ) : (
+        <Hits
+          classNames={{
+            list: 'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-6',
+          }}
+          // @ts-expect-error - hit is a ProductGridHit | PostGridHit
+          hitComponent={(props) => group.card({ ...props })}
+        />
+      )}
     </div>
   );
 }
