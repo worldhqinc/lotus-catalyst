@@ -148,36 +148,6 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
   const { items } = useRefinementList({ attribute: 'contentType' });
   const groupRefinement = items.find((item) => item.value === group.key);
 
-  if (status !== 'loading' && status !== 'stalled' && !groupRefinement) {
-    return (
-      <div className="py-8 lg:py-16">
-        <div className="mb-8 flex items-center justify-between gap-4">
-          <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
-            {group.label}
-          </h2>
-          <ButtonLink href={group.href} shape="link" size="link" variant="link">
-            <span className="flex items-center gap-2 text-base font-normal">
-              View more <ArrowRight size={20} strokeWidth={1.5} />
-            </span>
-          </ButtonLink>
-        </div>
-        <LoadingGrid />
-      </div>
-    );
-  }
-
-  if ((status === 'loading' || status === 'stalled') && items.length === 0) {
-    return (
-      <div className="py-8 lg:py-16">
-        <div className="mb-8 flex items-center justify-between gap-4">
-          <div className="h-6 w-32 animate-pulse rounded bg-gray-200 lg:h-8 lg:w-40" />
-          <div className="h-5 w-20 animate-pulse rounded bg-gray-200" />
-        </div>
-        <LoadingGrid />
-      </div>
-    );
-  }
-
   return (
     <div className="py-8 lg:py-16">
       <div className="mb-8 flex items-center justify-between gap-4">
@@ -224,7 +194,6 @@ function GroupTabs() {
 function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const formStyles =
     '[&_form]:flex [&_form]:gap-4 [&_form_button.ais-SearchBox-submit]:hidden [&_form_button.ais-SearchBox-reset]:hidden';
@@ -252,23 +221,13 @@ function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) 
 
       if (!input) return;
 
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        updateSearchParams(input.value);
-      }, 300);
+      updateSearchParams(input.value);
     },
     [updateSearchParams],
   );
 
   const queryHook = useCallback((query: string, search: (query: string) => void) => {
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => search(query), 200);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(timeoutRef.current);
-    };
+    setTimeout(() => search(query), 650);
   }, []);
 
   return (
