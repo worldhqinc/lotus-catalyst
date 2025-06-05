@@ -59,7 +59,7 @@ function StackedHeroBanner({
   title: string;
 }) {
   return (
-    <section className="bg-contrast-200 relative isolate h-auto w-full overflow-hidden lg:aspect-video lg:xl:max-h-[calc(100svh-64px)]">
+    <section className="relative isolate h-auto w-full overflow-hidden bg-[hsla(26,28%,95%,1)] lg:aspect-video lg:xl:max-h-[calc(100svh-64px)]">
       <div className="grid h-full grid-cols-[minmax(var(--container-padding),1fr)_minmax(0,calc((var(--container-max-width)/2)))_minmax(0,calc((var(--container-max-width)/2)))_minmax(var(--container-padding),1fr)] gap-y-8 lg:gap-0">
         <div
           className={clsx(
