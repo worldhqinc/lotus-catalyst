@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { Address, AddressListSection } from '@/vibes/soul/sections/address-list-section';
-import { getShippingZones } from '~/client/management/get-shipping-zones';
+import { getShippingCountries } from '~/app/[locale]/(default)/cart/page-data';
 import {
   fieldToFieldNameTransformer,
   formFieldTransformer,
@@ -55,22 +55,9 @@ export default async function Addresses({ params, searchParams }: Props) {
     notFound();
   }
 
-  const { shippingAddressFields = [], countries } = data;
+  const { shippingAddressFields = [] } = data;
 
-  let finalCountriesList = countries;
-  const hasAccessToken = Boolean(process.env.BIGCOMMERCE_ACCESS_TOKEN);
-  const shippingZones = hasAccessToken ? await getShippingZones() : [];
-  const uniqueCountryZones = new Set(
-    shippingZones.map((zone) => zone.locations.map((location) => location.country_iso2)).flat(),
-  );
-
-  if (countries) {
-    finalCountriesList = countries.filter((countryDetails) => {
-      const isCountryInTheList = uniqueCountryZones.has(countryDetails.code);
-
-      return isCountryInTheList || !hasAccessToken;
-    });
-  }
+  const countries = await getShippingCountries();
 
   const addresses = data.addresses.map<Address>((address) => ({
     id: address.entityId.toString(),
@@ -103,10 +90,10 @@ export default async function Addresses({ params, searchParams }: Props) {
     .filter(exists)
     .map((field) => {
       if (Array.isArray(field)) {
-        return field.map((f) => injectCountryCodeOptions(f, finalCountriesList ?? []));
+        return field.map((f) => injectCountryCodeOptions(f, countries));
       }
 
-      return injectCountryCodeOptions(field, finalCountriesList ?? []);
+      return injectCountryCodeOptions(field, countries);
     })
     .filter(exists)
     .map((field) => {
@@ -123,7 +110,7 @@ export default async function Addresses({ params, searchParams }: Props) {
       addressAction={addressAction}
       addresses={addresses}
       cancelLabel={t('cancel')}
-      countries={countries ?? []}
+      countries={countries}
       deleteLabel={t('delete')}
       editLabel={t('edit')}
       fields={[...fields, { name: 'id', type: 'hidden', label: 'ID' }]}
