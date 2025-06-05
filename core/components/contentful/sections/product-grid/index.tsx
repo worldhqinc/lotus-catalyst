@@ -12,7 +12,8 @@ import {
 
 import { SelectField } from '@/vibes/soul/form/select-field';
 import { Button } from '@/vibes/soul/primitives/button';
-import { ProductCard, ProductCardSkeleton } from '@/vibes/soul/primitives/product-card';
+import { ProductCard } from '@/vibes/soul/primitives/product-card';
+import { Spinner } from '@/vibes/soul/primitives/spinner';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { ProductGridHit, transformProductHit } from '~/data-transformers/algolia-transformers';
 
@@ -29,18 +30,15 @@ interface ProductGridProps {
 
 function InfiniteHits() {
   const { items, showMore, isLastPage, results, sendEvent } = useInfiniteHits<ProductGridHit>();
-  const { status } = useInstantSearch();
   const hasMore = !isLastPage;
   const totalCount = results?.nbHits ?? 0;
   const progressPercent = totalCount > 0 ? (items.length / totalCount) * 100 : 0;
   const newProductsRef = useRef<HTMLDivElement>(null);
 
-  if ((status === 'loading' || status === 'stalled') && items.length === 0) {
+  if (items.length === 0) {
     return (
-      <div className="mt-8 grid w-full grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
-        {Array.from({ length: 8 }).map((_, index) => (
-          <ProductCardSkeleton aspectRatio="1:1" key={index} />
-        ))}
+      <div className="flex justify-center py-16">
+        <Spinner loadingAriaLabel="Loading products..." size="lg" />
       </div>
     );
   }

@@ -205,7 +205,7 @@ export default async function Cart({ params, searchParams }: Props) {
     checkout?.shippingConsignments?.find((consignment) => consignment.selectedShippingOption) ||
     checkout?.shippingConsignments?.[0];
 
-  const shippingCountries = await getShippingCountries(data.geography);
+  const shippingCountries = await getShippingCountries();
 
   const countries = shippingCountries.map((country) => ({
     value: country.code,
