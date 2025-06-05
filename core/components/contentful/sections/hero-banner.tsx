@@ -281,7 +281,7 @@ export async function HeroBanner({
   } else if (image) {
     mediaElement = (
       <Image
-        alt={title}
+        alt={image.fields.title ?? title}
         className={clsx(
           'absolute inset-0 -z-20 h-full w-full',
           variant === 'stack'
