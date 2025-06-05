@@ -148,11 +148,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
   const { items } = useRefinementList({ attribute: 'contentType' });
   const groupRefinement = items.find((item) => item.value === group.key);
 
-  if (!groupRefinement) {
-    return null;
-  }
-
-  if (status === 'loading' || status === 'stalled') {
+  if (status !== 'loading' && status !== 'stalled' && !groupRefinement) {
     return (
       <div className="py-8 lg:py-16">
         <div className="mb-8 flex items-center justify-between gap-4">
@@ -170,22 +166,14 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
     );
   }
 
-  if (items.length === 0) {
+  if ((status === 'loading' || status === 'stalled') && items.length === 0) {
     return (
       <div className="py-8 lg:py-16">
         <div className="mb-8 flex items-center justify-between gap-4">
-          <h2 className="text-lg font-medium tracking-[1.8px] uppercase lg:text-2xl lg:tracking-[2.4px]">
-            {group.label}
-          </h2>
-          <ButtonLink href={group.href} shape="link" size="link" variant="link">
-            <span className="flex items-center gap-2 text-base font-normal">
-              View more <ArrowRight size={20} strokeWidth={1.5} />
-            </span>
-          </ButtonLink>
+          <div className="h-6 w-32 animate-pulse rounded bg-gray-200 lg:h-8 lg:w-40" />
+          <div className="h-5 w-20 animate-pulse rounded bg-gray-200" />
         </div>
-        <div className="flex items-center justify-center text-xl">
-          <p>No results found.</p>
-        </div>
+        <LoadingGrid />
       </div>
     );
   }
