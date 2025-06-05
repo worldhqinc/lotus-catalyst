@@ -12,7 +12,7 @@ export function GuidingPrinciplesSection({
   const validCta = cta ? ctaSchema.parse(cta) : null;
 
   return (
-    <SectionLayout>
+    <SectionLayout containerSize="xl">
       <h2 className="text-surface-foreground font-heading mx-auto max-w-4xl text-center text-4xl uppercase md:text-6xl">
         {sectionTitle}
       </h2>
@@ -40,7 +40,7 @@ export function GuidingPrinciplesSection({
       </div>
       {validCta ? (
         <div className="flex justify-center pt-16">
-          <ButtonLink href={getLinkHref(validCta.fields)} variant="primary">
+          <ButtonLink href={getLinkHref(validCta.fields)} size="medium" variant="primary">
             {validCta.fields.text}
           </ButtonLink>
         </div>

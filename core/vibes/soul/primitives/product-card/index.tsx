@@ -289,7 +289,7 @@ function AddToBagForm({ sku }: { sku: string }) {
         className="pointer-events-auto w-full"
         disabled={!sku || pending}
         loading={pending}
-        size="small"
+        size="medium"
         type="submit"
       >
         Add to cart

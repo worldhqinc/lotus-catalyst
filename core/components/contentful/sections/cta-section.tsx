@@ -104,7 +104,7 @@ export function CtaSection({
         <h2 className="font-heading mb-14 text-6xl uppercase">{sectionTitle}</h2>
       ) : null}
       {buttonLink ? (
-        <ButtonLink href={buttonLink} variant="tertiary">
+        <ButtonLink href={buttonLink} size="medium" variant="tertiary">
           {buttonText}
         </ButtonLink>
       ) : null}

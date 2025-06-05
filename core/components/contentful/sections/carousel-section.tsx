@@ -23,7 +23,9 @@ export function CarouselSection({ heading, subtitle, carousel, cta }: carouselSe
         cta={
           validCta && (
             <div className="text-center">
-              <ButtonLink href={getLinkHref(validCta.fields)}>{validCta.fields.text}</ButtonLink>
+              <ButtonLink href={getLinkHref(validCta.fields)} size="medium">
+                {validCta.fields.text}
+              </ButtonLink>
             </div>
           )
         }

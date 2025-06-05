@@ -82,7 +82,12 @@ function InfiniteHits() {
           </div>
         </div>
         {hasMore && (
-          <Button className="[overflow-anchor:none]" onClick={handleShowMore} variant="tertiary">
+          <Button
+            className="[overflow-anchor:none]"
+            onClick={handleShowMore}
+            size="medium"
+            variant="tertiary"
+          >
             Load more
           </Button>
         )}

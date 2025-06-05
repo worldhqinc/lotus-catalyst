@@ -149,7 +149,9 @@ export default function NotifyBackInStockModal({
                       className={clsx(
                         fields.email.errors && fields.email.errors.length > 0 && 'border-error',
                       )}
-                      errors={fields.email.errors}
+                      errors={fields.email.errors?.map((error) =>
+                        error === 'Required' ? 'Email is required' : error,
+                      )}
                       key={fields.email.id}
                       required
                     />

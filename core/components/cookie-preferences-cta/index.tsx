@@ -1,5 +1,7 @@
 'use client';
 
+import { clsx } from 'clsx';
+
 import { Button } from '@/vibes/soul/primitives/button';
 import { Link } from '~/components/link';
 
@@ -20,7 +22,7 @@ export default function CookiePreferencesCta({
 
   if (variant === 'link') {
     return (
-      <Link className={className ?? 'underline'} href="#" onClick={handleClick}>
+      <Link className={clsx(className, 'underline')} href="#" onClick={handleClick}>
         {label}
       </Link>
     );
