@@ -22,7 +22,7 @@ export default function CookiePreferencesCta({
 
   if (variant === 'link') {
     return (
-      <Link className={clsx(className, 'underline')} href="#" onClick={handleClick}>
+      <Link className={clsx(className)} href="#" onClick={handleClick}>
         {label}
       </Link>
     );
