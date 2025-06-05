@@ -1,7 +1,5 @@
 'use client';
 
-import { clsx } from 'clsx';
-
 import { Button } from '@/vibes/soul/primitives/button';
 import { Link } from '~/components/link';
 
