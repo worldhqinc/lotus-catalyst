@@ -261,47 +261,61 @@ export function ProductDetail<F extends Field>({
 function ProductGallerySkeleton() {
   return (
     <Skeleton.Root className="group-has-[[data-pending]]/product-gallery:animate-pulse" pending>
-      <div className="w-full overflow-hidden rounded-xl @xl:rounded-2xl">
-        <div className="flex">
-          <Skeleton.Box className="aspect-square w-full shrink-0 grow-0 basis-full @2xl:aspect-[4/5]" />
-        </div>
-      </div>
-      <div className="mt-2 hidden max-w-full gap-2 overflow-x-auto md:flex">
-        {Array.from({ length: 2 }).map((_, idx) => (
-          <Skeleton.Box className="aspect-square flex-1 shrink-0 rounded-lg" key={idx} />
-        ))}
-      </div>
-      <div className="bg-contrast-100 relative mt-4 hidden grid-cols-2 gap-2 rounded-xl px-4 py-10 @2xl:grid">
-        {Array.from({ length: 2 }).map((_, idx) => (
-          <div className="flex flex-col items-center justify-center gap-4" key={idx}>
-            <Skeleton.Box className="h-12 w-12 rounded-full" />
-            <Skeleton.Box className="h-4 w-52 rounded-md" />
+      <div className="relative">
+        <div className="hidden grid-cols-2 gap-6 @2xl:grid">
+          <div className="col-span-2 aspect-square overflow-hidden rounded-lg">
+            <Skeleton.Box className="h-full w-full" />
           </div>
-        ))}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="bg-contrast-200 h-20 w-[1px]" />
+          {Array.from({ length: 2 }).map((_, idx) => (
+            <div className="aspect-square overflow-hidden rounded-lg" key={idx}>
+              <Skeleton.Box className="h-full w-full" />
+            </div>
+          ))}
+          <div className="col-span-2">
+            <div className="bg-contrast-100 grid grid-cols-2 gap-2 rounded-xl p-4">
+              {Array.from({ length: 2 }).map((_, idx) => (
+                <div className="flex flex-col items-center justify-center gap-4" key={idx}>
+                  <Skeleton.Box className="h-12 w-12 rounded-full" />
+                  <Skeleton.Box className="h-4 w-52 rounded-md" />
+                </div>
+              ))}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="bg-contrast-200 h-20 w-[1px]" />
+              </div>
+            </div>
+          </div>
+          {Array.from({ length: 2 }).map((_, idx) => (
+            <div className="aspect-square overflow-hidden rounded-lg" key={idx + 2}>
+              <Skeleton.Box className="h-full w-full" />
+            </div>
+          ))}
+        </div>
+        <div className="@2xl:hidden">
+          <div className="aspect-square overflow-hidden rounded-lg">
+            <Skeleton.Box className="h-full w-full" />
+          </div>
         </div>
       </div>
     </Skeleton.Root>
   );
 }
 
-function PriceLabelSkeleton() {
-  return <Skeleton.Box className="h-8 w-32 rounded-md @xl:h-10 @xl:w-40" />;
-}
+// function PriceLabelSkeleton() {
+//   return <Skeleton.Box className="h-8 w-32 rounded-md @xl:h-10 @xl:w-40" />;
+// }
 
-function RatingSkeleton() {
-  return null;
-  // return (
-  //   <Skeleton.Root
-  //     className="flex w-[136px] items-center gap-1 group-has-[[data-pending]]/product-rating:animate-pulse"
-  //     pending
-  //   >
-  //     <Skeleton.Box className="h-4 w-[100px] rounded-md" />
-  //     <Skeleton.Box className="h-6 w-8 rounded-xl" />
-  //   </Skeleton.Root>
-  // );
-}
+// function RatingSkeleton() {
+//   return null;
+//   // return (
+//   //   <Skeleton.Root
+//   //     className="flex w-[136px] items-center gap-1 group-has-[[data-pending]]/product-rating:animate-pulse"
+//   //     pending
+//   //   >
+//   //     <Skeleton.Box className="h-4 w-[100px] rounded-md" />
+//   //     <Skeleton.Box className="h-6 w-8 rounded-xl" />
+//   //   </Skeleton.Root>
+//   // );
+// }
 
 function ProductDetailFormSkeleton() {
   return (
@@ -325,9 +339,9 @@ function ProductDetailFormSkeleton() {
           ))}
         </div>
       </div>
-      <div className="flex gap-2">
+      <div className="flex items-center gap-x-3">
         <Skeleton.Box className="h-12 w-[120px] rounded-lg" />
-        <Skeleton.Box className="h-12 w-[216px] rounded-full" />
+        <Skeleton.Box className="h-12 w-[216px] rounded-lg" />
       </div>
     </Skeleton.Root>
   );
@@ -355,12 +369,12 @@ function ProductDetailSkeleton() {
   return (
     <section className="@container">
       <div className="group/product-detail mx-auto w-full max-w-(--breakpoint-2xl) @xl:px-6 @xl:py-8 @4xl:px-8">
-        <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-8 @2xl:grid-cols-12 @5xl:gap-x-6">
+        <div className="grid grid-cols-1 items-stretch gap-x-6 @2xl:grid-cols-12">
           <div className="group/product-gallery col-span-full @2xl:col-span-6 @5xl:col-span-7">
             <ProductGallerySkeleton />
           </div>
-          <div className="px-4 py-8 @xl:px-0 @xl:py-0 @2xl:col-span-6 @5xl:col-span-5">
-            <div className="mb-8 flex items-start justify-between gap-4">
+          <div className="col-span-full px-4 py-8 @xl:px-0 @2xl:col-span-6 @2xl:py-0 @5xl:col-span-5">
+            <div className="mb-8 flex items-center justify-between gap-4">
               <div className="flex gap-2">
                 <Skeleton.Box className="h-6 w-20 rounded" />
                 <Skeleton.Box className="h-6 w-20 rounded" />
@@ -370,15 +384,37 @@ function ProductDetailSkeleton() {
                 <Skeleton.Box className="h-7 w-9 rounded-md" />
               </div>
             </div>
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8" id="overview">
               <div>
-                <Skeleton.Box className="h-8 w-96 rounded-md @xl:h-10" />
+                <Skeleton.Box className="h-8 w-96 rounded-md text-2xl @xl:h-10 @xl:text-3xl @4xl:text-4xl" />
                 <Skeleton.Box className="mt-4 h-6 w-64 rounded-md" />
               </div>
-              <RatingSkeleton />
-              <PriceLabelSkeleton />
-              <Skeleton.Box className="h-4 w-32 rounded-md" />
-              <Skeleton.Box className="h-16 w-full rounded-md" />
+              <div className="group/product-price">
+                <Skeleton.Box className="h-8 w-32 rounded-md text-xl @xl:h-10 @xl:text-2xl" />
+              </div>
+              <Skeleton.Box className="text-contrast-400 h-4 w-32 rounded-md font-medium" />
+              <Skeleton.Box className="text-contrast-400 h-16 w-full rounded-md" />
+              <div className="grid grid-cols-2 gap-2">
+                {Array.from({ length: 2 }).map((_, idx) => (
+                  <div className="flex items-center gap-2" key={idx}>
+                    <div className="bg-contrast-100 flex h-12 w-12 items-center justify-center rounded-lg lg:h-14 lg:w-14">
+                      <Skeleton.Box className="h-6 w-6" />
+                    </div>
+                    <Skeleton.Box className="text-contrast-400 h-4 w-32 rounded-md text-sm lg:text-base" />
+                  </div>
+                ))}
+              </div>
+              <div className="group/product-detail-form">
+                <ProductDetailFormSkeleton />
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <Skeleton.Box className="text-contrast-400 text-md h-4 w-32 rounded-md uppercase" />
+                <Skeleton.Box className="h-4 w-20 rounded-md" />
+              </div>
+              <h2 className="sr-only">Additional information</h2>
+              <div className="group/product-accordion" id="features">
+                <ProductAccordionsSkeleton />
+              </div>
             </div>
           </div>
         </div>
