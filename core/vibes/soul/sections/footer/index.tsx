@@ -133,9 +133,9 @@ export const Footer = forwardRef(async function Footer(
                         Join our mailing list for insider updates, exclusive offers, and cooking
                         inspiration.
                       </p>
-                      <div className="mt-8">
+                      <div className="mt-8 space-y-4">
                         <InlineEmailForm action={action} />
-                        <CookiePreferencesNotice />
+                        <CookiePreferencesNotice className="text-sm" />
                       </div>
                     </div>
                   );
