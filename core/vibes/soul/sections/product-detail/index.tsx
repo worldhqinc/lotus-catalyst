@@ -176,7 +176,7 @@ export function ProductDetail<F extends Field>({
                         {[
                           {
                             icon: Package2,
-                            label: 'Free US Shipping on $200 or more',
+                            label: 'Free Shipping on orders of $200 or more',
                           },
                           {
                             icon: RefreshCw,
