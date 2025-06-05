@@ -33,7 +33,7 @@ export function NewsletterForm({
             inputContainerClassName="bg-transparent focus-within:border-white !border-white"
             placeholder={inputPlaceholder || 'Enter your email'}
           />
-          <CookiePreferencesNotice className="hover:text-contrast-200 text-white" />
+          <CookiePreferencesNotice />
         </div>
       </div>
     </section>

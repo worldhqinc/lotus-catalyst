@@ -14,7 +14,7 @@ interface CookiePreferencesCtaProps {
 export default function CookiePreferencesCta({
   variant,
   label = 'Cookie Preferences',
-  className,
+  className = 'text-inherit underline',
 }: CookiePreferencesCtaProps) {
   const handleClick = () => {
     window.truste.eu.clickListener();
@@ -22,7 +22,7 @@ export default function CookiePreferencesCta({
 
   if (variant === 'link') {
     return (
-      <Link className={clsx(className)} href="#" onClick={handleClick}>
+      <Link className={className} href="#" onClick={handleClick}>
         {label}
       </Link>
     );
