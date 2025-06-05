@@ -216,7 +216,7 @@ export function Slideshow({
                           className="mt-6 @xl:mt-8"
                           href={cta?.href ?? '#'}
                           shape={cta?.shape ?? 'rounded'}
-                          size={cta?.size ?? 'large'}
+                          size={cta?.size ?? 'medium'}
                           variant={cta?.variant ?? 'primary'}
                         >
                           {cta?.label ?? 'Learn more'}

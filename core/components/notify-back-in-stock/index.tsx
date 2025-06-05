@@ -13,7 +13,7 @@ export default function NotifyBackInStock({
   sku,
   buttonLabel,
   buttonClassName,
-  buttonSize = 'small',
+  buttonSize = 'medium',
   textCta = false,
 }: NotifyBackInStockProps) {
   return (
