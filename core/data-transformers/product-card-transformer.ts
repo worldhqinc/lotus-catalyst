@@ -101,6 +101,7 @@ export function contentfulProductCardTransformer(
       price,
       badge: fields.badge ?? undefined,
       sku: fields.bcProductReference,
+      inStock: fields.inventoryQuantity ? fields.inventoryQuantity > 0 : false,
     };
   }
 
