@@ -17,6 +17,7 @@ import {
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { ProductCard } from '@/vibes/soul/primitives/product-card';
+import { Spinner } from '@/vibes/soul/primitives/spinner';
 import Tabs from '@/vibes/soul/primitives/tabs';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Link } from '~/components/link';
@@ -122,9 +123,65 @@ const GROUP_CONFIG: GroupConfig[] = [
   },
 ];
 
-function GroupTabContent({ group }: { group: GroupConfig }) {
+function GroupTabContent({
+  group,
+  isAllTabSelected,
+}: {
+  group: GroupConfig;
+  isAllTabSelected?: boolean;
+}) {
   const { items } = useRefinementList({ attribute: 'contentType' });
   const { status } = useInstantSearch();
+
+  const renderContent = () => {
+    const isLoading = status === 'loading' || status === 'stalled';
+    const hasNoItems = items.length === 0;
+    const isIdle = status === 'idle';
+
+    if (isLoading && hasNoItems) {
+      return (
+        <div className="flex items-center justify-center">
+          <Spinner />
+        </div>
+      );
+    }
+
+    if (isIdle && hasNoItems) {
+      // Hide entire section if all tab is selected and no results
+      if (isAllTabSelected) {
+        return null;
+      }
+
+      return (
+        <div className="flex text-lg">
+          <p>
+            No results found.{' '}
+            <Link className="text-primary hover:underline" href={group.href}>
+              View more here
+            </Link>
+            .
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <Hits
+        classNames={{
+          list: 'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-6',
+        }}
+        // @ts-expect-error - hit is a ProductGridHit | PostGridHit
+        hitComponent={(props) => group.card({ ...props })}
+      />
+    );
+  };
+
+  const content = renderContent();
+
+  // If content is null (no results in all tab), hide the entire section
+  if (content === null) {
+    return null;
+  }
 
   return (
     <div className="py-8 lg:py-16">
@@ -138,25 +195,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
           </span>
         </ButtonLink>
       </div>
-      {status !== 'loading' && status !== 'stalled' && items.length === 0 ? (
-        <div className="flex text-lg">
-          <p>
-            No results found.{' '}
-            <Link className="text-primary hover:underline" href={group.href}>
-              View more here
-            </Link>
-            .
-          </p>
-        </div>
-      ) : (
-        <Hits
-          classNames={{
-            list: 'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-6',
-          }}
-          // @ts-expect-error - hit is a ProductGridHit | PostGridHit
-          hitComponent={(props) => group.card({ ...props })}
-        />
-      )}
+      {content}
     </div>
   );
 }
@@ -165,25 +204,38 @@ function GroupTabs() {
   const triggers: Array<{ value: string; label: string }> = [];
   const content: Array<{ value: string; children: React.ReactNode }> = [];
 
+  // Individual tab content - shows "No results found" message
   GROUP_CONFIG.forEach((group) => {
     content.push({
       value: group.key,
       children: (
         <Index indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? ''} key={group.key}>
           <Configure filters={group.filter} hitsPerPage={6} />
-          <GroupTabContent group={group} />
+          <GroupTabContent group={group} isAllTabSelected={false} />
         </Index>
       ),
     });
     triggers.push({ value: group.key, label: group.label });
   });
 
-  return <Tabs className="mt-8" content={content} showAll={true} triggers={triggers} />;
+  // Create custom All tab content that hides empty sections
+  const allTabContent = GROUP_CONFIG.map((group) => (
+    <Index indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? ''} key={group.key}>
+      <Configure filters={group.filter} hitsPerPage={6} />
+      <GroupTabContent group={group} isAllTabSelected={true} />
+    </Index>
+  ));
+
+  const allTriggers = [{ value: 'all', label: 'All' }, ...triggers];
+  const allContent = [{ value: 'all', children: allTabContent }, ...content];
+
+  return <Tabs className="mt-8" content={allContent} triggers={allTriggers} />;
 }
 
 function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { items } = useRefinementList({ attribute: 'contentType' });
 
   const formStyles =
     '[&_form]:flex [&_form]:gap-4 [&_form_button.ais-SearchBox-submit]:hidden [&_form_button.ais-SearchBox-reset]:hidden';
@@ -217,7 +269,7 @@ function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) 
   );
 
   const queryHook = useCallback((query: string, search: (query: string) => void) => {
-    setTimeout(() => search(query), 650);
+    setTimeout(() => search(query), 750);
   }, []);
 
   return (
@@ -238,7 +290,13 @@ function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) 
           }}
         />
       </div>
-      <GroupTabs />
+      {items.length === 0 ? (
+        <div className="flex pt-10 text-lg">
+          <p>No results found.</p>
+        </div>
+      ) : (
+        <GroupTabs />
+      )}
     </SectionLayout>
   );
 }

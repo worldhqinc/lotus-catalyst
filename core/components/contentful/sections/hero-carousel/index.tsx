@@ -33,6 +33,7 @@ export function HeroCarousel({ data }: Props) {
       const description = fields.subhead;
       const imageAsset = fields.image;
       const imageFile = imageAsset ? assetSchema.parse(imageAsset).fields.file : null;
+      const imageDescription = imageAsset ? assetSchema.parse(imageAsset).fields.description : null;
 
       if (!title) return null;
 
@@ -45,7 +46,7 @@ export function HeroCarousel({ data }: Props) {
         invertText: Boolean(fields.invertTextColor),
         image: imageFile
           ? {
-              alt: title,
+              alt: imageDescription || title,
               src: ensureImageUrl(imageFile.url),
               blurDataUrl: undefined,
             }

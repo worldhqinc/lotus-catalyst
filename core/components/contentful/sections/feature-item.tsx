@@ -78,7 +78,7 @@ export function FeatureItem({
         }`}
       >
         <Image
-          alt={image.fields.title || heading}
+          alt={image.fields.description || heading}
           className="h-full w-full object-cover"
           height={image.fields.file.details.image?.height || 300}
           src={ensureImageUrl(image.fields.file.url)}

@@ -3,23 +3,22 @@ import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { ensureImageUrl, formatTrademarkText } from '~/lib/utils';
 
+interface CardImageProp {
+  fields: {
+    file: {
+      url: string;
+      details: {
+        image: { height: number; width: number };
+      };
+    };
+    title?: string;
+    description?: string;
+  };
+}
+
 interface CardProps {
   categories: string[];
-  image:
-    | {
-        fields: {
-          file: {
-            url: string;
-            details: {
-              image: {
-                height: number;
-                width: number;
-              };
-            };
-          };
-        };
-      }
-    | undefined;
+  image: CardImageProp | undefined;
   pageSlug: string;
   recipeName: string;
   shortDescription: string;
@@ -31,7 +30,7 @@ export function Card({ categories, image, pageSlug, recipeName, shortDescription
       <figure className="bg-contrast-200 relative aspect-[4/3] overflow-hidden rounded-lg">
         {image && (
           <Image
-            alt={recipeName}
+            alt={image.fields.description ?? recipeName}
             className="ease-quad h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
             height={image.fields.file.details.image.height}
             src={ensureImageUrl(image.fields.file.url)}

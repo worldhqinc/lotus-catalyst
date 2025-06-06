@@ -12,7 +12,7 @@ export function MediaBanner({ image, wistiaId }: mediaBanner['fields']) {
     mediaElement = (
       <figure className="absolute inset-0 h-full w-full">
         <Image
-          alt={image.fields.title ?? ''}
+          alt={image.fields.description ?? image.fields.title ?? ''}
           className="h-full w-full object-cover object-center"
           fill
           src={absoluteMediaUrl ?? ''}

@@ -26,6 +26,7 @@ interface CardImageProp {
       };
     };
     title?: string;
+    description?: string;
   };
 }
 
@@ -179,7 +180,8 @@ export async function InspirationBento({
                           },
                         },
                       },
-                      title: cardData.originalImage.fields.title ?? cardData.recipeName,
+                      title: cardData.originalImage.fields.title ?? undefined,
+                      description: cardData.originalImage.fields.description ?? undefined,
                     },
                   };
                 }

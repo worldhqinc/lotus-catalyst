@@ -13,7 +13,7 @@ export function CulinaryPassionSection({
         <div className="bg-surface-image aspect-[1.33] w-full overflow-hidden rounded">
           {sectionImage ? (
             <Image
-              alt={sectionImage.fields.title || sectionTitle}
+              alt={sectionImage.fields.description || sectionTitle}
               className="h-auto w-full object-cover"
               height={sectionImage.fields.file.details.image?.height || 400}
               src={sectionImage.fields.file.url}
