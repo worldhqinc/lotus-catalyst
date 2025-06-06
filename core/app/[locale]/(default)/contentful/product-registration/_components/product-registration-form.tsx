@@ -189,7 +189,7 @@ export function ProductRegistrationForm({ modelNumberOptions }: Props) {
           {formState.errors?.general ? (
             <FormStatus type="error">{formState.errors.general.join(', ')}</FormStatus>
           ) : null}
-          <p className="text-xs leading-[26px]">
+          <p className="text-xs leading-[20px]">
             Lotus Cooking needs the contact information you provide to us to contact you about our
             products and services. You may unsubscribe from these communications at any time. For
             information on how to unsubscribe, as well as our privacy practices and commitment to
