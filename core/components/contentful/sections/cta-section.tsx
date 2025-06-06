@@ -49,7 +49,7 @@ export function CtaSection({
                   <div className="bg-contrast-200 aspect-[1.3333] overflow-hidden rounded">
                     {featuredImageUrl ? (
                       <Image
-                        alt={featuredImage?.fields.title ?? ''}
+                        alt={featuredImage?.fields.description ?? fields.text}
                         className="size-full object-cover"
                         height={file.details.image?.height}
                         src={ensureImageUrl(featuredImageUrl)}

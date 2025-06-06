@@ -16,7 +16,7 @@ export function FeatureCallout({ fields }: FeatureCalloutProps) {
         <>
           {' '}
           <Image
-            alt={fields.logo.fields.title || fields.label}
+            alt={fields.logo.fields.description || fields.label}
             className="h-7 w-auto"
             height={fields.logo.fields.file.details.image?.height || 28}
             src={ensureImageUrl(fields.logo.fields.file.url)}

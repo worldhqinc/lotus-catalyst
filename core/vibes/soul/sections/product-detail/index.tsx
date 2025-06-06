@@ -122,7 +122,7 @@ export function ProductDetail<F extends Field>({
 
                         return {
                           src: ensureImageUrl(image.fields.file.url),
-                          alt: image.fields.title ?? '',
+                          alt: image.fields.description ?? image.fields.title ?? '',
                           tags,
                         };
                       })}

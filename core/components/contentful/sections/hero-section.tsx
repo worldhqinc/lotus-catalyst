@@ -27,7 +27,7 @@ export function HeroSection({
   ) : (
     <figure className="absolute inset-0 -z-10 h-full w-full overflow-hidden after:absolute after:inset-0 after:bg-black after:opacity-30">
       <Image
-        alt={image?.fields.title || ''}
+        alt={image?.fields.description || image?.fields.title || ''}
         className="h-full w-full object-cover"
         fill
         src={ensureImageUrl(imageUrl)}

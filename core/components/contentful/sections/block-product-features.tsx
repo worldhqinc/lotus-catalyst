@@ -38,7 +38,7 @@ export function BlockProductFeatures({
                         <WistiaPlayer pageType="page" wistiaMediaId={fields.wistiaId} />
                       ) : (
                         <Image
-                          alt={fields.image.fields.title || fields.heading}
+                          alt={fields.image.fields.description || fields.heading}
                           className="h-full w-full object-cover"
                           height={fields.image.fields.file.details.image?.height || 300}
                           src={ensureImageUrl(fields.image.fields.file.url)}
@@ -66,7 +66,7 @@ export function BlockProductFeatures({
                         <WistiaPlayer pageType="page" wistiaMediaId={fields.wistiaId} />
                       ) : (
                         <Image
-                          alt={fields.image.fields.title || fields.heading}
+                          alt={fields.image.fields.description || fields.heading}
                           className="h-full w-full object-cover"
                           height={fields.image.fields.file.details.image?.height || 300}
                           src={ensureImageUrl(fields.image.fields.file.url)}

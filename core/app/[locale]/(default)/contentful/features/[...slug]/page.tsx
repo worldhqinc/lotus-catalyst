@@ -63,7 +63,7 @@ export default async function FeaturePage({ params }: Props) {
       {/* Hero Image */}
       {featuredImage && (
         <Image
-          alt={featuredImage.fields.title ?? fields.title}
+          alt={featuredImage.fields.description ?? fields.title}
           className="h-auto max-h-[620px] w-full object-cover"
           height={featuredImage.fields.file.details.image?.height ?? 0}
           src={`https:${featuredImage.fields.file.url}`}

@@ -16,7 +16,7 @@ export function Testimonials({ quote, logos }: testimonials['fields']) {
             type="button"
           >
             <Image
-              alt={logo.fields.title || 'Logo'}
+              alt={logo.fields.description || 'Logo'}
               className="h-12 w-auto object-contain"
               height={logo.fields.file.details.image?.height || 50}
               src={ensureImageUrl(logo.fields.file.url)}

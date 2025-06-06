@@ -63,7 +63,7 @@ export function CardSection({
                 {card.fields.image && (
                   <figure className="absolute inset-0 -z-10 after:absolute after:inset-0 after:bg-gradient-to-b after:from-transparent after:to-black/60 lg:after:from-40%">
                     <Image
-                      alt={card.fields.image.fields.title ?? ''}
+                      alt={card.fields.image.fields.description ?? card.fields.title}
                       className="h-full w-full object-cover object-center"
                       fill
                       src={absoluteMediaUrl ?? ''}
@@ -116,7 +116,7 @@ export function CardSection({
               {card.fields.image && (
                 <figure className="absolute inset-0 -z-10 after:absolute after:inset-0 after:bg-black after:opacity-30">
                   <Image
-                    alt={card.fields.image.fields.title ?? ''}
+                    alt={card.fields.image.fields.description ?? card.fields.title}
                     className="h-full w-full object-cover object-center"
                     fill
                     src={absoluteMediaUrl ?? ''}
