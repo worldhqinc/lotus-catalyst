@@ -1,5 +1,6 @@
 import { documentToHtmlString, Options } from '@contentful/rich-text-html-renderer';
 import { Block, BLOCKS, Document, Inline, MARKS } from '@contentful/rich-text-types';
+import { Metadata } from 'next';
 import { createElement, ReactNode } from 'react';
 
 import { cta } from '~/contentful/schema';
@@ -159,4 +160,15 @@ export function formatTrademarkText(text: string): ReactNode {
       ? createElement('sup', { key: index, className: 'text-base align-super -top-1' }, '™')
       : part,
   );
+}
+
+export function getHreflangAlternates(rest: string[], locale: string): Metadata['alternates'] {
+  return {
+    languages: {
+      'x-default': `/${locale}/${rest.join('/')}`,
+      en: `/en/${rest.join('/')}`,
+      es: `/es/${rest.join('/')}`,
+      fr: `/fr/${rest.join('/')}`,
+    },
+  };
 }

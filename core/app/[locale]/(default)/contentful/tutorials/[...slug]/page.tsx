@@ -11,7 +11,12 @@ import SocialShare from '~/components/contentful/sections/social-share';
 import { Image } from '~/components/image';
 import { WistiaPlayer } from '~/components/wistia-player';
 import { carouselProductSchema } from '~/contentful/schema';
-import { ensureImageUrl, formatTrademarkText, generateHtmlFromRichText } from '~/lib/utils';
+import {
+  ensureImageUrl,
+  formatTrademarkText,
+  generateHtmlFromRichText,
+  getHreflangAlternates,
+} from '~/lib/utils';
 
 import { getPageBySlug } from '../../[...rest]/page-data';
 
@@ -21,7 +26,8 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  const alternates = getHreflangAlternates(['tutorials', ...slug], locale);
   const page = await getPageBySlug('tutorial', ['tutorials', ...slug]);
   const { fields } = page;
 
@@ -39,6 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       ],
     },
+    alternates,
   };
 }
 

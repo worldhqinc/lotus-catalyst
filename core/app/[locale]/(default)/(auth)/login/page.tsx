@@ -6,6 +6,7 @@ import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { SignInSection } from '@/vibes/soul/sections/sign-in-section';
 import { buildConfig } from '~/build-config/reader';
 import { ForceRefresh } from '~/components/force-refresh';
+import { getHreflangAlternates } from '~/lib/utils';
 
 import { login } from './_actions/login';
 
@@ -18,6 +19,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  const alternates = getHreflangAlternates(['login'], locale);
 
   const t = await getTranslations({ locale, namespace: 'Auth.Login' });
 
@@ -25,6 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t('title'),
     description:
       'Sign in to your Lotus account. Are you a new customer? Create an account for faster checkout, real-time order tracking, detailed order history, and more.',
+    alternates,
   };
 }
 

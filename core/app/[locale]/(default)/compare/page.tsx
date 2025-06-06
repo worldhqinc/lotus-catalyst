@@ -8,6 +8,7 @@ import { CompareSection } from '@/vibes/soul/sections/compare-section';
 import { getSessionCustomerAccessToken } from '~/auth';
 import { pricesTransformer } from '~/data-transformers/prices-transformer';
 import { getPreferredCurrencyCode } from '~/lib/currency';
+import { getHreflangAlternates } from '~/lib/utils';
 
 import { addToCart } from './_actions/add-to-cart';
 // import { CompareAnalyticsProvider } from './_components/compare-analytics-provider';
@@ -39,11 +40,13 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  const alternates = getHreflangAlternates(['compare'], locale);
 
   const t = await getTranslations({ locale, namespace: 'Compare' });
 
   return {
     title: t('title'),
+    alternates,
   };
 }
 

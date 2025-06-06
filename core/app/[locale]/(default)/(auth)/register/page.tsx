@@ -11,7 +11,7 @@ import {
   CUSTOMER_FIELDS_TO_EXCLUDE,
   FULL_NAME_FIELDS,
 } from '~/data-transformers/form-field-transformer/utils';
-import { exists } from '~/lib/utils';
+import { exists, getHreflangAlternates } from '~/lib/utils';
 
 import { registerCustomer } from './_actions/register-customer';
 import { getRegisterCustomerQuery } from './page-data';
@@ -22,11 +22,13 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  const alternates = getHreflangAlternates(['register'], locale);
 
   const t = await getTranslations({ locale, namespace: 'Auth.Register' });
 
   return {
     title: t('title'),
+    alternates,
   };
 }
 

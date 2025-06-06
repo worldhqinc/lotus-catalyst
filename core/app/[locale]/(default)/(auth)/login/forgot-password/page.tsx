@@ -7,6 +7,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 // import { bypassReCaptcha } from '~/lib/bypass-recaptcha';
 
 import { ForgotPasswordSection } from '@/vibes/soul/sections/forgot-password-section';
+import { getHreflangAlternates } from '~/lib/utils';
 
 import { resetPassword } from './_actions/reset-password';
 
@@ -30,11 +31,13 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  const alternates = getHreflangAlternates(['forgot-password'], locale);
 
   const t = await getTranslations({ locale, namespace: 'Auth.Login.ForgotPassword' });
 
   return {
     title: t('title'),
+    alternates,
   };
 }
 

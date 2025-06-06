@@ -8,7 +8,7 @@ import { graphql } from '~/client/graphql';
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { getCartId } from '~/lib/cart';
 import { getPreferredCurrencyCode } from '~/lib/currency';
-import { exists } from '~/lib/utils';
+import { exists, getHreflangAlternates } from '~/lib/utils';
 
 import { getPageBySlug } from '../contentful/[...rest]/page-data';
 
@@ -55,6 +55,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  const alternates = getHreflangAlternates(['cart'], locale);
 
   const t = await getTranslations({ locale, namespace: 'Cart' });
 
@@ -62,6 +63,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t('title'),
     description:
       'An elevated kitchen awaits. Manage your cart, proceed to checkout, and explore personalized recommendations. Cook with calm confidence today.',
+    alternates,
   };
 }
 

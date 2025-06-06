@@ -2,13 +2,20 @@ import { Metadata } from 'next';
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { Image } from '~/components/image';
+import { getHreflangAlternates } from '~/lib/utils';
 import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 
 import { getPageBySlug } from '../[...rest]/page-data';
 
 import { ChatWidgetButton } from './_components/chat-widget-button';
 
-export async function generateMetadata(): Promise<Metadata> {
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = getHreflangAlternates(['contact'], locale);
   const page = await getPageBySlug('pageStandard', ['contact']);
   const { fields } = page;
 
@@ -16,6 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: fields.metaTitle || fields.pageName,
     description: fields.metaDescription,
     keywords: fields.metaKeywords,
+    alternates,
   };
 }
 

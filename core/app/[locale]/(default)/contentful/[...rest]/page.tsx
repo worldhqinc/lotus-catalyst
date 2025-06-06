@@ -4,7 +4,7 @@ import { SearchParams } from 'nuqs';
 
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { routing } from '~/i18n/routing';
-import { generateHtmlFromRichText } from '~/lib/utils';
+import { generateHtmlFromRichText, getHreflangAlternates } from '~/lib/utils';
 
 import { getPageBySlug } from './page-data';
 
@@ -24,14 +24,16 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { rest } = await params;
+  const { rest, locale } = await params;
   const page = await getPageBySlug('pageStandard', rest);
   const { fields } = page;
+  const alternates = getHreflangAlternates(rest, locale);
 
   return {
     title: fields.metaTitle || fields.pageName,
     description: fields.metaDescription,
     keywords: fields.metaKeywords,
+    alternates,
   };
 }
 

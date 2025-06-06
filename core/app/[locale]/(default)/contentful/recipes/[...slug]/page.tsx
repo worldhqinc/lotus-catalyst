@@ -21,7 +21,7 @@ import {
   productPartsAndAccessoriesSchema,
 } from '~/contentful/schema';
 import { contentfulProductCardTransformer } from '~/data-transformers/product-card-transformer';
-import { ensureImageUrl, generateHtmlFromRichText } from '~/lib/utils';
+import { ensureImageUrl, generateHtmlFromRichText, getHreflangAlternates } from '~/lib/utils';
 import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 
 import { getPageBySlug } from '../../[...rest]/page-data';
@@ -32,7 +32,8 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  const alternates = getHreflangAlternates(['recipes', ...slug], locale);
   const page = await getPageBySlug('recipe', ['recipes', ...slug]);
   const { fields } = page;
 
@@ -50,6 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       ],
     },
+    alternates,
   };
 }
 

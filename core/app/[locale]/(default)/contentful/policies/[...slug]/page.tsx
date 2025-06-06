@@ -1,15 +1,16 @@
 import { Metadata } from 'next';
 
-import { generateHtmlFromRichText } from '~/lib/utils';
+import { generateHtmlFromRichText, getHreflangAlternates } from '~/lib/utils';
 
 import { getPageBySlug } from '../../[...rest]/page-data';
 
 interface Props {
-  params: Promise<{ slug: string[] }>;
+  params: Promise<{ locale: string; slug: string[] }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  const alternates = getHreflangAlternates(['policies', ...slug], locale);
   const page = await getPageBySlug('pageStandard', ['policies', ...slug]);
   const { fields } = page;
 
@@ -17,6 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: fields.metaTitle || fields.pageName,
     description: fields.metaDescription,
     keywords: fields.metaKeywords,
+    alternates,
   };
 }
 

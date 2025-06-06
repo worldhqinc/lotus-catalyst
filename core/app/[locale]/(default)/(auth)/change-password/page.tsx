@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { ResetPasswordSection } from '@/vibes/soul/sections/reset-password-section';
 import { redirect } from '~/i18n/routing';
+import { getHreflangAlternates } from '~/lib/utils';
 
 import { changePassword } from './_actions/change-password';
 
@@ -17,11 +18,13 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  const alternates = getHreflangAlternates(['change-password'], locale);
 
   const t = await getTranslations({ locale, namespace: 'Auth.ChangePassword' });
 
   return {
     title: t('title'),
+    alternates,
   };
 }
 
