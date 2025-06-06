@@ -130,8 +130,8 @@ export const Footer = forwardRef(async function Footer(
                   return (
                     <div>
                       <p className="text-lg">
-                        Join our mailing list for insider updates, exclusive offers, and cooking
-                        inspiration.
+                        Join 'Counter Intuitive' email series for insider updates, exclusive offers,
+                        and cooking inspiration.
                       </p>
                       <div className="mt-8 space-y-4">
                         <InlineEmailForm action={action} />
@@ -213,7 +213,7 @@ export const Footer = forwardRef(async function Footer(
             </div>
 
             <div className="py-6 @3xl:py-0">
-              <span className="text-foreground mb-3 block text-lg font-medium">About Us</span>
+              <span className="text-foreground mb-3 block text-lg font-medium">About Lotus</span>
               <ul className="flex flex-col items-start gap-4">
                 <li>
                   <Link
@@ -270,7 +270,7 @@ export const Footer = forwardRef(async function Footer(
                         : '/login?redirectTo=/account/wishlists'
                     }
                   >
-                    Wish Lists
+                    Wishlists
                   </Link>
                 </li>
               </ul>

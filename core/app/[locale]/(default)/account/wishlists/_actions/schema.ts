@@ -8,7 +8,7 @@ const wishlistItemSchema = z.object({
 });
 
 export const newWishlistSchema = ({
-  required_error = 'Wish list name cannot be empty.',
+  required_error = 'Wishlist name cannot be empty.',
 }: {
   required_error?: string;
 }) =>
@@ -19,7 +19,7 @@ export const newWishlistSchema = ({
   });
 
 export const renameWishlistSchema = ({
-  required_error = 'Wish list name cannot be empty.',
+  required_error = 'Wishlist name cannot be empty.',
 }: {
   required_error?: string;
 }) =>
