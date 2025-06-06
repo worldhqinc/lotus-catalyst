@@ -54,7 +54,7 @@ export function Highlights({
                 {quoteAuthorImage ? (
                   <div className="bg-surface-image mb-8 aspect-square w-20 overflow-hidden rounded-full">
                     <Image
-                      alt={quoteAuthorImage.fields.title || quoteAuthorName || ''}
+                      alt={quoteAuthorImage.fields.description || quoteAuthorName || ''}
                       className="h-full w-full object-cover"
                       height={quoteAuthorImage.fields.file.details.image?.height || 400}
                       src={ensureImageUrl(quoteAuthorImage.fields.file.url)}
@@ -71,7 +71,7 @@ export function Highlights({
         <div className="bg-contrast-200 relative isolate flex aspect-square h-full w-full flex-col justify-end overflow-hidden rounded-lg p-4 lg:aspect-4/3 lg:p-8">
           {image && (
             <Image
-              alt={image.fields.title || ''}
+              alt={image.fields.description || image.fields.title || ''}
               className="absolute inset-0 -z-10 h-full w-full object-cover"
               height={image.fields.file.details.image?.height || 400}
               src={ensureImageUrl(image.fields.file.url)}

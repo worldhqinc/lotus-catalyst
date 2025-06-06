@@ -11,7 +11,7 @@ export function IntroSection({ title, subtitle, image, cta }: introSection['fiel
         <div className="bg-surface-image aspect-[4/3] w-full overflow-hidden rounded-lg">
           {image && (
             <Image
-              alt={image.fields.title || title}
+              alt={image.fields.description || image.fields.title || title}
               className="h-full w-full object-cover"
               height={image.fields.file.details.image?.height || 600}
               src={image.fields.file.url}
