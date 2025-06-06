@@ -15,6 +15,7 @@ interface Props {
 }
 
 type Slide = ComponentProps<typeof Slideshow>['slides'][number] & {
+  addLinearBackground?: boolean;
   invertText?: boolean;
   wistiaId?: string;
 };
@@ -44,6 +45,7 @@ export function HeroCarousel({ data }: Props) {
         description,
         showDescription: Boolean(description),
         invertText: Boolean(fields.invertTextColor),
+        addLinearBackground: Boolean(fields.addLinearBackground),
         image: imageFile
           ? {
               alt: imageDescription || title,
@@ -205,7 +207,7 @@ export function HeroCarousel({ data }: Props) {
               className={clsx(
                 'size-2 rounded-full transition-all duration-300',
                 idx === activeIndex
-                  ? 'bg-[var(--slideshow-pagination,hsl(var(--background)))] opacity-100'
+                  ? 'w-[30px] bg-[var(--slideshow-pagination,hsl(var(--background)))] opacity-100 lg:h-[30px] lg:w-auto'
                   : 'bg-[var(--slideshow-pagination,hsl(var(--background)))] opacity-30 hover:opacity-70',
               )}
               key={idx}
@@ -233,7 +235,13 @@ export function HeroCarousel({ data }: Props) {
                   )}
                   key={`content-${idx}`}
                 >
-                  <div className="bg-contrast-200 absolute inset-0 z-10 h-full w-full after:absolute after:inset-0 after:z-15 after:bg-linear-to-l after:from-transparent after:to-black/50">
+                  <div
+                    className={clsx(
+                      'bg-contrast-200 absolute inset-0 z-10 h-full w-full',
+                      slide.addLinearBackground &&
+                        'after:absolute after:inset-0 after:z-15 after:bg-linear-to-l after:from-transparent after:to-black/50',
+                    )}
+                  >
                     {mediaElement(slide, idx)}
                   </div>
                   <div className="absolute top-1/2 left-1/2 z-20 container -translate-x-1/2 -translate-y-1/2">
@@ -258,7 +266,7 @@ export function HeroCarousel({ data }: Props) {
                         <p
                           className={clsx(
                             'mt-4 max-w-lg text-lg @xl:mt-6',
-                            slide.invertText ? 'text-white' : 'text-contrast-400',
+                            slide.invertText ? 'text-white' : 'text-surface-foreground',
                           )}
                         >
                           {slide.description}
