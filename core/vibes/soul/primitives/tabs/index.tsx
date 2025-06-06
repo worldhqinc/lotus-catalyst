@@ -42,44 +42,39 @@ const Tabs = ({
   const combinedContent = React.useMemo(() => [...allContent, ...content], [allContent, content]);
 
   const triggerRefs = React.useRef<Map<string, HTMLButtonElement>>(new Map());
+  const [activeValue, setActiveValue] = React.useState(defaultValue || combinedTriggers[0]?.value);
 
-  const moveIndicator = (value: string) => {
-    const element = triggerRefs.current.get(value);
+  const moveIndicator = React.useCallback((value: string) => {
+    requestAnimationFrame(() => {
+      const element = triggerRefs.current.get(value);
 
-    if (element) {
-      const width = element.offsetWidth;
+      if (element) {
+        const width = element.offsetWidth;
+        const left = element.offsetLeft;
+        const parent = element.parentElement;
 
-      element.parentElement?.style.setProperty('--trigger-width', `${width}px`);
-
-      const left = element.offsetLeft;
-
-      element.parentElement?.style.setProperty('--trigger-left', `${left}px`);
-    }
-  };
-
-  React.useEffect(() => {
-    const firstValue = defaultValue || combinedTriggers[0]?.value;
-
-    if (firstValue) {
-      moveIndicator(firstValue);
-    }
-  }, [defaultValue, combinedTriggers]);
-
-  const [currentValue, setCurrentValue] = React.useState(
-    defaultValue || combinedTriggers[0]?.value,
-  );
+        if (parent) {
+          parent.style.setProperty('--trigger-width', `${width}px`);
+          parent.style.setProperty('--trigger-left', `${left}px`);
+        }
+      }
+    });
+  }, []);
 
   React.useEffect(() => {
-    if (currentValue) {
-      moveIndicator(currentValue);
+    if (activeValue) {
+      moveIndicator(activeValue);
     }
-  }, [currentValue]);
+  }, [activeValue, moveIndicator]);
 
   return (
     <TabsPrimitive.Root
       className={className}
-      defaultValue={defaultValue || combinedTriggers[0]?.value}
-      onValueChange={setCurrentValue}
+      defaultValue={activeValue}
+      onValueChange={(value) => {
+        setActiveValue(value);
+        moveIndicator(value);
+      }}
     >
       <TabsPrimitive.List className="tabs-list scrollbar-hidden border-border after:bg-foreground after:ease-quad relative flex shrink-0 overflow-x-auto border-b after:absolute after:bottom-0 after:left-[var(--trigger-left)] after:h-px after:w-[var(--trigger-width)] after:transition-[left,_width] after:duration-200">
         {combinedTriggers.map((trigger) => (
