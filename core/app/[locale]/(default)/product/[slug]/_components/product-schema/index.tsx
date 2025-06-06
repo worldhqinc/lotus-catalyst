@@ -20,7 +20,7 @@ export const ProductSchema = ({ product }: Props) => {
   const brand = product.brand
     ? {
         '@type': 'Brand' as const,
-        url: product.brand.path,
+        url: 'https://lotuscooking.com',
         name: product.brand.name,
       }
     : null;
