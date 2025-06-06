@@ -13,10 +13,14 @@ function SimpleHeroBanner({
   descriptionHtml,
   title,
   isPageHeader,
+  primary,
+  secondary,
 }: {
   descriptionHtml: string;
   title: string;
   isPageHeader?: boolean | null;
+  primary: cta | null;
+  secondary: cta | null;
 }) {
   return (
     <SectionLayout>
@@ -32,6 +36,11 @@ function SimpleHeroBanner({
             dangerouslySetInnerHTML={{ __html: descriptionHtml }}
           />
         )}
+        {primary || secondary ? (
+          <div className="mt-6">
+            <HeroBannerCTAs primary={primary} secondary={secondary} />
+          </div>
+        ) : null}
       </div>
     </SectionLayout>
   );
@@ -309,6 +318,8 @@ export async function HeroBanner({
       <SimpleHeroBanner
         descriptionHtml={descriptionHtml}
         isPageHeader={isPageHeader}
+        primary={primary}
+        secondary={secondary}
         title={title}
       />
     );
@@ -373,10 +384,10 @@ function getUrl(fields: {
   }
 
   if (typeof fields.internalReference?.fields?.pageSlug === 'string') {
-    return fields.internalReference.fields.pageSlug;
+    return `/${fields.internalReference.fields.pageSlug}`;
   }
 
-  return '';
+  return '#';
 }
 
 function HeroBannerCTAs({
@@ -392,7 +403,7 @@ function HeroBannerCTAs({
     <div
       className={clsx(
         'mt-4 flex flex-col gap-4 md:flex-row',
-        variant?.startsWith('left-aligned') ? 'items-start' : 'items-center',
+        variant?.startsWith('left-aligned') ? 'items-start' : 'items-center justify-center',
       )}
     >
       {primary && <ButtonLink href={getUrl(primary.fields)}>{primary.fields.text}</ButtonLink>}

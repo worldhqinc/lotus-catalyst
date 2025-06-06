@@ -60,7 +60,7 @@ export function ProductSupportLinks({ title, links }: productSupportLinks['field
 
           return (
             <li
-              className="bg-contrast-100 relative flex flex-col items-center justify-start gap-6 rounded-lg p-4 text-center lg:p-8 focus-within:outline-primary focus-within:outline-2 focus-within:outline-offset-2"
+              className="bg-contrast-100 focus-within:outline-primary relative flex flex-col items-center justify-start gap-6 rounded-lg p-4 text-center focus-within:outline-2 focus-within:outline-offset-2 lg:p-8"
               key={link.sys.id}
             >
               <span className="inline-block self-center">{iconMap(link)}</span>
