@@ -67,8 +67,8 @@ export const WishlistList = ({
 function WishlistListEmptyState({
   className = '',
   emptyStateCallToAction,
-  emptyStateSubtitle = 'Create a new wish list to save your favorite products.',
-  emptyStateTitle = "You don't have any wish list",
+  emptyStateSubtitle = 'Create a new wish ist to save your favorite products.',
+  emptyStateTitle = "You don't have any wishlist",
   itemActions,
   placeholderCount = 1,
 }: { className?: string } & Omit<Props, 'wishlists'>) {

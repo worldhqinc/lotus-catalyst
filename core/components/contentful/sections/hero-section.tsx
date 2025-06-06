@@ -46,7 +46,7 @@ export function HeroSection({
           className={clsx(
             'mx-auto space-y-4',
             invertTextColor && 'text-white',
-            type === 'hero_two' ? 'max-w-6xl' : 'max-w-4xl',
+            type === 'hero_two' ? 'max-w-[1165px]' : 'max-w-4xl',
           )}
         >
           <span className="tracking-widest uppercase">{heroEyebrow}</span>
@@ -59,9 +59,15 @@ export function HeroSection({
           >
             {heroTitle}
           </h1>
-          <p className="text-lg leading-8 lg:text-xl lg:leading-8">{heroTagline}</p>
-          {validCta && <ButtonLink href={linkHref}>{validCta.fields.text}</ButtonLink>}
+          {heroTagline ? (
+            <p className="text-lg leading-8 lg:text-xl lg:leading-8">{heroTagline}</p>
+          ) : null}
         </div>
+        {validCta && (
+          <ButtonLink className="mt-6 lg:mt-12" href={linkHref} size="medium">
+            {validCta.fields.text}
+          </ButtonLink>
+        )}
       </ElementFade>
     </SectionLayout>
   );
