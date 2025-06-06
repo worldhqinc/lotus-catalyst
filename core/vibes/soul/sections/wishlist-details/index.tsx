@@ -158,7 +158,7 @@ function WishlistItems({
 }
 
 function WishlistItemsEmptyState({
-  emptyStateText = "You haven't added products to your wish list.",
+  emptyStateText = "You haven't added products to your wishlist.",
   placeholderCount = 8,
 }: {
   emptyStateText?: Streamable<string | null>;

@@ -62,7 +62,7 @@ export function Highlights({
                     />
                   </div>
                 ) : null}
-                <p className="text-background font-medium">{quoteAuthorName},</p>
+                <p className="text-background font-medium">{quoteAuthorName}</p>
                 <p className="text-background font-medium">{quoteAuthorTitle}</p>
               </div>
             </div>
