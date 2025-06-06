@@ -107,7 +107,12 @@ export function CtaSection({
         {sectionSubtitle ? <p className="mx-auto max-w-md">{sectionSubtitle}</p> : null}
       </div>
       {buttonLink ? (
-        <ButtonLink className="mt-6 lg:mt-12" href={buttonLink} size="medium" variant="tertiary">
+        <ButtonLink
+          className="focus-visible:outline-contrast-100 mt-6 lg:mt-12"
+          href={buttonLink}
+          size="medium"
+          variant="tertiary"
+        >
           {buttonText}
         </ButtonLink>
       ) : null}
