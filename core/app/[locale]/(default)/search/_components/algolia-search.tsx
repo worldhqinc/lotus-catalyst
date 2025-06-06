@@ -17,6 +17,7 @@ import {
 
 import { ButtonLink } from '@/vibes/soul/primitives/button-link';
 import { ProductCard } from '@/vibes/soul/primitives/product-card';
+import { Spinner } from '@/vibes/soul/primitives/spinner';
 import Tabs from '@/vibes/soul/primitives/tabs';
 import { SectionLayout } from '@/vibes/soul/sections/section-layout';
 import { Link } from '~/components/link';
@@ -126,6 +127,44 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
   const { items } = useRefinementList({ attribute: 'contentType' });
   const { status } = useInstantSearch();
 
+  const renderContent = () => {
+    const isLoading = status === 'loading' || status === 'stalled';
+    const hasNoItems = items.length === 0;
+    const isIdle = status === 'idle';
+
+    if (isLoading && hasNoItems) {
+      return (
+        <div className="flex items-center justify-center">
+          <Spinner />
+        </div>
+      );
+    }
+
+    if (isIdle && hasNoItems) {
+      return (
+        <div className="flex text-lg">
+          <p>
+            No results found.{' '}
+            <Link className="text-primary hover:underline" href={group.href}>
+              View more here
+            </Link>
+            .
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <Hits
+        classNames={{
+          list: 'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-6',
+        }}
+        // @ts-expect-error - hit is a ProductGridHit | PostGridHit
+        hitComponent={(props) => group.card({ ...props })}
+      />
+    );
+  };
+
   return (
     <div className="py-8 lg:py-16">
       <div className="mb-8 flex items-center justify-between gap-4">
@@ -138,25 +177,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
           </span>
         </ButtonLink>
       </div>
-      {status !== 'loading' && status !== 'stalled' && items.length === 0 ? (
-        <div className="flex text-lg">
-          <p>
-            No results found.{' '}
-            <Link className="text-primary hover:underline" href={group.href}>
-              View more here
-            </Link>
-            .
-          </p>
-        </div>
-      ) : (
-        <Hits
-          classNames={{
-            list: 'grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-6',
-          }}
-          // @ts-expect-error - hit is a ProductGridHit | PostGridHit
-          hitComponent={(props) => group.card({ ...props })}
-        />
-      )}
+      {renderContent()}
     </div>
   );
 }
