@@ -80,7 +80,7 @@ export default function NotifyBackInStockModal({
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
             <span className="text-sm">Coming soon</span>
             <Button
-              className="text-contrast-400 underline [&_span]:text-sm"
+              className="notify-me-cta text-contrast-400 underline [&_span]:text-sm"
               size="link"
               type="button"
               variant="link"
@@ -90,7 +90,7 @@ export default function NotifyBackInStockModal({
           </div>
         ) : (
           <Button
-            className={clsx(buttonClassName, 'w-full')}
+            className={clsx(buttonClassName, 'notify-me-cta w-full')}
             size={buttonSize}
             type="button"
             variant="secondary"
