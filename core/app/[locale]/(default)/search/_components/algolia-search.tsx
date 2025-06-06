@@ -123,7 +123,13 @@ const GROUP_CONFIG: GroupConfig[] = [
   },
 ];
 
-function GroupTabContent({ group }: { group: GroupConfig }) {
+function GroupTabContent({
+  group,
+  isAllTabSelected,
+}: {
+  group: GroupConfig;
+  isAllTabSelected?: boolean;
+}) {
   const { items } = useRefinementList({ attribute: 'contentType' });
   const { status } = useInstantSearch();
 
@@ -141,6 +147,11 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
     }
 
     if (isIdle && hasNoItems) {
+      // Hide entire section if all tab is selected and no results
+      if (isAllTabSelected) {
+        return null;
+      }
+
       return (
         <div className="flex text-lg">
           <p>
@@ -165,6 +176,13 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
     );
   };
 
+  const content = renderContent();
+
+  // If content is null (no results in all tab), hide the entire section
+  if (content === null) {
+    return null;
+  }
+
   return (
     <div className="py-8 lg:py-16">
       <div className="mb-8 flex items-center justify-between gap-4">
@@ -177,7 +195,7 @@ function GroupTabContent({ group }: { group: GroupConfig }) {
           </span>
         </ButtonLink>
       </div>
-      {renderContent()}
+      {content}
     </div>
   );
 }
@@ -186,25 +204,38 @@ function GroupTabs() {
   const triggers: Array<{ value: string; label: string }> = [];
   const content: Array<{ value: string; children: React.ReactNode }> = [];
 
+  // Individual tab content - shows "No results found" message
   GROUP_CONFIG.forEach((group) => {
     content.push({
       value: group.key,
       children: (
         <Index indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? ''} key={group.key}>
           <Configure filters={group.filter} hitsPerPage={6} />
-          <GroupTabContent group={group} />
+          <GroupTabContent group={group} isAllTabSelected={false} />
         </Index>
       ),
     });
     triggers.push({ value: group.key, label: group.label });
   });
 
-  return <Tabs className="mt-8" content={content} showAll={true} triggers={triggers} />;
+  // Create custom All tab content that hides empty sections
+  const allTabContent = GROUP_CONFIG.map((group) => (
+    <Index indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? ''} key={group.key}>
+      <Configure filters={group.filter} hitsPerPage={6} />
+      <GroupTabContent group={group} isAllTabSelected={true} />
+    </Index>
+  ));
+
+  const allTriggers = [{ value: 'all', label: 'All' }, ...triggers];
+  const allContent = [{ value: 'all', children: allTabContent }, ...content];
+
+  return <Tabs className="mt-8" content={allContent} triggers={allTriggers} />;
 }
 
 function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { items } = useRefinementList({ attribute: 'contentType' });
 
   const formStyles =
     '[&_form]:flex [&_form]:gap-4 [&_form_button.ais-SearchBox-submit]:hidden [&_form_button.ais-SearchBox-reset]:hidden';
@@ -238,7 +269,7 @@ function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) 
   );
 
   const queryHook = useCallback((query: string, search: (query: string) => void) => {
-    setTimeout(() => search(query), 650);
+    setTimeout(() => search(query), 750);
   }, []);
 
   return (
@@ -259,7 +290,13 @@ function SearchComponent({ initialSearchTerm }: { initialSearchTerm?: string }) 
           }}
         />
       </div>
-      <GroupTabs />
+      {items.length === 0 ? (
+        <div className="flex pt-10 text-lg">
+          <p>No results found.</p>
+        </div>
+      ) : (
+        <GroupTabs />
+      )}
     </SectionLayout>
   );
 }
