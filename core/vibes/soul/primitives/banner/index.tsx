@@ -75,19 +75,22 @@ export const Banner = forwardRef(
           <div>
             <ul className="flex flex-row items-center justify-between gap-6">
               <li className="hidden @4xl:block">
-                <Link href="/where-to-buy">Where to buy</Link>
+                <Link className="focus-visible:outline-contrast-100" href="/where-to-buy">
+                  Where to buy
+                </Link>
               </li>
               <li>
                 <button
-                  className="UsableNetAssistive flex items-center gap-2"
+                  aria-label="Enable accessibility features"
+                  className="UsableNetAssistive focus-visible:outline-contrast-100 relative flex items-center gap-2"
                   onClick={() => {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
                     return window.enableUsableNetAssistive();
                   }}
                 >
-                  <div className="relative isolate after:absolute after:top-1/2 after:left-1/2 after:z-10 after:h-6 after:w-6 after:-translate-x-1/2 after:-translate-y-1/2">
+                  <span aria-hidden="true" className="inline-block">
                     <svg
-                      className="h-5 w-5"
+                      className="h-6 w-6"
                       fill="none"
                       height="24"
                       viewBox="0 0 24 24"
@@ -131,7 +134,7 @@ export const Banner = forwardRef(
                         strokeWidth="1.5"
                       />
                     </svg>
-                  </div>
+                  </span>
                   <p className="hidden @4xl:block">Accessibility</p>
                 </button>
               </li>
