@@ -78,7 +78,11 @@ export default async function ProductRegistration() {
               include "functional cookies" via Cookie Preferences accessible with the button below
               or in our website footer.
             </p>
-            <CookiePreferencesCta label="Update cookie preferences" variant="button" />
+            <CookiePreferencesCta
+              className="text-white"
+              label="Update cookie preferences"
+              variant="button"
+            />
           </div>
         }
       />

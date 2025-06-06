@@ -14,8 +14,15 @@ export default function CookiePreferencesCta({
   label = 'Cookie Preferences',
   className = 'text-inherit underline',
 }: CookiePreferencesCtaProps) {
-  const handleClick = () => {
-    window.truste.eu.clickListener();
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (
+      typeof window.truste !== 'undefined' &&
+      typeof window.truste.eu.clickListener === 'function'
+    ) {
+      window.truste.eu.clickListener();
+    }
   };
 
   if (variant === 'link') {
