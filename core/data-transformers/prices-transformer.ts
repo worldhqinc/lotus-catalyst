@@ -20,11 +20,11 @@ export const pricesTransformer = (
     return {
       type: 'range',
       minValue: format.number(prices.priceRange.min.value, {
-        style: 'currency',
+        style: 'decimal',
         currency: prices.price.currencyCode,
       }),
       maxValue: format.number(prices.priceRange.max.value, {
-        style: 'currency',
+        style: 'decimal',
         currency: prices.price.currencyCode,
       }),
     };
@@ -34,18 +34,18 @@ export const pricesTransformer = (
     return {
       type: 'sale',
       previousValue: format.number(prices.basePrice.value, {
-        style: 'currency',
+        style: 'decimal',
         currency: prices.price.currencyCode,
       }),
       currentValue: format.number(prices.price.value, {
-        style: 'currency',
+        style: 'decimal',
         currency: prices.price.currencyCode,
       }),
     };
   }
 
   return format.number(prices.price.value, {
-    style: 'currency',
+    style: 'decimal',
     currency: prices.price.currencyCode,
   });
 };
