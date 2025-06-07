@@ -114,7 +114,7 @@ export function ProductRegistrationForm({ modelNumberOptions }: Props) {
             <div className="flex flex-col gap-4 md:flex-row">
               <div className="flex flex-1 flex-col gap-1">
                 <Label className="text-foreground text-sm font-medium" htmlFor="firstName">
-                  First name<span className="text-contrast-400">*</span>
+                  First Name<span className="text-contrast-400">*</span>
                 </Label>
                 <Input
                   errors={getErrorsOrUndefined(formState.errors, 'firstName')}
@@ -127,7 +127,7 @@ export function ProductRegistrationForm({ modelNumberOptions }: Props) {
               </div>
               <div className="flex flex-1 flex-col gap-1">
                 <Label className="text-foreground text-sm font-medium" htmlFor="lastName">
-                  Last name<span className="text-contrast-400">*</span>
+                  Last Name<span className="text-contrast-400">*</span>
                 </Label>
                 <Input
                   errors={getErrorsOrUndefined(formState.errors, 'lastName')}
@@ -141,7 +141,7 @@ export function ProductRegistrationForm({ modelNumberOptions }: Props) {
             </div>
             <div className="mt-4 flex flex-col gap-1">
               <Label className="text-foreground text-sm font-medium" htmlFor="email">
-                Email address<span className="text-contrast-400">*</span>
+                Email Address<span className="text-contrast-400">*</span>
               </Label>
               <Input
                 data-1p-ignore
@@ -163,7 +163,7 @@ export function ProductRegistrationForm({ modelNumberOptions }: Props) {
                   errors={getErrorsOrUndefined(formState.errors, 'modelNumber')}
                   id="modelNumber"
                   key={`modelNumber-${formDataKey}`}
-                  label="Model number"
+                  label="Model Number"
                   name="modelNumber"
                   onValueChange={(value) => handleSelectChange('modelNumber', value)}
                   options={modelNumberOptions}
@@ -189,7 +189,7 @@ export function ProductRegistrationForm({ modelNumberOptions }: Props) {
           {formState.errors?.general ? (
             <FormStatus type="error">{formState.errors.general.join(', ')}</FormStatus>
           ) : null}
-          <p className="text-xs leading-[26px]">
+          <p className="text-xs leading-[20px]">
             Lotus Cooking needs the contact information you provide to us to contact you about our
             products and services. You may unsubscribe from these communications at any time. For
             information on how to unsubscribe, as well as our privacy practices and commitment to

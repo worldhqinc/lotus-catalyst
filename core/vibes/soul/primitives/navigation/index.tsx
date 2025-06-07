@@ -166,7 +166,7 @@ const navGroupClassName =
 const navLinkClassName =
   'block text-3xl transition-colors duration-200 ease-quad hover:text-primary';
 const navButtonClassName =
-  'relative p-3 transition-colors duration-200 ease-quad hover:text-primary focus-visible:outline-0 focus-visible:text-primary';
+  'relative p-3 transition-colors duration-200 ease-quad hover:text-primary focus-visible:text-primary';
 
 /**
  * This component supports various CSS variables for theming. Here's a comprehensive list, along

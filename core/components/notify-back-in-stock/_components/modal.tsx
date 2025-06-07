@@ -112,9 +112,9 @@ export default function NotifyBackInStockModal({
             <div className="flex flex-col">
               <div className="flex min-h-10 flex-row items-center pt-6 pl-5">
                 <Dialog.Title asChild>
-                  <h1 className="flex-1 pr-4 text-base leading-none font-semibold">
+                  <h2 className="flex-1 pr-4 text-base leading-[150%] font-medium">
                     Notify me when available
-                  </h1>
+                  </h2>
                 </Dialog.Title>
                 <div className="flex items-center justify-center pr-3">
                   <Dialog.Close asChild>

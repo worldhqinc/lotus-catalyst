@@ -285,13 +285,13 @@ function DynamicFormField({
       return (
         <div className="flex flex-col gap-1">
           <Label className="text-foreground text-sm font-medium" htmlFor={field.id}>
-            {field.label}
+            Email
             {field.required && <span className="text-contrast-400">*</span>}
           </Label>
           <Input
             {...getInputProps(formField, { type: 'email' })}
             errors={formField.errors?.map((error) =>
-              error === 'Required' ? 'Email Address is required' : error,
+              error === 'Required' ? 'Email is required' : error,
             )}
             key={field.name}
             onBlur={controls.blur}
