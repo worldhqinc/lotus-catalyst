@@ -31,9 +31,9 @@ export interface ChangePasswordFormProps {
 
 export function ChangePasswordForm({
   action,
-  currentPasswordLabel = 'Current password',
-  newPasswordLabel = 'New password',
-  confirmPasswordLabel = 'Confirm password',
+  currentPasswordLabel = 'Current Password',
+  newPasswordLabel = 'New Password',
+  confirmPasswordLabel = 'Confirm Password',
   submitLabel = 'Update',
 }: ChangePasswordFormProps) {
   const [state, formAction] = useActionState(action, { lastResult: null });

@@ -6,6 +6,7 @@ import { revalidate } from '~/client/revalidate-target';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
+import { getHreflangAlternates } from '~/lib/utils';
 import BrandArtwork from '~/public/images/Lotus-Pattern.svg';
 import { Spinner } from '~/vibes/soul/primitives/spinner';
 
@@ -106,7 +107,13 @@ const TicketFieldSchema = z.object({
 export type TicketForm = z.infer<typeof TicketFormSchema>['ticket_form'];
 export type TicketField = z.infer<typeof TicketFieldSchema>['ticket_field'];
 
-export async function generateMetadata(): Promise<Metadata> {
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = getHreflangAlternates(['contact/form'], locale);
   const page = await getPageBySlug('pageStandard', ['contact/form']);
   const { fields } = page;
 
@@ -114,6 +121,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: fields.metaTitle || fields.pageName,
     description: fields.metaDescription,
     keywords: fields.metaKeywords,
+    alternates,
   };
 }
 

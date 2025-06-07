@@ -13,10 +13,14 @@ function SimpleHeroBanner({
   descriptionHtml,
   title,
   isPageHeader,
+  primary,
+  secondary,
 }: {
   descriptionHtml: string;
   title: string;
   isPageHeader?: boolean | null;
+  primary: cta | null;
+  secondary: cta | null;
 }) {
   return (
     <SectionLayout>
@@ -32,6 +36,11 @@ function SimpleHeroBanner({
             dangerouslySetInnerHTML={{ __html: descriptionHtml }}
           />
         )}
+        {primary || secondary ? (
+          <div className="mt-6">
+            <HeroBannerCTAs primary={primary} secondary={secondary} />
+          </div>
+        ) : null}
       </div>
     </SectionLayout>
   );
@@ -139,7 +148,7 @@ function LeftAlignedHeroBanner({
   variant: string;
 }) {
   return (
-    <SectionLayout className="relative isolate aspect-[3/4] w-full lg:aspect-video xl:max-h-[calc(100svh-101px)] max-lg:landscape:aspect-video [&_>div]:h-full">
+    <SectionLayout className="relative isolate aspect-[3/4] w-full lg:aspect-video xl:max-h-[calc(100svh-105px)] max-lg:landscape:aspect-video [&_>div]:h-full">
       <div className="absolute inset-0 -z-10 bg-linear-to-l from-transparent to-black/50" />
       {mediaElement}
       <div className={clsx('h-full w-full')}>
@@ -203,7 +212,7 @@ function CenteredHeroBanner({
   title: string;
 }) {
   return (
-    <SectionLayout className="bg-contrast-200 relative isolate aspect-[3/4] w-full lg:aspect-video xl:max-h-[calc(100svh-101px)] max-lg:landscape:aspect-video">
+    <SectionLayout className="bg-contrast-200 relative isolate aspect-[3/4] w-full lg:aspect-video xl:max-h-[calc(100svh-105px)] max-lg:landscape:aspect-video">
       {mediaElement}
       <div className="absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2 px-4 py-20">
         {/* Note: If ElementFade is removed, apply the classes to the parent div instead. */}
@@ -309,6 +318,8 @@ export async function HeroBanner({
       <SimpleHeroBanner
         descriptionHtml={descriptionHtml}
         isPageHeader={isPageHeader}
+        primary={primary}
+        secondary={secondary}
         title={title}
       />
     );
@@ -373,10 +384,10 @@ function getUrl(fields: {
   }
 
   if (typeof fields.internalReference?.fields?.pageSlug === 'string') {
-    return fields.internalReference.fields.pageSlug;
+    return `/${fields.internalReference.fields.pageSlug}`;
   }
 
-  return '';
+  return '#';
 }
 
 function HeroBannerCTAs({
@@ -392,7 +403,7 @@ function HeroBannerCTAs({
     <div
       className={clsx(
         'mt-4 flex flex-col gap-4 md:flex-row',
-        variant?.startsWith('left-aligned') ? 'items-start' : 'items-center',
+        variant?.startsWith('left-aligned') ? 'items-start' : 'items-center justify-center',
       )}
     >
       {primary && <ButtonLink href={getUrl(primary.fields)}>{primary.fields.text}</ButtonLink>}

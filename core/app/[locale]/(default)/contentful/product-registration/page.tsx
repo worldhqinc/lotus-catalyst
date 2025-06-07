@@ -5,6 +5,7 @@ import CookiePreferencesCta from '~/components/cookie-preferences-cta';
 import CookiePreferencesNotice from '~/components/cookie-preferences-notice';
 import { productFinishedGoodsFieldsSchema } from '~/contentful/schema';
 import { contentfulClient } from '~/lib/contentful';
+import { getHreflangAlternates } from '~/lib/utils';
 
 import { getPageBySlug } from '../[...rest]/page-data';
 
@@ -45,7 +46,13 @@ async function getProductOptions() {
   };
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+interface Props {
+  params: Promise<{ locale: string; slug: string[] }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = getHreflangAlternates(['product-registration'], locale);
   const page = await getPageBySlug('pageStandard', ['product-registration']);
   const { fields } = page;
 
@@ -53,6 +60,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: fields.metaTitle || fields.pageName,
     description: fields.metaDescription,
     keywords: fields.metaKeywords,
+    alternates,
   };
 }
 

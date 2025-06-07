@@ -100,11 +100,19 @@ export function CtaSection({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         src={BrandArtwork}
       />
-      {sectionTitle ? (
-        <h2 className="font-heading mb-14 text-6xl uppercase">{sectionTitle}</h2>
-      ) : null}
+      <div className="space-y-4 lg:space-y-6">
+        {sectionTitle ? (
+          <h2 className="font-heading text-4xl uppercase lg:text-6xl">{sectionTitle}</h2>
+        ) : null}
+        {sectionSubtitle ? <p className="mx-auto max-w-md">{sectionSubtitle}</p> : null}
+      </div>
       {buttonLink ? (
-        <ButtonLink href={buttonLink} size="medium" variant="tertiary">
+        <ButtonLink
+          className="focus-visible:outline-contrast-100 mt-6 lg:mt-12"
+          href={buttonLink}
+          size="medium"
+          variant="tertiary"
+        >
           {buttonText}
         </ButtonLink>
       ) : null}

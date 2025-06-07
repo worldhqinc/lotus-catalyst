@@ -141,6 +141,7 @@ const ProductPageMetadataQuery = graphql(`
     site {
       product(entityId: $entityId) {
         name
+        path
         defaultImage {
           altText
           url: urlTemplate(lossy: true)

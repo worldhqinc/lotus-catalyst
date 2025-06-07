@@ -82,7 +82,7 @@
         "multipleAddresses": "Address book for multiple recipients",
         "ordersHistory": "Detailed order history",
         "ordersTracking": "Real-time order tracking",
-        "wishlists": "Save-and-Share wishlist"
+        "wishlists": "Save-and-share wishlist"
       }
     }
   },
@@ -186,13 +186,13 @@
     },
     "Settings": {
       "title": "Account",
-      "changePassword": "Change password",
+      "changePassword": "Change Password",
       "passwordUpdated": "Password has been updated successfully!",
       "settingsUpdated": "Account settings have been updated successfully!",
       "somethingWentWrong": "Something went wrong. Please try again later.",
-      "currentPassword": "Current password",
-      "newPassword": "New password",
-      "confirmPassword": "Confirm password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
       "cta": "Update"
     }
   },

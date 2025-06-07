@@ -37,8 +37,8 @@ export interface UpdateAccountFormProps {
 export function UpdateAccountForm({
   action,
   account,
-  firstNameLabel = 'First name',
-  lastNameLabel = 'Last name',
+  firstNameLabel = 'First Name',
+  lastNameLabel = 'Last Name',
   emailLabel = 'Email',
   companyLabel = 'Company',
   submitLabel = 'Update',

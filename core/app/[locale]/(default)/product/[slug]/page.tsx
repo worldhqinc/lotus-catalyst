@@ -17,7 +17,7 @@ import { productOptionsTransformer } from '~/data-transformers/product-options-t
 import { getPreferredCurrencyCode } from '~/lib/currency';
 import { formatDimension, formatWeight } from '~/lib/unit-converter';
 import { isMobileUser } from '~/lib/user-agent';
-import { ensureImageUrl } from '~/lib/utils';
+import { ensureImageUrl, getHreflangAlternates } from '~/lib/utils';
 
 import { addToCart } from './_actions/add-to-cart';
 // import { ProductAnalyticsProvider } from './_components/product-analytics-provider';
@@ -40,7 +40,7 @@ interface Props {
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
-  const { slug } = await props.params;
+  const { slug, locale } = await props.params;
   const customerAccessToken = await getSessionCustomerAccessToken();
 
   const productId = Number(slug);
@@ -53,6 +53,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
   const { pageTitle, metaDescription, metaKeywords } = product.seo;
   const { url, altText: alt } = product.defaultImage || {};
+  const alternates = getHreflangAlternates([product.path], locale);
 
   return {
     title: pageTitle || product.name,
@@ -66,6 +67,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         },
       ],
     },
+    alternates,
   };
 }
 

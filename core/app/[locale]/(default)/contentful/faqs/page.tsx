@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 import { PageContentEntries } from '~/components/contentful/page-content-entries';
 import { categoryFaqFieldsSchema, faqListSchema, faqSchema } from '~/contentful/schema';
-import { generateHtmlFromRichText } from '~/lib/utils';
+import { generateHtmlFromRichText, getHreflangAlternates } from '~/lib/utils';
 
 import { getPageBySlug } from '../[...rest]/page-data';
 
@@ -29,7 +29,13 @@ interface FaqCategory {
   faqParentCategory: string;
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = getHreflangAlternates(['faqs'], locale);
   const page = await getPageBySlug('pageStandard', ['faqs']);
   const { fields } = page;
 
@@ -37,6 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: fields.metaTitle || fields.pageName,
     description: fields.metaDescription,
     keywords: fields.metaKeywords,
+    alternates,
     other: {
       'application/ld+json': JSON.stringify(generateFaqSchema(page.fields.pageContent || [])),
     },

@@ -275,7 +275,7 @@ function CarouselScrollbar({
   return (
     <div
       className={clsx(
-        'relative flex h-6 w-full items-center overflow-hidden sm:max-w-56',
+        'focus-within:outline-primary relative flex h-6 w-full items-center overflow-hidden focus-within:rounded focus-within:outline-2 focus-within:outline-offset-2 sm:max-w-56',
         !canScrollPrev && !canScrollNext && 'pointer-events-none invisible',
         className,
       )}
